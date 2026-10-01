@@ -1,0 +1,12 @@
+node_modules/
+release/
+backups/
+.DS_Store
+*.log
+native/bridge-arm64
+native/bridge-x86_64
+qa/build-inputs.json
+qa/large-calendar-output/
+qa/native-workspace*.json
+data.json
+.obsidian/

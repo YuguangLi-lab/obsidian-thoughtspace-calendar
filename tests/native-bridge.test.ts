@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {test} from 'node:test';
+import {spawnSync} from 'node:child_process';
+import path from 'node:path';
+const executable=path.resolve('native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge');
+const call=(request:unknown)=> {
+  const result=spawnSync(executable,[],{input:JSON.stringify(request),encoding:'utf8',timeout:5000});
+  assert.equal(result.error,undefined); return JSON.parse(result.stdout);
+};
+const draft={title:'测试',start:'2026-10-01T01:00:00.000Z',end:'2026-10-01T02:00:00.000Z',allDay:false,calendarId:'fixture-only',location:'',notes:''};
+test('原生接口无需授权即可验证输入，不访问实际日历',()=>assert.equal(call({action:'validate',draft}).ok,true));
+test('原生接口独立拒绝倒置时间',()=>assert.equal(call({action:'validate',draft:{...draft,end:draft.start}}).error.code,'invalid_interval'));
+test('原生接口拒绝超长日程',()=>assert.equal(call({action:'validate',draft:{...draft,end:'2028-10-01T00:00:00Z'}}).error.code,'invalid_interval'));
+test('原生接口拒绝缺失日期',()=>assert.equal(call({action:'validate',draft:{...draft,start:''}}).error.code,'invalid_date'));
+test('原生接口拒绝超长标题',()=>assert.equal(call({action:'validate',draft:{...draft,title:'长'.repeat(501)}}).error.code,'invalid_event'));
+test('原生接口拒绝空日历',()=>assert.equal(call({action:'validate',draft:{...draft,calendarId:''}}).error.code,'invalid_event'));
+test('原生接口拒绝无版本的更新',()=>assert.equal(call({action:'validate',draft:{...draft,eventId:'old'}}).error.code,'invalid_revision'));
+test('原生接口校验原场次日期',()=>assert.equal(call({action:'validate',draft:{...draft,eventId:'old',originalStart:'bad',revision:'a'.repeat(64)}}).error.code,'invalid_date'));
+test('原生接口允许包含原场次和版本的更新',()=>assert.equal(call({action:'validate',draft:{...draft,eventId:'old',originalStart:draft.start,revision:'a'.repeat(64)}}).ok,true));
+test('原生范围限制独立生效',()=>assert.equal(call({action:'validate_range',start:draft.start,end:'2027-10-01T00:00:00Z'}).error.code,'invalid_interval'));
+test('原生接口拒绝任意未知命令',()=>assert.equal(call({action:'shell'}).error.code,'invalid_action'));

@@ -1,0 +1,106 @@
+{
+  "version": "1.3.0",
+  "checkedAt": "2026-10-01T05:18:14.263274+00:00",
+  "automatedTests": {
+    "passed": 176,
+    "failed": 0
+  },
+  "browserChecks": {
+    "checkedAt": "2026-10-01T05:04:15.633Z",
+    "checks": [
+      "month 42 cells",
+      "edit loads complete notes",
+      "edit and refresh",
+      "update preserves original occurrence",
+      "week 7 columns",
+      "refresh preserves week scroll position",
+      "scheduled local task opens original source",
+      "midnight cell preserves midnight time",
+      "all-day inclusive end converted to exclusive",
+      "read-only event cannot save",
+      "conflict preserves editor content",
+      "narrow split uses container layout inside wide window",
+      "narrow month no horizontal overflow",
+      "all six weeks remain above the narrow agenda",
+      "no uncaught browser errors"
+    ],
+    "errors": [],
+    "scope": "Synthetic fixture host only. No real Apple Calendar writes or Obsidian runtime integration."
+  },
+  "nativeChecks": {
+    "checks": [
+      "native version 1.3.0",
+      "concurrent opens reuse one native pane",
+      "native month renders 42 cells",
+      "native helper status returns without a permission request",
+      "no self-triggered task refresh loop",
+      "date click selects agenda and persists state",
+      "native split responds to pane width",
+      "native week renders seven columns",
+      "native refresh keeps week scroll",
+      "week and selected date survive native reload",
+      "reload keeps one large calendar ribbon",
+      "native connection dialog opens",
+      "connection explains permission and selection",
+      "native fixture fullNotes",
+      "native fixture recurring",
+      "native fixture saved",
+      "native fixture conflict",
+      "native fixture readOnly",
+      "native fixture allDay",
+      "no captured native JavaScript errors"
+    ],
+    "permission": "status only; no authorization requested",
+    "eventWriteScope": "in-memory fixture in native Obsidian; no real Apple Calendar read/write"
+  },
+  "nativeArchitectures": "x86_64 arm64",
+  "nativeBridgeMinimumMacOS": "14.0",
+  "runtimeSHA256": {
+    "main.js": "8606f81ba8d58f0464829ef1bc3bd7d891c523594b0a8414a45183c8ce9377ed",
+    "styles.css": "80f336879c3b839fba5e4cdb62b6121ae1c783c7c166afcef20ae956a92c87d6",
+    "manifest.json": "3fd0722cb380201c794fb44ef6705b66f781604eb55881b40e74a3571f229e42",
+    "native/ThoughtSpaceCalendarBridge.app/Contents/Info.plist": "7dea7d588130839a15e8bfab79334285b8793d54390c6a9ea7d7e2785922e23e",
+    "native/ThoughtSpaceCalendarBridge.app/Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b",
+    "native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge": "486db0ba108588c0de8796cad7eeb92e500aaceb6871274064ce802aed2ed75d"
+  },
+  "evidenceLimits": [
+    "macOS calendar authorization was not requested; status was not_determined",
+    "Real Apple Calendar events were not read, created or modified",
+    "Native event editing checks used an in-memory fixture",
+    "Cloud account synchronization and long-term memory behavior are unverified",
+    "iCloud can reapply FinderInfo on app bundle folders; release is staged outside iCloud and verified after extraction"
+  ],
+  "publishedScope": "Plugin source and release runtime only; personal vault paths, workspace snapshots and installation logs omitted.",
+  "publicationVerification": {
+    "checkedAt": "2026-10-01T06:36:05.451450+00:00",
+    "cleanBuild": "passed",
+    "automatedTests": {
+      "passed": 176,
+      "failed": 0
+    },
+    "browserChecks": {
+      "checkedAt": "2026-10-01T06:34:35.369Z",
+      "checks": [
+        "month 42 cells",
+        "edit loads complete notes",
+        "edit and refresh",
+        "update preserves original occurrence",
+        "week 7 columns",
+        "refresh preserves week scroll position",
+        "scheduled local task opens original source",
+        "midnight cell preserves midnight time",
+        "all-day inclusive end converted to exclusive",
+        "read-only event cannot save",
+        "conflict preserves editor content",
+        "narrow split uses container layout inside wide window",
+        "narrow month no horizontal overflow",
+        "all six weeks remain above the narrow agenda",
+        "no uncaught browser errors"
+      ],
+      "errors": [],
+      "scope": "Synthetic fixture host only. No real Apple Calendar writes or Obsidian runtime integration."
+    },
+    "runtimeMatchesBaseline": true,
+    "sourceChanges": "Public documentation, portable QA configuration, workflow, packaging documentation allowlist, native script type declarations; no production runtime changes."
+  }
+}
