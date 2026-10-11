@@ -10,7 +10,7 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const version=JSON.parse(await readFile(path.join(root,'manifest.json'),'utf8')).version;
 async function files(directory,prefix=''){const result=[];for(const entry of await readdir(directory,{withFileTypes:true})){if(entry.isDirectory())result.push(...await files(path.join(directory,entry.name),prefix+entry.name+'/'));else if(entry.isFile())result.push(prefix+entry.name);else throw Error('发布文件不应包含符号链接');}return result;}
 const native='native/ThoughtSpaceCalendarBridge.app';
-const documents=['main.js','styles.css','manifest.json','README.md','LICENSE','THIRD_PARTY_NOTICES.md',`FEATURES-${version}.md`,`qa/RELEASE-VERIFY-${version}.json`,`qa/UPSTREAM-TASKS-${version}.json`,'README.en.md','docs/USAGE.md','docs/APPLE-CALENDAR.md','docs/DEVELOPMENT.md','docs/TESTING.md','docs/images/month.png','docs/images/week.png','docs/images/narrow.png','docs/images/tasks.png','docs/images/quadrants.png'];
+const documents=['main.js','styles.css','manifest.json','README.md','LICENSE','THIRD_PARTY_NOTICES.md',`FEATURES-${version}.md`,`docs/RELEASE-${version}.md`,`qa/RELEASE-VERIFY-${version}.json`,`qa/UPSTREAM-TASKS-${version}.json`,'README.en.md','docs/USAGE.md','docs/APPLE-CALENDAR.md','docs/DEVELOPMENT.md','docs/TESTING.md','docs/images/month.png','docs/images/week.png','docs/images/narrow.png','docs/images/tasks.png','docs/images/quadrants.png','docs/images/timeline.png'];
 const names=[...documents,...(await files(path.join(root,native))).map(name=>native+'/'+name)];
 const stage=await mkdtemp(path.join(os.tmpdir(),'thoughtspace-calendar-release-'));
 try{

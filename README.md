@@ -10,7 +10,20 @@
 
 [下载安装包](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) · [使用指南](docs/USAGE.md) · [苹果日历设置](docs/APPLE-CALENDAR.md) · [English](README.en.md) · [反馈问题](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/issues)
 
-> 当前源码版本 **1.4.3**，安装包以 [Releases](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases) 实际发布为准。包含任务拖动排期、日程关联笔记和 Tasks 重复任务联动；已在安装 Tasks 8.5.0 的测试库验证重复任务；本版修复时间线和四象限的连续操作焦点，美化任务布局，保留无日期重复任务和安全撤销保护。苹果日历仍为实验功能：本轮未对真实苹果日程执行写入测试。
+> 当前版本 **1.4.4**。本版重点改善 Tasks 重复任务的连续操作与时间线编辑。苹果日历仍为实验功能，真实系统日程读写未纳入本版验证。
+
+## 1.4.4 更新重点
+
+| 改进 | 现在的体验 |
+| --- | --- |
+| 连续完成重复任务 | 同篇笔记中连续勾选不同任务，前一项生成下一次任务后，后续排队操作仍能正确定位 |
+| 保留冲突保护 | 同一任务重复点击、外部改动和过期索引仍被拦截，避免误完成下一次任务 |
+| 轻量时间线刷新 | 分钟刷新只更新时间和进行中状态，保留卡片、键盘焦点与已展开内容 |
+| 直接编辑时间 | 点击时间线卡片顶部的时间，修改计划日期、开始／结束时间和优先级 |
+| 更清晰的任务卡片 | 正文、来源、日期、时长分层呈现；来源名称常驻底部，长名称省略显示 |
+| 窄侧栏与深色主题 | 保持可读的间距和操作入口；四象限始终维持 2×2 |
+
+[完整更新说明](docs/RELEASE-1.4.4.md) · [下载 1.4.4 完整安装包](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/download/v1.4.4/thoughtspace-calendar-1.4.4.zip) · [验证报告](qa/RELEASE-VERIFY-1.4.4.json)
 
 ## 界面预览
 
@@ -28,11 +41,13 @@
 </details>
 
 <details>
-<summary>任务列表与四象限（1.4.3 合成样例）</summary>
+<summary>任务列表、四象限与时间线（1.4.4 合成样例）</summary>
 
 ![紧凑的任务列表](docs/images/tasks.png)
 
 ![四象限保持固定布局](docs/images/quadrants.png)
+
+![时间入口与来源清晰分层的时间线](docs/images/timeline.png)
 
 </details>
 
@@ -116,7 +131,7 @@
 
 ### 手动安装
 
-1. 从 [最新 Release](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) 下载 名称为 **`thoughtspace-calendar-版本号.zip`** 的完整安装包。
+1. 从 [最新 Release](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) 下载名称为 **`thoughtspace-calendar-版本号.zip`** 的完整安装包。
 2. 解压，将内容放入你的 Obsidian 仓库 `.obsidian/plugins/thoughtspace-calendar/`。
 3. 确认 `manifest.json` 直接位于该插件目录下，没有多套一层同名文件夹。
 4. 打开 Obsidian 设置 → 第三方插件，启用 **ThoughtSpace 日历与日记**。更新安装后重新加载插件。
@@ -136,7 +151,7 @@
 
 **需要苹果日历时请使用完整 ZIP。** 单独下载三个 JavaScript/CSS/manifest 文件不会带上原生桥接程序。`native/` 的目录结构和可执行权限必须保留。
 
-本项目通过 GitHub Release 手动分发，目前未声明已经进入 Obsidian 社区插件市场。安装前可用同一 Release 的 对应版本的 `SHA256-版本号.json` 或 `FILES-版本号.txt` 核对文件。
+本项目通过 GitHub Release 手动分发，目前未声明已经进入 Obsidian 社区插件市场。安装前可用同一 Release 对应版本的 `SHA256-版本号.json` 或 `FILES-版本号.txt` 核对文件。
 
 ### 更新与旧日历迁移
 
@@ -222,11 +237,20 @@
 
 ## 验证结果与范围
 
-1.4.2 通过 270 项自动化测试、19 项官方 Tasks API 检查、30 项浏览器交互检查、36 项 Tasks 原生联动检查，以及 36 项通用原生工作流检查。本轮在专门测试库安装并启用官方 Tasks 8.5.0，实际验证文件写回、Tasks 索引、重复生成、连续点击、撤销，以及列表、四象限、时间线和大日历中的勾选交互。101 篇原有笔记的 SHA256 未改变，临时测试笔记已清理。具体检查结果和构建信息见 [1.4.2 验证记录](qa/RELEASE-VERIFY-1.4.2.json)，功能说明见 [本版更新](FEATURES-1.4.2.md)。
+1.4.4 的验证结果如下。原生检查使用专门测试库和官方 Tasks 8.5.0，包含实际文件写回、Tasks 索引与界面操作。
 
-1.4.1 的隔离 API 与界面验证保留在 [此前报告](qa/RELEASE-VERIFY-1.4.1.json)；它不替代本轮安装 Tasks 后的原生联动检查。
+| 验证层级 | 通过数量 | 覆盖内容 |
+| --- | ---: | --- |
+| 单元测试 | 280 | 任务解析、连续写入、冲突检查、撤销等 |
+| 真实 Tasks 联动 | 57 | 列表／四象限／时间线连续勾选、下一次任务、大日历联动、时间编辑 |
+| 原生日历工作流 | 36 | 排期、来源与属性关联、布局和状态恢复 |
+| 浏览器交互 | 30 | 月／周视图、拖动、时间调整与界面交互 |
+| 布局组合 | 12 | 280／420 像素宽度、深浅色、三种任务视图 |
+| 官方 Tasks API 契约 | 19 | 重复规则、配置与返回结果兼容性 |
 
-历史 1.3.0 基线为 176 项自动化测试、15 项隔离浏览器检查、20 项原生 Obsidian 检查，见 [旧版报告](qa/RELEASE-VERIFY-1.3.0.json)；这些数量不代表新版本的测试结果。
+连续操作测试在列表、四象限和时间线分别快速勾选 6 条重复任务，并撤销最后一条；全部通过。101 篇原有测试笔记 SHA256 未变，临时笔记与 Tasks 设置已恢复。计时器检查确认卡片 DOM 和焦点保留；这不代表长期内存或所有大库场景的性能保证。
+
+[本版详细验证记录](qa/RELEASE-VERIFY-1.4.4.json) · [可复现测试方法](docs/TESTING.md)。此前版本记录保留在 `qa/` 中作为历史基线，不代替本版结果。
 
 **尚未验证：** 系统授权的实际交互、真实苹果日程创建/修改往返、不同账户的云同步、Windows/Linux 原生界面和长期内存表现。本轮日程交互使用合成数据或内存夹具，不以此代替真实系统日历验证。GitHub Actions 也不读取个人日历。
 

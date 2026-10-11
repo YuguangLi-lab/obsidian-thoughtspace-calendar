@@ -69,6 +69,7 @@ q.original='---\\ntype: workflow-qa\\ncustom: keep-me\\n---\\n\\n# Native workfl
 q.file=await app.vault.create(folder+'/tasks.md',q.original);
 q.note=await app.vault.create(folder+'/reference.md','---\\ncustom: keep-me\\n---\\n\\n# Reference fixture\\n\\nEvidence body stays intact.\\n');
 await p.taskPlanner.ready();
+q.frame=()=>new Promise(resolve=>{const timer=setTimeout(resolve,100);requestAnimationFrame(()=>{clearTimeout(timer);resolve();});});
 q.wait=async predicate=>{for(let i=0;i<80;i++){if(await predicate())return;await new Promise(r=>setTimeout(r,25));}throw Error('Native fixture did not settle');};
 await q.wait(()=>!!app.metadataCache.getFileCache(q.note)?.frontmatter);
 q.list=async()=> (await q.host.tasks(new Date(2026,9,1),new Date(2026,10,1))).filter(t=>t.source===q.file.path);
@@ -141,7 +142,7 @@ const form=document.querySelector('.tsc-event-form');result.nativeScheduleForm=!
 form.querySelector('input[type=date]').value='2026-10-21';const times=form.querySelectorAll('input[type=time]');times[0].value='11:13';times[1].value='12:31';form.requestSubmit();
 await q.wait(()=>!form.isConnected);await q.p.taskPlanner.flush();result.nativeModalWritesExactMinutes=(await app.vault.read(q.file)).includes('11:13 - 12:31 Capture inbox ⏳ 2026-10-21 ^native-inbox');
 await v.refresh();const main=v.contentEl.querySelector('.tsc-large-main');main.scrollTop=400;await v.refresh();result.nativeRefreshKeepsScroll=main.scrollTop===400;
-const oldWidth=v.contentEl.style.width;v.contentEl.style.width='620px';await new Promise(requestAnimationFrame);result.nativeNarrowStack=getComputedStyle(v.contentEl.querySelector('.tsc-large-body')).display==='block';v.contentEl.style.width=oldWidth;
+const oldWidth=v.contentEl.style.width;v.contentEl.style.width='620px';await q.frame();result.nativeNarrowStack=getComputedStyle(v.contentEl.querySelector('.tsc-large-body')).display==='block';v.contentEl.style.width=oldWidth;
 return JSON.stringify(result);
 """))
     # Let pending metadata events settle; sample within one eval so CLI focus changes

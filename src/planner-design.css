@@ -89,9 +89,12 @@
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-row:hover {background:var(--planner-wash);border-color:color-mix(in srgb,var(--planner-accent) 25%,var(--planner-line));}
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-row.is-done {background:var(--planner-surface);}
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-row-main {gap:8px;}
-:is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-title {font-family:var(--font-text,var(--font-interface));font-size:13px;font-weight:400;line-height:1.65;}
+:is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-title {font-family:var(--font-text,var(--font-interface));font-size:13px;font-weight:500;line-height:1.65;}
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-meta {min-width:0;margin:3px 0 0 22px;gap:4px 6px;font-size:10px;line-height:1.5;}
-:is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-meta>button:first-child {color:var(--text-muted);min-height:20px;}
+:is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-meta>button:first-child {color:var(--text-muted);min-height:24px;gap:5px;}
+.ts-calendar-plugin.ts-task-planner .ts-task-source-name {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ts-calendar-plugin.ts-task-planner .ts-task-source-icon {flex:none;display:flex;opacity:.7;}
+.ts-calendar-plugin.ts-task-planner .ts-task-source-icon svg {width:12px;height:12px;}
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-schedule-chip {padding:2px 5px!important;border-radius:5px;background:var(--planner-surface);text-decoration:none!important;}
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-schedule-chip.is-scheduled {color:var(--planner-accent);background:var(--planner-wash);}
 :is(.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet],.ts-calendar-plugin.ts-task-planner) .ts-task-row-actions button {width:24px;height:24px;border-radius:5px;}
@@ -115,14 +118,21 @@
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-item {grid-template-columns:36px minmax(0,1fr);column-gap:8px;padding-bottom:16px;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-node {width:28px;height:28px;align-self:start;margin-top:8px;border-radius:50%;background:color-mix(in srgb,var(--timeline-color) 20%,var(--background-primary));color:color-mix(in srgb,var(--timeline-color) 78%,var(--text-normal));border:1px solid color-mix(in srgb,var(--timeline-color) 38%,transparent);box-shadow:0 0 0 3px var(--background-primary);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-node svg {width:15px;height:15px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-card {padding:9px 28px 26px 10px;border:1px solid var(--planner-line);border-radius:10px;background:color-mix(in srgb,var(--timeline-color) 4%,var(--background-primary));box-shadow:none;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-item.is-current .ts-timeline-card {background:color-mix(in srgb,var(--timeline-color) 10%,var(--background-primary));border-color:color-mix(in srgb,var(--timeline-color) 48%,var(--planner-line));box-shadow:none;padding-left:10px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-time {gap:4px;font-size:11px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-duration {font-size:10px;color:var(--text-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-card {min-width:0;padding:10px 12px 8px;border:1px solid color-mix(in srgb,var(--timeline-color) 22%,var(--planner-line));border-radius:12px;background:color-mix(in srgb,var(--timeline-color) 4%,var(--background-primary));box-shadow:0 2px 5px color-mix(in srgb,var(--text-normal) 3%,transparent);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-item.is-current .ts-timeline-card {background:color-mix(in srgb,var(--timeline-color) 10%,var(--background-primary));border-color:color-mix(in srgb,var(--timeline-color) 48%,var(--planner-line));box-shadow:inset 2px 0 var(--timeline-color);padding-left:12px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-time {gap:5px;font-size:11px;font-weight:600;color:var(--text-normal);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-duration {margin-left:3px;padding:1px 6px;border-radius:5px;background:color-mix(in srgb,var(--timeline-color) 8%,var(--background-primary));font-size:10px;font-weight:400;color:var(--text-muted);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-day-timeline .ts-timeline-title {font-family:var(--font-text,var(--font-interface));font-size:13px;line-height:1.65;font-weight:500;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-card-heading input {right:8px;top:31px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-meta {right:6px;bottom:4px;opacity:.7;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-meta button {border-radius:4px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-card-heading {align-items:flex-start;gap:10px;margin-top:6px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-card-heading input {position:static;flex:none;margin-top:3px;cursor:pointer;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-meta {position:static;display:flex;align-items:center;gap:5px;margin-top:8px;padding-top:5px;border-top:1px solid color-mix(in srgb,var(--timeline-color) 12%,transparent);opacity:1;color:var(--text-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-meta button {flex:none;width:24px;height:24px;border-radius:5px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-meta .ts-timeline-source {flex:1;min-width:0;width:auto;gap:5px;justify-content:flex-start;font-size:10px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-source span {min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-source svg {flex:none;width:12px;height:12px;}
+.ts-calendar-plugin .ts-timeline-time.is-editable {display:flex;justify-content:flex-start;flex-wrap:wrap;max-width:100%;width:fit-content;height:auto;min-height:24px;padding:2px 4px;margin:-2px -4px 0;border:0;border-radius:5px;background:transparent;box-shadow:none;text-align:left;cursor:pointer;}
+.ts-calendar-plugin .ts-timeline-time.is-editable:hover {background:var(--background-modifier-hover);color:var(--planner-accent);}
+.ts-calendar-plugin :is(.ts-timeline-now,.ts-timeline-active-label)[hidden] {display:none!important;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-meta button:hover {background:var(--planner-wash);color:var(--planner-accent);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-now {padding-left:44px;margin-bottom:14px;font-size:10px;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-timeline-now::before {left:13px;width:10px;height:10px;}

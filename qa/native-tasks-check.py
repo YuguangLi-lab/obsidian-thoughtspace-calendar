@@ -57,6 +57,7 @@ const q={p,t,folder:FOLDER,config,configExists:await app.vault.adapter.exists(co
 window[key]=q;q.configText=q.configExists?await app.vault.adapter.read(config):null;
 q.baseSettings=await t.loadData()||{};
 q.journal?.unload();await q.journal?.queue;p.appleCalendar.events=async()=>({events:[],truncated:false});
+q.frame=()=>new Promise(resolve=>{const timer=setTimeout(resolve,100);requestAnimationFrame(()=>{clearTimeout(timer);resolve();});});
 q.wait=async(fn)=>{for(let i=0;i<120;i++){if(await fn())return;await new Promise(r=>setTimeout(r,25));}throw Error('Native Tasks state did not settle');};
 q.configure=async(patch={})=>{await q.t.saveData({...q.baseSettings,globalFilter:'',taskFormat:'tasksPluginEmoji',setDoneDate:true,recurrenceOnNextLine:false,...patch});await q.t.loadSettings();};
 await q.configure();await app.vault.createFolder(q.folder);q.file=await app.vault.create(q.folder+'/recurrence.md','Native Tasks fixture');
@@ -93,6 +94,12 @@ const before=await q.text();let rejected=false;try{await q.p.taskPlanner.update(
 result.externalTasksRaceRejected=rejected;result.externalTasksResultPreserved=(await q.text())===before;
 return JSON.stringify(result);
 """)
+    record('queued distinct recurrences', """
+await q.reset(['Alpha','Beta','Gamma'].map(name=>'- [ ] '+name+' #TSQA 🔁 every day 📅 2026-10-11').join(q.NL));
+const rows=q.rows(),start=performance.now(),outcomes=await Promise.allSettled(rows.map(row=>q.p.taskPlanner.update(row,{checked:true})));
+const result={allQueuedActionsComplete:outcomes.every(r=>r.status==='fulfilled'),oneNextOccurrenceEach:q.rows().length===6&&q.rows().filter(t=>t.checked).length===3&&q.rows().filter(t=>!t.checked&&t.due==='2026-10-12').length===3,metrics:{queuedMs:performance.now()-start,queuedErrors:outcomes.filter(r=>r.status==='rejected').map(r=>String(r.reason))}};
+return JSON.stringify(result);
+""")
     record('source safety', """
 await q.reset('Intro'+q.CR+q.NL+q.source+q.CR+q.NL+'Keep paragraph');await q.p.taskPlanner.update(q.rows()[0],{checked:true});const crlf=await q.text();
 const result={CRLFPreserved:crlf.split(q.NL).slice(0,-1).every(line=>line.endsWith(q.CR))};
@@ -127,13 +134,13 @@ await q.reset(q.source+q.NL+'- [ ] Next visible #TSQA 📅 2026-10-11');const pa
 q.calendar.contentEl.querySelector('[aria-label="列表模式"]').click();
 const row=[...q.calendar.contentEl.querySelectorAll('.ts-task-row')].find(e=>e.dataset.path===q.file.path&&e.dataset.line==='0'),check=row.querySelector('input[type=checkbox]');
 let renders=0;const old=panel.render;panel.render=function(...args){renders++;return old.apply(this,args);};
-check.focus();const start=performance.now();check.click();await q.wait(()=>q.rows().some(t=>t.checked));await q.p.taskPlanner.writes;await new Promise(requestAnimationFrame);
+check.focus();const start=performance.now();check.click();await q.wait(()=>q.rows().some(t=>t.checked));await q.p.taskPlanner.writes;await q.frame();
 const result={listNativeClickCreatesNext:q.rows().some(t=>!t.checked&&t.due==='2026-10-12'),focusStaysInTaskPanel:panel.el.contains(document.activeElement),oneListRender:renders===1,metrics:{listClickMs:performance.now()-start,listRenders:renders}};panel.render=old;
 await q.p.taskPlanner.undoLast();q.calendar.contentEl.querySelector('[aria-label="四象限模式"]').click();
 const quadratic=[...q.calendar.contentEl.querySelectorAll('.ts-task-row')].find(e=>e.dataset.path===q.file.path&&e.dataset.line==='0');quadratic.querySelector('input[type=checkbox]').click();await q.wait(()=>q.rows().some(t=>t.checked));await q.p.taskPlanner.writes;
 result.quadrantsNativeClickCreatesNext=q.rows().some(t=>!t.checked&&t.due==='2026-10-12');result.fourQuadrants=q.calendar.contentEl.querySelectorAll('.ts-task-quadrant').length===4;
 await q.p.taskPlanner.undoLast();const moved=[...q.calendar.contentEl.querySelectorAll('.ts-task-row')].find(e=>e.dataset.path===q.file.path&&e.dataset.line==='0');
-const select=moved.querySelector('select');select.focus();select.value='q2';select.dispatchEvent(new Event('change',{bubbles:true}));await q.p.taskPlanner.writes;await new Promise(requestAnimationFrame);
+const select=moved.querySelector('select');select.focus();select.value='q2';select.dispatchEvent(new Event('change',{bubbles:true}));await q.p.taskPlanner.writes;await q.frame();
 result.quadrantSelectKeepsFocus=panel.el.contains(document.activeElement)&&document.activeElement.matches('select.ts-task-quadrant-select');
 result.quadrantMovePreservesRecurrence=q.rows().length===2&&q.rows()[0].recurring&&!q.rows()[0].checked;
 
@@ -143,22 +150,57 @@ return JSON.stringify(result);
 await q.reset(Array.from({length:28},(_,i)=>`- [ ] Row ${String(i).padStart(2,'0')} #TSQA 📅 2026-10-11`).join(q.NL));
 q.calendar.contentEl.querySelector('[aria-label="列表模式"]').click();const panel=q.panel();panel.setFilter('today');panel.query='TSQA';panel.render();
 const row=[...panel.el.querySelectorAll('.ts-task-row')].find(e=>e.dataset.line==='10'&&e.dataset.path===q.file.path),check=row.querySelector('input[type=checkbox]');
-check.scrollIntoView({block:'center'});check.focus({preventScroll:true});await new Promise(requestAnimationFrame);
+check.scrollIntoView({block:'center'});check.focus({preventScroll:true});await q.frame();
 const scrolls=[];for(let e=row.parentElement;e;e=e.parentElement)if(e.scrollHeight>e.clientHeight+20&&e.scrollTop>0)scrolls.push({el:e,y:e.scrollTop});
-check.click();await q.p.taskPlanner.writes;await new Promise(requestAnimationFrame);
+check.click();await q.p.taskPlanner.writes;await q.frame();
 const result={listScrollStable:scrolls.length>0&&scrolls.every(s=>Math.abs(s.el.scrollTop-s.y)<2),metrics:{scrollAncestors:scrolls.length,scrollDelta:scrolls.map(s=>s.el.scrollTop-s.y)}};
 await q.reset(q.source.replace('Native repeat','09:00 - 09:30 Native repeat')+q.NL+'- [ ] 10:00 - 10:30 Next visible #TSQA 📅 2026-10-11');
 q.calendar.contentEl.querySelector('[aria-label="时间线模式"]').click();
 await q.wait(()=>q.calendar.contentEl.querySelector('.ts-day-timeline input[type=checkbox]'));
-const doneButton=q.calendar.contentEl.querySelector('.ts-day-timeline [aria-label="隐藏已完成事项"]');if(doneButton)doneButton.click();await new Promise(requestAnimationFrame);
+const doneButton=q.calendar.contentEl.querySelector('.ts-day-timeline [aria-label="隐藏已完成事项"]');if(doneButton)doneButton.click();await q.frame();
 const timeline=q.calendar.contentEl.querySelector('.ts-day-timeline');const box=[...timeline.querySelectorAll('input[type=checkbox]')].find(e=>e.getAttribute('aria-label')?.includes('Native repeat'));
-box.focus();box.click();await q.p.taskPlanner.writes;await new Promise(requestAnimationFrame);
+box.focus();box.click();await q.p.taskPlanner.writes;await q.frame();
 result.timelineFocusStaysInTasks=timeline.contains(document.activeElement)&&document.activeElement.matches('input[type=checkbox]');
 await q.reset(Array.from({length:2},()=>'- [ ] 11:00 - 11:30 Same title #TSQA 📅 2026-10-11').join(q.NL));
 const boxes=()=>[...timeline.querySelectorAll('input[type=checkbox]')].filter(e=>e.getAttribute('aria-label')?.includes('Same title'));
-boxes()[1].focus();await q.p.taskPlanner.update(q.rows()[0],{priority:1});await new Promise(requestAnimationFrame);
+boxes()[1].focus();await q.p.taskPlanner.update(q.rows()[0],{priority:1});await q.frame();
 result.sameTitleKeepsCorrectFocus=boxes().indexOf(document.activeElement)===1;
 return JSON.stringify(result);
+""")
+    record('rapid native checkbox sequence', """
+const result={},latencies={};
+for(const mode of ['列表','四象限','时间线']){
+ await q.reset(Array.from({length:6},(_,i)=>`- [ ] 09:${String(i*5).padStart(2,'0')} - 10:00 Batch ${i} #TSQA 🔁 every day 📅 2026-10-11`).join(q.NL));
+ const panel=q.panel();panel.query='TSQA';panel.setFilter('today');q.calendar.contentEl.querySelector(`[aria-label="${mode}模式"]`).click();
+ await q.wait(()=>[...panel.el.querySelectorAll('input[type=checkbox]')].filter(el=>el.closest('[data-path]')?.dataset.path===q.file.path).length===6);
+ const checks=[...panel.el.querySelectorAll('input[type=checkbox]')].filter(el=>el.closest('[data-path]')?.dataset.path===q.file.path),start=performance.now();
+ checks.forEach(el=>el.click());await q.p.taskPlanner.writes;latencies[mode]=performance.now()-start;
+ result[mode+'SixCompletions']=q.rows().filter(t=>t.checked).length===6&&q.rows().filter(t=>!t.checked&&t.due==='2026-10-12').length===6;
+ await q.p.taskPlanner.undoLast();result[mode+'UndoOnlyLast']=q.rows().filter(t=>t.checked).length===5&&q.rows().length===11;
+}
+result.metrics={sixCheckboxWritesMs:latencies};return JSON.stringify(result);
+""")
+    record('timeline minute tick', """
+await q.reset('- [ ] 09:00 - 09:30 Clock fixture #TSQA 📅 2026-10-11');
+q.calendar.contentEl.querySelector('[aria-label="列表模式"]').click();
+let tick;const original=window.setInterval;window.setInterval=function(fn,delay,...rest){if(delay===60000)tick=fn;return original.call(this,fn,delay,...rest);};
+try{q.calendar.contentEl.querySelector('[aria-label="时间线模式"]').click();await q.wait(()=>q.panel()?.timeline?.body?.querySelector('input[type=checkbox]'));}finally{window.setInterval=original;}
+const timeline=q.panel().timeline,body=timeline.body,check=body.querySelector('input[type=checkbox]');check.focus();const row=check.closest('.ts-timeline-item');
+let count=0;const observer=new MutationObserver(records=>count+=records.filter(r=>r.type==='childList').length);observer.observe(body,{childList:true,subtree:true});
+if(typeof tick!=='function')throw Error('Minute timer was not captured');tick();await q.frame();observer.disconnect();
+const result={minuteKeepsRowIdentity:row.isConnected&&body.contains(row),minuteKeepsFocusedControl:check===document.activeElement,metrics:{minuteChildListChanges:count}};
+if(timeline.refreshClock){timeline.refreshClock(new Date(2026,9,11,9,15));result.activeAtStart=row.classList.contains('is-current')&&!row.querySelector('.ts-timeline-active-label').hidden;timeline.refreshClock(new Date(2026,9,11,9,30));result.inactiveAtEnd=!row.classList.contains('is-current');timeline.refreshClock(new Date(2026,9,12,0,0));result.hidesYesterdayClock=body.querySelector('.ts-timeline-now').hidden;timeline.refreshClock();}
+return JSON.stringify(result);
+""")
+    record('timeline direct time edit', """
+await q.reset('- [ ] 09:00 - 09:30 Time edit #TSQA 🔁 every day 📅 2026-10-11 ^time-edit');
+q.calendar.contentEl.querySelector('[aria-label="时间线模式"]').click();await q.wait(()=>q.panel()?.timeline?.body?.querySelector('.ts-timeline-time.is-editable'));
+const button=q.panel().timeline.body.querySelector('.ts-timeline-time.is-editable');button.click();
+const modal=document.querySelector('.ts-task-schedule-modal'),start=modal.querySelector('[aria-label="开始时间"]'),end=modal.querySelector('[aria-label="结束时间（可选）"]');
+const result={timeButtonOpensPopulatedEditor:start.value==='09:00'&&end.value==='09:30'};
+start.value='09:13';end.value='10:07';modal.querySelector('form').requestSubmit();await q.wait(()=>!modal.isConnected);await q.p.taskPlanner.writes;
+result.exactTimeKeepsRuleAndReference=(await q.text()).includes('09:13 - 10:07 Time edit')&&(await q.text()).includes('🔁 every day')&&(await q.text()).endsWith('^time-edit');
+await q.p.taskPlanner.undoLast();result.timeEditUndoRestoresOriginal=(await q.text()).startsWith('- [ ] 09:00 - 09:30');return JSON.stringify(result);
 """)
     record('timeline and large calendar UI', """
 await q.reset(q.source.replace('Native repeat','09:00 - 09:30 Native repeat'));q.calendar.contentEl.querySelector('[aria-label="时间线模式"]').click();await q.wait(()=>[...q.calendar.contentEl.querySelectorAll('.ts-day-timeline input[type=checkbox]')].some(e=>e.getAttribute('aria-label')?.includes('Native repeat')));
@@ -183,7 +225,7 @@ await q.reset([
 ].join(q.NL));
 const panel=q.panel();panel.query='界面样例';panel.setFilter('today');
 const result={};for(const mode of ['列表','四象限','时间线']){
-q.calendar.contentEl.querySelector(`[aria-label="${mode}模式"]`).click();await new Promise(requestAnimationFrame);
+q.calendar.contentEl.querySelector(`[aria-label="${mode}模式"]`).click();await q.frame();
 result[mode]=q.calendar.contentEl.querySelector('.ts-journal-task-area').outerHTML;
 }
 return JSON.stringify(result);

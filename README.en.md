@@ -4,9 +4,18 @@ A standalone Obsidian desktop plugin connecting daily and periodic notes, Markdo
 
 [中文详细介绍](README.md) · [Download](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) · [Issues](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/issues)
 
-Source version: **1.4.3**. Available downloads are listed on [Releases](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases).
+Source version: **1.4.4**. Available downloads are listed on [Releases](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases).
 
-Version 1.4.3 improves keyboard continuity after timeline completion and quadrant reassignment, resolves focus ambiguity for tasks with identical titles, and refines the task UI at narrow widths. See [release notes](docs/RELEASE-1.4.3.md).
+Version 1.4.4 fixes queued completions of distinct recurring tasks in the same note. Minute ticks update timeline markers without rebuilding cards or interrupting focus. Click a time label to edit the schedule; source names and compact task metadata stay readable at narrow widths. See [release notes](docs/RELEASE-1.4.4.md).
+
+## What changed in 1.4.4
+
+- Complete several distinct recurring tasks in one note without later queued actions failing after line insertions. Duplicate clicks and external conflicts remain protected.
+- Minute ticks retain timeline card DOM, keyboard focus, and expanded sections; only time markers and active states update.
+- Click a timeline time label to edit dates, exact start/end minutes, and priority. Source names remain visible below the title.
+- Refined task typography, duration labels, spacing, and narrow light/dark layouts; quadrants remain 2×2.
+
+[Download the complete 1.4.4 ZIP](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/download/v1.4.4/thoughtspace-calendar-1.4.4.zip). Preserve your existing `data.json` when upgrading. No task or journal migration is required.
 
 ## Features
 
@@ -56,7 +65,7 @@ The installer requires an existing valid `.obsidian/community-plugins.json`. Tho
 - [x] Finish weekly review ✅ 2026-10-01
 ```
 
-Tasks stay in their source files. Date/time/priority actions preserve block references and verify the original line before writing. With **Tasks 7.2+** enabled, recurring items marked with `🔁`, `[repeat:: …]` or `(repeat:: …)` can be completed through the [official Tasks API](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/main/docs/Advanced/Tasks%20Api.md). Tasks controls recurrence generation and ordering; undo checks the complete changed span. Without that API, recurring checkboxes remain disabled. Ordinary tasks keep their existing completion behavior. Unsupported custom checkbox statuses or deletion results are rejected with guidance to use the original note. This is not complete Tasks-specification support. Before writing, the integration verifies that the next occurrence was actually generated before writing; a missing global filter, invalid rule or format mismatch cannot silently finish the task. A single completed row can also mean a finite rule ended; because the public API does not distinguish these cases, finish such a task in its source note. Dataview dates and priority are indexed and retained during scheduling. Version 1.4.2 blocks a stale calendar checkbox while a change made by Tasks is awaiting indexing, including undated recurrences whose next occurrence has identical text. Refreshing then allows normal interaction.
+Tasks stay in their source files. Date/time/priority actions preserve block references and verify the original line before writing. With **Tasks 7.2+** enabled, recurring items marked with `🔁`, `[repeat:: …]` or `(repeat:: …)` can be completed through the [official Tasks API](https://github.com/obsidian-tasks-group/obsidian-tasks/blob/main/docs/Advanced/Tasks%20Api.md). Tasks controls recurrence generation and ordering; undo checks the complete changed span. Without that API, recurring checkboxes remain disabled. Ordinary tasks keep their existing completion behavior. Unsupported custom checkbox statuses or deletion results are rejected with guidance to use the original note. This is not complete Tasks-specification support. Before writing, the integration verifies that the next occurrence was actually generated; a missing global filter, invalid rule or format mismatch cannot silently finish the task. A single completed row can also mean a finite rule ended; because the public API does not distinguish these cases, finish such a task in its source note. Dataview dates and priority are indexed and retained during scheduling. The integration blocks a stale calendar checkbox while a change made by Tasks is awaiting indexing, including undated recurrences whose next occurrence has identical text. Refreshing then allows normal interaction.
 
 Dropping on a date changes the scheduled date and keeps the existing time. Dropping on the week grid sets time while retaining a known duration, or uses 30 minutes by default. A distinct deadline remains a reminder instead of a second draggable time block. Tasks remain within one day; ranges stop at 23:59.
 
@@ -90,7 +99,7 @@ npm run test:browser
 npm run package           # macOS
 ```
 
-Node.js 22+ is recommended. Version 1.4.2 passes 270 automated tests, 19 official Tasks API checks, 30 browser interaction checks, 36 native Tasks integration checks, and 36 general native workflow checks. This iteration also installs and enables official Tasks 8.5.0 in a dedicated test vault, exercising real file writes, the Tasks index, recurrence, undo, and task controls in the list, quadrants, timeline, and large calendar. See the [1.4.2 verification report](qa/RELEASE-VERIFY-1.4.2.json) for results and scope. Task mutations now coalesce index notifications, unchanged scans avoid repainting, and list updates preserve keyboard focus. The [1.4.1 report](qa/RELEASE-VERIFY-1.4.1.json) remains available as the earlier isolated API baseline. No real Apple event writes were tested in this iteration. The [1.3.0 report](qa/RELEASE-VERIFY-1.3.0.json) is a historical baseline, not evidence for new interactions. CI does not access a personal calendar.
+Node.js 22+ is recommended. Version 1.4.4 passes 280 unit tests, 57 native Tasks checks, 36 native workflow checks, 30 browser interaction checks, 12 layout cases and 19 upstream Tasks API checks. The 101 original test-vault notes retain identical hashes. See the [verification report](qa/RELEASE-VERIFY-1.4.4.json) and [test methodology](docs/TESTING.md). Real Apple Calendar access was not exercised; short runs do not establish long-term memory stability.
 
 More detailed Chinese guides: [Usage](docs/USAGE.md), [Apple Calendar](docs/APPLE-CALENDAR.md), [Development](docs/DEVELOPMENT.md).
 

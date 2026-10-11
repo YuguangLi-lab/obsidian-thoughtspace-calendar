@@ -1,0 +1,602 @@
+{
+  "version": "1.4.4",
+  "verifiedAt": "2026-10-11T07:23:11.658472+00:00",
+  "status": "Verified locally with official Tasks 8.5.0; runtime hashes identify the tested 1.4.4 build.",
+  "build": "TypeScript and esbuild passed",
+  "automated": {
+    "passed": 280,
+    "failed": 0
+  },
+  "tasksNative": {
+    "checkedAt": "2026-10-11T15:21:42+0800",
+    "passed": 57,
+    "tests": 57,
+    "results": [
+      {
+        "name": "real API and file: exactApiOutput",
+        "passed": true
+      },
+      {
+        "name": "real API and file: nextOccurrence",
+        "passed": true
+      },
+      {
+        "name": "real API and file: completionDate",
+        "passed": true
+      },
+      {
+        "name": "real API and file: singleBlockReference",
+        "passed": true
+      },
+      {
+        "name": "real API and file: TasksCacheAgrees",
+        "passed": true
+      },
+      {
+        "name": "real API and file: oneNotification",
+        "passed": true
+      },
+      {
+        "name": "real API and file: exactUndo",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: queuedClickRejected",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: onlyOneCompletion",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: externalTasksRaceRejected",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: externalTasksResultPreserved",
+        "passed": true
+      },
+      {
+        "name": "queued distinct recurrences: allQueuedActionsComplete",
+        "passed": true
+      },
+      {
+        "name": "queued distinct recurrences: oneNextOccurrenceEach",
+        "passed": true
+      },
+      {
+        "name": "source safety: CRLFPreserved",
+        "passed": true
+      },
+      {
+        "name": "source safety: undoPreservesOtherText",
+        "passed": true
+      },
+      {
+        "name": "source safety: reopenDoesNotGenerate",
+        "passed": true
+      },
+      {
+        "name": "source safety: changedGeneratedTaskBlocksUndo",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: doneFirst",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: noForcedCompletionDate",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: invalidRulePreserved",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: recurrence",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: completion",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: priority",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: calendarDate",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: undoPreservesRoundBrackets",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: scheduleKeepsFormat",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: listNativeClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: focusStaysInTaskPanel",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: oneListRender",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: fourQuadrants",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+        "passed": true
+      },
+      {
+        "name": "continuous keyboard and scroll: listScrollStable",
+        "passed": true
+      },
+      {
+        "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+        "passed": true
+      },
+      {
+        "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 列表SixCompletions",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 列表UndoOnlyLast",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 四象限SixCompletions",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 四象限UndoOnlyLast",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 时间线SixCompletions",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 时间线UndoOnlyLast",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: minuteKeepsRowIdentity",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: minuteKeepsFocusedControl",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: activeAtStart",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: inactiveAtEnd",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: hidesYesterdayClock",
+        "passed": true
+      },
+      {
+        "name": "timeline direct time edit: timeButtonOpensPopulatedEditor",
+        "passed": true
+      },
+      {
+        "name": "timeline direct time edit: exactTimeKeepsRuleAndReference",
+        "passed": true
+      },
+      {
+        "name": "timeline direct time edit: timeEditUndoRestoresOriginal",
+        "passed": true
+      },
+      {
+        "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "refresh and idle: unchangedIndexDoesNotNotify",
+        "passed": true
+      },
+      {
+        "name": "no new native errors",
+        "passed": true
+      },
+      {
+        "name": "fixtures removed and settings restored",
+        "passed": true
+      }
+    ],
+    "metrics": {
+      "calendar": "1.4.4",
+      "tasks": "8.5.0",
+      "state": "Warm",
+      "completionMs": 11.199999928474426,
+      "notifications": 1,
+      "queuedMs": 14.600000023841858,
+      "queuedErrors": [],
+      "listClickMs": 1813.7999999523163,
+      "listRenders": 1,
+      "scrollAncestors": 1,
+      "scrollDelta": [
+        0
+      ],
+      "sixCheckboxWritesMs": {
+        "列表": 34.59999990463257,
+        "四象限": 32.39999997615814,
+        "时间线": 48.10000002384186
+      },
+      "minuteChildListChanges": 0,
+      "idleNotifications": 0
+    },
+    "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+  },
+  "workflowNative": {
+    "passed": 36,
+    "checks": [
+      "native calendar 1.4.4 ready",
+      "fixture tasks indexed from native vault",
+      "exactMinutes",
+      "deadlinePreserved",
+      "blockIdPreserved",
+      "otherContentPreserved",
+      "scheduleUndoExact",
+      "completionWritesMarkdown",
+      "completionUndoExact",
+      "staleRejected",
+      "staleLeavesExternalText",
+      "recurringFallback",
+      "inboxOnlyUnscheduled",
+      "nativeDataviewDate",
+      "nativeDataviewRecurring",
+      "nativeDataviewPriority",
+      "nativeDataviewScheduleFormat",
+      "nativeDataviewMetadataPreserved",
+      "nativeDataviewUndoExact",
+      "nativePropertyLink",
+      "nativePropertyPreservesForeign",
+      "noteBodyPreserved",
+      "nativeRenameKeepsLink",
+      "nativeOccurrenceRekey",
+      "openLinkedNoteReusesNativeFile",
+      "nativeWeekSevenColumns",
+      "nativeMergedTimeline",
+      "nativeLinkedNoteAction",
+      "nativeScheduleForm",
+      "nativeModalWritesExactMinutes",
+      "nativeRefreshKeepsScroll",
+      "nativeNarrowStack",
+      "native view has no self-triggering refresh loop",
+      "no new captured native JavaScript errors",
+      "applePreferencesUnchanged",
+      "native fixture files cleaned"
+    ],
+    "scope": "Native vault, metadata and DOM. Apple events are synthetic; no permission request or real calendar read/write.",
+    "tasksPlugin": "Tasks was installed; its recurrence actions are checked with qa/native-tasks-check.py.",
+    "cleanup": "Unique fixtures deleted, native workspace restored, prior undo and journal-link component restored."
+  },
+  "browser": {
+    "checkedAt": "2026-10-11T07:18:12.722Z",
+    "checks": [
+      "month 42 cells",
+      "edit loads complete notes",
+      "edit and refresh",
+      "update preserves original occurrence",
+      "week 7 columns",
+      "refresh preserves week scroll position",
+      "scheduled local task opens original source",
+      "midnight cell preserves midnight time",
+      "all-day inclusive end converted to exclusive",
+      "read-only event cannot save",
+      "conflict preserves editor content",
+      "narrow split uses container layout inside wide window",
+      "narrow month no horizontal overflow",
+      "all six weeks remain above the narrow agenda",
+      "unified timeline interleaves tasks and Apple events chronologically",
+      "fully rendered sections hide the zero-count show-more button",
+      "refresh retains expanded unscheduled task tray",
+      "dragging an unscheduled task onto a month date updates the source safely",
+      "dragging an agenda task into the week grid schedules a 30-minute block",
+      "keyboard scheduling preserves exact 09:07 time rather than snapping it",
+      "clearing modal time keeps scheduled date and block reference",
+      "task resize saves the new end while retaining its exact start and block ID",
+      "Escape cancels a live resize without persisting a change",
+      "failed task drop restores the rendered task and preserves source content",
+      "event cards expose create/open and link-existing note actions",
+      "event drop preserves complete notes and revision and migrates occurrence-note link",
+      "resizing a next-day continuation to 02:00 preserves the original previous-day start",
+      "cross-day continuation stays non-draggable after resize and Escape cancellation",
+      "checking a task updates Markdown and removes its active time block",
+      "no uncaught browser errors"
+    ],
+    "errors": [],
+    "scope": "Synthetic fixture host only. No real Apple Calendar writes or Obsidian runtime integration."
+  },
+  "taskLayout": {
+    "checks": [
+      "light-280-列表: no overflow",
+      "light-280-四象限: no overflow, two columns",
+      "light-280-时间线: no overflow",
+      "light-420-列表: no overflow",
+      "light-420-四象限: no overflow, two columns",
+      "light-420-时间线: no overflow",
+      "dark-280-列表: no overflow",
+      "dark-280-四象限: no overflow, two columns",
+      "dark-280-时间线: no overflow",
+      "dark-420-列表: no overflow",
+      "dark-420-四象限: no overflow, two columns",
+      "dark-420-时间线: no overflow"
+    ],
+    "passed": 12,
+    "scope": "Native-generated synthetic task markup; layout and themes only."
+  },
+  "upstreamTasks": {
+    "passed": 19,
+    "tests": 19,
+    "referenceRelease": "8.5.0"
+  },
+  "regressionEvidence": {
+    "baselineCommit": "590b7e6e1974340607c34da3be260caf45280c6a",
+    "before": {
+      "checkedAt": "2026-10-11T15:16:17+0800",
+      "passed": 41,
+      "tests": 45,
+      "results": [
+        {
+          "name": "real API and file: exactApiOutput",
+          "passed": true
+        },
+        {
+          "name": "real API and file: nextOccurrence",
+          "passed": true
+        },
+        {
+          "name": "real API and file: completionDate",
+          "passed": true
+        },
+        {
+          "name": "real API and file: singleBlockReference",
+          "passed": true
+        },
+        {
+          "name": "real API and file: TasksCacheAgrees",
+          "passed": true
+        },
+        {
+          "name": "real API and file: oneNotification",
+          "passed": true
+        },
+        {
+          "name": "real API and file: exactUndo",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: queuedClickRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: onlyOneCompletion",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksRaceRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksResultPreserved",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: allQueuedActionsComplete",
+          "passed": false
+        },
+        {
+          "name": "queued distinct recurrences: oneNextOccurrenceEach",
+          "passed": false
+        },
+        {
+          "name": "source safety: CRLFPreserved",
+          "passed": true
+        },
+        {
+          "name": "source safety: undoPreservesOtherText",
+          "passed": true
+        },
+        {
+          "name": "source safety: reopenDoesNotGenerate",
+          "passed": true
+        },
+        {
+          "name": "source safety: changedGeneratedTaskBlocksUndo",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: doneFirst",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: noForcedCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: invalidRulePreserved",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: recurrence",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: completion",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: priority",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: calendarDate",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: undoPreservesRoundBrackets",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: scheduleKeepsFormat",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: listNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: focusStaysInTaskPanel",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: oneListRender",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: fourQuadrants",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: listScrollStable",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsRowIdentity",
+          "passed": false
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsFocusedControl",
+          "passed": false
+        },
+        {
+          "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "refresh and idle: unchangedIndexDoesNotNotify",
+          "passed": true
+        },
+        {
+          "name": "no new native errors",
+          "passed": true
+        },
+        {
+          "name": "fixtures removed and settings restored",
+          "passed": true
+        }
+      ],
+      "metrics": {
+        "calendar": "1.4.3",
+        "tasks": "8.5.0",
+        "state": "Warm",
+        "completionMs": 12.699999928474426,
+        "notifications": 1,
+        "queuedMs": 5.299999952316284,
+        "queuedErrors": [
+          "Error: 任务原文已变化，请刷新后再操作",
+          "Error: 任务原文已变化，请刷新后再操作"
+        ],
+        "listClickMs": 1791.5999999046326,
+        "listRenders": 1,
+        "scrollAncestors": 1,
+        "scrollDelta": [
+          0
+        ],
+        "minuteChildListChanges": 21,
+        "idleNotifications": 0
+      },
+      "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+    },
+    "after": "tasksNative above",
+    "clockScope": "Same-minute timer callback: 21 child-list mutations before, 0 after. Separate checks advance the clock across start/end and midnight. These are short deterministic checks, not a long-term performance benchmark."
+  },
+  "dataPreservation": {
+    "originalMarkdownFiles": 101,
+    "unchangedSHA256": 101,
+    "temporaryFixturesRemoved": true,
+    "tasksSettingsRestored": true
+  },
+  "runtimeSha256": {
+    "main.js": "9bf7ae02804643f387bbb7a13ba729b6a20b86889687ae1ef60fdae52334368d",
+    "styles.css": "d0b6dcac90358de2ace6c9d222758247c0cb6cea342eac3c66c2a426c8e3c99b",
+    "manifest.json": "56a57b3b6e425fd1d24bb0743cb43fce0425fe1467579d09c9f4c84f49190132"
+  },
+  "limitations": [
+    "Real Apple Calendar was not read or written.",
+    "Finite recurrences returning only one row and custom statuses still require the Tasks source editor.",
+    "External edits intentionally retain strict conflict checks; only verified local queued writes are rebased.",
+    "No long-duration memory leak claim; UI geometry uses synthetic native-generated markup."
+  ]
+}

@@ -5,7 +5,7 @@ import {buildSync} from 'esbuild';
 const code=buildSync({entryPoints:['src/task-planner.ts'],bundle:true,write:false,format:'cjs',platform:'node',external:['obsidian']}).outputFiles[0].text;
 const source='- [ ] Read 🔁 every day';
 const completed='- [x] Read 🔁 every day ✅ 2026-10-11';
-function host(initial='- [ ] Task'){
+function host(initial='- [ ] Task',toggle=(line:string)=>source+'\n'+completed){
  class TFile{path='Tasks.md';extension='md';stat={mtime:1,size:100};}
  class Component{registerEvent(){}}
  const module={exports:{} as any};new Function('require','module','exports',code)((id:string)=>{if(id==='obsidian')return {Component,TFile};throw Error(id);},module,module.exports);
@@ -15,7 +15,7 @@ function host(initial='- [ ] Task'){
  const vault={getAbstractFileByPath:(path:string)=>exists&&path===file.path?file:null,getMarkdownFiles:()=>exists?[file]:[],cachedRead:read,read,
   process:async(_file:unknown,fn:(body:string)=>string)=>{const next=fn(body);if(next!==body){body=next;trigger('modify');}},
   on:(name:string,fn:Function)=>{events.set(name,[...(events.get(name)||[]),fn]);return {};}};
- const app={vault,plugins:{plugins:{'obsidian-tasks-plugin':{apiV1:{executeToggleTaskDoneCommand:()=>{calls++;return source+'\n'+completed;}}}}}};
+ const app={vault,plugins:{plugins:{'obsidian-tasks-plugin':{apiV1:{executeToggleTaskDoneCommand:(line:string)=>{calls++;return toggle(line);}}}}}};
  const planner=new module.exports.TaskPlanner(app,()=>root);planner.schedule=()=>{};planner.onload();
  return {planner,vault,file,read:()=>body,write:(text:string)=>{body=text;trigger('modify');},fail:(value:boolean)=>{error=value;},remove:()=>{exists=false;trigger('delete');},trigger,root:(value:string)=>root=value,calls:()=>calls};
 }
@@ -79,4 +79,62 @@ test('a stale concurrent read does not publish an obsolete snapshot after a comp
  const snapshots:string[][]=[];h.planner.subscribe(()=>snapshots.push(h.planner.all().map((task:any)=>task.source)));
  const scan=h.planner.rescan();await started;await h.planner.update(h.planner.all()[0],{content:'New task'});release();await scan;
  assert.deepEqual(snapshots,[['- [ ] New task']]);assert.equal(h.planner.all()[0].source,h.read());
+});
+
+const repeat=(line:string)=>line+'\n'+line.replace('[ ]','[x]')+' ✅ 2026-10-11';
+test('queued completions of distinct recurrences survive their own line insertions',async()=>{
+ const h=host(['A','B','C'].map(name=>'- [ ] '+name+' 🔁 every day').join('\n'),repeat);await h.planner.ready();
+ const outcomes=await Promise.allSettled(h.planner.all().map((task:any)=>h.planner.update(task,{checked:true})));
+ assert.deepEqual(outcomes.map(r=>r.status),['fulfilled','fulfilled','fulfilled']);assert.equal(h.calls(),3);assert.equal(h.planner.all().length,6);
+ assert.equal(h.planner.all().filter((t:any)=>t.checked).length,3);
+ await h.planner.undoLast();assert.equal(h.planner.all().length,5);assert.equal(h.planner.all().filter((t:any)=>t.checked).length,2);
+});
+test('queued recurrence above the first mutation survives a file-wide index revision',async()=>{
+ const h=host('- [ ] A 🔁 every day\n- [ ] B 🔁 every day',repeat);await h.planner.ready();const [a,b]=h.planner.all();
+ const outcomes=await Promise.allSettled([h.planner.update(b,{checked:true}),h.planner.update(a,{checked:true})]);
+ assert.deepEqual(outcomes.map(r=>r.status),['fulfilled','fulfilled']);assert.equal(h.calls(),2);
+});
+
+test('queued mixed edits follow a recurrence insertion without losing metadata',async()=>{
+ const h=host('- [ ] A 🔁 every day\n- [ ] B\n- [ ] C 🔁 every day',repeat);await h.planner.ready();const [a,b,c]=h.planner.all();
+ await Promise.all([h.planner.update(a,{checked:true}),h.planner.update(b,{scheduled:'2026-10-12',time:{start:'09:00',end:'10:00'}}),h.planner.update(c,{checked:true})]);
+ const edited=h.planner.all().find((t:any)=>t.title.includes('B'));assert.equal(edited.scheduled,'2026-10-12');assert.equal(edited.time,'09:00');assert.equal(h.calls(),2);
+});
+test('queued duplicate clicks never complete the newly generated identical occurrence',async()=>{
+ const h=host(source+'\n- [ ] B 🔁 every day',repeat);await h.planner.ready();const [a,b]=h.planner.all();
+ const results=await Promise.allSettled([h.planner.update(a,{checked:true}),h.planner.update(b,{checked:true}),h.planner.update(a,{checked:true})]);
+ assert.deepEqual(results.map(r=>r.status),['fulfilled','fulfilled','rejected']);assert.equal(h.calls(),2);
+});
+test('identical distinct source rows remain distinct through queued writes',async()=>{
+ const h=host([source,source,source].join('\n'),repeat);await h.planner.ready();await Promise.all(h.planner.all().map((t:any)=>h.planner.update(t,{checked:true})));
+ assert.equal(h.calls(),3);assert.equal(h.planner.all().filter((t:any)=>t.checked).length,3);
+});
+test('an external edit during a write prevents rebasing subsequent queued actions',async()=>{
+ const h=host('- [ ] A 🔁 every day\n- [ ] B 🔁 every day',repeat);await h.planner.ready();const [a,b]=h.planner.all();
+ const process=h.vault.process;h.vault.process=async(f,fn)=>{await process(f,fn);h.write(h.read()+'\nExternal edit');};
+ const results=await Promise.allSettled([h.planner.update(a,{checked:true}),h.planner.update(b,{checked:true})]);
+ assert.deepEqual(results.map(r=>r.status),['fulfilled','rejected']);assert.equal(h.calls(),1);assert(h.read().endsWith('External edit'));
+});
+test('failed recurrence does not poison following queued actions',async()=>{
+ const h=host('- [ ] Bad 🔁 every day\n- [ ] Good 🔁 every day',line=>{if(line.includes('Bad'))throw Error('Bad rule');return repeat(line);});await h.planner.ready();
+ const outcomes=await Promise.allSettled(h.planner.all().map((t:any)=>h.planner.update(t,{checked:true})));
+ assert.deepEqual(outcomes.map(r=>r.status),['rejected','fulfilled']);assert(h.read().startsWith('- [ ] Bad'));assert.equal(h.planner.all().length,3);
+});
+test('queued CRLF recurrence edits preserve all line endings',async()=>{
+ const h=host('- [ ] A 🔁 every day\r\n- [ ] B 🔁 every day\r\nTail',repeat);await h.planner.ready();
+ await Promise.all(h.planner.all().map((t:any)=>h.planner.update(t,{checked:true})));
+ assert(h.read().split('\n').slice(0,-1).every(line=>line.endsWith('\r')));assert(h.read().endsWith('Tail'));
+});
+
+test('queued stale rows are never revived by another successful task mutation',async()=>{
+ const h=host('- [ ] A 🔁 every day\n- [ ] B 🔁 every day',repeat);await h.planner.ready();const stale=h.planner.all()[1];
+ h.write(h.read()+'\n- [ ] External');await h.planner.flush();const fresh=h.planner.all()[0];
+ const results=await Promise.allSettled([h.planner.update(fresh,{checked:true}),h.planner.update(stale,{checked:true})]);
+ assert.deepEqual(results.map(r=>r.status),['fulfilled','rejected']);assert.equal(h.calls(),1);
+});
+test('a failed post-write read does not authorize rebasing another recurrence',async()=>{
+ const h=host('- [ ] A 🔁 every day\n- [ ] B 🔁 every day',repeat);await h.planner.ready();const [a,b]=h.planner.all(),process=h.vault.process;
+ h.vault.process=async(f,fn)=>{await process(f,fn);h.fail(true);};
+ const results=await Promise.allSettled([h.planner.update(a,{checked:true}),h.planner.update(b,{checked:true})]);
+ assert.deepEqual(results.map(r=>r.status),['fulfilled','rejected']);assert.equal(h.calls(),1);assert.equal(h.planner.failures.size,1);
 });

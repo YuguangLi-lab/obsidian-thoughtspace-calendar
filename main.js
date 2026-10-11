@@ -15989,7 +15989,7 @@ var DayTimeline = class extends import_obsidian2.Component {
     this.toggle.hidden = this.embedded;
     this.body = this.el.createDiv("ts-day-timeline-body");
     this.register(this.planner.subscribe(() => this.render()));
-    this.registerInterval(window.setInterval(() => this.render(), 6e4));
+    this.registerInterval(window.setInterval(() => this.refreshClock(), 6e4));
     this.body.setText("\u6B63\u5728\u8BFB\u53D6\u65F6\u95F4\u5B89\u6392\u2026");
     void this.planner.ready().then(() => this.render()).catch((e) => {
       if (this.active) this.body.setText("\u65F6\u95F4\u5B89\u6392\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF1A" + String(e));
@@ -16066,6 +16066,8 @@ var DayTimeline = class extends import_obsidian2.Component {
     row.dataset.priority = item.task && item.task.priority <= 1 ? "high" : "normal";
     row.toggleClass("is-done", !!item.task?.checked);
     row.toggleClass("has-conflict", !!item.conflict);
+    row.dataset.start = String(item.slot.start);
+    if (item.slot.end !== void 0) row.dataset.end = String(item.slot.end);
     const duration = item.slot.end !== void 0 ? item.slot.end - item.slot.start : 0;
     row.style.setProperty("--node-height", `${Math.min(72, 36 + duration * 0.32)}px`);
     const now = /* @__PURE__ */ new Date(), minute = now.getHours() * 60 + now.getMinutes(), current = this.day === localDay() && !item.task?.checked && item.slot.end !== void 0 && minute >= item.slot.start && minute < item.slot.end;
@@ -16073,21 +16075,46 @@ var DayTimeline = class extends import_obsidian2.Component {
     const icon = item.kind === "record" ? "notebook-pen" : item.task?.checked ? "check" : /阅读|读书|read|book/i.test(item.title) ? "book-open" : /写作|整理|write|专注/i.test(item.title) ? "pencil" : /会议|讨论|meet/i.test(item.title) ? "messages-square" : /休息|咖啡|break/i.test(item.title) ? "coffee" : "circle-dot";
     const node = row.createSpan({ cls: "ts-timeline-node", attr: { "aria-hidden": "true" } });
     (0, import_obsidian2.setIcon)(node, icon);
-    const card = row.createDiv("ts-timeline-card"), time2 = card.createDiv("ts-timeline-time");
+    const card = row.createDiv("ts-timeline-card"), time2 = item.task ? card.createEl("button", { cls: "ts-timeline-time is-editable", attr: { "aria-label": "\u8C03\u6574\u65F6\u95F4\uFF1A" + item.title, title: "\u70B9\u51FB\u8C03\u6574\u65E5\u671F\u3001\u65F6\u95F4\u548C\u4F18\u5148\u7EA7" } }) : card.createDiv("ts-timeline-time");
+    if (item.task) time2.onclick = () => this.edit(item.task);
     time2.createSpan({ text: clockLabel(item.slot.start) });
     if (item.slot.end !== void 0) {
       time2.createSpan({ cls: "ts-timeline-end", text: "\u2013 " + clockLabel(item.slot.end) });
       time2.createSpan({ cls: "ts-timeline-duration", text: `${duration} \u5206\u949F` });
     }
-    if (current) time2.createSpan({ cls: "ts-timeline-active-label", text: "\u8FDB\u884C\u4E2D" });
+    const activeLabel = time2.createSpan({ cls: "ts-timeline-active-label", text: "\u8FDB\u884C\u4E2D" });
+    activeLabel.hidden = !current;
     const heading = card.createDiv("ts-timeline-card-heading");
     const title = heading.createEl("button", { cls: "ts-timeline-title", text: item.title, attr: { title: "\u6253\u5F00\u6765\u6E90\uFF1A" + item.path, "aria-label": "\u6253\u5F00\u6765\u6E90\uFF1A" + item.title } });
     title.onclick = () => void this.open(item.path, item.line).catch((e) => new import_obsidian2.Notice(String(e)));
     if (item.task) this.taskCheck(heading, item.task);
     if (item.conflict || item.slot.invalidRange) card.createSpan({ cls: "ts-timeline-conflict", text: item.conflict ? "\u65F6\u95F4\u91CD\u53E0" : "\u8BF7\u68C0\u67E5\u7ED3\u675F\u65F6\u95F4" });
-    const meta = card.createDiv("ts-timeline-meta");
-    this.button(meta, "\u6765\u6E90\uFF1A" + item.path, "link", () => this.open(item.path, item.line));
-    if (item.task) this.button(meta, "\u8C03\u6574\u65F6\u95F4\uFF1A" + item.title, "clock-3", () => this.edit(item.task));
+    const meta = card.createDiv("ts-timeline-meta"), source = this.button(meta, "\u6765\u6E90\uFF1A" + item.path, "file-text", () => this.open(item.path, item.line));
+    source.addClass("ts-timeline-source");
+    source.createSpan({ text: item.path.split("/").pop().replace(/\.md$/i, "") });
+    if (item.task) this.button(meta, "\u7F16\u8F91\u5B89\u6392\uFF1A" + item.title, "sliders-horizontal", () => this.edit(item.task));
+  }
+  /** Keep cards, focus and expanded sections intact when only the minute changes. */
+  refreshClock(now = /* @__PURE__ */ new Date()) {
+    if (!this.active) return;
+    const today = this.day === localDay(now), minute = now.getHours() * 60 + now.getMinutes(), label2 = today ? clockLabel(minute) : "";
+    if (this.clock.textContent !== label2) this.clock.setText(label2);
+    const track = this.body.querySelector(".ts-timeline-track");
+    if (!track) return;
+    const rows = Array.from(track.querySelectorAll(".ts-timeline-item"));
+    for (const row of rows) {
+      const current = today && !row.hasClass("is-done") && row.dataset.end !== void 0 && minute >= Number(row.dataset.start) && minute < Number(row.dataset.end);
+      row.toggleClass("is-current", current);
+      const label3 = row.querySelector(".ts-timeline-active-label");
+      if (label3) label3.hidden = !current;
+    }
+    const marker = track.querySelector(".ts-timeline-now");
+    if (!marker) return;
+    const next = rows.find((row) => Number(row.dataset.start) >= minute);
+    marker.hidden = !today || !next && track.dataset.hasMore === "true";
+    const time2 = marker.querySelector(".ts-timeline-now-time");
+    if (time2 && time2.textContent !== label2) time2.setText(label2);
+    if (!marker.hidden && marker.nextElementSibling !== (next || null)) track.insertBefore(marker, next || null);
   }
   preserveFocus() {
     return preserveTaskRowFocus(this.el, ".ts-timeline-item,.ts-timeline-untimed-row", ".ts-day-timeline-actions button");
@@ -16117,23 +16144,20 @@ var DayTimeline = class extends import_obsidian2.Component {
     if (!this.embedded && this.state.collapsed) return;
     if (this.planner.failures.size) this.body.createDiv({ cls: "ts-timeline-error", text: "\u90E8\u5206\u4EFB\u52A1\u6765\u6E90\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6" });
     const all = dayTimeline(this.planner.all(), this.day, this.records), items = this.state.hideDone ? all.items.filter((i) => !i.task?.checked) : all.items, untimed = this.state.hideDone ? all.untimed.filter((t) => !t.checked) : all.untimed, list = this.body.createDiv("ts-timeline-track"), gaps = timelineGaps(all.items);
-    let inserted = false, gapIndex = 0;
-    const marker = () => {
-      const row = list.createDiv("ts-timeline-now");
-      row.createSpan({ text: clockLabel(minute) });
-      row.createSpan({ text: "\u73B0\u5728" });
-      inserted = true;
-    };
+    list.dataset.hasMore = String(items.length > this.limit);
+    let gapIndex = 0;
     for (const item of items.slice(0, this.limit)) {
       while (gapIndex < gaps.length && gaps[gapIndex].end <= item.slot.start) {
         const gap = gaps[gapIndex++], button = this.button(list, `\u5B89\u6392\u7A7A\u6863 ${clockLabel(gap.start)}\u2013${clockLabel(gap.end)}`, "plus", () => this.edit(void 0, clockLabel(gap.start), clockLabel(gap.end)));
         button.addClass("ts-timeline-gap");
         button.createSpan({ text: `${gap.end - gap.start} \u5206\u949F\u7A7A\u6863` });
       }
-      if (today && !inserted && item.slot.start >= minute) marker();
       this.row(list, item);
     }
-    if (today && !inserted && items.length <= this.limit) marker();
+    const marker = list.createDiv("ts-timeline-now");
+    marker.createSpan({ cls: "ts-timeline-now-time" });
+    marker.createSpan({ text: "\u73B0\u5728" });
+    this.refreshClock(now);
     if (!items.length) this.body.createDiv({ cls: "ts-timeline-empty", text: "\u8FD9\u4E00\u5929\u8FD8\u6CA1\u6709\u65F6\u95F4\u5B89\u6392\u3002\u70B9\u51FB \uFF0B\uFF0C\u6216\u5728\u4EFB\u52A1\u524D\u5199 09:00 - 10:00\u3002" });
     if (items.length > this.limit) {
       const more = this.body.createEl("button", { cls: "ts-timeline-more", text: `\u663E\u793A\u66F4\u591A\uFF08\u5269\u4F59 ${items.length - this.limit}\uFF09` });
@@ -16691,7 +16715,9 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     const slot = timeSlot(task.title), title = top.createDiv("ts-task-title");
     title.createSpan({ text: slot?.title || task.title });
     const meta = row.createDiv("ts-task-meta");
-    const source = meta.createEl("button", { text: task.path.split("/").pop().replace(/\.md$/i, ""), attr: { title: task.path, "aria-label": "\u6253\u5F00\u4EFB\u52A1\u539F\u6587" } });
+    const source = meta.createEl("button", { attr: { title: task.path, "aria-label": "\u6253\u5F00\u4EFB\u52A1\u539F\u6587" } });
+    (0, import_obsidian3.setIcon)(source.createSpan({ cls: "ts-task-source-icon", attr: { "aria-hidden": "true" } }), "file-text");
+    source.createSpan({ cls: "ts-task-source-name", text: task.path.split("/").pop().replace(/\.md$/i, "") });
     source.onclick = () => {
       void this.open(task).catch((e) => new import_obsidian3.Notice(String(e)));
     };
@@ -17950,6 +17976,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
   failures = /* @__PURE__ */ new Set();
   undo;
   writes = Promise.resolve();
+  queuedUpdates = /* @__PURE__ */ new Set();
   onload() {
     this.stopped = false;
     const changed = (f) => {
@@ -18031,6 +18058,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
       this.entries.set(file, { key, root, tasks });
       this.dirty.delete(file);
       if (this.failures.delete(path)) this.notificationPending = true;
+      return text;
     } catch {
       if (current()) {
         this.removeEntry(file);
@@ -18103,8 +18131,11 @@ var TaskPlanner = class extends import_obsidian7.Component {
     });
     return next;
   }
-  update(task, change) {
+  update(original, change) {
+    const intent = { task: original };
+    this.queuedUpdates.add(intent);
     return this.mutate(async () => {
+      const task = intent.task;
       const file = this.app.vault.getAbstractFileByPath(task.path);
       if (!(file instanceof import_obsidian7.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
       const update = { ...change }, repeatingToggle = task.recurring && update.checked !== void 0 && update.checked !== task.checked;
@@ -18113,7 +18144,8 @@ var TaskPlanner = class extends import_obsidian7.Component {
       if (repeatingToggle && Object.entries(update).some(([key, value]) => key !== "checked" && value !== void 0)) throw Error("\u8BF7\u5148\u4FDD\u5B58\u4EFB\u52A1\u5C5E\u6027\uFF0C\u518D\u5207\u6362\u91CD\u590D\u4EFB\u52A1\u72B6\u6001");
       if (!repeatingToggle && update.completedOn === void 0 && update.checked !== void 0 && update.checked !== task.checked) update.completedOn = update.checked ? localDay() : "";
       if (task.recurring && !repeatingToggle) delete update.checked;
-      let receipt;
+      let receipt, expected;
+      let followers = [];
       await this.app.vault.process(file, (text) => {
         if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
         if (file.path !== task.path || this.app.vault.getAbstractFileByPath(task.path) !== file) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
@@ -18133,7 +18165,18 @@ var TaskPlanner = class extends import_obsidian7.Component {
           next = changeTask(text, task, update);
           after = [next.split("\n")[task.line]];
         }
-        if (next !== text) receipt = { file, line: task.line, before: [task.source], after };
+        if (next !== text) {
+          receipt = { file, line: task.line, before: [task.source], after };
+          expected = next;
+          const lines = text.split("\n"), indexedRows = new Map(this.entries.get(file)?.tasks.map((row) => [row.line, row]));
+          if (!this.dirty.has(file)) for (const queued of this.queuedUpdates) {
+            const row = queued.task;
+            if (row.path !== task.path || row.line === task.line) continue;
+            const indexed = indexedRows.get(row.line);
+            if (indexed?.indexRevision !== row.indexRevision || indexed?.source !== row.source || lines[row.line] !== row.source) continue;
+            followers.push({ intent: queued, line: row.line + (row.line > task.line ? after.length - 1 : 0) });
+          }
+        }
         return next;
       });
       if (this.stopped) return;
@@ -18142,9 +18185,13 @@ var TaskPlanner = class extends import_obsidian7.Component {
         this.notificationPending = true;
       }
       this.invalidate(file);
-      await this.read(file, true);
+      const indexedText = await this.read(file, true);
+      if (expected !== void 0 && indexedText === expected && !this.dirty.has(file)) for (const follower of followers) {
+        const current = this.entries.get(file)?.tasks.find((row) => row.line === follower.line);
+        if (current?.source === follower.intent.task.source) follower.intent.task = current;
+      }
       await this.flush();
-    });
+    }).finally(() => this.queuedUpdates.delete(intent));
   }
   canUndo() {
     return !!this.undo;
@@ -18186,6 +18233,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
     this.listeners.clear();
     this.undo = void 0;
     this.notificationPending = false;
+    this.queuedUpdates.clear();
   }
 };
 
