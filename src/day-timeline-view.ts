@@ -1,3 +1,4 @@
+import {preserveTaskRowFocus} from './ui-focus';
 import {TaskScheduleModal} from './task-schedule-view';
 import {App,Component,Modal,Notice,TFile,setIcon} from 'obsidian';
 import {localDay} from './filing';
@@ -28,9 +29,9 @@ export class DayTimeline extends Component {
   const submit=async()=>{if(save.disabled)return;try{const text=scheduleText(title.value,start.value,end.value);save.disabled=true;await this.add(text);m.close();}catch(e){error.setText(e instanceof Error?e.message:String(e));save.disabled=false;}};
   save.onclick=()=>void submit();title.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();void submit();}};m.open();title.focus();
  }
- private taskCheck(parent:HTMLElement,task:PlannedTask){const check=parent.createEl('input',{type:'checkbox',attr:{'aria-label':'完成任务：'+task.title}});check.checked=task.checked;check.disabled=task.recurring;if(task.recurring)check.title='重复任务请在原文使用 Tasks 插件完成';check.onchange=()=>{check.disabled=true;void this.planner.update(task,{checked:check.checked}).catch(e=>{new Notice(String(e));this.render();});};}
+ private taskCheck(parent:HTMLElement,task:PlannedTask){const check=parent.createEl('input',{type:'checkbox',attr:{'aria-label':`${task.checked?'重新打开':'完成'}任务：${task.title}`}});check.checked=task.checked;check.disabled=!this.planner.canToggle(task);if(task.recurring)check.title=check.disabled?'重复任务需要启用 Tasks 7.2 或更新版本，也可以在原文完成':task.checked?'通过 Tasks 重新打开此任务':'通过 Tasks 完成，并按重复规则生成下一项';check.onchange=()=>{const restore=this.preserveFocus();check.disabled=true;void this.planner.update(task,{checked:check.checked}).catch(e=>{new Notice(String(e));this.render();}).finally(restore);};}
  private row(parent:HTMLElement,item:TimelineItem){
-  const row=parent.createDiv('ts-timeline-item');row.dataset.kind=item.kind;row.dataset.priority=item.task&&item.task.priority<=1?'high':'normal';row.toggleClass('is-done',!!item.task?.checked);row.toggleClass('has-conflict',!!item.conflict);
+  const row=parent.createDiv('ts-timeline-item');row.dataset.path=item.path;row.dataset.line=String(item.line);row.dataset.kind=item.kind;row.dataset.priority=item.task&&item.task.priority<=1?'high':'normal';row.toggleClass('is-done',!!item.task?.checked);row.toggleClass('has-conflict',!!item.conflict);
   const duration=item.slot.end!==undefined?item.slot.end-item.slot.start:0;row.style.setProperty('--node-height',`${Math.min(72,36+duration*.32)}px`);
   const now=new Date(),minute=now.getHours()*60+now.getMinutes(),current=this.day===localDay()&&!item.task?.checked&&item.slot.end!==undefined&&minute>=item.slot.start&&minute<item.slot.end;row.toggleClass('is-current',current);
   const icon=item.kind==='record'?'notebook-pen':item.task?.checked?'check':/阅读|读书|read|book/i.test(item.title)?'book-open':/写作|整理|write|专注/i.test(item.title)?'pencil':/会议|讨论|meet/i.test(item.title)?'messages-square':/休息|咖啡|break/i.test(item.title)?'coffee':'circle-dot';
@@ -40,7 +41,9 @@ export class DayTimeline extends Component {
   if(item.conflict||item.slot.invalidRange)card.createSpan({cls:'ts-timeline-conflict',text:item.conflict?'时间重叠':'请检查结束时间'});
   const meta=card.createDiv('ts-timeline-meta');this.button(meta,'来源：'+item.path,'link',()=>this.open(item.path,item.line));if(item.task)this.button(meta,'调整时间：'+item.title,'clock-3',()=>this.edit(item.task));
  }
- render(){if(!this.active)return;const scroll=this.body.scrollTop,focused=this.body.contains(this.el.ownerDocument.activeElement)?(this.el.ownerDocument.activeElement as HTMLElement).getAttribute('aria-label'):null;const now=new Date(),minute=now.getHours()*60+now.getMinutes(),today=this.day===localDay();this.clock.setText(today?clockLabel(minute):'');this.body.hidden=!this.embedded&&!!this.state.collapsed;
+ private preserveFocus(){return preserveTaskRowFocus(this.el,'.ts-timeline-item,.ts-timeline-untimed-row','.ts-day-timeline-actions button');}
+ render(){if(!this.active)return;const restore=this.preserveFocus();try{this.renderContents();}finally{restore();}}
+ private renderContents(){const scroll=this.body.scrollTop;const now=new Date(),minute=now.getHours()*60+now.getMinutes(),today=this.day===localDay();this.clock.setText(today?clockLabel(minute):'');this.body.hidden=!this.embedded&&!!this.state.collapsed;
   this.toggle.setAttribute('aria-expanded',String(!this.state.collapsed));this.toggle.setAttribute('aria-label',this.state.collapsed?'展开时间线':'收起时间线');this.toggle.title=this.state.collapsed?'展开时间线':'收起时间线';setIcon(this.toggle,this.state.collapsed?'chevron-down':'chevron-up');
   this.done.setAttribute('aria-pressed',String(!!this.state.hideDone));this.done.setAttribute('aria-label',this.state.hideDone?'显示已完成事项':'隐藏已完成事项');this.done.title=this.state.hideDone?'显示已完成事项':'隐藏已完成事项';this.body.empty();if(!this.embedded&&this.state.collapsed)return;
   if(this.planner.failures.size)this.body.createDiv({cls:'ts-timeline-error',text:'部分任务来源暂时无法读取'});
@@ -49,8 +52,8 @@ export class DayTimeline extends Component {
   for(const item of items.slice(0,this.limit)){while(gapIndex<gaps.length&&gaps[gapIndex].end<=item.slot.start){const gap=gaps[gapIndex++],button=this.button(list,`安排空档 ${clockLabel(gap.start)}–${clockLabel(gap.end)}`,'plus',()=>this.edit(undefined,clockLabel(gap.start),clockLabel(gap.end)));button.addClass('ts-timeline-gap');button.createSpan({text:`${gap.end-gap.start} 分钟空档`});}if(today&&!inserted&&item.slot.start>=minute)marker();this.row(list,item);}if(today&&!inserted&&items.length<=this.limit)marker();
   if(!items.length)this.body.createDiv({cls:'ts-timeline-empty',text:'这一天还没有时间安排。点击 ＋，或在任务前写 09:00 - 10:00。'});
   if(items.length>this.limit){const more=this.body.createEl('button',{cls:'ts-timeline-more',text:`显示更多（剩余 ${items.length-this.limit}）`});more.onclick=()=>{this.limit+=40;this.render();};}
-  if(untimed.length){const details=this.body.createEl('details',{cls:'ts-timeline-untimed'});details.open=!!this.state.untimedOpen;details.createEl('summary',{text:`未定时间 · ${untimed.length}`});details.ontoggle=()=>{this.state.untimedOpen=details.open;};for(const task of untimed.slice(0,this.limit)){const row=details.createDiv('ts-timeline-untimed-row');this.taskCheck(row,task);const title=row.createEl('button',{cls:'ts-timeline-title',text:task.title});title.onclick=()=>void this.open(task.path,task.line).catch(e=>new Notice(String(e)));this.button(row,'安排时间：'+task.title,'clock-3',()=>this.edit(task));}if(untimed.length>this.limit){const more=details.createEl('button',{text:'显示更多未定时间事项'});more.onclick=()=>{this.limit+=40;this.render();};}}
-  this.body.scrollTop=scroll;if(focused){const target=Array.from(this.body.querySelectorAll<HTMLElement>('[aria-label]')).find(e=>e.getAttribute('aria-label')===focused);target?.focus({preventScroll:true});}
+  if(untimed.length){const details=this.body.createEl('details',{cls:'ts-timeline-untimed'});details.open=!!this.state.untimedOpen;details.createEl('summary',{text:`未定时间 · ${untimed.length}`});details.ontoggle=()=>{this.state.untimedOpen=details.open;};for(const task of untimed.slice(0,this.limit)){const row=details.createDiv('ts-timeline-untimed-row');row.dataset.path=task.path;row.dataset.line=String(task.line);this.taskCheck(row,task);const title=row.createEl('button',{cls:'ts-timeline-title',text:task.title});title.onclick=()=>void this.open(task.path,task.line).catch(e=>new Notice(String(e)));this.button(row,'安排时间：'+task.title,'clock-3',()=>this.edit(task));}if(untimed.length>this.limit){const more=details.createEl('button',{text:'显示更多未定时间事项'});more.onclick=()=>{this.limit+=40;this.render();};}}
+  this.body.scrollTop=scroll;
  }
  onunload(){this.active=false;this.el.empty();}
 }

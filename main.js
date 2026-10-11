@@ -3824,7 +3824,7 @@ __export(main_exports, {
   default: () => ThoughtSpaceCalendar
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian11 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 
 // node_modules/lunar-typescript/dist/index.mjs
 var _SolarUtil = class {
@@ -6591,9 +6591,9 @@ var _I18n = class {
   static updateArray(c) {
     const v = _I18n._ARRAYS[c];
     const o = _I18n._OBJ_ARRAYS[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const arr = v[k];
       for (let i = 0, j = arr.length; i < j; i++) {
         o[k][i] = arr[i].replace(/{(.[^}]*)}/g, (_$0, $1) => {
@@ -6605,9 +6605,9 @@ var _I18n = class {
   static updateStringDictionary(c) {
     const v = _I18n._DICT_STRING[c];
     const o = _I18n._OBJ_STRING[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const dict = v[k];
       const subKeys = Object.keys(dict);
       for (let m = 0, n = subKeys.length; m < n; m++) {
@@ -6624,9 +6624,9 @@ var _I18n = class {
   static updateNumberDictionary(c) {
     const v = _I18n._DICT_NUMBER[c];
     const o = _I18n._OBJ_NUMBER[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const dict = v[k];
       const subKeys = Object.keys(dict);
       for (let m = 0, n = subKeys.length; m < n; m++) {
@@ -6641,9 +6641,9 @@ var _I18n = class {
   static updateArrayDictionary(c) {
     const v = _I18n._DICT_ARRAY[c];
     const o = _I18n._OBJ_ARRAY[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const dict = v[k];
       const subKeys = Object.keys(dict);
       for (let m = 0, n = subKeys.length; m < n; m++) {
@@ -6662,21 +6662,21 @@ var _I18n = class {
     }
   }
   static update() {
-    let keys = Object.keys(_I18n._ARRAYS);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.updateArray(keys[x]);
+    let keys2 = Object.keys(_I18n._ARRAYS);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.updateArray(keys2[x]);
     }
-    keys = Object.keys(_I18n._DICT_STRING);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.updateStringDictionary(keys[x]);
+    keys2 = Object.keys(_I18n._DICT_STRING);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.updateStringDictionary(keys2[x]);
     }
-    keys = Object.keys(_I18n._DICT_NUMBER);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.updateNumberDictionary(keys[x]);
+    keys2 = Object.keys(_I18n._DICT_NUMBER);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.updateNumberDictionary(keys2[x]);
     }
-    keys = Object.keys(_I18n._DICT_ARRAY);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.updateArrayDictionary(keys[x]);
+    keys2 = Object.keys(_I18n._DICT_ARRAY);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.updateArrayDictionary(keys2[x]);
     }
   }
   static setMessages(lang, messages) {
@@ -6686,9 +6686,9 @@ var _I18n = class {
     if (!_I18n._MESSAGES[lang]) {
       _I18n._MESSAGES[lang] = {};
     }
-    const keys = Object.keys(messages);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const key = keys[x];
+    const keys2 = Object.keys(messages);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const key = keys2[x];
       _I18n._MESSAGES[lang][key] = messages[key];
     }
     _I18n.update();
@@ -6715,9 +6715,9 @@ var _I18n = class {
   static initArray(c) {
     const v = _I18n._ARRAYS[c];
     const o = _I18n._OBJ_ARRAYS[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       v[k].length = 0;
       const arr = o[k];
       for (let i = 0, j = arr.length; i < j; i++) {
@@ -6728,9 +6728,9 @@ var _I18n = class {
   static initArrayDictionary(c) {
     const v = _I18n._DICT_ARRAY[c];
     const o = _I18n._OBJ_ARRAY[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const dict = o[k];
       const subKeys = Object.keys(dict);
       for (let m = 0, n = subKeys.length; m < n; m++) {
@@ -6742,9 +6742,9 @@ var _I18n = class {
   static initStringDictionary(c) {
     const v = _I18n._DICT_STRING[c];
     const o = _I18n._OBJ_STRING[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const dict = o[k];
       const subKeys = Object.keys(dict);
       for (let m = 0, n = subKeys.length; m < n; m++) {
@@ -6756,9 +6756,9 @@ var _I18n = class {
   static initNumberDictionary(c) {
     const v = _I18n._DICT_NUMBER[c];
     const o = _I18n._OBJ_NUMBER[c];
-    const keys = Object.keys(v);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      const k = keys[x];
+    const keys2 = Object.keys(v);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      const k = keys2[x];
       const dict = o[k];
       const subKeys = Object.keys(dict);
       for (let m = 0, n = subKeys.length; m < n; m++) {
@@ -6772,21 +6772,21 @@ var _I18n = class {
       return;
     }
     _I18n._INIT = true;
-    let keys = Object.keys(_I18n._ARRAYS);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.initArray(keys[x]);
+    let keys2 = Object.keys(_I18n._ARRAYS);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.initArray(keys2[x]);
     }
-    keys = Object.keys(_I18n._DICT_STRING);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.initStringDictionary(keys[x]);
+    keys2 = Object.keys(_I18n._DICT_STRING);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.initStringDictionary(keys2[x]);
     }
-    keys = Object.keys(_I18n._DICT_NUMBER);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.initNumberDictionary(keys[x]);
+    keys2 = Object.keys(_I18n._DICT_NUMBER);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.initNumberDictionary(keys2[x]);
     }
-    keys = Object.keys(_I18n._DICT_ARRAY);
-    for (let x = 0, y = keys.length; x < y; x++) {
-      _I18n.initArrayDictionary(keys[x]);
+    keys2 = Object.keys(_I18n._DICT_ARRAY);
+    for (let x = 0, y = keys2.length; x < y; x++) {
+      _I18n.initArrayDictionary(keys2[x]);
     }
     _I18n.setLanguage(_I18n._DEFAULT_LANG);
   }
@@ -13900,9 +13900,9 @@ var Lunar = class _Lunar {
   }
   getJieQi() {
     let name = "";
-    const keys = Object.keys(this._jieQi);
-    for (let i = 0, j = keys.length; i < j; i++) {
-      const k = keys[i];
+    const keys2 = Object.keys(this._jieQi);
+    for (let i = 0, j = keys2.length; i < j; i++) {
+      const k = keys2[i];
       const d = this._jieQi[k];
       if (d.getYear() == this._solar.getYear() && d.getMonth() == this._solar.getMonth() && d.getDay() == this._solar.getDay()) {
         name = k;
@@ -14257,9 +14257,9 @@ var Lunar = class _Lunar {
       }
     }
     const today = wholeDay ? this._solar.toYmd() : this._solar.toYmdHms();
-    const keys = Object.keys(this._jieQi);
-    for (let i = 0, j = keys.length; i < j; i++) {
-      const key = keys[i];
+    const keys2 = Object.keys(this._jieQi);
+    for (let i = 0, j = keys2.length; i < j; i++) {
+      const key = keys2[i];
       const solar = this._jieQi[key];
       const jq = _Lunar._convertJieQi(key);
       if (filter) {
@@ -14301,9 +14301,9 @@ var Lunar = class _Lunar {
     return new JieQi(name, near);
   }
   getCurrentJieQi() {
-    const keys = Object.keys(this._jieQi);
-    for (let i = 0, j = keys.length; i < j; i++) {
-      const k = keys[i];
+    const keys2 = Object.keys(this._jieQi);
+    for (let i = 0, j = keys2.length; i < j; i++) {
+      const k = keys2[i];
       const d = this._jieQi[k];
       if (d.getYear() == this._solar.getYear() && d.getMonth() == this._solar.getMonth() && d.getDay() == this._solar.getDay()) {
         return new JieQi(_Lunar._convertJieQi(k), d);
@@ -15467,18 +15467,37 @@ function chineseDayPresentation(value, options = {}) {
 
 // src/ui-focus.ts
 function preserveTaskFilterFocus(root) {
-  const doc = root.ownerDocument, active = doc.activeElement;
-  if (!active || !root.contains(active) || !active.matches(".ts-task-tools input,.ts-task-tools select,.ts-task-group-select")) return () => {
+  const doc = root.ownerDocument, active2 = doc.activeElement;
+  if (!active2 || !root.contains(active2) || !active2.matches(".ts-task-tools input,.ts-task-tools select,.ts-task-group-select")) return () => {
   };
-  const label2 = active.getAttribute("aria-label"), tag = active.tagName;
-  const start = tag === "INPUT" ? active.selectionStart : null, end = tag === "INPUT" ? active.selectionEnd : null;
-  const direction = tag === "INPUT" ? active.selectionDirection : null;
+  const label2 = active2.getAttribute("aria-label"), tag = active2.tagName;
+  const start = tag === "INPUT" ? active2.selectionStart : null, end = tag === "INPUT" ? active2.selectionEnd : null;
+  const direction = tag === "INPUT" ? active2.selectionDirection : null;
   return () => {
-    if (!label2 || active.isConnected || doc.activeElement !== doc.body) return;
+    if (!label2 || active2.isConnected || doc.activeElement !== doc.body) return;
     const next = Array.from(root.querySelectorAll("input[aria-label],select[aria-label]")).find((el) => el.tagName === tag && el.getAttribute("aria-label") === label2);
     if (!next || next.disabled || next.closest("details:not([open])") || !next.getClientRects().length) return;
     next.focus({ preventScroll: true });
     if (tag === "INPUT" && start !== null && end !== null) next.setSelectionRange(start, end, direction || void 0);
+  };
+}
+function preserveTaskRowFocus(root, rowSelector = ".ts-task-row", fallbackSelector = "button[data-filter][aria-pressed=true]") {
+  const doc = root.ownerDocument, active2 = doc.activeElement;
+  const row = active2?.closest(rowSelector);
+  if (!active2 || !row || !root.contains(row)) return () => {
+  };
+  const rows = Array.from(root.querySelectorAll(rowSelector));
+  const index = rows.indexOf(row), path = row.dataset.path, line = row.dataset.line;
+  const label2 = active2.getAttribute("aria-label"), checkbox = active2.matches("input[type=checkbox]");
+  return () => {
+    if (active2.isConnected || doc.activeElement !== doc.body) return;
+    const current = Array.from(root.querySelectorAll(rowSelector));
+    const nextRow = current.find((el) => el.dataset.path === path && el.dataset.line === line) || current[Math.min(index, current.length - 1)];
+    let next;
+    if (checkbox) next = nextRow?.querySelector("input[type=checkbox]:not(:disabled)") || void 0;
+    else if (label2) next = Array.from(nextRow?.querySelectorAll("[aria-label]") || []).find((el) => el.getAttribute("aria-label") === label2 && !el.matches(":disabled"));
+    next ??= root.querySelector(fallbackSelector) || void 0;
+    if (next?.getClientRects().length) next.focus({ preventScroll: true });
   };
 }
 
@@ -15569,8 +15588,58 @@ function safeName(name) {
   return name.replace(/[\\/:*?"<>|\[\]#^]/g, "-").replace(/^\.+/, "").trim().slice(0, 100) || "\u672A\u547D\u540D";
 }
 
+// src/task-dataview.ts
+var keys = "due|scheduled|completion|priority|repeat|start|created|cancelled|onCompletion|id|dependsOn";
+var dateKeys = /* @__PURE__ */ new Set(["due", "scheduled", "completion", "start", "created", "cancelled"]);
+function validValue(key, value) {
+  if (dateKeys.has(key)) return /^\d{4}-\d{2}-\d{2}$/.test(value);
+  if (key === "priority") return /^(highest|high|medium|low|lowest)$/.test(value);
+  if (key === "repeat") return true;
+  if (key === "onCompletion") return /^[a-zA-Z]+$/.test(value);
+  return /^[a-zA-Z0-9]+(?:\s*,\s*[a-zA-Z0-9]+)*$/.test(value);
+}
+function dataviewTaskFields(text) {
+  if (!text.includes("::")) return [];
+  const prose = maskInlineLiterals(text), fields = [];
+  for (const open of ["[", "("]) {
+    const close = open === "[" ? "]" : ")";
+    const pattern = new RegExp(`(\\${open}[ \\t]*(${keys})::[ \\t]*)([^\\[\\]\\(\\)\\r\\n]*?)([ \\t]*\\${close}(?:[ \\t]*,)?)(?![\\[(])`, "g");
+    for (const match of prose.matchAll(pattern)) {
+      const from = match.index, key = match[2], value = match[3].trim();
+      let slash = from;
+      while (slash > 0 && prose[slash - 1] === "\\") slash--;
+      if ((from - slash) % 2 || prose[from - 1] === "[" || !validValue(key, value)) continue;
+      fields.push({ from, to: from + match[0].length, key, value, open, prefix: match[1], suffix: match[4] });
+    }
+  }
+  return fields.sort((a, b) => a.from - b.from);
+}
+function updateDataviewTaskField(text, key, value) {
+  const fields = dataviewTaskFields(text).filter((field) => field.key === key);
+  let result = "", at = 0;
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i], prefix = text.slice(at, field.from);
+    result += value && i === 0 ? prefix + field.prefix + value + field.suffix : prefix.replace(/[ \t]+$/, "");
+    at = field.to;
+  }
+  return { text: result + text.slice(at), found: fields.length > 0 };
+}
+function dataviewTaskFieldText(key, value, open) {
+  return `${open}${key}:: ${value}${open === "[" ? "]" : ")"}`;
+}
+function stripDataviewTaskFields(text, keys2) {
+  let result = "", at = 0;
+  for (const field of dataviewTaskFields(text)) if (keys2.has(field.key)) {
+    result += text.slice(at, field.from).replace(/[ \t]+$/, "");
+    at = field.to;
+  }
+  return result + text.slice(at);
+}
+
 // src/task-planner-model.ts
 var priorities = ["\u{1F53A}", "\u23EB", "\u{1F53C}", "", "\u{1F53D}", "\u23EC"];
+var dataviewPriorities = ["highest", "high", "medium", "", "low", "lowest"];
+var titleDataviewFields = /* @__PURE__ */ new Set(["due", "scheduled", "completion", "priority"]);
 function validDay(value) {
   if (!value) return;
   try {
@@ -15583,10 +15652,12 @@ function validDay(value) {
 function planTasks(text, path, journalRoot) {
   const day = path.startsWith(journalRoot + "/") ? validDay(path.split("/").pop()?.replace(/\.md$/i, "")) : void 0;
   return extractTasks(text).filter((t) => t.text.trim()).map((t) => {
-    const prose = maskInlineLiterals(t.text), due = validDay(prose.match(/📅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]), scheduled = validDay(prose.match(/⏳\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
-    const completedOn = validDay(prose.match(/✅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
-    const priority = priorities.findIndex((p) => p && prose.includes(p));
-    return { ...t, path, day, due, scheduled, completedOn, priority: priority < 0 ? 3 : priority, title: outsideInlineLiterals(stripInlineComments(stripQuadrant(t.text)), (prose2) => prose2.replace(/(?:📅|⏳|✅)\s*\d{4}-\d{2}-\d{2}(?![\d-])/g, "").replace(/[🔺⏫🔼🔽⏬]/gu, "").replace(/\s+/g, " ")).trim(), tags: [...new Set(prose.match(/#[\p{L}\p{N}_/-]+/gu) || [])], time: timeSlot(t.text) ? clockLabel(timeSlot(t.text).start) : void 0, recurring: prose.includes("\u{1F501}") };
+    const prose = maskInlineLiterals(t.text), fields = dataviewTaskFields(t.text), field = (key) => fields.find((f) => f.key === key)?.value;
+    const due = validDay(field("due") ?? prose.match(/📅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]), scheduled = validDay(field("scheduled") ?? prose.match(/⏳\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
+    const completedOn = validDay(field("completion") ?? prose.match(/✅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
+    const priority = field("priority") ? dataviewPriorities.indexOf(field("priority")) : priorities.findIndex((p) => p && prose.includes(p));
+    const title = stripDataviewTaskFields(stripInlineComments(stripQuadrant(t.text)), titleDataviewFields);
+    return { ...t, path, day, due, scheduled, completedOn, priority: priority < 0 ? 3 : priority, title: outsideInlineLiterals(title, (prose2) => prose2.replace(/(?:📅|⏳|✅)\s*\d{4}-\d{2}-\d{2}(?![\d-])/g, "").replace(/[🔺⏫🔼🔽⏬]/gu, "").replace(/\s+/g, " ")).trim(), tags: [...new Set(prose.match(/#[\p{L}\p{N}_/-]+/gu) || [])], time: timeSlot(t.text) ? clockLabel(timeSlot(t.text).start) : void 0, recurring: prose.includes("\u{1F501}") || fields.some((f) => f.key === "repeat") };
   });
 }
 function taskDate(t) {
@@ -15630,6 +15701,7 @@ function changeTask(text, task, change) {
   let line = task.source;
   const cr = line.endsWith("\r") ? "\r" : "";
   line = line.replace(/\r$/, "");
+  const originalFields = dataviewTaskFields(line);
   const at = taskCheckbox(task);
   if (at < 0 || !/^\[[ xX]\]/.test(line.slice(at))) throw Error("\u4EFB\u52A1\u683C\u5F0F\u65E0\u6CD5\u8BC6\u522B\uFF0C\u8BF7\u6253\u5F00\u539F\u6587\u68C0\u67E5");
   const prefixEnd = at + 3 + (line.slice(at + 3).match(/^[ \t]*/)?.[0].length || 0), prefix = line.slice(0, prefixEnd);
@@ -15639,7 +15711,7 @@ function changeTask(text, task, change) {
     body = change.content.trim();
     if (!body || /[\r\n]/.test(body)) throw Error("\u4EFB\u52A1\u5185\u5BB9\u987B\u4E3A\u975E\u7A7A\u7684\u4E00\u884C");
   }
-  const suppliedId = body.match(/\s+\^[A-Za-z0-9-]+\s*$/)?.[0], blockId = originalId || suppliedId;
+  const suppliedId = body.match(/\s+\^[A-Za-z0-9-]+\s*$/)?.[0], blockId2 = originalId || suppliedId;
   if (suppliedId) body = body.slice(0, -suppliedId.length);
   if (change.time !== void 0) {
     body = timeSlot(body)?.title ?? body;
@@ -15648,19 +15720,25 @@ function changeTask(text, task, change) {
   }
   line = prefix + body;
   if (change.checked !== void 0) line = line.slice(0, at) + (change.checked ? "[x]" : "[ ]") + line.slice(at + 3);
+  const writeField = (key, value, emoji) => {
+    const currentFields = dataviewTaskFields(line), style = currentFields.find((f) => f.key === key) || originalFields.find((f) => f.key === key) || currentFields[0] || originalFields[0];
+    const changed = updateDataviewTaskField(line, key, value);
+    line = changed.text;
+    if (value && !changed.found) line = appendMetadata(line, style ? dataviewTaskFieldText(key, value, style.open) : emoji);
+  };
   for (const [key, icon] of [["due", "\u{1F4C5}"], ["scheduled", "\u23F3"], ["completedOn", "\u2705"]]) {
     const value = key === "completedOn" ? change.completedOn ?? (change.checked === false ? "" : void 0) : change[key];
     if (value === void 0) continue;
     if (value && !validDay(value)) throw Error("\u65E5\u671F\u65E0\u6548");
     line = outsideInlineLiterals(line, (prose) => prose.replace(new RegExp("\\s*" + icon + "\\s*\\d{4}-\\d{2}-\\d{2}(?![\\d-])", "g"), ""));
-    if (value) line = appendMetadata(line, `${icon} ${value}`);
+    writeField(key === "completedOn" ? "completion" : key, value, `${icon} ${value}`);
   }
   if (change.priority !== void 0) {
     if (!Number.isInteger(change.priority) || change.priority < 0 || change.priority > 5) throw Error("\u4F18\u5148\u7EA7\u65E0\u6548");
     line = outsideInlineLiterals(line, (prose) => prose.replace(/\s*[🔺⏫🔼🔽⏬]/gu, ""));
-    if (priorities[change.priority]) line = appendMetadata(line, priorities[change.priority]);
+    writeField("priority", dataviewPriorities[change.priority], priorities[change.priority]);
   }
-  lines[task.line] = line + (blockId || "") + cr;
+  lines[task.line] = line + (blockId2 || "") + cr;
   return lines.join("\n");
 }
 function groupTasks(tasks, by) {
@@ -15673,12 +15751,6 @@ function groupTasks(tasks, by) {
     groups.set(key, list);
   }
   return [...groups].sort(([a], [b]) => a.localeCompare(b, "zh-CN")).map(([key, tasks2]) => ({ label: by === "priority" ? ["\u6700\u9AD8\u4F18\u5148\u7EA7", "\u9AD8\u4F18\u5148\u7EA7", "\u4E2D\u4F18\u5148\u7EA7", "\u666E\u901A\u4F18\u5148\u7EA7", "\u4F4E\u4F18\u5148\u7EA7", "\u6700\u4F4E\u4F18\u5148\u7EA7"][Number(key)] : key, tasks: tasks2 }));
-}
-function restoreTaskLine(text, line, expected, original) {
-  const lines = text.split("\n");
-  if (lines[line] !== expected) throw Error("\u4EFB\u52A1\u5728\u64CD\u4F5C\u540E\u5DF2\u53D8\u5316\uFF0C\u65E0\u6CD5\u5B89\u5168\u64A4\u9500\uFF0C\u8BF7\u6253\u5F00\u539F\u6587\u68C0\u67E5");
-  lines[line] = original;
-  return lines.join("\n");
 }
 function journalTaskBlock(text, day) {
   dateOf(day);
@@ -15973,20 +16045,23 @@ var DayTimeline = class extends import_obsidian2.Component {
     title.focus();
   }
   taskCheck(parent, task) {
-    const check = parent.createEl("input", { type: "checkbox", attr: { "aria-label": "\u5B8C\u6210\u4EFB\u52A1\uFF1A" + task.title } });
+    const check = parent.createEl("input", { type: "checkbox", attr: { "aria-label": `${task.checked ? "\u91CD\u65B0\u6253\u5F00" : "\u5B8C\u6210"}\u4EFB\u52A1\uFF1A${task.title}` } });
     check.checked = task.checked;
-    check.disabled = task.recurring;
-    if (task.recurring) check.title = "\u91CD\u590D\u4EFB\u52A1\u8BF7\u5728\u539F\u6587\u4F7F\u7528 Tasks \u63D2\u4EF6\u5B8C\u6210";
+    check.disabled = !this.planner.canToggle(task);
+    if (task.recurring) check.title = check.disabled ? "\u91CD\u590D\u4EFB\u52A1\u9700\u8981\u542F\u7528 Tasks 7.2 \u6216\u66F4\u65B0\u7248\u672C\uFF0C\u4E5F\u53EF\u4EE5\u5728\u539F\u6587\u5B8C\u6210" : task.checked ? "\u901A\u8FC7 Tasks \u91CD\u65B0\u6253\u5F00\u6B64\u4EFB\u52A1" : "\u901A\u8FC7 Tasks \u5B8C\u6210\uFF0C\u5E76\u6309\u91CD\u590D\u89C4\u5219\u751F\u6210\u4E0B\u4E00\u9879";
     check.onchange = () => {
+      const restore = this.preserveFocus();
       check.disabled = true;
       void this.planner.update(task, { checked: check.checked }).catch((e) => {
         new import_obsidian2.Notice(String(e));
         this.render();
-      });
+      }).finally(restore);
     };
   }
   row(parent, item) {
     const row = parent.createDiv("ts-timeline-item");
+    row.dataset.path = item.path;
+    row.dataset.line = String(item.line);
     row.dataset.kind = item.kind;
     row.dataset.priority = item.task && item.task.priority <= 1 ? "high" : "normal";
     row.toggleClass("is-done", !!item.task?.checked);
@@ -16014,9 +16089,20 @@ var DayTimeline = class extends import_obsidian2.Component {
     this.button(meta, "\u6765\u6E90\uFF1A" + item.path, "link", () => this.open(item.path, item.line));
     if (item.task) this.button(meta, "\u8C03\u6574\u65F6\u95F4\uFF1A" + item.title, "clock-3", () => this.edit(item.task));
   }
+  preserveFocus() {
+    return preserveTaskRowFocus(this.el, ".ts-timeline-item,.ts-timeline-untimed-row", ".ts-day-timeline-actions button");
+  }
   render() {
     if (!this.active) return;
-    const scroll = this.body.scrollTop, focused = this.body.contains(this.el.ownerDocument.activeElement) ? this.el.ownerDocument.activeElement.getAttribute("aria-label") : null;
+    const restore = this.preserveFocus();
+    try {
+      this.renderContents();
+    } finally {
+      restore();
+    }
+  }
+  renderContents() {
+    const scroll = this.body.scrollTop;
     const now = /* @__PURE__ */ new Date(), minute = now.getHours() * 60 + now.getMinutes(), today = this.day === localDay();
     this.clock.setText(today ? clockLabel(minute) : "");
     this.body.hidden = !this.embedded && !!this.state.collapsed;
@@ -16065,6 +16151,8 @@ var DayTimeline = class extends import_obsidian2.Component {
       };
       for (const task of untimed.slice(0, this.limit)) {
         const row = details.createDiv("ts-timeline-untimed-row");
+        row.dataset.path = task.path;
+        row.dataset.line = String(task.line);
         this.taskCheck(row, task);
         const title = row.createEl("button", { cls: "ts-timeline-title", text: task.title });
         title.onclick = () => void this.open(task.path, task.line).catch((e) => new import_obsidian2.Notice(String(e)));
@@ -16079,16 +16167,200 @@ var DayTimeline = class extends import_obsidian2.Component {
       }
     }
     this.body.scrollTop = scroll;
-    if (focused) {
-      const target = Array.from(this.body.querySelectorAll("[aria-label]")).find((e) => e.getAttribute("aria-label") === focused);
-      target?.focus({ preventScroll: true });
-    }
   }
   onunload() {
     this.active = false;
     this.el.empty();
   }
 };
+
+// src/calendar-model.ts
+var defaultAppleSettings = {
+  enabled: false,
+  selectedCalendarIds: [],
+  defaultCalendarId: ""
+};
+var dayKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+function parseDay(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error("\u65E5\u671F\u683C\u5F0F\u65E0\u6548");
+  const [y, m, d] = value.split("-").map(Number);
+  const date = new Date(y, m - 1, d);
+  if (y < 1970 || y > 2199 || dayKey(date) !== value) throw new Error("\u65E5\u671F\u65E0\u6548");
+  return date;
+}
+function addDays(date, days) {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
+}
+function weekStart(date) {
+  return addDays(date, -(date.getDay() + 6) % 7);
+}
+function visibleDays(date, mode) {
+  const start = mode === "week" ? weekStart(date) : weekStart(new Date(date.getFullYear(), date.getMonth(), 1));
+  return Array.from({ length: mode === "week" ? 7 : 42 }, (_, i) => addDays(start, i));
+}
+function movePeriod(date, mode, direction) {
+  if (mode === "week") return addDays(date, direction * 7);
+  const first = new Date(date.getFullYear(), date.getMonth() + direction, 1);
+  const last = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
+  return new Date(first.getFullYear(), first.getMonth(), Math.min(date.getDate(), last));
+}
+function eventsOnDay(events, date) {
+  const a = date.getTime(), b = addDays(date, 1).getTime();
+  return events.filter((e) => Date.parse(e.start) < b && Date.parse(e.end) > a).sort((a2, b2) => Number(b2.allDay) - Number(a2.allDay) || Date.parse(a2.start) - Date.parse(b2.start) || a2.title.localeCompare(b2.title));
+}
+var occurrenceKey = (event) => `${event.calendarId}:${event.id}:${event.start}`;
+function toDateInput(date) {
+  return `${dayKey(date)}T${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
+}
+function parseDateInput(value, allDay) {
+  if (allDay) return parseDay(value);
+  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})$/.exec(value);
+  if (!match) throw new Error("\u8BF7\u586B\u5199\u6B63\u786E\u7684\u65E5\u671F\u548C\u65F6\u95F4");
+  const date = parseDay(match[1]), hours = Number(match[2]), minutes2 = Number(match[3]);
+  if (hours > 23 || minutes2 > 59) throw new Error("\u65F6\u95F4\u65E0\u6548");
+  date.setHours(hours, minutes2, 0, 0);
+  if (date.getHours() !== hours || date.getMinutes() !== minutes2) throw new Error("\u6B64\u65F6\u95F4\u5728\u5F53\u5730\u590F\u4EE4\u65F6\u5207\u6362\u4E2D\u4E0D\u5B58\u5728");
+  return date;
+}
+function draftFromInputs(input, original) {
+  const title = input.title.trim();
+  if (!title || title.length > 500) throw new Error("\u8BF7\u586B\u5199\u6807\u9898\uFF08\u6700\u591A 500 \u5B57\uFF09");
+  if (!input.calendarId) throw new Error("\u8BF7\u9009\u62E9\u53EF\u5199\u5165\u7684\u65E5\u5386");
+  let start = parseDateInput(input.start, input.allDay);
+  let end = input.allDay ? addDays(parseDateInput(input.end, true), 1) : parseDateInput(input.end, false);
+  if (original && original.allDay === input.allDay) {
+    const oldStart = new Date(original.start), oldEnd = new Date(original.end);
+    if ((input.allDay ? dayKey(oldStart) : toDateInput(oldStart)) === input.start) start = oldStart;
+    if ((input.allDay ? dayKey(addDays(oldEnd, -1)) : toDateInput(oldEnd)) === input.end) end = oldEnd;
+  }
+  if (end <= start || end.getTime() - start.getTime() > 366 * 864e5) throw new Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u6700\u957F\u4E00\u5E74");
+  if (input.location.length > 2e3 || input.notes.length > 1e5) throw new Error("\u5730\u70B9\u6216\u5907\u6CE8\u8FC7\u957F");
+  return {
+    ...input,
+    title,
+    start: start.toISOString(),
+    end: end.toISOString(),
+    ...original ? { eventId: original.id, originalStart: original.start, revision: original.revision } : {}
+  };
+}
+function timedSegments(events, day) {
+  const midnight = day.getTime(), tomorrow = addDays(day, 1).getTime();
+  const minute = (time2) => {
+    const d = new Date(time2);
+    return d.getHours() * 60 + d.getMinutes();
+  };
+  const entries = eventsOnDay(events, day).filter((e) => !e.allDay).map((event) => ({
+    event,
+    start: Date.parse(event.start) <= midnight ? 0 : minute(Date.parse(event.start)),
+    end: Date.parse(event.end) >= tomorrow ? 1440 : minute(Date.parse(event.end)),
+    lane: 0,
+    lanes: 1
+  })).sort((a, b) => a.start - b.start || b.end - a.end);
+  const groups = [];
+  let group = [], until = -1;
+  for (const entry of entries) {
+    if (entry.start >= until) {
+      if (group.length) groups.push(group);
+      group = [];
+      until = -1;
+    }
+    group.push(entry);
+    until = Math.max(until, entry.end);
+  }
+  if (group.length) groups.push(group);
+  for (const group2 of groups) {
+    const ends = [];
+    for (const entry of group2) {
+      let lane = ends.findIndex((end) => end <= entry.start);
+      if (lane === -1) lane = ends.length;
+      ends[lane] = entry.end;
+      entry.lane = lane;
+    }
+    for (const entry of group2) entry.lanes = ends.length;
+  }
+  return entries;
+}
+
+// src/calendar-task-adapter.ts
+function calendarTasks(tasks, start, end) {
+  const first = dayKey(start), last = dayKey(end), result = [];
+  for (const task of tasks) {
+    const days = task.scheduled || task.due ? [task.scheduled, task.due] : [task.day];
+    for (const date of new Set(days)) if (date && date >= first && date < last) {
+      const role = date === task.scheduled ? "scheduled" : date === task.due ? "due" : "day";
+      result.push(calendarTask(task, date, role));
+    }
+  }
+  return result.sort((a, b) => a.date.localeCompare(b.date) || (a.startMinute ?? 1440) - (b.startMinute ?? 1440) || a.source.localeCompare(b.source) || (a.line ?? 0) - (b.line ?? 0));
+}
+function calendarTask(task, date, role) {
+  const slot = timeSlot(task.title), dueMirror = role === "due" && !!task.scheduled;
+  return {
+    id: `${task.path}:${task.line}`,
+    text: (slot?.title || task.title).replace(/\s+\^[A-Za-z0-9-]+\s*$/, "").trim(),
+    completed: task.checked,
+    date,
+    source: task.path,
+    line: task.line,
+    sourceSnapshot: task.source,
+    dateRole: role,
+    indexRevision: task.indexRevision,
+    ...task.scheduled ? { scheduledDate: task.scheduled } : {},
+    // A separate deadline is a reminder, not another copy of the scheduled time block.
+    ...slot && !dueMirror ? { startMinute: slot.start, ...slot.end !== void 0 ? { endMinute: slot.end } : {} } : {}
+  };
+}
+function unscheduledCalendarTasks(tasks) {
+  const seen = /* @__PURE__ */ new Set();
+  return tasks.filter((task) => !task.checked && !task.scheduled && !task.due && !task.day).flatMap((task) => {
+    const item = calendarTask(task, "", "unscheduled");
+    if (seen.has(item.id)) return [];
+    seen.add(item.id);
+    return [item];
+  }).sort((a, b) => a.source.localeCompare(b.source) || (a.line ?? 0) - (b.line ?? 0));
+}
+
+// src/calendar-task-drag.ts
+var CALENDAR_TASK_DRAG_TYPE = "application/x-thoughtspace-calendar-task";
+var MAX_AGE = 12e4;
+var sessions = /* @__PURE__ */ new WeakMap();
+function active(app) {
+  const session = sessions.get(app);
+  if (!session) return;
+  const age = Date.now() - session.created;
+  if (age < 0 || age >= MAX_AGE) {
+    sessions.delete(app);
+    return;
+  }
+  return session;
+}
+function startCalendarTaskDrag(app, task, transfer) {
+  sessions.delete(app);
+  if (task.checked) throw Error("\u5DF2\u5B8C\u6210\u4EFB\u52A1\u4E0D\u80FD\u62D6\u52A8\u5B89\u6392");
+  const date = task.scheduled || task.due || task.day;
+  const start = date ? parseDay(date) : void 0;
+  const snapshot = start ? calendarTasks([task], start, addDays(start, 1))[0] : unscheduledCalendarTasks([task])[0];
+  if (!snapshot || !snapshot.sourceSnapshot || !Number.isInteger(snapshot.line) || snapshot.line === void 0 || snapshot.line < 0) throw Error("\u4EFB\u52A1\u4FE1\u606F\u65E0\u6548\uFF0C\u8BF7\u5237\u65B0");
+  const token = crypto.randomUUID();
+  transfer.setData(CALENDAR_TASK_DRAG_TYPE, token);
+  transfer.effectAllowed = "move";
+  sessions.set(app, { token, created: Date.now(), task: { ...snapshot } });
+}
+function canReadCalendarTaskDrag(app, transfer) {
+  return !!active(app) && !!transfer && Array.from(transfer.types).includes(CALENDAR_TASK_DRAG_TYPE);
+}
+function readCalendarTaskDrag(app, transfer) {
+  const session = active(app);
+  if (!session || !canReadCalendarTaskDrag(app, transfer) || !transfer) return;
+  try {
+    return transfer.getData(CALENDAR_TASK_DRAG_TYPE) === session.token ? { ...session.task } : void 0;
+  } catch {
+    return;
+  }
+}
+function endCalendarTaskDrag(app) {
+  sessions.delete(app);
+}
 
 // src/task-planner-view.ts
 var import_obsidian3 = require("obsidian");
@@ -16305,6 +16577,14 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
   }
   render() {
     if (!this.active || this.drag) return;
+    const restore = preserveTaskRowFocus(this.el);
+    try {
+      this.renderContents();
+    } finally {
+      restore();
+    }
+  }
+  renderContents() {
     const all = this.planner.all(), count = (filter) => all.reduce((n, task) => n + Number(taskMatches(task, this.day, filter)), 0);
     this.el.dataset.taskView = this.view;
     for (const [id, b] of this.viewButtons) {
@@ -16396,18 +16676,17 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     row.toggleClass("is-done", task.checked);
     row.toggleClass("is-overdue", !!task.due && task.due < this.day && !task.checked);
     const top = row.createDiv("ts-task-row-main");
-    const check = top.createEl("input", { type: "checkbox", attr: { "aria-label": `\u5B8C\u6210\u4EFB\u52A1\uFF1A${task.title}` } });
+    const check = top.createEl("input", { type: "checkbox", attr: { "aria-label": `${task.checked ? "\u91CD\u65B0\u6253\u5F00" : "\u5B8C\u6210"}\u4EFB\u52A1\uFF1A${task.title}` } });
     check.checked = task.checked;
-    if (task.recurring) {
-      check.disabled = true;
-      check.title = "\u91CD\u590D\u4EFB\u52A1\u8BF7\u6253\u5F00\u539F\u6587\u4F7F\u7528 Tasks \u63D2\u4EF6\u5B8C\u6210";
-    }
+    check.disabled = !this.planner.canToggle(task);
+    if (task.recurring) check.title = check.disabled ? "\u91CD\u590D\u4EFB\u52A1\u9700\u8981\u542F\u7528 Tasks 7.2 \u6216\u66F4\u65B0\u7248\u672C\uFF0C\u4E5F\u53EF\u4EE5\u5728\u539F\u6587\u5B8C\u6210" : task.checked ? "\u901A\u8FC7 Tasks \u91CD\u65B0\u6253\u5F00\u6B64\u4EFB\u52A1" : "\u901A\u8FC7 Tasks \u5B8C\u6210\uFF0C\u5E76\u6309\u91CD\u590D\u89C4\u5219\u751F\u6210\u4E0B\u4E00\u9879";
     check.onchange = () => {
+      const restore = preserveTaskRowFocus(this.el);
       check.disabled = true;
       void this.planner.update(task, { checked: check.checked }).catch((e) => {
         new import_obsidian3.Notice(String(e));
         this.render();
-      });
+      }).finally(restore);
     };
     const slot = timeSlot(task.title), title = top.createDiv("ts-task-title");
     title.createSpan({ text: slot?.title || task.title });
@@ -16417,8 +16696,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       void this.open(task).catch((e) => new import_obsidian3.Notice(String(e)));
     };
     if (task.priority !== 3) meta.createSpan({ cls: "ts-task-priority", text: ["\u6700\u9AD8", "\u9AD8", "\u4E2D", "\u666E\u901A", "\u4F4E", "\u6700\u4F4E"][task.priority] });
-    if (task.due) meta.createSpan({ text: `\u622A\u6B62 ${task.due}` });
-    if (task.scheduled) meta.createSpan({ text: `\u8BA1\u5212 ${task.scheduled}` });
+    for (const [label2, date] of [["\u622A\u6B62", task.due], ["\u8BA1\u5212", task.scheduled]]) if (date) meta.createSpan({ cls: label2 === "\u622A\u6B62" ? "ts-task-date is-due" : "ts-task-date", text: `${label2} ${date.slice(0, 4) === this.day.slice(0, 4) ? date.slice(5).replace("-", "/") : date}`, attr: { title: `${label2} ${date}`, "aria-label": `${label2} ${date}` } });
     const time2 = this.button(meta, slot ? "\u8C03\u6574\u4EFB\u52A1\u65F6\u95F4\uFF1A" + task.title : "\u6DFB\u52A0\u4EFB\u52A1\u65F6\u95F4\uFF1A" + task.title, "clock-3", () => this.edit(task));
     time2.addClass("ts-task-schedule-chip");
     time2.toggleClass("is-scheduled", !!slot);
@@ -16431,6 +16709,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     more.onclick = (e) => this.more(task, e);
     if (!task.checked) this.button(actions, "\u987A\u5EF6\u81F3\u6B21\u65E5", "calendar-plus", () => this.planner.update(task, { scheduled: shiftDay(this.day, 1) }));
     if (taskDate(task) !== this.day && !task.checked) this.button(actions, "\u5B89\u6392\u5230\u6240\u9009\u65E5", "calendar-check", () => this.planner.update(task, { scheduled: this.day }));
+    if (!task.checked) this.bindTaskDrag(row, task, this.view === "quadrants" ? taskQuadrant(task, this.day) : void 0);
   }
   renderQuadrants(tasks) {
     const grid = this.rows.createDiv("ts-task-quadrants");
@@ -16445,17 +16724,17 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       for (const task of items.slice(0, this.quadrantLimits[quadrant.id])) {
         this.renderTaskRow(box, task);
         const row = box.lastElementChild;
-        this.bindTaskDrag(row, task, quadrant.id);
         const select = row.createEl("select", { cls: "ts-task-quadrant-select", attr: { "aria-label": "\u8C03\u6574\u4EFB\u52A1\u8C61\u9650\uFF1A" + task.title } });
         select.createEl("option", { value: "auto", text: "\u81EA\u52A8\u5F52\u7C7B" });
         for (const q of TASK_QUADRANTS) select.createEl("option", { value: q.id, text: q.label });
         select.value = quadrantOverride(task.text) || "auto";
         select.onchange = () => {
+          const restore = preserveTaskRowFocus(this.el);
           select.disabled = true;
           void this.planner.update(task, { content: setTaskQuadrant(task.text, select.value) }).catch((e) => {
             new import_obsidian3.Notice(String(e));
             this.render();
-          });
+          }).finally(restore);
         };
       }
       if (!items.length) box.createDiv({ cls: "ts-task-quadrant-empty", text: "\u62D6\u52A8\u4EFB\u52A1\u5230\u8FD9\u91CC" });
@@ -16469,18 +16748,20 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     }
   }
   endDrag() {
+    if (this.drag) endCalendarTaskDrag(this.app);
     this.drag = void 0;
     this.el.removeClass("is-task-dragging");
     this.el.querySelectorAll(".is-drag-source,.is-drop-target").forEach((e) => e.removeClass("is-drag-source", "is-drop-target"));
   }
   bindTaskDrag(row, task, quadrant) {
+    if (task.checked) return;
     row.draggable = true;
-    row.title = task.title + " \xB7 \u62D6\u52A8\u5230\u5176\u4ED6\u8C61\u9650";
+    row.title = task.title + (quadrant ? " \xB7 \u62D6\u52A8\u5230\u5176\u4ED6\u8C61\u9650\u6216\u5927\u65E5\u5386" : " \xB7 \u62D6\u52A8\u5230\u5927\u65E5\u5386\u5B89\u6392\u65F6\u95F4");
     const grip = row.querySelector(".ts-task-title").createSpan({ cls: "ts-task-drag-grip", attr: { "aria-hidden": "true" } });
     (0, import_obsidian3.setIcon)(grip, "grip-vertical");
     let interactive = false;
     row.onpointerdown = (e) => {
-      interactive = !!e.target.closest("button,input,select,option,a");
+      interactive = !!e.target.closest("button,input,select,option,a,textarea,[contenteditable=true]");
     };
     row.ondragstart = (e) => {
       if (interactive || !e.dataTransfer) {
@@ -16489,9 +16770,16 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       }
       e.stopPropagation();
       const token = crypto.randomUUID();
+      try {
+        e.dataTransfer.setData("application/x-thoughtspace-task", token);
+        startCalendarTaskDrag(this.app, task, e.dataTransfer);
+      } catch (error) {
+        e.preventDefault();
+        endCalendarTaskDrag(this.app);
+        new import_obsidian3.Notice(String(error));
+        return;
+      }
       this.drag = { task, token, quadrant };
-      e.dataTransfer.setData("application/x-thoughtspace-task", token);
-      e.dataTransfer.effectAllowed = "move";
       row.addClass("is-drag-source");
       this.el.addClass("is-task-dragging");
     };
@@ -16987,8 +17275,8 @@ ${link}
     const run2 = ++this.generation, day = this.day, month = this.month;
     const focus = this.contentEl.querySelector(".ts-calendar-search");
     const restoreFocus = focus === this.contentEl.ownerDocument.activeElement, pos = focus?.selectionStart || 0;
-    const active = this.contentEl.ownerDocument.activeElement;
-    const calendarFocus = active && this.contentEl.contains(active) && active.classList.contains("ts-calendar-day") ? active.dataset.day : void 0;
+    const active2 = this.contentEl.ownerDocument.activeElement;
+    const calendarFocus = active2 && this.contentEl.contains(active2) && active2.classList.contains("ts-calendar-day") ? active2.dataset.day : void 0;
     const restoreTaskFocus = preserveTaskFilterFocus(this.contentEl);
     const oldScroll = this.contentEl.scrollTop;
     const quickFocused = this.contentEl.querySelector(".ts-journal-quick input");
@@ -17596,6 +17884,46 @@ var JournalLinks = class extends import_obsidian6.Component {
 
 // src/task-planner.ts
 var import_obsidian7 = require("obsidian");
+
+// src/tasks-integration.ts
+function tasksToggleApi(app) {
+  const plugins = app.plugins?.plugins;
+  const api = plugins?.["obsidian-tasks-plugin"]?.apiV1;
+  return typeof api?.executeToggleTaskDoneCommand === "function" ? api : void 0;
+}
+var TASKS_REQUIRED = "\u91CD\u590D\u4EFB\u52A1\u9700\u8981\u542F\u7528 Tasks 7.2 \u6216\u66F4\u65B0\u7248\u672C\uFF0C\u4E5F\u53EF\u4EE5\u5728\u539F\u6587\u5B8C\u6210";
+var TASKS_REPEAT_NOT_GENERATED = "Tasks \u672A\u751F\u6210\u4E0B\u4E00\u6B21\u4EFB\u52A1\uFF0C\u672A\u4FEE\u6539\u539F\u6587\u3002\u8BF7\u68C0\u67E5\u91CD\u590D\u89C4\u5219\u3001Tasks \u5168\u5C40\u8FC7\u6EE4\u5668\u548C\u4EFB\u52A1\u683C\u5F0F\uFF1B\u89C4\u5219\u5DF2\u7ED3\u675F\u65F6\u8BF7\u5728\u539F\u6587\u5B8C\u6210";
+var taskLine = /^(?:(?: {0,3}>[\t ]?)+)?[\t ]*(?:[-*+]|\d+[.)])[\t ]+\[([ xX])\][\t ]+\S/;
+var blockId = (line) => line.match(/\s+(\^[A-Za-z0-9-]+)\s*$/)?.[1];
+function tasksToggleLines(api, task, newline = task.source.endsWith("\r") ? "\r\n" : "\n") {
+  const source = task.source.replace(/\r$/, ""), result = api.executeToggleTaskDoneCommand(source, task.path);
+  if (typeof result !== "string" || !result.trim()) throw Error("Tasks \u8FD4\u56DE\u4E86\u5220\u9664\u64CD\u4F5C\u6216\u7A7A\u5185\u5BB9\uFF0C\u8BF7\u5728\u539F\u6587\u5B8C\u6210\u6B64\u4EFB\u52A1");
+  if (result.length > 1e6) throw Error("Tasks \u8FD4\u56DE\u7684\u5185\u5BB9\u8FC7\u957F\uFF0C\u8BF7\u5728\u539F\u6587\u5B8C\u6210\u6B64\u4EFB\u52A1");
+  const lines = result.replace(/\r\n/g, "\n").split("\n");
+  if (lines.length > 2 || lines.some((line) => !taskLine.test(line) || line.includes("\r")))
+    throw Error("Tasks \u8FD4\u56DE\u4E86\u6682\u4E0D\u652F\u6301\u7684\u4EFB\u52A1\u72B6\u6001\u6216\u683C\u5F0F\uFF0C\u8BF7\u5728\u539F\u6587\u5B8C\u6210\u6B64\u4EFB\u52A1");
+  const id = blockId(source);
+  if (id && lines.filter((line) => blockId(line) === id).length !== 1)
+    throw Error("Tasks \u8FD4\u56DE\u7684\u5185\u5BB9\u6539\u53D8\u4E86\u4EFB\u52A1\u5757\u5F15\u7528\uFF0C\u8BF7\u5728\u539F\u6587\u68C0\u67E5");
+  const updated = planTasks(lines.join("\n"), task.path, "");
+  if (!task.checked) {
+    if (updated.length !== 2 || updated.filter((row) => row.checked).length !== 1 || updated.filter((row) => !row.checked && row.recurring).length !== 1)
+      throw Error(TASKS_REPEAT_NOT_GENERATED);
+  } else if (updated.length !== 1 || updated[0].checked) {
+    throw Error("Tasks \u672A\u91CD\u65B0\u6253\u5F00\u6B64\u4EFB\u52A1\uFF0C\u672A\u4FEE\u6539\u539F\u6587\uFF0C\u8BF7\u5728\u539F\u6587\u68C0\u67E5\u4EFB\u52A1\u72B6\u6001");
+  }
+  const ending = task.source.endsWith("\r") ? "\r" : "";
+  return lines.map((line, index) => line + (index < lines.length - 1 && newline === "\r\n" ? "\r" : ending));
+}
+function replaceTaskSpan(text, line, expected, replacement) {
+  const lines = text.split("\n");
+  if (!Number.isInteger(line) || line < 0 || !expected.length || expected.some((value, index) => lines[line + index] !== value))
+    throw Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
+  lines.splice(line, expected.length, ...replacement);
+  return lines.join("\n");
+}
+
+// src/task-planner.ts
 var TaskPlanner = class extends import_obsidian7.Component {
   constructor(app, root) {
     super();
@@ -17613,12 +17941,15 @@ var TaskPlanner = class extends import_obsidian7.Component {
   revisions = /* @__PURE__ */ new WeakMap();
   reads = /* @__PURE__ */ new WeakMap();
   dirty = /* @__PURE__ */ new WeakSet();
+  notificationPending = false;
+  mutationDepth = 0;
   invalidate(file) {
     this.revisions.set(file, (this.revisions.get(file) || 0) + 1);
     this.dirty.add(file);
   }
   failures = /* @__PURE__ */ new Set();
   undo;
+  writes = Promise.resolve();
   onload() {
     this.stopped = false;
     const changed = (f) => {
@@ -17631,10 +17962,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
     this.registerEvent(this.app.vault.on("modify", changed));
     this.registerEvent(this.app.vault.on("create", changed));
     this.registerEvent(this.app.vault.on("delete", () => {
-      for (const [f] of this.entries) if (this.app.vault.getAbstractFileByPath(f.path) !== f) {
-        this.entries.delete(f);
-        this.failures.delete(f.path);
-      }
+      this.pruneDeleted();
       this.emit();
     }));
     this.registerEvent(this.app.vault.on("rename", (f) => {
@@ -17649,7 +17977,21 @@ var TaskPlanner = class extends import_obsidian7.Component {
     };
   }
   emit() {
-    if (!this.stopped) for (const fn of this.listeners) fn();
+    if (this.stopped || this.mutationDepth || !this.notificationPending) return;
+    this.notificationPending = false;
+    for (const fn of this.listeners) fn();
+  }
+  removeEntry(file) {
+    const old = this.entries.get(file);
+    if (old?.tasks.length) this.notificationPending = true;
+    this.entries.delete(file);
+  }
+  pruneDeleted() {
+    for (const [file] of this.entries) if (this.app.vault.getAbstractFileByPath(file.path) !== file) this.removeEntry(file);
+    for (const path of this.failures) if (!this.app.vault.getAbstractFileByPath(path)) {
+      this.failures.delete(path);
+      this.notificationPending = true;
+    }
   }
   schedule() {
     if (this.stopped || !this.initialized) return;
@@ -17662,7 +18004,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
     if (this.stopped) return;
     const path = file.path, key = `${path}:${file.stat.mtime}:${file.stat.size}`, root = this.root();
     if (!isWorkspaceFile(file) || this.app.vault.getAbstractFileByPath(path) !== file) {
-      this.entries.delete(file);
+      this.removeEntry(file);
       return;
     }
     const cached = this.entries.get(file);
@@ -17679,12 +18021,20 @@ var TaskPlanner = class extends import_obsidian7.Component {
         this.schedule();
         return;
       }
-      this.entries.set(file, { key, root, tasks: planTasks(text, path, root) });
+      const parsed = planTasks(text, path, root), previous = this.entries.get(file)?.tasks;
+      const same = previous?.length === parsed.length && parsed.every((task, index) => {
+        const old = previous[index];
+        return old.source === task.source && old.line === task.line && old.path === task.path && old.day === task.day && old.text === task.text;
+      });
+      const tasks = same ? previous : parsed.map((task) => ({ ...task, indexRevision: read }));
+      if (!same && (parsed.length || previous?.length)) this.notificationPending = true;
+      this.entries.set(file, { key, root, tasks });
       this.dirty.delete(file);
-      this.failures.delete(path);
+      if (this.failures.delete(path)) this.notificationPending = true;
     } catch {
       if (current()) {
-        this.entries.delete(file);
+        this.removeEntry(file);
+        if (!this.failures.has(path)) this.notificationPending = true;
         this.failures.add(path);
       }
     }
@@ -17704,7 +18054,10 @@ var TaskPlanner = class extends import_obsidian7.Component {
     for (const path of this.failures) {
       const f = this.app.vault.getAbstractFileByPath(path);
       if (f instanceof import_obsidian7.TFile) this.pending.add(f);
-      else this.failures.delete(path);
+      else {
+        this.failures.delete(path);
+        this.notificationPending = true;
+      }
     }
     for (const [f, e] of this.entries) if (e.root !== this.root()) this.pending.add(f);
     await this.flush();
@@ -17732,42 +18085,92 @@ var TaskPlanner = class extends import_obsidian7.Component {
   all() {
     return [...this.entries.values()].flatMap((e) => e.tasks);
   }
-  async update(task, change) {
-    if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
-    const file = this.app.vault.getAbstractFileByPath(task.path);
-    if (!(file instanceof import_obsidian7.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
-    const update = { ...change };
-    if (update.completedOn === void 0 && update.checked !== void 0 && update.checked !== task.checked) update.completedOn = update.checked ? localDay() : "";
-    let receipt;
-    await this.app.vault.process(file, (text) => {
-      const next = changeTask(text, task, update);
-      if (next !== text) receipt = { file, line: task.line, before: task.source, after: next.split("\n")[task.line] };
-      return next;
+  canToggle(task) {
+    return !task.recurring || !!tasksToggleApi(this.app);
+  }
+  mutate(run2) {
+    const next = this.writes.then(async () => {
+      if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
+      this.mutationDepth++;
+      try {
+        await run2();
+      } finally {
+        this.mutationDepth--;
+        this.emit();
+      }
     });
-    if (receipt) this.undo = receipt;
-    this.invalidate(file);
-    await this.read(file, true);
-    await this.flush();
-    this.emit();
+    this.writes = next.catch(() => {
+    });
+    return next;
+  }
+  update(task, change) {
+    return this.mutate(async () => {
+      const file = this.app.vault.getAbstractFileByPath(task.path);
+      if (!(file instanceof import_obsidian7.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+      const update = { ...change }, repeatingToggle = task.recurring && update.checked !== void 0 && update.checked !== task.checked;
+      const api = repeatingToggle ? tasksToggleApi(this.app) : void 0;
+      if (repeatingToggle && !api) throw Error(TASKS_REQUIRED);
+      if (repeatingToggle && Object.entries(update).some(([key, value]) => key !== "checked" && value !== void 0)) throw Error("\u8BF7\u5148\u4FDD\u5B58\u4EFB\u52A1\u5C5E\u6027\uFF0C\u518D\u5207\u6362\u91CD\u590D\u4EFB\u52A1\u72B6\u6001");
+      if (!repeatingToggle && update.completedOn === void 0 && update.checked !== void 0 && update.checked !== task.checked) update.completedOn = update.checked ? localDay() : "";
+      if (task.recurring && !repeatingToggle) delete update.checked;
+      let receipt;
+      await this.app.vault.process(file, (text) => {
+        if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
+        if (file.path !== task.path || this.app.vault.getAbstractFileByPath(task.path) !== file) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+        let next, after;
+        if (repeatingToggle) {
+          if (this.dirty.has(file)) throw Error("\u4EFB\u52A1\u539F\u6587\u6B63\u5728\u5237\u65B0\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+          const lines = text.split("\n");
+          if (lines[task.line] !== task.source) throw Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
+          const current = this.entries.get(file)?.tasks.find((row) => row.line === task.line);
+          if (current?.indexRevision !== task.indexRevision) throw Error("\u4EFB\u52A1\u7248\u672C\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
+          const currentApi = tasksToggleApi(this.app);
+          if (!currentApi) throw Error(TASKS_REQUIRED);
+          after = tasksToggleLines(currentApi, task, text.includes("\r\n") ? "\r\n" : "\n");
+          lines.splice(task.line, 1, ...after);
+          next = lines.join("\n");
+        } else {
+          next = changeTask(text, task, update);
+          after = [next.split("\n")[task.line]];
+        }
+        if (next !== text) receipt = { file, line: task.line, before: [task.source], after };
+        return next;
+      });
+      if (this.stopped) return;
+      if (receipt) {
+        this.undo = receipt;
+        this.notificationPending = true;
+      }
+      this.invalidate(file);
+      await this.read(file, true);
+      await this.flush();
+    });
   }
   canUndo() {
     return !!this.undo;
   }
-  async undoLast() {
-    if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
-    const record = this.undo;
-    if (!record) return;
-    if (this.app.vault.getAbstractFileByPath(record.file.path) !== record.file) throw Error("\u4EFB\u52A1\u6765\u6E90\u6587\u4EF6\u5DF2\u5220\u9664");
-    await this.app.vault.process(record.file, (text) => restoreTaskLine(text, record.line, record.after, record.before));
-    if (this.undo === record) this.undo = void 0;
-    this.invalidate(record.file);
-    await this.read(record.file, true);
-    await this.flush();
-    this.emit();
+  undoLast() {
+    return this.mutate(async () => {
+      const record = this.undo;
+      if (!record) return;
+      if (this.app.vault.getAbstractFileByPath(record.file.path) !== record.file) throw Error("\u4EFB\u52A1\u6765\u6E90\u6587\u4EF6\u5DF2\u5220\u9664");
+      await this.app.vault.process(record.file, (text) => {
+        if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
+        if (this.app.vault.getAbstractFileByPath(record.file.path) !== record.file) throw Error("\u4EFB\u52A1\u6765\u6E90\u6587\u4EF6\u5DF2\u5220\u9664");
+        return replaceTaskSpan(text, record.line, record.after, record.before);
+      });
+      if (this.undo === record) {
+        this.undo = void 0;
+        this.notificationPending = true;
+      }
+      this.invalidate(record.file);
+      await this.read(record.file, true);
+      await this.flush();
+    });
   }
   async rescan() {
     await this.ready();
-    for (const f of this.entries.keys()) if (this.app.vault.getAbstractFileByPath(f.path) !== f) this.entries.delete(f);
+    this.pruneDeleted();
     const files = this.app.vault.getMarkdownFiles().filter(isWorkspaceFile);
     let cursor = 0;
     await Promise.all(Array.from({ length: 4 }, async () => {
@@ -17782,115 +18185,9 @@ var TaskPlanner = class extends import_obsidian7.Component {
     this.pending.clear();
     this.listeners.clear();
     this.undo = void 0;
+    this.notificationPending = false;
   }
 };
-
-// src/calendar-model.ts
-var defaultAppleSettings = {
-  enabled: false,
-  selectedCalendarIds: [],
-  defaultCalendarId: ""
-};
-var dayKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-function parseDay(value) {
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) throw new Error("\u65E5\u671F\u683C\u5F0F\u65E0\u6548");
-  const [y, m, d] = value.split("-").map(Number);
-  const date = new Date(y, m - 1, d);
-  if (y < 1970 || y > 2199 || dayKey(date) !== value) throw new Error("\u65E5\u671F\u65E0\u6548");
-  return date;
-}
-function addDays(date, days) {
-  return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
-}
-function weekStart(date) {
-  return addDays(date, -(date.getDay() + 6) % 7);
-}
-function visibleDays(date, mode) {
-  const start = mode === "week" ? weekStart(date) : weekStart(new Date(date.getFullYear(), date.getMonth(), 1));
-  return Array.from({ length: mode === "week" ? 7 : 42 }, (_, i) => addDays(start, i));
-}
-function movePeriod(date, mode, direction) {
-  if (mode === "week") return addDays(date, direction * 7);
-  const first = new Date(date.getFullYear(), date.getMonth() + direction, 1);
-  const last = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
-  return new Date(first.getFullYear(), first.getMonth(), Math.min(date.getDate(), last));
-}
-function eventsOnDay(events, date) {
-  const a = date.getTime(), b = addDays(date, 1).getTime();
-  return events.filter((e) => Date.parse(e.start) < b && Date.parse(e.end) > a).sort((a2, b2) => Number(b2.allDay) - Number(a2.allDay) || Date.parse(a2.start) - Date.parse(b2.start) || a2.title.localeCompare(b2.title));
-}
-var occurrenceKey = (event) => `${event.calendarId}:${event.id}:${event.start}`;
-function toDateInput(date) {
-  return `${dayKey(date)}T${String(date.getHours()).padStart(2, "0")}:${String(date.getMinutes()).padStart(2, "0")}`;
-}
-function parseDateInput(value, allDay) {
-  if (allDay) return parseDay(value);
-  const match = /^(\d{4}-\d{2}-\d{2})T(\d{2}):(\d{2})$/.exec(value);
-  if (!match) throw new Error("\u8BF7\u586B\u5199\u6B63\u786E\u7684\u65E5\u671F\u548C\u65F6\u95F4");
-  const date = parseDay(match[1]), hours = Number(match[2]), minutes2 = Number(match[3]);
-  if (hours > 23 || minutes2 > 59) throw new Error("\u65F6\u95F4\u65E0\u6548");
-  date.setHours(hours, minutes2, 0, 0);
-  if (date.getHours() !== hours || date.getMinutes() !== minutes2) throw new Error("\u6B64\u65F6\u95F4\u5728\u5F53\u5730\u590F\u4EE4\u65F6\u5207\u6362\u4E2D\u4E0D\u5B58\u5728");
-  return date;
-}
-function draftFromInputs(input, original) {
-  const title = input.title.trim();
-  if (!title || title.length > 500) throw new Error("\u8BF7\u586B\u5199\u6807\u9898\uFF08\u6700\u591A 500 \u5B57\uFF09");
-  if (!input.calendarId) throw new Error("\u8BF7\u9009\u62E9\u53EF\u5199\u5165\u7684\u65E5\u5386");
-  let start = parseDateInput(input.start, input.allDay);
-  let end = input.allDay ? addDays(parseDateInput(input.end, true), 1) : parseDateInput(input.end, false);
-  if (original && original.allDay === input.allDay) {
-    const oldStart = new Date(original.start), oldEnd = new Date(original.end);
-    if ((input.allDay ? dayKey(oldStart) : toDateInput(oldStart)) === input.start) start = oldStart;
-    if ((input.allDay ? dayKey(addDays(oldEnd, -1)) : toDateInput(oldEnd)) === input.end) end = oldEnd;
-  }
-  if (end <= start || end.getTime() - start.getTime() > 366 * 864e5) throw new Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u6700\u957F\u4E00\u5E74");
-  if (input.location.length > 2e3 || input.notes.length > 1e5) throw new Error("\u5730\u70B9\u6216\u5907\u6CE8\u8FC7\u957F");
-  return {
-    ...input,
-    title,
-    start: start.toISOString(),
-    end: end.toISOString(),
-    ...original ? { eventId: original.id, originalStart: original.start, revision: original.revision } : {}
-  };
-}
-function timedSegments(events, day) {
-  const midnight = day.getTime(), tomorrow = addDays(day, 1).getTime();
-  const minute = (time2) => {
-    const d = new Date(time2);
-    return d.getHours() * 60 + d.getMinutes();
-  };
-  const entries = eventsOnDay(events, day).filter((e) => !e.allDay).map((event) => ({
-    event,
-    start: Date.parse(event.start) <= midnight ? 0 : minute(Date.parse(event.start)),
-    end: Date.parse(event.end) >= tomorrow ? 1440 : minute(Date.parse(event.end)),
-    lane: 0,
-    lanes: 1
-  })).sort((a, b) => a.start - b.start || b.end - a.end);
-  const groups = [];
-  let group = [], until = -1;
-  for (const entry of entries) {
-    if (entry.start >= until) {
-      if (group.length) groups.push(group);
-      group = [];
-      until = -1;
-    }
-    group.push(entry);
-    until = Math.max(until, entry.end);
-  }
-  if (group.length) groups.push(group);
-  for (const group2 of groups) {
-    const ends = [];
-    for (const entry of group2) {
-      let lane = ends.findIndex((end) => end <= entry.start);
-      if (lane === -1) lane = ends.length;
-      ends[lane] = entry.end;
-      entry.lane = lane;
-    }
-    for (const entry of group2) entry.lanes = ends.length;
-  }
-  return entries;
-}
 
 // src/calendar-settings.ts
 function appleCalendarSettings(value) {
@@ -17982,10 +18279,10 @@ var AppleCalendarClient = class {
     this.pending.set(key, promise);
     return promise;
   }
-  save(draft) {
+  save(draft2) {
     const run2 = async () => {
       if (this.closed || !this.settings().enabled) throw new CalendarBridgeError("disabled", "\u8BF7\u5148\u8FDE\u63A5\u82F9\u679C\u65E5\u5386");
-      const result2 = await this.transport.call({ action: "save", draft });
+      const result2 = await this.transport.call({ action: "save", draft: draft2 });
       this.invalidate();
       return result2.event;
     };
@@ -18058,7 +18355,7 @@ var NativeCalendarTransport = class {
 };
 
 // src/large-calendar-view.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 
 // src/calendar-modals.ts
 var import_obsidian8 = require("obsidian");
@@ -18280,9 +18577,9 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
         e.preventDefault();
         if (this.pending || readOnly) return;
         error.textContent = "";
-        let draft;
+        let draft2;
         try {
-          draft = draftFromInputs({ title: title.value, calendarId: calendar.value, allDay: allDay.checked, start: start.value, end: end.value, location: location.value, notes: notes.value }, original);
+          draft2 = draftFromInputs({ title: title.value, calendarId: calendar.value, allDay: allDay.checked, start: start.value, end: end.value, location: location.value, notes: notes.value }, original);
         } catch (err) {
           error.textContent = err instanceof Error ? err.message : "\u8BF7\u68C0\u67E5\u65E5\u7A0B";
           return;
@@ -18295,9 +18592,16 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
           submit.textContent = "\u6B63\u5728\u4FDD\u5B58\u2026";
         }
         try {
-          await this.host.apple.save(draft);
+          const saved = await this.host.apple.save(draft2);
+          let linkFailed = false;
+          if (original && this.host.eventMoved) try {
+            await this.host.eventMoved(original, saved);
+          } catch (linkError) {
+            linkFailed = true;
+            new import_obsidian8.Notice(`\u82F9\u679C\u65E5\u7A0B\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u7B14\u8BB0\u5173\u8054\u66F4\u65B0\u5931\u8D25\uFF1A${linkError instanceof Error ? linkError.message : "\u8BF7\u91CD\u65B0\u5173\u8054\u7B14\u8BB0"}`, 1e4);
+          }
           this.host.changed();
-          new import_obsidian8.Notice(original ? "\u82F9\u679C\u65E5\u7A0B\u5DF2\u66F4\u65B0" : "\u5DF2\u521B\u5EFA\u82F9\u679C\u65E5\u7A0B");
+          if (!linkFailed) new import_obsidian8.Notice(original ? "\u82F9\u679C\u65E5\u7A0B\u5DF2\u66F4\u65B0" : "\u5DF2\u521B\u5EFA\u82F9\u679C\u65E5\u7A0B");
           this.close();
         } catch (err) {
           if (!this.closed) error.textContent = err instanceof Error ? err.message : "\u4FDD\u5B58\u5931\u8D25";
@@ -18323,11 +18627,156 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
   }
 };
 
+// src/calendar-task-modal.ts
+var import_obsidian9 = require("obsidian");
+var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
+  constructor(host, task, date) {
+    super(host.app);
+    this.host = host;
+    this.task = task;
+    this.date = date;
+  }
+  pending = false;
+  closed = false;
+  onOpen() {
+    this.modalEl.addClass("tsc-dialog", "ts-calendar-plugin");
+    this.setTitle("\u5B89\u6392\u4EFB\u52A1");
+    this.contentEl.createEl("p", { text: this.task.text, cls: "tsc-task-modal-title" });
+    const form = this.contentEl.createEl("form", { cls: "tsc-event-form" });
+    const field = (name, type) => {
+      const label2 = form.createEl("label", { cls: "tsc-event-field" });
+      label2.createSpan({ text: name });
+      return label2.createEl("input", { type });
+    };
+    const date = field("\u5B89\u6392\u65E5\u671F", "date");
+    date.required = true;
+    date.value = this.task.date || dayKey(this.date);
+    const start = field("\u5F00\u59CB\u65F6\u95F4\uFF08\u53EF\u9009\uFF09", "time"), end = field("\u7ED3\u675F\u65F6\u95F4\uFF08\u53EF\u9009\uFF09", "time");
+    start.step = end.step = "60";
+    start.value = this.task.startMinute === void 0 ? "" : clockLabel(this.task.startMinute);
+    end.value = this.task.endMinute === void 0 ? "" : clockLabel(this.task.endMinute);
+    form.createEl("small", { text: "\u4FDD\u5B58\u56DE\u539F\u7B14\u8BB0\uFF0C\u4FDD\u7559\u622A\u6B62\u65E5\u671F\u4E0E\u5757\u5F15\u7528\u3002", cls: "tsc-muted" });
+    const error = form.createDiv({ cls: "tsc-error", attr: { role: "alert" } });
+    const actions = form.createDiv({ cls: "tsc-dialog-actions" });
+    const cancel = actions.createEl("button", { text: "\u53D6\u6D88", attr: { type: "button" } });
+    cancel.onclick = () => this.close();
+    const save = actions.createEl("button", { text: "\u4FDD\u5B58\u5B89\u6392", cls: "mod-cta", attr: { type: "submit" } });
+    form.onsubmit = async (e) => {
+      e.preventDefault();
+      if (this.pending || !this.host.scheduleTask) return;
+      try {
+        parseDay(date.value);
+        if (end.value && !start.value) throw Error("\u8BF7\u5148\u586B\u5199\u5F00\u59CB\u65F6\u95F4");
+        const minute = (v) => {
+          const [h, m] = v.split(":").map(Number);
+          return h * 60 + m;
+        };
+        if (start.value && end.value && minute(end.value) <= minute(start.value)) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4");
+        this.pending = true;
+        [date, start, end, cancel, save].forEach((el) => el.disabled = true);
+        await this.host.scheduleTask(this.task, date.value, start.value ? minute(start.value) : void 0, end.value ? minute(end.value) : void 0, !start.value && this.task.startMinute !== void 0);
+        this.host.changed();
+        this.close();
+      } catch (e2) {
+        if (!this.closed) error.textContent = e2 instanceof Error ? e2.message : String(e2);
+      } finally {
+        this.pending = false;
+        if (!this.closed) [date, start, end, cancel, save].forEach((el) => el.disabled = false);
+      }
+    };
+    date.focus();
+  }
+  onClose() {
+    this.closed = true;
+    this.contentEl.empty();
+  }
+};
+
+// src/calendar-scheduling.ts
+var stale = () => new Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
+function resolveCalendarTask(tasks, displayed) {
+  if (!Number.isInteger(displayed.line) || (displayed.line ?? -1) < 0 || typeof displayed.sourceSnapshot !== "string") throw stale();
+  const current = tasks.find((task) => task.path === displayed.source && task.line === displayed.line);
+  if (!current || current.source !== displayed.sourceSnapshot || current.checked !== displayed.completed) throw stale();
+  if (current.recurring && current.indexRevision !== displayed.indexRevision) throw stale();
+  const role = displayed.dateRole;
+  const expected = role === "scheduled" ? current.scheduled : role === "due" ? current.due : role === "day" ? !current.scheduled && !current.due ? current.day : void 0 : role === "unscheduled" && !current.scheduled && !current.due && !current.day ? "" : void 0;
+  if (expected === void 0 || expected !== displayed.date || current.scheduled !== displayed.scheduledDate) throw stale();
+  return current;
+}
+function calendarTaskCanSchedule(task) {
+  return !task.completed && typeof task.sourceSnapshot === "string" && Number.isInteger(task.line) && (task.line ?? -1) >= 0 && !!task.dateRole && !(task.dateRole === "due" && !!task.scheduledDate);
+}
+function snapCalendarMinute(value) {
+  if (!Number.isFinite(value)) throw Error("\u65F6\u95F4\u65E0\u6548");
+  return Math.min(1440, Math.max(0, Math.round(value / 15) * 15));
+}
+function taskSchedulingChange(task, date, startMinute, endMinute) {
+  parseDay(date);
+  if (!calendarTaskCanSchedule(task)) throw Error(task.completed ? "\u5DF2\u5B8C\u6210\u4EFB\u52A1\u4E0D\u80FD\u91CD\u65B0\u5B89\u6392" : task.dateRole === "due" && task.scheduledDate ? "\u8FD9\u662F\u622A\u6B62\u65E5\u671F\uFF0C\u8BF7\u62D6\u52A8\u4EFB\u52A1\u7684\u5B89\u6392\u65E5\u671F" : "\u8BF7\u5237\u65B0\u4EFB\u52A1\u540E\u518D\u5B89\u6392");
+  if (startMinute === void 0) {
+    if (endMinute !== void 0) throw Error("\u8BF7\u5148\u8BBE\u7F6E\u5F00\u59CB\u65F6\u95F4");
+    return { scheduled: date };
+  }
+  if (!Number.isInteger(startMinute) || startMinute < 0 || startMinute > 1438) throw Error("\u5F00\u59CB\u65F6\u95F4\u987B\u5728 00:00 \u81F3 23:58 \u4E4B\u95F4");
+  const start = startMinute;
+  if (endMinute !== void 0 && (!Number.isInteger(endMinute) || endMinute <= start || endMinute > 1440)) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u4E14\u4E0D\u8D85\u8FC7\u5F53\u5929");
+  const duration = task.endMinute !== void 0 && task.startMinute !== void 0 && task.endMinute > task.startMinute ? task.endMinute - task.startMinute : 30;
+  const finish = endMinute === void 0 ? start + duration : endMinute;
+  const end = Math.min(1439, finish);
+  return { scheduled: date, time: { start: clockLabel(start), end: clockLabel(end) } };
+}
+function assertEvent(event) {
+  if (!event.editable) throw Error("\u8FD9\u4E2A\u65E5\u7A0B\u53EA\u8BFB\uFF0C\u65E0\u6CD5\u8C03\u6574");
+  const start = new Date(event.start), end = new Date(event.end);
+  if (!Number.isFinite(+start) || !Number.isFinite(+end) || end <= start) throw Error("\u65E5\u7A0B\u65F6\u95F4\u65E0\u6548");
+  if (!event.id || !event.calendarId || !event.revision) throw Error("\u8BF7\u5237\u65B0\u65E5\u7A0B\u540E\u518D\u8C03\u6574");
+  return { start, end };
+}
+function draft(event, start, end) {
+  if (end <= start || +end - +start > 366 * 864e5) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u6700\u957F\u4E00\u5E74");
+  parseDay(dayKey(start));
+  parseDay(dayKey(end));
+  return { title: event.title, start: start.toISOString(), end: end.toISOString(), allDay: event.allDay, calendarId: event.calendarId, location: event.location, notes: event.notes, eventId: event.id, originalStart: event.start, revision: event.revision };
+}
+function localMinute(date, minute) {
+  if (minute === 1440) return addDays(parseDay(date), 1);
+  return parseDateInput(`${date}T${clockLabel(minute)}`, false);
+}
+var civilDayNumber = (date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 864e5;
+function eventMoveDraft(event, date, startMinute) {
+  const original = assertEvent(event), day = parseDay(date);
+  if (startMinute === void 0 && dayKey(original.start) === date) return draft(event, original.start, original.end);
+  if (event.allDay) {
+    if (startMinute !== void 0) throw Error("\u5168\u5929\u65E5\u7A0B\u8BF7\u62D6\u5230\u65E5\u671F\u6216\u5168\u5929\u533A\u57DF");
+    const days = civilDayNumber(original.end) - civilDayNumber(original.start);
+    if (days < 1 || !Number.isInteger(days)) throw Error("\u5168\u5929\u65E5\u7A0B\u65F6\u95F4\u65E0\u6548");
+    return draft(event, day, addDays(day, days));
+  }
+  const minute = startMinute === void 0 ? original.start.getHours() * 60 + original.start.getMinutes() : Math.min(1425, snapCalendarMinute(startMinute));
+  const start = localMinute(date, minute);
+  if (startMinute === void 0) start.setSeconds(original.start.getSeconds(), original.start.getMilliseconds());
+  return draft(event, start, new Date(+start + (+original.end - +original.start)));
+}
+function eventResizeDraft(event, date, endMinute) {
+  const { start, end } = assertEvent(event);
+  parseDay(date);
+  if (event.allDay) throw Error("\u5168\u5929\u65E5\u7A0B\u8BF7\u6253\u5F00\u7F16\u8F91\u7A97\u53E3\u8C03\u6574\u65E5\u671F");
+  const snapped = snapCalendarMinute(endMinute);
+  if (dayKey(end) === date && end.getHours() * 60 + end.getMinutes() === snapped) return draft(event, start, end);
+  return draft(event, start, localMinute(date, snapped));
+}
+
 // src/large-calendar-view.ts
 var weekday = ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u65E5"];
 var time = (date) => new Date(date).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+var datedTime = (iso, day) => {
+  const date = new Date(iso);
+  return `${dayKey(date) === dayKey(day) ? "" : `${date.getMonth() + 1}/${date.getDate()} `}${time(iso)}`;
+};
 var resumeState = Symbol.for("thoughtspace-calendar.large-calendar-resume");
-var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemView {
+var dragType = "application/x-thoughtspace-calendar-item";
+var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemView {
   constructor(leaf, host) {
     super(leaf);
     this.host = host;
@@ -18341,6 +18790,15 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
   anchor = /* @__PURE__ */ new Date();
   events = [];
   tasks = [];
+  backlog = [];
+  drag;
+  resizing;
+  saving = false;
+  deferredRefresh = false;
+  deferredForce = false;
+  externalDragging = false;
+  externalDragTimer;
+  suppressClickUntil = 0;
   revision = 0;
   closed = false;
   timer;
@@ -18416,13 +18874,25 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
     this.iconButton(actions, "refresh-cw", "\u5237\u65B0\u65E5\u7A0B\u548C\u4EFB\u52A1", () => void this.refresh(true));
     this.iconButton(actions, "calendar-cog", "\u82F9\u679C\u65E5\u5386\u8FDE\u63A5\u4E0E\u9009\u62E9", () => new AppleCalendarConnectionModal(this.host).open());
     const create = actions.createEl("button", { cls: "mod-cta tsc-add-event" });
-    (0, import_obsidian9.setIcon)(create.createSpan(), "plus");
+    (0, import_obsidian10.setIcon)(create.createSpan(), "plus");
     create.createSpan({ text: "\u65B0\u65E5\u7A0B" });
     create.onclick = () => this.openEvent();
     const body = this.contentEl.createDiv({ cls: "tsc-large-body" });
     this.main = body.createDiv({ cls: "tsc-large-main" });
     this.agenda = body.createEl("aside", { cls: "tsc-day-agenda" });
     this.status = this.contentEl.createDiv({ cls: "tsc-large-status", attr: { role: "status", "aria-live": "polite" } });
+    this.registerDomEvent(this.win, "keydown", (e) => {
+      if (e.key === "Escape") {
+        this.resizing?.();
+        this.endDrag();
+      }
+    });
+    this.registerDomEvent(this.win, "dragend", () => {
+      this.externalDragging = false;
+      this.win.clearTimeout(this.externalDragTimer);
+      this.clearDropPreview();
+      this.flushDeferred();
+    });
     this.registerDomEvent(this.win, "focus", () => {
       if (this.visible()) void this.refresh();
     });
@@ -18435,8 +18905,12 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
   async onClose() {
     this.leaf[resumeState] = this.getState();
     this.closed = true;
+    this.resizing?.();
+    this.drag = void 0;
     this.revision++;
     this.win?.clearInterval(this.timer);
+    this.win?.clearTimeout(this.externalDragTimer);
+    this.externalDragging = false;
     this.contentEl.empty();
   }
   visible() {
@@ -18450,20 +18924,32 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
   }
   async refresh(force = false) {
     if (this.closed) return;
+    if (this.drag || this.externalDragging || this.resizing || this.saving) {
+      this.deferredRefresh = true;
+      this.deferredForce ||= force;
+      return;
+    }
     const revision = ++this.revision;
     const days = visibleDays(this.anchor, this.mode), end = addDays(days.at(-1), 1);
     this.title.textContent = this.mode === "month" ? `${this.anchor.getFullYear()} \u5E74 ${this.anchor.getMonth() + 1} \u6708` : `${days[0].getMonth() + 1} \u6708 ${days[0].getDate()} \u65E5 \u2014 ${days[6].getMonth() + 1} \u6708 ${days[6].getDate()} \u65E5`;
     for (const [mode, button] of this.modeButtons) button.setAttribute("aria-pressed", String(mode === this.mode));
     this.status.textContent = "\u6B63\u5728\u52A0\u8F7D\u2026";
-    const results = await Promise.allSettled([this.host.apple.events(days[0], end, force), this.host.tasks(days[0], end)]);
+    const results = await Promise.allSettled([this.host.apple.events(days[0], end, force), this.host.tasks(days[0], end), this.host.unscheduledTasks?.() ?? Promise.resolve([])]);
     if (this.closed || revision !== this.revision) return;
-    const [apple, tasks] = results;
+    if (this.drag || this.externalDragging || this.resizing || this.saving) {
+      this.deferredRefresh = true;
+      this.deferredForce ||= force;
+      return;
+    }
+    const [apple, tasks, backlog] = results;
     this.events = apple.status === "fulfilled" ? apple.value.events : [];
     this.tasks = tasks.status === "fulfilled" ? tasks.value : [];
+    this.backlog = backlog.status === "fulfilled" ? backlog.value : [];
     this.renderCalendar(days);
     this.renderAgenda();
     if (apple.status === "rejected") this.status.textContent = apple.reason instanceof Error ? apple.reason.message : "\u82F9\u679C\u65E5\u7A0B\u52A0\u8F7D\u5931\u8D25";
     else if (tasks.status === "rejected") this.status.textContent = "\u672C\u5730\u4EFB\u52A1\u52A0\u8F7D\u5931\u8D25\uFF0C\u53EF\u70B9\u51FB\u5237\u65B0\u91CD\u8BD5";
+    else if (backlog.status === "rejected") this.status.textContent = "\u5F85\u5B89\u6392\u4EFB\u52A1\u52A0\u8F7D\u5931\u8D25\uFF0C\u53EF\u70B9\u51FB\u5237\u65B0\u91CD\u8BD5";
     else if (apple.value.truncated) this.status.textContent = "\u6B64\u8303\u56F4\u65E5\u7A0B\u8D85\u8FC7 2,000 \u6761\uFF0C\u8BF7\u5207\u6362\u5468\u89C6\u56FE\u6216\u51CF\u5C11\u663E\u793A\u7684\u65E5\u5386";
     else this.status.textContent = this.host.appleSettings().enabled ? "\u5DF2\u540C\u6B65 \xB7 \u82F9\u679C\u65E5\u7A0B\u548C\u672C\u5730\u4EFB\u52A1" : "\u672C\u5730\u65E5\u5386 \xB7 \u70B9\u51FB\u53F3\u4E0A\u89D2\u65E5\u5386\u8BBE\u7F6E\u8FDE\u63A5\u82F9\u679C\u65E5\u5386";
   }
@@ -18489,6 +18975,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
     for (const day of days) {
       const key = dayKey(day);
       const cell = grid.createDiv({ cls: "tsc-month-day", attr: { "data-date": key } });
+      this.dropTarget(cell, day, false);
       cell.toggleClass("is-other-month", day.getMonth() !== this.anchor.getMonth());
       cell.toggleClass("is-selected", key === dayKey(this.selected));
       cell.toggleClass("is-today", key === today);
@@ -18503,8 +18990,21 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
         this.openEvent(void 0, at);
       }).addClass("tsc-day-add");
       const events = eventsOnDay(this.events, day);
-      for (const event of events.slice(0, 3)) this.eventChip(cell, event);
+      for (const event of events.slice(0, 3)) this.eventChip(cell, event, day);
       const tasks = this.tasks.filter((task) => task.date === key && !task.completed);
+      for (const task of tasks.slice(0, 2)) {
+        const chip = cell.createEl("button", { cls: "tsc-event-chip tsc-task-chip", text: task.text });
+        chip.style.setProperty("--event-accent", "var(--tsc-accent)");
+        chip.title = task.text;
+        chip.onclick = (e) => {
+          e.stopPropagation();
+          if (Date.now() > this.suppressClickUntil) {
+            this.select(day);
+            this.schedule(task);
+          }
+        };
+        this.makeDraggable(chip, { kind: "task", task });
+      }
       if (tasks.length) {
         const badge = cell.createEl("button", { cls: "tsc-cell-tasks", text: `${tasks.length} \u9879\u5F85\u529E` });
         badge.onclick = () => this.select(day);
@@ -18539,8 +19039,9 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
     allDay.createSpan({ text: "\u5168\u5929" });
     for (const day of days) {
       const column = allDay.createDiv();
+      this.dropTarget(column, day, false);
       const events = eventsOnDay(this.events, day).filter((e) => e.allDay);
-      for (const event of events.slice(0, 3)) this.eventChip(column, event);
+      for (const event of events.slice(0, 3)) this.eventChip(column, event, day);
       if (events.length > 3) {
         const more = column.createEl("button", { text: `+${events.length - 3} \u9879`, cls: "tsc-cell-more" });
         more.onclick = () => this.select(day);
@@ -18551,6 +19052,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
     for (let hour = 0; hour < 24; hour++) axis.createSpan({ text: `${String(hour).padStart(2, "0")}:00` });
     for (const day of days) {
       const column = body.createDiv({ cls: "tsc-week-column", attr: { "data-date": dayKey(day) } });
+      this.dropTarget(column, day, true);
       const taskEvents = /* @__PURE__ */ new Map();
       for (const task of this.tasks.filter((t) => t.date === dayKey(day) && !t.completed && t.startMinute !== void 0)) {
         const startMinute = task.startMinute;
@@ -18578,19 +19080,21 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
       const segments = timedSegments([...this.events, ...taskEvents.keys()], day);
       for (const segment of segments.slice(0, 60)) {
         const task = taskEvents.get(segment.event);
-        const chip = task ? column.createEl("button", { cls: "tsc-event-chip tsc-task-chip", text: task.text }) : this.eventChip(column, segment.event);
+        const chip = task ? column.createEl("button", { cls: "tsc-event-chip tsc-task-chip", text: task.text }) : this.eventChip(column, segment.event, day);
         if (task) {
           chip.style.setProperty("--event-accent", "#6b997a");
           chip.onclick = (e) => {
             e.stopPropagation();
-            void this.host.openTask(task);
+            if (Date.now() > this.suppressClickUntil) this.run(() => this.host.openTask(task));
           };
+          this.makeDraggable(chip, { kind: "task", task });
         }
         chip.addClass("tsc-week-event");
         chip.style.top = `${segment.start / 1440 * 100}%`;
         chip.style.height = `max(28px, ${Math.max(15, segment.end - segment.start) / 1440 * 100}%)`;
         chip.style.left = `calc(${segment.lane / segment.lanes * 100}% + 3px)`;
         chip.style.width = `calc(${100 / segment.lanes}% - 6px)`;
+        this.resizeHandle(chip, column, day, task ? { kind: "task", task } : { kind: "event", event: segment.event });
       }
       if (segments.length > 60) {
         const more = column.createEl("button", { text: `\u53E6\u6709 ${segments.length - 60} \u9879`, cls: "tsc-week-overflow" });
@@ -18600,7 +19104,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
         };
       }
       column.onclick = (e) => {
-        if (e.target !== column) return;
+        if (e.target !== column || Date.now() < this.suppressClickUntil || this.saving) return;
         const rect = column.getBoundingClientRect();
         const minute = Math.max(0, Math.min(1410, Math.round((e.clientY - rect.top) / rect.height * 1440 / 30) * 30));
         const date = new Date(day);
@@ -18614,7 +19118,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
       }
     }
   }
-  eventChip(parent, event) {
+  eventChip(parent, event, day) {
     const chip = parent.createEl("button", { cls: "tsc-event-chip", attr: { title: `${event.title}${event.allDay ? " \xB7 \u5168\u5929" : ` \xB7 ${time(event.start)}\u2013${time(event.end)}`}` } });
     chip.style.setProperty("--event-accent", /^#[0-9a-f]{6}$/i.test(event.color) ? event.color : "#447c83");
     chip.dataset.occurrence = occurrenceKey(event);
@@ -18622,56 +19126,308 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
     chip.createSpan({ text: event.title });
     chip.onclick = (e) => {
       e.stopPropagation();
-      this.openEvent(event);
+      if (Date.now() > this.suppressClickUntil) this.openEvent(event);
     };
+    this.makeDraggable(chip, { kind: "event", event }, day);
     return chip;
   }
   renderAgenda() {
+    const scroll = this.agenda.scrollTop;
+    const openSections = new Set([...this.agenda.querySelectorAll("details[open]")].map((el) => el.className));
     this.agenda.empty();
     const head = this.agenda.createDiv({ cls: "tsc-agenda-heading" });
     head.createSpan({ text: this.selected.toLocaleDateString("zh-CN", { weekday: "long" }), cls: "tsc-eyebrow" });
     head.createEl("h3", { text: `${this.selected.getMonth() + 1} \u6708 ${this.selected.getDate()} \u65E5` });
     const actions = head.createDiv({ cls: "tsc-agenda-actions" });
     const journal = actions.createEl("button", { text: "\u6253\u5F00\u65E5\u8BB0" });
-    journal.onclick = () => void this.host.openJournal(new Date(this.selected));
+    journal.onclick = () => this.run(() => this.host.openJournal(new Date(this.selected)));
     this.iconButton(actions, "plus", "\u65B0\u5EFA\u65E5\u7A0B", () => this.openEvent());
     const events = eventsOnDay(this.events, new Date(this.selected.getFullYear(), this.selected.getMonth(), this.selected.getDate()));
-    this.agenda.createEl("h4", { text: `\u65E5\u7A0B \xB7 ${events.length}` });
-    const list = this.agenda.createDiv({ cls: "tsc-agenda-list" });
-    if (!events.length) list.createEl("p", { text: "\u6CA1\u6709\u65E5\u7A0B\u5B89\u6392", cls: "tsc-muted" });
-    let shown = 0;
-    const appendEvents = () => {
-      for (const event of events.slice(shown, shown + 50)) {
-        const row = list.createEl("button", { cls: "tsc-agenda-event" });
-        row.createSpan({ text: event.allDay ? "\u5168\u5929" : `${time(event.start)}\u2013${time(event.end)}`, cls: "tsc-agenda-time" });
-        row.createEl("strong", { text: event.title });
-        if (event.location) row.createEl("small", { text: event.location });
-        row.style.setProperty("--event-accent", /^#[0-9a-f]{6}$/i.test(event.color) ? event.color : "#447c83");
-        row.onclick = () => this.openEvent(event);
-      }
-      shown = Math.min(shown + 50, events.length);
-    };
-    appendEvents();
-    if (shown < events.length) {
-      const more = this.agenda.createEl("button", { text: `\u5C55\u5F00\u66F4\u591A\uFF08${events.length - shown} \u9879\uFF09`, cls: "tsc-agenda-more" });
-      more.onclick = () => {
-        appendEvents();
-        more.textContent = `\u5C55\u5F00\u66F4\u591A\uFF08${events.length - shown} \u9879\uFF09`;
-        more.hidden = shown >= events.length;
-      };
-    }
     const tasks = this.tasks.filter((task) => task.date === dayKey(this.selected));
-    this.agenda.createEl("h4", { text: `\u5F85\u529E \xB7 ${tasks.filter((t) => !t.completed).length}` });
-    const taskList = this.agenda.createDiv({ cls: "tsc-agenda-list" });
-    if (!tasks.length) taskList.createEl("p", { text: "\u6CA1\u6709\u5F53\u65E5\u5F85\u529E", cls: "tsc-muted" });
-    for (const task of tasks.slice(0, 100)) {
-      const row = taskList.createEl("button", { cls: "tsc-agenda-task" });
-      (0, import_obsidian9.setIcon)(row.createSpan(), task.completed ? "circle-check" : "circle");
-      row.createSpan({ text: task.text });
-      row.toggleClass("is-completed", task.completed);
-      row.onclick = () => void this.host.openTask(task);
+    const section = (title) => {
+      this.agenda.createEl("h4", { text: title });
+      return this.agenda.createDiv({ cls: "tsc-agenda-list" });
+    };
+    const allDay = events.filter((e) => e.allDay);
+    if (allDay.length) this.paged(section(`\u5168\u5929 \xB7 ${allDay.length}`), allDay, (list, event) => this.agendaEvent(list, event));
+    const timed = events.filter((e) => !e.allDay).map((event) => ({ minute: dayKey(new Date(event.start)) < dayKey(this.selected) ? 0 : new Date(event.start).getHours() * 60 + new Date(event.start).getMinutes(), event }));
+    timed.push(...tasks.filter((t) => !t.completed && t.startMinute !== void 0).map((task) => ({ minute: task.startMinute, task })));
+    timed.sort((a, b) => a.minute - b.minute);
+    const timeline = section(`\u65F6\u95F4\u7EBF \xB7 ${timed.length}`);
+    timeline.addClass("tsc-linked-timeline");
+    if (!timed.length) timeline.createEl("p", { text: "\u4E3A\u5F85\u529E\u5B89\u6392\u65F6\u95F4\uFF0C\u548C\u65E5\u7A0B\u4E00\u8D77\u67E5\u770B\u3002", cls: "tsc-muted" });
+    this.paged(timeline, timed, (list, item) => item.event ? this.agendaEvent(list, item.event) : this.agendaTask(list, item.task));
+    const pending = tasks.filter((t) => !t.completed && t.startMinute === void 0);
+    if (pending.length) this.paged(section(`\u5F53\u65E5\u5F85\u529E \xB7 ${pending.length}`), pending, (list, task) => this.agendaTask(list, task));
+    const completed = tasks.filter((t) => t.completed);
+    if (completed.length) {
+      const details = this.agenda.createEl("details", { cls: "tsc-agenda-disclosure" });
+      details.createEl("summary", { text: `\u5DF2\u5B8C\u6210 \xB7 ${completed.length}` });
+      this.paged(details, completed, (list, task) => this.agendaTask(list, task));
     }
-    if (tasks.length > 100) taskList.createEl("p", { text: `\u53E6\u6709 ${tasks.length - 100} \u9879\uFF0C\u8BF7\u5728\u4EFB\u52A1\u7BA1\u7406\u4E2D\u67E5\u770B`, cls: "tsc-muted" });
+    if (this.backlog.length) {
+      const details = this.agenda.createEl("details", { cls: "tsc-agenda-disclosure tsc-backlog" });
+      details.createEl("summary", { text: `\u5F85\u5B89\u6392 \xB7 ${this.backlog.length}` });
+      details.createEl("p", { text: "\u62D6\u5230\u65E5\u671F\u6216\u5468\u89C6\u56FE\uFF0C\u4E5F\u53EF\u70B9\u51FB\u65F6\u949F\u5B89\u6392\u3002", cls: "tsc-muted" });
+      this.paged(details, this.backlog, (list, task) => this.agendaTask(list, task));
+    }
+    this.agenda.querySelectorAll("details").forEach((el) => {
+      el.open = openSections.has(el.className);
+    });
+    this.agenda.scrollTop = scroll;
+  }
+  paged(parent, items, render) {
+    const list = parent.createDiv({ cls: "tsc-agenda-items" });
+    let count = 0;
+    const more = parent.createEl("button", { cls: "tsc-agenda-more" });
+    const append = () => {
+      for (const item of items.slice(count, count + 40)) render(list, item);
+      count = Math.min(count + 40, items.length);
+      more.textContent = `\u5C55\u5F00\u66F4\u591A\uFF08${items.length - count} \u9879\uFF09`;
+      more.hidden = count >= items.length;
+    };
+    more.onclick = append;
+    append();
+  }
+  agendaEvent(parent, event) {
+    const card = parent.createDiv({ cls: "tsc-agenda-entry", attr: { "data-event-id": event.id } });
+    card.style.setProperty("--event-accent", /^#[0-9a-f]{6}$/i.test(event.color) ? event.color : "#447c83");
+    const row = card.createEl("button", { cls: "tsc-agenda-event" });
+    row.createSpan({ text: event.allDay ? "\u5168\u5929" : `${datedTime(event.start, this.selected)}\u2013${datedTime(event.end, this.selected)}`, cls: "tsc-agenda-time" });
+    row.createEl("strong", { text: event.title });
+    if (event.location) row.createEl("small", { text: event.location });
+    row.onclick = () => {
+      if (Date.now() > this.suppressClickUntil) this.openEvent(event);
+    };
+    this.makeDraggable(row, { kind: "event", event }, this.selected);
+    if (this.host.openEventNote) {
+      const actions = card.createDiv({ cls: "tsc-entry-actions" }), notes = this.host.eventNotes?.(event) ?? [];
+      const open = actions.createEl("button", { cls: "tsc-note-link", attr: { title: notes.map((n) => n.path).join("\n") } });
+      (0, import_obsidian10.setIcon)(open.createSpan(), notes.length ? "file-text" : "file-plus-2");
+      open.createSpan({ text: notes.length ? notes[0].name : "\u65B0\u5EFA\u5173\u8054\u7B14\u8BB0" });
+      open.onclick = () => this.run(() => this.host.openEventNote(event));
+      if (this.host.linkEventNote) this.iconButton(actions, "link", "\u5173\u8054\u5DF2\u6709\u7B14\u8BB0", () => this.host.linkEventNote(event));
+    }
+  }
+  agendaTask(parent, task) {
+    const card = parent.createDiv({ cls: "tsc-agenda-entry tsc-agenda-task-entry", attr: { "data-task-id": task.id } });
+    card.toggleClass("is-completed", task.completed);
+    if (task.startMinute !== void 0) card.createSpan({ text: clockLabel(task.startMinute) + (task.endMinute === void 0 ? "" : `\u2013${clockLabel(task.endMinute)}`), cls: "tsc-agenda-time" });
+    const row = card.createDiv({ cls: "tsc-agenda-task" });
+    const check = this.iconButton(row, task.completed ? "circle-check" : "circle", task.completed ? "\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1" : "\u5B8C\u6210\u4EFB\u52A1", () => void this.perform(() => this.host.toggleTask(task)));
+    check.disabled = !this.host.toggleTask || this.host.canToggleTask?.(task) === false;
+    check.setAttribute("aria-pressed", String(task.completed));
+    if (check.disabled) check.title = "\u91CD\u590D\u4EFB\u52A1\u9700\u542F\u7528\u517C\u5BB9\u7684 Tasks \u63D2\u4EF6\uFF0C\u6216\u5728\u539F\u6587\u4E2D\u5904\u7406";
+    const title = row.createEl("button", { cls: "tsc-task-title", text: task.text });
+    title.onclick = () => {
+      if (Date.now() > this.suppressClickUntil) this.run(() => this.host.openTask(task));
+    };
+    this.makeDraggable(title, { kind: "task", task });
+    const foot = card.createDiv({ cls: "tsc-entry-actions" });
+    foot.createSpan({ text: task.source.split("/").at(-1)?.replace(/\.md$/i, "") || "\u7B14\u8BB0", cls: "tsc-task-source", attr: { title: task.source } });
+    if (this.host.scheduleTask && calendarTaskCanSchedule(task)) this.iconButton(foot, "clock", "\u5B89\u6392\u4EFB\u52A1\u65F6\u95F4", () => this.schedule(task));
+    if (task.dateRole === "due") foot.createSpan({ text: "\u622A\u6B62", cls: "tsc-task-deadline" });
+  }
+  schedule(task) {
+    if (this.host.scheduleTask && calendarTaskCanSchedule(task)) new CalendarTaskScheduleModal(this.host, task, new Date(this.selected)).open();
+    else this.run(() => this.host.openTask(task));
+  }
+  run(action) {
+    if (this.closed) return;
+    void Promise.resolve().then(action).catch((e) => {
+      const message = e instanceof Error ? e.message : String(e);
+      if (!this.closed) this.status.textContent = message;
+      new import_obsidian10.Notice(message);
+    });
+  }
+  async perform(action) {
+    if (this.closed || this.saving) return;
+    this.saving = true;
+    this.revision++;
+    this.contentEl.addClass("is-saving");
+    this.status.textContent = "\u6B63\u5728\u4FDD\u5B58\u2026";
+    let error;
+    try {
+      await action();
+    } catch (e) {
+      error = e;
+    } finally {
+      this.saving = false;
+      this.deferredRefresh = false;
+      this.deferredForce = false;
+      this.contentEl.classList.remove("is-saving");
+      if (!this.closed) {
+        await this.refresh(true);
+        if (error) {
+          const message = error instanceof Error ? error.message : String(error);
+          this.status.textContent = message;
+          new import_obsidian10.Notice(message);
+        }
+      }
+    }
+  }
+  canDrag(item) {
+    return item.kind === "task" ? !!this.host.scheduleTask && calendarTaskCanSchedule(item.task) : item.event.editable;
+  }
+  makeDraggable(el, item, sourceDay) {
+    if (!this.canDrag(item) || item.kind === "event" && sourceDay && dayKey(new Date(item.event.start)) !== dayKey(sourceDay)) return;
+    el.draggable = true;
+    el.ondragstart = (e) => {
+      if (this.saving || this.resizing || !e.dataTransfer) {
+        e.preventDefault();
+        return;
+      }
+      const token = crypto.randomUUID();
+      this.drag = { item, token };
+      e.dataTransfer.setData(dragType, token);
+      e.dataTransfer.effectAllowed = "move";
+      el.addClass("is-dragging");
+    };
+    el.ondragend = () => {
+      el.classList.remove("is-dragging");
+      this.endDrag();
+    };
+  }
+  endDrag() {
+    this.drag = void 0;
+    this.clearDropPreview();
+    this.flushDeferred();
+  }
+  flushDeferred() {
+    if (this.deferredRefresh && !this.externalDragging && !this.resizing && !this.saving && !this.closed) {
+      const force = this.deferredForce;
+      this.deferredRefresh = false;
+      this.deferredForce = false;
+      void this.refresh(force);
+    }
+  }
+  clearDropPreview() {
+    this.contentEl.querySelectorAll(".is-drop-target").forEach((el) => el.classList.remove("is-drop-target"));
+    this.contentEl.querySelectorAll(".tsc-drop-preview").forEach((el) => el.remove());
+  }
+  dropTarget(el, day, timed) {
+    const minute = (y) => Math.min(1425, snapCalendarMinute((y - el.getBoundingClientRect().top) / el.getBoundingClientRect().height * 1440));
+    el.ondragover = (e) => {
+      const external = canReadCalendarTaskDrag(this.host.app, e.dataTransfer);
+      if (this.saving || !e.dataTransfer || !external && (!this.drag || !e.dataTransfer.types.includes(dragType)) || timed && this.drag?.item.kind === "event" && this.drag.item.event.allDay) return;
+      this.externalDragging = external;
+      this.win.clearTimeout(this.externalDragTimer);
+      if (external) this.externalDragTimer = this.win.setTimeout(() => {
+        this.externalDragging = false;
+        this.clearDropPreview();
+        this.flushDeferred();
+      }, 350);
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+      this.clearDropPreview();
+      el.addClass("is-drop-target");
+      if (timed) {
+        const at = minute(e.clientY), preview = el.createDiv({ cls: "tsc-drop-preview", text: clockLabel(at) });
+        preview.style.top = `${at / 1440 * 100}%`;
+      }
+    };
+    el.ondragleave = (e) => {
+      if (!el.contains(e.relatedTarget)) this.clearDropPreview();
+    };
+    el.ondrop = (e) => {
+      const drag = this.drag, external = readCalendarTaskDrag(this.host.app, e.dataTransfer);
+      if (this.saving || !e.dataTransfer || !external && (!drag || e.dataTransfer.getData(dragType) !== drag.token)) return;
+      const item = external ? { kind: "task", task: external } : drag.item;
+      if (timed && item.kind === "event" && item.event.allDay) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const at = timed ? minute(e.clientY) : void 0;
+      this.suppressClickUntil = Date.now() + 300;
+      this.drag = void 0;
+      this.externalDragging = false;
+      endCalendarTaskDrag(this.host.app);
+      this.clearDropPreview();
+      this.selected = new Date(day);
+      this.saveLayout();
+      void this.perform(() => this.moveItem(item, day, at));
+    };
+  }
+  async moveItem(item, day, minute) {
+    if (item.kind === "task") {
+      await this.host.scheduleTask(item.task, dayKey(day), minute);
+      return;
+    }
+    const detail = await this.host.apple.detail(item.event);
+    if (this.closed) throw Error("\u65E5\u5386\u5DF2\u5173\u95ED\uFF0C\u64CD\u4F5C\u5DF2\u53D6\u6D88");
+    if (detail.revision !== item.event.revision) throw Error("\u65E5\u7A0B\u5DF2\u5728\u82F9\u679C\u65E5\u5386\u4E2D\u66F4\u65B0\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u65B0\u8C03\u6574");
+    const draft2 = eventMoveDraft(detail, dayKey(day), minute);
+    if (draft2.start === detail.start && draft2.end === detail.end) return;
+    const saved = await this.host.apple.save(draft2);
+    await this.preserveEventLinks(detail, saved);
+  }
+  async preserveEventLinks(before, after) {
+    try {
+      await this.host.eventMoved?.(before, after);
+    } catch {
+      throw Error("\u65E5\u7A0B\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u7B14\u8BB0\u5173\u8054\u66F4\u65B0\u5931\u8D25\uFF0C\u8BF7\u91CD\u65B0\u5173\u8054\u5DF2\u6709\u7B14\u8BB0");
+    }
+  }
+  resizeHandle(chip, column, day, item) {
+    if (!this.canDrag(item) || item.kind === "event" && (item.event.allDay || Date.parse(item.event.end) > +addDays(day, 1) || Date.parse(item.event.end) <= +day)) return;
+    const handle = chip.createSpan({ cls: "tsc-resize-handle", attr: { title: "\u62D6\u52A8\u8C03\u6574\u7ED3\u675F\u65F6\u95F4\uFF1B\u7CBE\u786E\u65F6\u95F4\u53EF\u6253\u5F00\u7F16\u8F91" } });
+    handle.onpointerdown = (e) => {
+      if (e.button !== 0 || this.saving || this.resizing) return;
+      e.preventDefault();
+      e.stopPropagation();
+      const original = chip.style.height, rect = column.getBoundingClientRect(), pointer = e.pointerId;
+      const start = item.kind === "task" ? item.task.startMinute : Date.parse(item.event.start) < +day ? 0 : new Date(item.event.start).getHours() * 60 + new Date(item.event.start).getMinutes();
+      const oldEnd = item.kind === "task" ? item.task.endMinute ?? start + 30 : dayKey(new Date(item.event.end)) > dayKey(day) ? 1440 : new Date(item.event.end).getHours() * 60 + new Date(item.event.end).getMinutes();
+      let end = oldEnd, moved = false;
+      const wasDraggable = chip.draggable;
+      chip.draggable = false;
+      chip.addClass("is-resizing");
+      const move = (event) => {
+        if (event.pointerId !== pointer) return;
+        end = Math.max(start + 15, Math.min(1440, snapCalendarMinute((event.clientY - rect.top) / rect.height * 1440)));
+        moved = true;
+        chip.style.height = `max(28px,${(end - start) / 1440 * 100}%)`;
+        handle.title = `\u7ED3\u675F ${clockLabel(Math.min(1439, end))}`;
+      };
+      const cleanup = () => {
+        this.win.removeEventListener("pointermove", move);
+        this.win.removeEventListener("pointerup", up);
+        this.win.removeEventListener("pointercancel", cancel);
+        this.win.removeEventListener("blur", cancel);
+        this.resizing = void 0;
+        chip.style.height = original;
+        chip.draggable = wasDraggable;
+        chip.classList.remove("is-resizing");
+      };
+      const cancel = () => {
+        cleanup();
+        this.suppressClickUntil = Date.now() + 300;
+        this.flushDeferred();
+      };
+      const up = (event) => {
+        if (event.pointerId !== pointer) return;
+        cleanup();
+        this.suppressClickUntil = Date.now() + 300;
+        if (!moved || end === oldEnd) {
+          this.flushDeferred();
+          return;
+        }
+        void this.perform(async () => {
+          if (item.kind === "task") await this.host.scheduleTask(item.task, dayKey(day), start, Math.min(1439, end));
+          else {
+            const detail = await this.host.apple.detail(item.event);
+            if (this.closed) throw Error("\u65E5\u5386\u5DF2\u5173\u95ED\uFF0C\u64CD\u4F5C\u5DF2\u53D6\u6D88");
+            if (detail.revision !== item.event.revision) throw Error("\u65E5\u7A0B\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u8C03\u6574");
+            const saved = await this.host.apple.save(eventResizeDraft(detail, dayKey(day), end));
+            await this.preserveEventLinks(detail, saved);
+          }
+        });
+      };
+      this.resizing = cancel;
+      this.win.addEventListener("pointermove", move);
+      this.win.addEventListener("pointerup", up);
+      this.win.addEventListener("pointercancel", cancel);
+      this.win.addEventListener("blur", cancel);
+    };
   }
   openEvent(event, date) {
     if (!this.host.appleSettings().enabled) {
@@ -18684,14 +19440,14 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian9.ItemVi
   }
   iconButton(parent, icon, title, callback) {
     const button = parent.createEl("button", { cls: "tsc-icon-button", attr: { "aria-label": title, title } });
-    (0, import_obsidian9.setIcon)(button, icon);
+    (0, import_obsidian10.setIcon)(button, icon);
     button.onclick = callback;
     return button;
   }
 };
 
 // src/register-large-calendar.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 function registerLargeCalendar(plugin, host) {
   plugin.registerView(LargeCalendarView.type, (leaf) => new LargeCalendarView(leaf, host));
   let opening;
@@ -18711,7 +19467,7 @@ function registerLargeCalendar(plugin, host) {
     })().finally(() => opening = void 0);
     return opening;
   };
-  const reveal = () => void open().catch((error) => new import_obsidian10.Notice(String(error)));
+  const reveal = () => void open().catch((error) => new import_obsidian11.Notice(String(error)));
   plugin.addCommand({ id: "open-large-calendar", name: "\u6253\u5F00\u5927\u65E5\u5386", callback: reveal });
   plugin.addCommand({ id: "connect-apple-calendar", name: "\u82F9\u679C\u65E5\u5386\u8FDE\u63A5\u4E0E\u9009\u62E9", callback: () => new AppleCalendarConnectionModal(host).open() });
   plugin.addRibbonIcon("calendar-range", "\u6253\u5F00\u5927\u65E5\u5386", reveal);
@@ -18722,38 +19478,205 @@ function registerLargeCalendar(plugin, host) {
   return open;
 }
 function renderAppleCalendarSetting(container, host, open) {
-  new import_obsidian10.Setting(container).setName("\u5927\u65E5\u5386").setDesc("\u5728\u4E3B\u5DE5\u4F5C\u533A\u6253\u5F00\u6708\u89C6\u56FE\u548C\u5468\u65F6\u95F4\u683C\uFF0C\u67E5\u770B\u65E5\u7A0B\u3001\u5F85\u529E\u548C\u65E5\u8BB0\u3002").addButton((button) => button.setButtonText("\u6253\u5F00").onClick(() => void open()));
-  new import_obsidian10.Setting(container).setName("\u82F9\u679C\u65E5\u5386\u53CC\u5411\u8054\u52A8").setDesc("macOS 14 \u53CA\u4EE5\u4E0A\u3002\u5728\u9009\u62E9\u7684\u65E5\u5386\u4E2D\u67E5\u770B\u3001\u65B0\u5EFA\u548C\u4FEE\u6539\u65E5\u7A0B\u3002").addButton((button) => button.setButtonText(host.appleSettings().enabled ? "\u7BA1\u7406\u8FDE\u63A5" : "\u8FDE\u63A5\u82F9\u679C\u65E5\u5386").onClick(() => new AppleCalendarConnectionModal(host).open()));
+  new import_obsidian11.Setting(container).setName("\u5927\u65E5\u5386").setDesc("\u5728\u4E3B\u5DE5\u4F5C\u533A\u6253\u5F00\u6708\u89C6\u56FE\u548C\u5468\u65F6\u95F4\u683C\uFF0C\u67E5\u770B\u65E5\u7A0B\u3001\u5F85\u529E\u548C\u65E5\u8BB0\u3002").addButton((button) => button.setButtonText("\u6253\u5F00").onClick(() => void open()));
+  new import_obsidian11.Setting(container).setName("\u82F9\u679C\u65E5\u5386\u53CC\u5411\u8054\u52A8").setDesc("macOS 14 \u53CA\u4EE5\u4E0A\u3002\u5728\u9009\u62E9\u7684\u65E5\u5386\u4E2D\u67E5\u770B\u3001\u65B0\u5EFA\u548C\u4FEE\u6539\u65E5\u7A0B\u3002").addButton((button) => button.setButtonText(host.appleSettings().enabled ? "\u7BA1\u7406\u8FDE\u63A5" : "\u8FDE\u63A5\u82F9\u679C\u65E5\u5386").onClick(() => new AppleCalendarConnectionModal(host).open()));
 }
 
-// src/calendar-task-adapter.ts
-function calendarTasks(tasks, start, end) {
-  const first = dayKey(start), last = dayKey(end), result = [];
-  for (const task of tasks) {
-    const days = task.scheduled || task.due ? [task.scheduled, task.due] : [task.day];
-    const slot = timeSlot(task.title);
-    for (const date of new Set(days)) if (date && date >= first && date < last) result.push({
-      id: `${task.path}:${task.line}`,
-      text: (slot?.title || task.title).replace(/\s+\^[A-Za-z0-9-]+\s*$/, "").trim(),
-      completed: task.checked,
-      date,
-      source: task.path,
-      line: task.line,
-      ...slot ? { startMinute: slot.start, ...slot.end !== void 0 ? { endMinute: slot.end } : {} } : {}
-    });
-  }
-  return result.sort((a, b) => a.date.localeCompare(b.date) || (a.startMinute ?? 1440) - (b.startMinute ?? 1440) || a.source.localeCompare(b.source) || (a.line ?? 0) - (b.line ?? 0));
+// src/calendar-note-links.ts
+var CALENDAR_EVENT_PROPERTY = "thoughtspace-calendar-events";
+function calendarEventNoteKey(event) {
+  if (!event.id || !event.calendarId) throw new Error("\u65E5\u7A0B\u6807\u8BC6\u7F3A\u5931\uFF0C\u8BF7\u5237\u65B0\u65E5\u5386\u540E\u91CD\u8BD5");
+  const start = event.recurring ? new Date(event.start).toISOString() : null;
+  return `apple:${JSON.stringify([1, event.calendarId, event.id, start])}`;
 }
+function isEventKey(value) {
+  if (typeof value !== "string" || !value.startsWith("apple:")) return false;
+  try {
+    const key = JSON.parse(value.slice(6));
+    return Array.isArray(key) && key.length === 4 && key[0] === 1 && typeof key[1] === "string" && !!key[1] && typeof key[2] === "string" && !!key[2] && (key[3] === null || typeof key[3] === "string" && Number.isFinite(Date.parse(key[3])));
+  } catch {
+    return false;
+  }
+}
+function calendarEventKeys(frontmatter) {
+  const value = frontmatter?.[CALENDAR_EVENT_PROPERTY];
+  return [...new Set((Array.isArray(value) ? value : [value]).filter(isEventKey))];
+}
+function updateCalendarEventKeys(frontmatter, add, remove = []) {
+  const original = frontmatter[CALENDAR_EVENT_PROPERTY];
+  if (original !== void 0 && original !== null && typeof original !== "string" && !(Array.isArray(original) && original.every((value) => typeof value === "string"))) {
+    throw new Error(`\u7B14\u8BB0\u5C5E\u6027 ${CALENDAR_EVENT_PROPERTY} \u5E94\u4E3A\u6587\u672C\u5217\u8868\uFF0C\u8BF7\u5148\u68C0\u67E5\u539F\u6587`);
+  }
+  if (!add.every(isEventKey)) throw new Error("\u65E5\u7A0B\u5173\u8054\u6807\u8BC6\u65E0\u6548");
+  const values = Array.isArray(original) ? original : typeof original === "string" ? [original] : [];
+  const removed = new Set(remove);
+  const next = [.../* @__PURE__ */ new Set([...values.filter((value) => !removed.has(value)), ...add])];
+  if (next.length) frontmatter[CALENDAR_EVENT_PROPERTY] = next;
+  else delete frontmatter[CALENDAR_EVENT_PROPERTY];
+  return next.filter(isEventKey);
+}
+var CalendarNoteLinks = class {
+  constructor(app, options) {
+    this.app = app;
+    this.options = options;
+    const metadata = app.metadataCache, vault = app.vault;
+    this.subscriptions.push({ offref: (ref) => metadata.offref(ref), ref: metadata.on("changed", (file, _data, cache) => {
+      if (this.index(file, calendarEventKeys(cache.frontmatter))) this.options.changed?.();
+    }) });
+    this.subscriptions.push({ offref: (ref) => vault.offref(ref), ref: vault.on("delete", (file) => {
+      if (this.removeTree(file)) this.options.changed?.();
+    }) });
+    this.subscriptions.push({ offref: (ref) => vault.offref(ref), ref: vault.on("rename", (file) => {
+      let affected = false;
+      for (const note of this.byFile.keys()) {
+        if (note === file || note.path.startsWith(`${file.path}/`)) {
+          affected = true;
+          if (note.extension !== "md") this.index(note, []);
+        }
+      }
+      if (isMarkdown(file)) affected = this.index(file, calendarEventKeys(metadata.getFileCache(file)?.frontmatter)) || affected;
+      if (affected) this.options.changed?.();
+    }) });
+    for (const file of vault.getMarkdownFiles()) this.index(file, calendarEventKeys(metadata.getFileCache(file)?.frontmatter));
+  }
+  byEvent = /* @__PURE__ */ new Map();
+  byFile = /* @__PURE__ */ new Map();
+  subscriptions = [];
+  pendingCreate = /* @__PURE__ */ new Map();
+  writes = Promise.resolve();
+  stopped = false;
+  linkedNotes(event) {
+    if (this.stopped) return [];
+    const key = calendarEventNoteKey(event), notes = [...this.byEvent.get(key) || []];
+    return notes.filter((file) => {
+      const exists = this.app.vault.getAbstractFileByPath(file.path) === file && file.extension === "md";
+      if (!exists) this.index(file, []);
+      return exists;
+    }).sort((a, b) => a.path.localeCompare(b.path));
+  }
+  async link(event, file) {
+    await this.change(file, [calendarEventNoteKey(event)]);
+  }
+  async unlink(event, file) {
+    await this.change(file, [], [calendarEventNoteKey(event)]);
+  }
+  /** Use after an occurrence is rescheduled so its reference remains reachable. */
+  async rekey(before, after) {
+    const oldKey = calendarEventNoteKey(before), newKey = calendarEventNoteKey(after);
+    if (oldKey === newKey) return;
+    const files = this.linkedNotes(before);
+    for (const file of files) await this.change(file, [newKey], [oldKey]);
+  }
+  async openOrCreate(event) {
+    this.assertActive();
+    const file = this.linkedNotes(event)[0] || await this.create(event);
+    this.assertActive();
+    if (this.app.vault.getAbstractFileByPath(file.path) !== file) throw new Error("\u5173\u8054\u7B14\u8BB0\u5DF2\u88AB\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5");
+    await this.options.openNote(file);
+    return file;
+  }
+  create(event) {
+    this.assertActive();
+    const key = calendarEventNoteKey(event), pending = this.pendingCreate.get(key);
+    if (pending) return pending;
+    const operation = (async () => {
+      const file = await this.options.createNote(event);
+      await this.link(event, file);
+      return file;
+    })();
+    this.pendingCreate.set(key, operation);
+    void operation.finally(() => {
+      if (this.pendingCreate.get(key) === operation) this.pendingCreate.delete(key);
+    }).catch(() => {
+    });
+    return operation;
+  }
+  dispose() {
+    this.stopped = true;
+    for (const { offref, ref } of this.subscriptions) offref(ref);
+    this.subscriptions = [];
+    this.byEvent.clear();
+    this.byFile.clear();
+    this.pendingCreate.clear();
+  }
+  assertActive() {
+    if (this.stopped) throw new Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+  }
+  change(file, add, remove = []) {
+    const operation = this.writes.catch(() => {
+    }).then(async () => {
+      this.assertActive();
+      if (file.extension !== "md" || this.app.vault.getAbstractFileByPath(file.path) !== file) {
+        throw new Error("\u7B14\u8BB0\u5DF2\u4E0D\u5B58\u5728\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9");
+      }
+      let keys2;
+      await this.app.fileManager.processFrontMatter(file, (frontmatter) => {
+        keys2 = updateCalendarEventKeys(frontmatter, add, remove);
+      });
+      if (!this.stopped && keys2) {
+        this.index(file, keys2);
+        this.options.changed?.();
+      }
+    });
+    this.writes = operation;
+    return operation;
+  }
+  index(file, next) {
+    if (this.stopped) return false;
+    const old = this.byFile.get(file) || /* @__PURE__ */ new Set();
+    if (old.size === next.length && next.every((key) => old.has(key))) return false;
+    for (const key of old) {
+      this.byEvent.get(key)?.delete(file);
+      if (!this.byEvent.get(key)?.size) this.byEvent.delete(key);
+    }
+    this.byFile.delete(file);
+    if (next.length) this.byFile.set(file, new Set(next));
+    for (const key of next) {
+      if (!this.byEvent.has(key)) this.byEvent.set(key, /* @__PURE__ */ new Set());
+      this.byEvent.get(key).add(file);
+    }
+    return true;
+  }
+  removeTree(file) {
+    let changed = false;
+    for (const note of this.byFile.keys()) {
+      if (note === file || note.path.startsWith(`${file.path}/`)) changed = this.index(note, []) || changed;
+    }
+    return changed;
+  }
+};
+function isMarkdown(file) {
+  return "extension" in file && file.extension === "md";
+}
+
+// src/calendar-note-picker.ts
+var import_obsidian12 = require("obsidian");
+var CalendarNotePicker = class extends import_obsidian12.FuzzySuggestModal {
+  constructor(app, onPick, eventTitle) {
+    super(app);
+    this.onPick = onPick;
+    this.setPlaceholder(eventTitle ? `\u4E3A\u300C${eventTitle}\u300D\u5173\u8054\u7B14\u8BB0\u2026` : "\u641C\u7D22\u8981\u5173\u8054\u7684\u7B14\u8BB0\u2026");
+  }
+  getItems() {
+    return this.app.vault.getMarkdownFiles();
+  }
+  getItemText(file) {
+    return file.path.replace(/\.md$/i, "");
+  }
+  onChooseItem(file) {
+    void this.onPick(file).catch((error) => new import_obsidian12.Notice(error instanceof Error ? error.message : "\u5173\u8054\u7B14\u8BB0\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5"));
+  }
+};
 
 // src/main.ts
 var run = (fn) => {
   try {
-    void Promise.resolve(fn()).catch((e) => new import_obsidian11.Notice(String(e)));
+    void Promise.resolve(fn()).catch((e) => new import_obsidian13.Notice(String(e)));
   } catch (e) {
-    new import_obsidian11.Notice(String(e));
+    new import_obsidian13.Notice(String(e));
   }
 };
-var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
+var ThoughtSpaceCalendar = class extends import_obsidian13.Plugin {
   calendarApiVersion = 1;
   ready = false;
   taskPlanner;
@@ -18767,6 +19690,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
   initialTaskRead;
   largeRefreshTimer;
   chinese = new ChineseCalendar();
+  eventNoteLinks;
   settingsWrites = Promise.resolve();
   boardPlugin() {
     return this.app.plugins?.getPlugin("thoughtspace");
@@ -18781,13 +19705,13 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
   async onload() {
     const board = this.boardPlugin();
     if (board && Number(board.manifest.version.split(".")[0]) === 0 && Number(board.manifest.version.split(".")[1]) < 94) {
-      new import_obsidian11.Notice("\u8BF7\u5148\u91CD\u65B0\u52A0\u8F7D 0.94.0 \u6216\u66F4\u65B0\u7684\u601D\u7EF4\u767D\u677F\uFF0C\u518D\u542F\u7528\u72EC\u7ACB\u65E5\u5386\u3002");
+      new import_obsidian13.Notice("\u8BF7\u5148\u91CD\u65B0\u52A0\u8F7D 0.94.0 \u6216\u66F4\u65B0\u7684\u601D\u7EF4\u767D\u677F\uFF0C\u518D\u542F\u7528\u72EC\u7ACB\u65E5\u5386\u3002");
       throw Error("\u65E7\u7248\u601D\u7EF4\u767D\u677F\u4ECD\u5360\u7528\u65E5\u5386\u89C6\u56FE\uFF0C\u8BF7\u91CD\u542F Obsidian");
     }
     const saved = await this.loadData();
     let legacy;
     if (saved == null) {
-      const path = (0, import_obsidian11.normalizePath)(`${this.app.vault.configDir}/plugins/thoughtspace/data.json`);
+      const path = (0, import_obsidian13.normalizePath)(`${this.app.vault.configDir}/plugins/thoughtspace/data.json`);
       if (await this.app.vault.adapter.exists(path)) legacy = JSON.parse(await this.app.vault.adapter.read(path));
     }
     this.settings = calendarSettings(saved, legacy);
@@ -18797,20 +19721,58 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
     this.taskPlanner = this.addChild(new TaskPlanner(this.app, () => this.settings.journalFolder));
     const base = this.app.vault.adapter.getBasePath?.();
     this.appleCalendar = new AppleCalendarClient(new NativeCalendarTransport(base ? `${base}/${this.app.vault.configDir}/plugins/${this.manifest.id}/native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge` : ""), () => this.settings.appleCalendar);
+    this.eventNoteLinks = new CalendarNoteLinks(this.app, {
+      createNote: async (event) => {
+        if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+        const date = dayKey(new Date(event.start));
+        return this.createUnique(`${this.settings.cardFolder}/\u65E5\u7A0B`, `${date} ${event.title}`, "md", `---
+type: calendar-event
+date: ${date}
+calendar-start: ${JSON.stringify(event.start)}
+calendar-end: ${JSON.stringify(event.end)}
+---
+
+# ${event.title.replace(/[\r\n]+/g, " ")}
+
+## \u8BB0\u5F55
+
+## \u540E\u7EED\u884C\u52A8
+
+`);
+      },
+      openNote: async (file) => this.openCalendarNote(file),
+      changed: () => this.refreshLargeCalendars()
+    });
+    this.register(() => this.eventNoteLinks.dispose());
     this.largeCalendarHost = {
       app: this.app,
       apple: this.appleCalendar,
       appleSettings: () => this.settings.appleCalendar,
       saveAppleSettings: async (settings) => this.saveAppleCalendarSettings(settings),
       changed: () => this.refreshLargeCalendars(true),
-      tasks: async (start, end) => {
-        if (!this.initialTaskRead) this.initialTaskRead = this.taskPlanner.ready().catch((error) => {
-          this.initialTaskRead = void 0;
-          throw error;
-        });
-        await this.initialTaskRead;
-        if (!this.ready) return [];
-        return calendarTasks(this.taskPlanner.all(), start, end);
+      tasks: async (start, end) => calendarTasks(await this.calendarTaskIndex(), start, end),
+      unscheduledTasks: async () => unscheduledCalendarTasks(await this.calendarTaskIndex()),
+      scheduleTask: async (task, date, start, end, clearTime) => {
+        const current = resolveCalendarTask(await this.calendarTaskIndex(), task);
+        if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+        const change = taskSchedulingChange(task, date, start, end);
+        if (clearTime) {
+          if (start !== void 0 || end !== void 0) throw Error("\u6E05\u9664\u65F6\u95F4\u4E0D\u80FD\u540C\u65F6\u8BBE\u7F6E\u65F6\u95F4");
+          change.time = null;
+        }
+        await this.taskPlanner.update(current, change);
+      },
+      toggleTask: async (task) => {
+        const current = resolveCalendarTask(await this.calendarTaskIndex(), task);
+        if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+        await this.taskPlanner.update(current, { checked: !current.checked });
+      },
+      canToggleTask: (task) => {
+        try {
+          return this.ready && this.taskPlanner.canToggle(resolveCalendarTask(this.taskPlanner.all(), task));
+        } catch {
+          return false;
+        }
       },
       openJournal: async (date) => {
         const day = dayKey(date);
@@ -18818,6 +19780,18 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
         await this.selectJournalDay(day);
       },
       openTask: async (task) => this.openCalendarTask(task),
+      eventNotes: (event) => this.eventNoteLinks.linkedNotes(event).map((file) => ({ path: file.path, name: file.basename })),
+      openEventNote: async (event) => {
+        await this.eventNoteLinks.openOrCreate(event);
+      },
+      linkEventNote: (event) => {
+        if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+        new CalendarNotePicker(this.app, async (file) => {
+          await this.eventNoteLinks.link(event, file);
+          await this.openCalendarNote(file);
+        }, event.title).open();
+      },
+      eventMoved: async (before, after) => this.eventNoteLinks.rekey(before, after),
       lunar: (date) => chineseDayPresentation(this.chinese.get(dayKey(date)), this.settings).label
     };
     this.openLargePane = registerLargeCalendar(this, this.largeCalendarHost);
@@ -18858,6 +19832,23 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
       this.journalLinks = void 0;
     }
     if (this.settings.linkCreatedNotes) this.journalLinks = this.addChild(new JournalLinks(this.app, this));
+  }
+  async calendarTaskIndex() {
+    if (!this.ready) return [];
+    if (!this.initialTaskRead) this.initialTaskRead = this.taskPlanner.ready().catch((error) => {
+      this.initialTaskRead = void 0;
+      throw error;
+    });
+    await this.initialTaskRead;
+    return this.ready ? this.taskPlanner.all() : [];
+  }
+  async openCalendarNote(file) {
+    if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+    if (this.app.vault.getAbstractFileByPath(file.path) !== file) throw Error("\u5173\u8054\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+    const existing = this.app.workspace.getLeavesOfType("markdown").find((leaf2) => leaf2.view.file === file), leaf = existing || this.app.workspace.getLeaf("tab");
+    if (!existing) await leaf.openFile(file);
+    await this.app.workspace.revealLeaf(leaf);
+    this.app.workspace.setActiveLeaf(leaf, { focus: true });
   }
   persistSettings(patch) {
     const work = this.settingsWrites.catch(() => {
@@ -18902,7 +19893,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
   async openCalendarTask(task) {
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
     const file = this.app.vault.getAbstractFileByPath(task.source);
-    if (!(file instanceof import_obsidian11.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+    if (!(file instanceof import_obsidian13.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
     const old = this.app.workspace.getLeavesOfType("markdown").find((l) => l.view.file === file), leaf = old || this.app.workspace.getLeaf("tab");
     await leaf.openFile(file, { eState: { line: task.line ?? 0 } });
     await this.app.workspace.revealLeaf(leaf);
@@ -18912,16 +19903,16 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
   }
   async folder(path) {
     let cursor = "";
-    for (const part of (0, import_obsidian11.normalizePath)(path).split("/")) {
+    for (const part of (0, import_obsidian13.normalizePath)(path).split("/")) {
       if (!part) continue;
       cursor = cursor ? `${cursor}/${part}` : part;
       const old = this.app.vault.getAbstractFileByPath(cursor);
-      if (old && !(old instanceof import_obsidian11.TFolder)) throw Error("\u76EE\u5F55\u4F4D\u7F6E\u5B58\u5728\u540C\u540D\u6587\u4EF6\uFF1A" + cursor);
+      if (old && !(old instanceof import_obsidian13.TFolder)) throw Error("\u76EE\u5F55\u4F4D\u7F6E\u5B58\u5728\u540C\u540D\u6587\u4EF6\uFF1A" + cursor);
       if (!old) {
         try {
           await this.app.vault.createFolder(cursor);
         } catch (e) {
-          if (!(this.app.vault.getAbstractFileByPath(cursor) instanceof import_obsidian11.TFolder)) throw e;
+          if (!(this.app.vault.getAbstractFileByPath(cursor) instanceof import_obsidian13.TFolder)) throw e;
         }
       }
     }
@@ -18929,7 +19920,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
   async createUnique(folder, title, ext, text) {
     await this.folder(folder);
     for (let i = 0; i < 1e4; i++) {
-      const path = (0, import_obsidian11.normalizePath)(`${folder}/${safeName(title)}${i ? " " + (i + 1) : ""}.${ext}`);
+      const path = (0, import_obsidian13.normalizePath)(`${folder}/${safeName(title)}${i ? " " + (i + 1) : ""}.${ext}`);
       if (this.app.vault.getAbstractFileByPath(path)) continue;
       try {
         return await this.app.vault.create(path, text);
@@ -18949,9 +19940,9 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
     const root = this.settings.journalFolder, folder = journalFolder(day, root);
     return this.serialize(async () => {
       const path = `${folder}/${day}.md`, current = this.app.vault.getAbstractFileByPath(path), legacy = this.app.vault.getAbstractFileByPath(`${root}/${day}.md`);
-      if (current && legacy) new import_obsidian11.Notice("\u65B0\u65E7\u76EE\u5F55\u5404\u6709\u65E5\u8BB0\uFF0C\u5DF2\u6253\u5F00\u5E74\u6708\u76EE\u5F55\u7248\u672C\uFF1B\u65E7\u65E5\u8BB0\u4FDD\u7559\u3002");
+      if (current && legacy) new import_obsidian13.Notice("\u65B0\u65E7\u76EE\u5F55\u5404\u6709\u65E5\u8BB0\uFF0C\u5DF2\u6253\u5F00\u5E74\u6708\u76EE\u5F55\u7248\u672C\uFF1B\u65E7\u65E5\u8BB0\u4FDD\u7559\u3002");
       let file = current || legacy;
-      if (file && !(file instanceof import_obsidian11.TFile)) throw Error("\u65E5\u8BB0\u8DEF\u5F84\u88AB\u6587\u4EF6\u5939\u5360\u7528");
+      if (file && !(file instanceof import_obsidian13.TFile)) throw Error("\u65E5\u8BB0\u8DEF\u5F84\u88AB\u6587\u4EF6\u5939\u5360\u7528");
       if (!file) {
         await this.folder(folder);
         try {
@@ -18966,10 +19957,10 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
 `);
         } catch (error) {
           file = this.app.vault.getAbstractFileByPath(path);
-          if (!(file instanceof import_obsidian11.TFile)) throw error;
+          if (!(file instanceof import_obsidian13.TFile)) throw error;
         }
       }
-      if (!(file instanceof import_obsidian11.TFile)) throw Error("\u65E5\u8BB0\u65E0\u6CD5\u521B\u5EFA");
+      if (!(file instanceof import_obsidian13.TFile)) throw Error("\u65E5\u8BB0\u65E0\u6CD5\u521B\u5EFA");
       const text = await this.app.vault.cachedRead(file);
       if (journalTaskBlock(text, day) !== text) await this.app.vault.process(file, (text2) => journalTaskBlock(text2, day));
       return file;
@@ -19003,7 +19994,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
           failed.push(file.path + "\uFF1A" + String(error));
         }
       }
-      new import_obsidian11.Notice(`\u5DF2\u6574\u7406 ${moved} \u7BC7\uFF0C\u540C\u540D\u4FDD\u7559 ${skipped.length} \u7BC7\uFF0C\u5931\u8D25 ${failed.length} \u7BC7`, 8e3);
+      new import_obsidian13.Notice(`\u5DF2\u6574\u7406 ${moved} \u7BC7\uFF0C\u540C\u540D\u4FDD\u7559 ${skipped.length} \u7BC7\uFF0C\u5931\u8D25 ${failed.length} \u7BC7`, 8e3);
       return { moved, skipped, failed };
     });
   }
@@ -19068,7 +20059,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian11.Plugin {
     this.selection++;
   }
 };
-var CalendarSettingsTab = class extends import_obsidian11.PluginSettingTab {
+var CalendarSettingsTab = class extends import_obsidian13.PluginSettingTab {
   constructor(app, calendar) {
     super(app, calendar);
     this.calendar = calendar;
@@ -19079,22 +20070,22 @@ var CalendarSettingsTab = class extends import_obsidian11.PluginSettingTab {
     el.addClass("ts-calendar-plugin");
     el.createEl("h2", { text: "ThoughtSpace \u65E5\u5386\u4E0E\u65E5\u8BB0" });
     el.createEl("p", { text: "\u72EC\u7ACB\u8FD0\u884C\u65E5\u5386\u3001\u4EFB\u52A1\u548C\u5468\u671F\u7B14\u8BB0\uFF1B\u5DF2\u6709 Markdown \u6587\u4EF6\u7EE7\u7EED\u4F7F\u7528\u3002" });
-    let draft = { ...this.calendar.settings };
-    new import_obsidian11.Setting(el).setName("\u65E5\u8BB0\u76EE\u5F55").setDesc("\u65B0\u65E5\u8BB0\u4FDD\u5B58\u4E3A \u5E74/\u6708/YYYY-MM-DD.md\uFF1B\u4FEE\u6539\u8BBE\u7F6E\u4E0D\u4F1A\u642C\u52A8\u65E7\u6587\u4EF6\u3002").addText((t) => t.setValue(draft.journalFolder).onChange((v) => draft.journalFolder = v));
-    new import_obsidian11.Setting(el).setName("\u6536\u96C6\u7B14\u8BB0\u76EE\u5F55").addText((t) => t.setValue(draft.cardFolder).onChange((v) => draft.cardFolder = v));
-    new import_obsidian11.Setting(el).setName("\u5173\u8054\u5F53\u5929\u65B0\u5EFA\u7B14\u8BB0").setDesc("\u5C06\u5F53\u5929\u65B0\u5EFA\u7684\u7B14\u8BB0\u94FE\u63A5\u5230\u65E5\u8BB0\uFF1B\u4E0D\u590D\u5236\u7B14\u8BB0\u6B63\u6587\u3002").addToggle((t) => t.setValue(draft.linkCreatedNotes).onChange((v) => draft.linkCreatedNotes = v));
+    let draft2 = { ...this.calendar.settings };
+    new import_obsidian13.Setting(el).setName("\u65E5\u8BB0\u76EE\u5F55").setDesc("\u65B0\u65E5\u8BB0\u4FDD\u5B58\u4E3A \u5E74/\u6708/YYYY-MM-DD.md\uFF1B\u4FEE\u6539\u8BBE\u7F6E\u4E0D\u4F1A\u642C\u52A8\u65E7\u6587\u4EF6\u3002").addText((t) => t.setValue(draft2.journalFolder).onChange((v) => draft2.journalFolder = v));
+    new import_obsidian13.Setting(el).setName("\u6536\u96C6\u7B14\u8BB0\u76EE\u5F55").addText((t) => t.setValue(draft2.cardFolder).onChange((v) => draft2.cardFolder = v));
+    new import_obsidian13.Setting(el).setName("\u5173\u8054\u5F53\u5929\u65B0\u5EFA\u7B14\u8BB0").setDesc("\u5C06\u5F53\u5929\u65B0\u5EFA\u7684\u7B14\u8BB0\u94FE\u63A5\u5230\u65E5\u8BB0\uFF1B\u4E0D\u590D\u5236\u7B14\u8BB0\u6B63\u6587\u3002").addToggle((t) => t.setValue(draft2.linkCreatedNotes).onChange((v) => draft2.linkCreatedNotes = v));
     el.createEl("h3", { text: "\u4E2D\u56FD\u519C\u5386" });
-    for (const [key, title, desc] of [["showLunar", "\u663E\u793A\u519C\u5386", "\u65E5\u671F\u4E0B\u65B9\u663E\u793A\u519C\u5386\uFF0C\u6708\u521D\u663E\u793A\u6708\u4EFD\u3002"], ["showFestivals", "\u663E\u793A\u8282\u65E5", "\u8282\u65E5\u4F18\u5148\u663E\u793A\uFF1B\u5B8C\u6574\u540D\u79F0\u53EF\u60AC\u505C\u67E5\u770B\u3002"], ["showSolarTerms", "\u663E\u793A\u8282\u6C14", "\u663E\u793A\u4E8C\u5341\u56DB\u8282\u6C14\u3002"], ["showHolidays", "\u663E\u793A\u4F11\u73ED\u6807\u8BB0", "\u4F7F\u7528\u5185\u7F6E\u4E2D\u56FD\u5927\u9646\u8282\u5047\u65E5\u6570\u636E\uFF1B\u672A\u6536\u5F55\u5E74\u4EFD\u4E0D\u63A8\u6D4B\u8C03\u4F11\u3002"]]) new import_obsidian11.Setting(el).setName(title).setDesc(desc).addToggle((t) => t.setValue(draft[key] !== false).onChange((v) => draft[key] = v));
-    new import_obsidian11.Setting(el).setName("\u65E5\u5386\u5BC6\u5EA6").addDropdown((d) => d.addOptions({ comfortable: "\u8212\u9002", compact: "\u7D27\u51D1" }).setValue(draft.calendarDensity || "comfortable").onChange((v) => draft.calendarDensity = v));
-    new import_obsidian11.Setting(el).setName("\u754C\u9762\u98CE\u683C").addDropdown((d) => d.addOptions({ soft: "\u67D4\u548C", paper: "\u7EB8\u5F20" }).setValue(draft.surfaceStyle).onChange((v) => draft.surfaceStyle = v));
-    new import_obsidian11.Setting(el).setName("\u4E3B\u9898\u8272").addDropdown((d) => d.addOptions({ forest: "\u68EE\u6797\u7EFF", blue: "\u84DD\u8272", amber: "\u7425\u73C0", rose: "\u73AB\u7470" }).setValue(draft.accent).onChange((v) => draft.accent = v));
-    new import_obsidian11.Setting(el).setName("\u73BB\u7483\u6548\u679C").addToggle((t) => t.setValue(draft.glassEffects).onChange((v) => draft.glassEffects = v));
+    for (const [key, title, desc] of [["showLunar", "\u663E\u793A\u519C\u5386", "\u65E5\u671F\u4E0B\u65B9\u663E\u793A\u519C\u5386\uFF0C\u6708\u521D\u663E\u793A\u6708\u4EFD\u3002"], ["showFestivals", "\u663E\u793A\u8282\u65E5", "\u8282\u65E5\u4F18\u5148\u663E\u793A\uFF1B\u5B8C\u6574\u540D\u79F0\u53EF\u60AC\u505C\u67E5\u770B\u3002"], ["showSolarTerms", "\u663E\u793A\u8282\u6C14", "\u663E\u793A\u4E8C\u5341\u56DB\u8282\u6C14\u3002"], ["showHolidays", "\u663E\u793A\u4F11\u73ED\u6807\u8BB0", "\u4F7F\u7528\u5185\u7F6E\u4E2D\u56FD\u5927\u9646\u8282\u5047\u65E5\u6570\u636E\uFF1B\u672A\u6536\u5F55\u5E74\u4EFD\u4E0D\u63A8\u6D4B\u8C03\u4F11\u3002"]]) new import_obsidian13.Setting(el).setName(title).setDesc(desc).addToggle((t) => t.setValue(draft2[key] !== false).onChange((v) => draft2[key] = v));
+    new import_obsidian13.Setting(el).setName("\u65E5\u5386\u5BC6\u5EA6").addDropdown((d) => d.addOptions({ comfortable: "\u8212\u9002", compact: "\u7D27\u51D1" }).setValue(draft2.calendarDensity || "comfortable").onChange((v) => draft2.calendarDensity = v));
+    new import_obsidian13.Setting(el).setName("\u754C\u9762\u98CE\u683C").addDropdown((d) => d.addOptions({ soft: "\u67D4\u548C", paper: "\u7EB8\u5F20" }).setValue(draft2.surfaceStyle).onChange((v) => draft2.surfaceStyle = v));
+    new import_obsidian13.Setting(el).setName("\u4E3B\u9898\u8272").addDropdown((d) => d.addOptions({ forest: "\u68EE\u6797\u7EFF", blue: "\u84DD\u8272", amber: "\u7425\u73C0", rose: "\u73AB\u7470" }).setValue(draft2.accent).onChange((v) => draft2.accent = v));
+    new import_obsidian13.Setting(el).setName("\u73BB\u7483\u6548\u679C").addToggle((t) => t.setValue(draft2.glassEffects).onChange((v) => draft2.glassEffects = v));
     el.createEl("h3", { text: "\u5927\u65E5\u5386\u4E0E\u82F9\u679C\u65E5\u5386" });
     this.calendar.renderCalendarIntegrationSettings(el);
-    new import_obsidian11.Setting(el).setName("\u4FDD\u5B58\u8BBE\u7F6E").addButton((b) => b.setButtonText("\u4FDD\u5B58").setCta().onClick(() => run(async () => {
-      await this.calendar.updateSettings(draft, true);
-      new import_obsidian11.Notice("\u65E5\u5386\u8BBE\u7F6E\u5DF2\u4FDD\u5B58");
+    new import_obsidian13.Setting(el).setName("\u4FDD\u5B58\u8BBE\u7F6E").addButton((b) => b.setButtonText("\u4FDD\u5B58").setCta().onClick(() => run(async () => {
+      await this.calendar.updateSettings(draft2, true);
+      new import_obsidian13.Notice("\u65E5\u5386\u8BBE\u7F6E\u5DF2\u4FDD\u5B58");
     })));
-    new import_obsidian11.Setting(el).setName("\u6574\u7406\u65E7\u65E5\u8BB0").setDesc("\u4EC5\u79FB\u52A8\u6839\u76EE\u5F55\u7684\u65E5\u671F\u7B14\u8BB0\uFF0C\u5148\u5907\u4EFD\uFF1B\u76EE\u6807\u540C\u540D\u65F6\u8DF3\u8FC7\u3002").addButton((b) => b.setButtonText("\u6574\u7406\u4E3A\u5E74\u6708\u76EE\u5F55").onClick(() => run(() => this.calendar.fileOldJournals())));
+    new import_obsidian13.Setting(el).setName("\u6574\u7406\u65E7\u65E5\u8BB0").setDesc("\u4EC5\u79FB\u52A8\u6839\u76EE\u5F55\u7684\u65E5\u671F\u7B14\u8BB0\uFF0C\u5148\u5907\u4EFD\uFF1B\u76EE\u6807\u540C\u540D\u65F6\u8DF3\u8FC7\u3002").addButton((b) => b.setButtonText("\u6574\u7406\u4E3A\u5E74\u6708\u76EE\u5F55").onClick(() => run(() => this.calendar.fileOldJournals())));
   }
 };

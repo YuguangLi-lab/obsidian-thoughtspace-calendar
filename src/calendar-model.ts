@@ -16,8 +16,14 @@ export const defaultAppleSettings: AppleCalendarSettings = {
   enabled: false, selectedCalendarIds: [], defaultCalendarId: ''
 };
 export interface CalendarTask {
+  /** In-memory index generation; distinguishes identical recurring occurrences. */
+  indexRevision?:number;
   id: string; text: string; completed: boolean; date: string;
   startMinute?: number; endMinute?: number; source: string; line?:number;
+  /** Exact source row used for optimistic concurrency; never trust a drag payload alone. */
+  sourceSnapshot?: string;
+  dateRole?: 'scheduled'|'due'|'day'|'unscheduled';
+  scheduledDate?: string;
 }
 export const dayKey = (date: Date): string =>
   `${date.getFullYear()}-${String(date.getMonth()+1).padStart(2,'0')}-${String(date.getDate()).padStart(2,'0')}`;

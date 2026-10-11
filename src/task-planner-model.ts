@@ -4,17 +4,22 @@ import {clockLabel,timeSlot,scheduleText} from './task-time';
 import {stripQuadrant} from './task-quadrants';
 import {extractTasks, taskCheckbox, Task} from './model';
 import {dateOf, shiftDay} from './calendar-tools';
-export type PlannedTask=Task & {path:string;day?:string;due?:string;scheduled?:string;completedOn?:string;priority:number;title:string;tags:string[];time?:string;recurring:boolean};
+import {dataviewTaskFields,dataviewTaskFieldText,updateDataviewTaskField,stripDataviewTaskFields,DataviewTaskKey} from './task-dataview';
+export type PlannedTask=Task & {path:string;day?:string;due?:string;scheduled?:string;completedOn?:string;priority:number;title:string;tags:string[];time?:string;recurring:boolean;indexRevision?:number};
 export type TaskFilter='today'|'unfinished'|'overdue'|'upcoming'|'inbox'|'done'|'timeline'|'completed';
 const priorities=['🔺','⏫','🔼','','🔽','⏬'];
+const dataviewPriorities=['highest','high','medium','','low','lowest'];
+const titleDataviewFields=new Set<DataviewTaskKey>(['due','scheduled','completion','priority']);
 function validDay(value?:string){if(!value)return;try{dateOf(value);return value;}catch{return;}}
 export function planTasks(text:string,path:string,journalRoot:string):PlannedTask[]{
  const day=path.startsWith(journalRoot+'/')?validDay(path.split('/').pop()?.replace(/\.md$/i,'')):undefined;
  return extractTasks(text).filter(t=>t.text.trim()).map(t=>{
-  const prose=maskInlineLiterals(t.text),due=validDay(prose.match(/📅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]),scheduled=validDay(prose.match(/⏳\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
-  const completedOn=validDay(prose.match(/✅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
-  const priority=priorities.findIndex(p=>p&&prose.includes(p));
-  return {...t,path,day,due,scheduled,completedOn,priority:priority<0?3:priority,title:outsideInlineLiterals(stripInlineComments(stripQuadrant(t.text)),prose=>prose.replace(/(?:📅|⏳|✅)\s*\d{4}-\d{2}-\d{2}(?![\d-])/g,'').replace(/[🔺⏫🔼🔽⏬]/gu,'').replace(/\s+/g,' ')).trim(),tags:[...new Set(prose.match(/#[\p{L}\p{N}_/-]+/gu)||[])],time:timeSlot(t.text)?clockLabel(timeSlot(t.text)!.start):undefined,recurring:prose.includes('🔁')};
+  const prose=maskInlineLiterals(t.text),fields=dataviewTaskFields(t.text),field=(key:DataviewTaskKey)=>fields.find(f=>f.key===key)?.value;
+  const due=validDay(field('due')??prose.match(/📅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]),scheduled=validDay(field('scheduled')??prose.match(/⏳\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
+  const completedOn=validDay(field('completion')??prose.match(/✅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
+  const priority=field('priority')?dataviewPriorities.indexOf(field('priority')!):priorities.findIndex(p=>p&&prose.includes(p));
+  const title=stripDataviewTaskFields(stripInlineComments(stripQuadrant(t.text)),titleDataviewFields);
+  return {...t,path,day,due,scheduled,completedOn,priority:priority<0?3:priority,title:outsideInlineLiterals(title,prose=>prose.replace(/(?:📅|⏳|✅)\s*\d{4}-\d{2}-\d{2}(?![\d-])/g,'').replace(/[🔺⏫🔼🔽⏬]/gu,'').replace(/\s+/g,' ')).trim(),tags:[...new Set(prose.match(/#[\p{L}\p{N}_/-]+/gu)||[])],time:timeSlot(t.text)?clockLabel(timeSlot(t.text)!.start):undefined,recurring:prose.includes('🔁')||fields.some(f=>f.key==='repeat')};
  });
 }
 export function taskDate(t:PlannedTask){return t.scheduled||t.due||t.day;}
@@ -47,7 +52,7 @@ function appendMetadata(line:string,value:string){
 export function changeTask(text:string,task:PlannedTask,change:{checked?:boolean;due?:string;scheduled?:string;completedOn?:string;priority?:number;content?:string;time?:{start:string;end?:string}|null}):string{
  const lines=text.split('\n');if(lines[task.line]!==task.source)throw Error('任务原文已变化，请刷新后再操作');
  if(task.recurring&&change.checked!==undefined)throw Error('重复任务请在原文使用 Tasks 插件完成，以保留其重复规则');
- let line=task.source;const cr=line.endsWith('\r')?'\r':'';line=line.replace(/\r$/,'');
+ let line=task.source;const cr=line.endsWith('\r')?'\r':'';line=line.replace(/\r$/,'');const originalFields=dataviewTaskFields(line);
  const at=taskCheckbox(task);if(at<0||!/^\[[ xX]\]/.test(line.slice(at)))throw Error('任务格式无法识别，请打开原文检查');
  const prefixEnd=at+3+(line.slice(at+3).match(/^[ \t]*/)?.[0].length||0),prefix=line.slice(0,prefixEnd);
  const originalId=line.match(/\s+\^[A-Za-z0-9-]+\s*$/)?.[0];
@@ -58,8 +63,13 @@ export function changeTask(text:string,task:PlannedTask,change:{checked?:boolean
  if(change.time!==undefined){body=timeSlot(body)?.title??body;if(!body.trim())throw Error('请保留任务内容');if(change.time!==null)body=scheduleText(body,change.time.start,change.time.end);}
  line=prefix+body;
  if(change.checked!==undefined)line=line.slice(0,at)+(change.checked?'[x]':'[ ]')+line.slice(at+3);
- for(const [key,icon] of [['due','📅'],['scheduled','⏳'],['completedOn','✅']] as const){const value=key==='completedOn'?(change.completedOn??(change.checked===false?'':undefined)):change[key];if(value===undefined)continue;if(value&&!validDay(value))throw Error('日期无效');line=outsideInlineLiterals(line,prose=>prose.replace(new RegExp('\\s*'+icon+'\\s*\\d{4}-\\d{2}-\\d{2}(?![\\d-])','g'),''));if(value)line=appendMetadata(line,`${icon} ${value}`);}
- if(change.priority!==undefined){if(!Number.isInteger(change.priority)||change.priority<0||change.priority>5)throw Error('优先级无效');line=outsideInlineLiterals(line,prose=>prose.replace(/\s*[🔺⏫🔼🔽⏬]/gu,''));if(priorities[change.priority])line=appendMetadata(line,priorities[change.priority]);}
+ const writeField=(key:DataviewTaskKey,value:string,emoji:string)=>{
+  const currentFields=dataviewTaskFields(line),style=currentFields.find(f=>f.key===key)||originalFields.find(f=>f.key===key)||currentFields[0]||originalFields[0];
+  const changed=updateDataviewTaskField(line,key,value);line=changed.text;
+  if(value&&!changed.found)line=appendMetadata(line,style?dataviewTaskFieldText(key,value,style.open):emoji);
+ };
+ for(const [key,icon] of [['due','📅'],['scheduled','⏳'],['completedOn','✅']] as const){const value=key==='completedOn'?(change.completedOn??(change.checked===false?'':undefined)):change[key];if(value===undefined)continue;if(value&&!validDay(value))throw Error('日期无效');line=outsideInlineLiterals(line,prose=>prose.replace(new RegExp('\\s*'+icon+'\\s*\\d{4}-\\d{2}-\\d{2}(?![\\d-])','g'),''));writeField(key==='completedOn'?'completion':key,value,`${icon} ${value}`);}
+ if(change.priority!==undefined){if(!Number.isInteger(change.priority)||change.priority<0||change.priority>5)throw Error('优先级无效');line=outsideInlineLiterals(line,prose=>prose.replace(/\s*[🔺⏫🔼🔽⏬]/gu,''));writeField('priority',dataviewPriorities[change.priority],priorities[change.priority]);}
  lines[task.line]=line+(blockId||'')+cr;return lines.join('\n');
 }
 export type TaskGrouping='none'|'source'|'date'|'priority';

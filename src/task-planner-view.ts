@@ -1,4 +1,5 @@
 import {TaskScheduleModal} from './task-schedule-view';
+import {startCalendarTaskDrag,endCalendarTaskDrag} from './calendar-task-drag';
 import {timeSlot} from './task-time';
 import {DayTimeline} from './day-timeline-view';
 import {TASK_QUADRANTS,TaskQuadrant,taskQuadrant,quadrantOverride,setTaskQuadrant} from './task-quadrants';
@@ -7,12 +8,13 @@ import {dateOf,shiftDay} from './calendar-tools';
 import {PlannedTask,TaskFilter,selectTasks,taskDate,taskMatches,groupTasks,TaskGrouping} from './task-planner-model';
 import {TaskPlanner} from './task-planner';
 import {themeSurface} from './ui-tokens';
+import {preserveTaskRowFocus} from './ui-focus';
 const modes:[TaskFilter,string][]=[['today','当天待办'],['unfinished','未完成'],['overdue','已逾期'],['upcoming','未来七天'],['inbox','未安排'],['done','当天已完成'],['timeline','时间线'],['completed','全部已完成']];
 export type TaskPanelState={filter?:TaskFilter;query?:string;tag?:string;sort?:'priority'|'date'|'source'|'time';limit?:number;filtersOpen?:boolean;group?:TaskGrouping;view?:'list'|'quadrants'|'timeline'};
 export class TaskPanel extends MarkdownRenderChild {
  private filter:TaskFilter='today';private query='';private tag='';private sort:'priority'|'date'|'source'|'time'='priority';private limit=30;private active=false;private rows!:HTMLElement;private summary!:HTMLElement;private tabs=new Map<TaskFilter,HTMLButtonElement>();private tagSelect!:HTMLSelectElement;
  private tagOptionsKey?:string;
- private drag?:{task:PlannedTask;token:string;quadrant:TaskQuadrant};
+ private drag?:{task:PlannedTask;token:string;quadrant?:TaskQuadrant};
  private timeline?:DayTimeline;private view:'list'|'quadrants'|'timeline'='list';private viewButtons=new Map<string,HTMLButtonElement>();private quadrantLimits:Record<TaskQuadrant,number>={q1:8,q2:8,q3:8,q4:8};private filterSummary?:HTMLElement;private group:TaskGrouping='none';private undoButton?:HTMLButtonElement;private searchInput?:HTMLInputElement;
  constructor(private app:App,private el:HTMLElement,private planner:TaskPlanner,private day:string,private state:TaskPanelState={},private compact=false,private actionHost?:HTMLElement,private timelineFactory?:(el:HTMLElement)=>DayTimeline){super(el);dateOf(day);Object.assign(this,state);if(this.view==='timeline'&&!timelineFactory)this.view='list';}
  private button(el:HTMLElement,title:string,icon:string,fn:()=>unknown){const b=el.createEl('button',{attr:{'aria-label':title,title}});setIcon(b,icon);b.onclick=()=>{b.disabled=true;Promise.resolve().then(fn).catch(e=>new Notice(String(e))).finally(()=>b.disabled=false);};return b;}
@@ -30,7 +32,8 @@ export class TaskPanel extends MarkdownRenderChild {
  private editContent(task:PlannedTask){const m=new Modal(this.app);themeSurface(m.modalEl);m.modalEl.addClass('ts-task-edit');m.titleEl.setText('编辑任务');const input=m.contentEl.createEl('input',{type:'text',value:task.text,attr:{'aria-label':'任务完整内容'}});input.style.width='100%';m.contentEl.createEl('p',{cls:'ts-muted',text:'保留需要的标签、日期和重复规则。'});const save=m.contentEl.createEl('button',{text:'保存任务',cls:'mod-cta'});save.onclick=()=>{save.disabled=true;void this.planner.update(task,{content:input.value}).then(()=>m.close()).catch(e=>{new Notice(String(e));save.disabled=false;});};input.onkeydown=e=>{if(e.key==='Enter'&&!e.isComposing){e.preventDefault();save.click();}};m.open();input.focus();}
  private menuActions(task:PlannedTask){const actions:{title:string;icon:string;run:()=>unknown}[]=[{title:'安排日期、时间和优先级',icon:'calendar-clock',run:()=>this.edit(task)},{title:'编辑任务内容',icon:'pencil',run:()=>this.editContent(task)},{title:'打开任务原文',icon:'arrow-up-right',run:()=>this.open(task)}];if(!task.checked)actions.push({title:'安排到所选日',icon:'calendar-check',run:()=>this.planner.update(task,{scheduled:this.day})},{title:'安排到七天后',icon:'calendar-plus',run:()=>this.planner.update(task,{scheduled:shiftDay(this.day,7)})},{title:'清除计划与截止日期',icon:'calendar-x',run:()=>this.planner.update(task,{scheduled:'',due:''})});return actions;}
  private more(task:PlannedTask,event:MouseEvent){const menu=new Menu();for(const action of this.menuActions(task))menu.addItem(i=>i.setTitle(action.title).setIcon(action.icon).onClick(()=>{void Promise.resolve().then(action.run).catch(e=>new Notice(String(e)));}));menu.showAtMouseEvent(event);}
- render(){if(!this.active||this.drag)return;const all=this.planner.all(),count=(filter:TaskFilter)=>all.reduce((n,task)=>n+Number(taskMatches(task,this.day,filter)),0);
+ render(){if(!this.active||this.drag)return;const restore=preserveTaskRowFocus(this.el);try{this.renderContents();}finally{restore();}}
+ private renderContents(){const all=this.planner.all(),count=(filter:TaskFilter)=>all.reduce((n,task)=>n+Number(taskMatches(task,this.day,filter)),0);
   this.el.dataset.taskView=this.view;for(const [id,b]of this.viewButtons){b.toggleClass('is-active',id===this.view);b.setAttribute('aria-pressed',String(id===this.view));}const grouping=this.el.querySelector<HTMLSelectElement>('.ts-task-group-select');if(grouping)grouping.hidden=this.view==='quadrants';
   if(this.undoButton)this.undoButton.disabled=!this.planner.canUndo();
   if(this.view==='timeline'&&this.timelineFactory){if(!this.timeline){this.rows.empty();this.timeline=this.timelineFactory(this.rows.createDiv());this.addChild(this.timeline);}return;}if(this.timeline){this.removeChild(this.timeline);this.timeline=undefined;}
@@ -50,29 +53,33 @@ export class TaskPanel extends MarkdownRenderChild {
  }
  private renderTaskRow(parent:HTMLElement,task:PlannedTask){
   const row=parent.createDiv('ts-task-row');row.dataset.path=task.path;row.dataset.line=String(task.line);row.toggleClass('is-done',task.checked);row.toggleClass('is-overdue',!!task.due&&task.due<this.day&&!task.checked);
-   const top=row.createDiv('ts-task-row-main');const check=top.createEl('input',{type:'checkbox',attr:{'aria-label':`完成任务：${task.title}`}});check.checked=task.checked;if(task.recurring){check.disabled=true;check.title='重复任务请打开原文使用 Tasks 插件完成';}check.onchange=()=>{check.disabled=true;void this.planner.update(task,{checked:check.checked}).catch(e=>{new Notice(String(e));this.render();});};
+   const top=row.createDiv('ts-task-row-main');const check=top.createEl('input',{type:'checkbox',attr:{'aria-label':`${task.checked?'重新打开':'完成'}任务：${task.title}`}});check.checked=task.checked;check.disabled=!this.planner.canToggle(task);if(task.recurring)check.title=check.disabled?'重复任务需要启用 Tasks 7.2 或更新版本，也可以在原文完成':task.checked?'通过 Tasks 重新打开此任务':'通过 Tasks 完成，并按重复规则生成下一项';check.onchange=()=>{const restore=preserveTaskRowFocus(this.el);check.disabled=true;void this.planner.update(task,{checked:check.checked}).catch(e=>{new Notice(String(e));this.render();}).finally(restore);};
    const slot=timeSlot(task.title),title=top.createDiv('ts-task-title');title.createSpan({text:slot?.title||task.title});
-   const meta=row.createDiv('ts-task-meta');const source=meta.createEl('button',{text:task.path.split('/').pop()!.replace(/\.md$/i,''),attr:{title:task.path,'aria-label':'打开任务原文'}});source.onclick=()=>{void this.open(task).catch(e=>new Notice(String(e)));};if(task.priority!==3)meta.createSpan({cls:'ts-task-priority',text:['最高','高','中','普通','低','最低'][task.priority]});if(task.due)meta.createSpan({text:`截止 ${task.due}`});if(task.scheduled)meta.createSpan({text:`计划 ${task.scheduled}`});
+   const meta=row.createDiv('ts-task-meta');const source=meta.createEl('button',{text:task.path.split('/').pop()!.replace(/\.md$/i,''),attr:{title:task.path,'aria-label':'打开任务原文'}});source.onclick=()=>{void this.open(task).catch(e=>new Notice(String(e)));};if(task.priority!==3)meta.createSpan({cls:'ts-task-priority',text:['最高','高','中','普通','低','最低'][task.priority]});for(const [label,date] of [['截止',task.due],['计划',task.scheduled]])if(date)meta.createSpan({cls:label==='截止'?'ts-task-date is-due':'ts-task-date',text:`${label} ${date.slice(0,4)===this.day.slice(0,4)?date.slice(5).replace('-','/'):date}`,attr:{title:`${label} ${date}`,'aria-label':`${label} ${date}`}});
    const time=this.button(meta,slot?'调整任务时间：'+task.title:'添加任务时间：'+task.title,'clock-3',()=>this.edit(task));time.addClass('ts-task-schedule-chip');time.toggleClass('is-scheduled',!!slot);time.toggleClass('is-invalid',!!slot?.invalidRange);time.createSpan({text:slot?(slot.invalidRange?'检查时间':slot.label):'安排时间'});if(slot?.end!==undefined)time.title=slot.label+' · '+(slot.end-slot.start)+' 分钟 · 点击修改';
    const actions=row.createDiv('ts-task-row-actions');const more=this.button(actions,'更多任务操作','ellipsis',()=>{});more.onclick=e=>this.more(task,e);if(!task.checked)this.button(actions,'顺延至次日','calendar-plus',()=>this.planner.update(task,{scheduled:shiftDay(this.day,1)}));if(taskDate(task)!==this.day&&!task.checked)this.button(actions,'安排到所选日','calendar-check',()=>this.planner.update(task,{scheduled:this.day}));
+   if(!task.checked)this.bindTaskDrag(row,task,this.view==='quadrants'?taskQuadrant(task,this.day):undefined);
  }
  private renderQuadrants(tasks:PlannedTask[]){
   const grid=this.rows.createDiv('ts-task-quadrants');
   for(const quadrant of TASK_QUADRANTS){const items=tasks.filter(t=>taskQuadrant(t,this.day)===quadrant.id),box=grid.createEl('section',{cls:'ts-task-quadrant',attr:{'aria-label':quadrant.label}});box.dataset.quadrant=quadrant.id;this.bindQuadrantDrop(box,quadrant.id);const heading=box.createDiv('ts-task-quadrant-head');heading.createEl('h4',{text:quadrant.label});heading.createSpan({text:String(items.length)});box.createDiv({cls:'ts-task-quadrant-hint',text:quadrant.hint});
-   for(const task of items.slice(0,this.quadrantLimits[quadrant.id])){this.renderTaskRow(box,task);const row=box.lastElementChild as HTMLElement;this.bindTaskDrag(row,task,quadrant.id);const select=row.createEl('select',{cls:'ts-task-quadrant-select',attr:{'aria-label':'调整任务象限：'+task.title}});select.createEl('option',{value:'auto',text:'自动归类'});for(const q of TASK_QUADRANTS)select.createEl('option',{value:q.id,text:q.label});select.value=quadrantOverride(task.text)||'auto';select.onchange=()=>{select.disabled=true;void this.planner.update(task,{content:setTaskQuadrant(task.text,select.value as TaskQuadrant|'auto')}).catch(e=>{new Notice(String(e));this.render();});};}
+   for(const task of items.slice(0,this.quadrantLimits[quadrant.id])){this.renderTaskRow(box,task);const row=box.lastElementChild as HTMLElement;const select=row.createEl('select',{cls:'ts-task-quadrant-select',attr:{'aria-label':'调整任务象限：'+task.title}});select.createEl('option',{value:'auto',text:'自动归类'});for(const q of TASK_QUADRANTS)select.createEl('option',{value:q.id,text:q.label});select.value=quadrantOverride(task.text)||'auto';select.onchange=()=>{const restore=preserveTaskRowFocus(this.el);select.disabled=true;void this.planner.update(task,{content:setTaskQuadrant(task.text,select.value as TaskQuadrant|'auto')}).catch(e=>{new Notice(String(e));this.render();}).finally(restore);};}
    if(!items.length)box.createDiv({cls:'ts-task-quadrant-empty',text:'拖动任务到这里'});
    if(items.length>this.quadrantLimits[quadrant.id]){const more=box.createEl('button',{cls:'ts-task-quadrant-more',text:'再显示 '+Math.min(8,items.length-this.quadrantLimits[quadrant.id])+' 项'});more.onclick=()=>{this.quadrantLimits[quadrant.id]+=8;this.render();};}
   }
  }
- private endDrag(){this.drag=undefined;this.el.removeClass('is-task-dragging');this.el.querySelectorAll('.is-drag-source,.is-drop-target').forEach(e=>e.removeClass('is-drag-source','is-drop-target'));}
- private bindTaskDrag(row:HTMLElement,task:PlannedTask,quadrant:TaskQuadrant){
-  row.draggable=true;row.title=task.title+' · 拖动到其他象限';
+ private endDrag(){if(this.drag)endCalendarTaskDrag(this.app);this.drag=undefined;this.el.removeClass('is-task-dragging');this.el.querySelectorAll('.is-drag-source,.is-drop-target').forEach(e=>e.removeClass('is-drag-source','is-drop-target'));}
+ private bindTaskDrag(row:HTMLElement,task:PlannedTask,quadrant?:TaskQuadrant){
+  if(task.checked)return;
+  row.draggable=true;row.title=task.title+(quadrant?' · 拖动到其他象限或大日历':' · 拖动到大日历安排时间');
   const grip=row.querySelector('.ts-task-title')!.createSpan({cls:'ts-task-drag-grip',attr:{'aria-hidden':'true'}});setIcon(grip,'grip-vertical');
   let interactive=false;
-  row.onpointerdown=e=>{interactive=!!(e.target as Element).closest('button,input,select,option,a');};
+  row.onpointerdown=e=>{interactive=!!(e.target as Element).closest('button,input,select,option,a,textarea,[contenteditable=true]');};
   row.ondragstart=e=>{
    if(interactive||!e.dataTransfer){e.preventDefault();return;}e.stopPropagation();
-   const token=crypto.randomUUID();this.drag={task,token,quadrant};e.dataTransfer.setData('application/x-thoughtspace-task',token);e.dataTransfer.effectAllowed='move';
+   const token=crypto.randomUUID();
+   try{e.dataTransfer.setData('application/x-thoughtspace-task',token);startCalendarTaskDrag(this.app,task,e.dataTransfer);}catch(error){e.preventDefault();endCalendarTaskDrag(this.app);new Notice(String(error));return;}
+   this.drag={task,token,quadrant};
    row.addClass('is-drag-source');this.el.addClass('is-task-dragging');
   };
   row.ondragend=e=>{e.stopPropagation();this.endDrag();this.render();};

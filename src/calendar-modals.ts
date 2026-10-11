@@ -8,6 +8,7 @@ export interface CalendarHost {
   appleSettings():AppleCalendarSettings;
   saveAppleSettings(settings:AppleCalendarSettings):Promise<void>;
   changed():void;
+  eventMoved?(before:CalendarEvent,after:CalendarEvent):Promise<void>;
 }
 function label(parent:HTMLElement,title:string):HTMLLabelElement {
   const el=parent.createEl('label',{cls:'tsc-event-field'}); el.createSpan({text:title}); return el;
@@ -154,7 +155,12 @@ export class CalendarEventModal extends Modal {
         catch(err) { error.textContent=err instanceof Error?err.message:'请检查日程'; return; }
         this.pending=true; cancel.disabled=true; fields.forEach(f=>f.disabled=true); if(submit) { submit.disabled=true; submit.textContent='正在保存…'; }
         try {
-          await this.host.apple.save(draft); this.host.changed(); new Notice(original?'苹果日程已更新':'已创建苹果日程'); this.close();
+          const saved=await this.host.apple.save(draft);
+          let linkFailed=false;
+          if(original&&this.host.eventMoved)try{await this.host.eventMoved(original,saved);}catch(linkError){
+            linkFailed=true;new Notice(`苹果日程已保存，但笔记关联更新失败：${linkError instanceof Error?linkError.message:'请重新关联笔记'}`,10000);
+          }
+          this.host.changed();if(!linkFailed)new Notice(original?'苹果日程已更新':'已创建苹果日程');this.close();
         } catch(err) {
           if(!this.closed) error.textContent=err instanceof Error?err.message:'保存失败';
         } finally {

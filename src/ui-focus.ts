@@ -12,3 +12,24 @@ export function preserveTaskFilterFocus(root:HTMLElement){
   next.focus({preventScroll:true});if(tag==='INPUT'&&start!==null&&end!==null)(next as HTMLInputElement).setSelectionRange(start,end,direction||undefined);
  };
 }
+
+/** Keep keyboard navigation in the task list after a completed row disappears. */
+export function preserveTaskRowFocus(root:HTMLElement,rowSelector='.ts-task-row',fallbackSelector='button[data-filter][aria-pressed=true]'){
+ const doc=root.ownerDocument,active=doc.activeElement as HTMLElement|null;
+ const row=active?.closest<HTMLElement>(rowSelector);
+ if(!active||!row||!root.contains(row))return ()=>{};
+ const rows=Array.from(root.querySelectorAll<HTMLElement>(rowSelector));
+ const index=rows.indexOf(row),path=row.dataset.path,line=row.dataset.line;
+ const label=active.getAttribute('aria-label'),checkbox=active.matches('input[type=checkbox]');
+ return ()=>{
+  // Never steal focus from an editor or another control the user has chosen.
+  if(active.isConnected||doc.activeElement!==doc.body)return;
+  const current=Array.from(root.querySelectorAll<HTMLElement>(rowSelector));
+  const nextRow=current.find(el=>el.dataset.path===path&&el.dataset.line===line)||current[Math.min(index,current.length-1)];
+  let next:HTMLElement|undefined;
+  if(checkbox)next=nextRow?.querySelector<HTMLInputElement>('input[type=checkbox]:not(:disabled)')||undefined;
+  else if(label)next=Array.from(nextRow?.querySelectorAll<HTMLElement>('[aria-label]')||[]).find(el=>el.getAttribute('aria-label')===label&&!el.matches(':disabled'));
+  next??=root.querySelector<HTMLButtonElement>(fallbackSelector)||undefined;
+  if(next?.getClientRects().length)next.focus({preventScroll:true});
+ };
+}

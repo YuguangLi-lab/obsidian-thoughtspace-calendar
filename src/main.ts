@@ -15,7 +15,10 @@ import {NativeCalendarTransport} from './native-calendar-transport';
 import {AppleCalendarSettings,CalendarTask,dayKey,parseDay} from './calendar-model';
 import {LargeCalendarView,LargeCalendarHost} from './large-calendar-view';
 import {registerLargeCalendar,renderAppleCalendarSetting} from './register-large-calendar';
-import {calendarTasks} from './calendar-task-adapter';
+import {calendarTasks,unscheduledCalendarTasks} from './calendar-task-adapter';
+import {resolveCalendarTask,taskSchedulingChange} from './calendar-scheduling';
+import {CalendarNoteLinks} from './calendar-note-links';
+import {CalendarNotePicker} from './calendar-note-picker';
 import {ChineseCalendar,chineseDayPresentation} from './chinese-calendar';
 type BoardPlugin={manifest:{version:string};currentBoard?:{file:TFile|null};ensureDock(show?:boolean):Promise<WorkspaceLeaf>};
 const run=(fn:()=>unknown)=>{try{void Promise.resolve(fn()).catch(e=>new Notice(String(e)));}catch(e){new Notice(String(e));}};
@@ -24,6 +27,7 @@ export default class ThoughtSpaceCalendar extends Plugin{
  private openings=new SharedOpen<string,WorkspaceLeaf>();private filing:Promise<unknown>=Promise.resolve();private selection=0;
  appleCalendar!:AppleCalendarClient;private largeCalendarHost!:LargeCalendarHost;private openLargePane!:()=>Promise<void>;
  private initialTaskRead?:Promise<void>;private largeRefreshTimer?:number;private chinese=new ChineseCalendar();
+ private eventNoteLinks!:CalendarNoteLinks;
  private settingsWrites:Promise<unknown>=Promise.resolve();
  private boardPlugin():BoardPlugin|undefined{return (this.app as unknown as {plugins:{getPlugin(id:string):BoardPlugin|undefined}}).plugins?.getPlugin('thoughtspace');}
  get currentBoard(){return this.boardPlugin()?.currentBoard;}
@@ -37,11 +41,24 @@ export default class ThoughtSpaceCalendar extends Plugin{
   this.taskPlanner=this.addChild(new TaskPlanner(this.app,()=>this.settings.journalFolder));
   const base=(this.app.vault.adapter as unknown as {getBasePath?:()=>string}).getBasePath?.();
   this.appleCalendar=new AppleCalendarClient(new NativeCalendarTransport(base?`${base}/${this.app.vault.configDir}/plugins/${this.manifest.id}/native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge`:''),()=>this.settings.appleCalendar);
+  this.eventNoteLinks=new CalendarNoteLinks(this.app,{
+   createNote:async event=>{if(!this.ready)throw Error('日历插件已关闭');const date=dayKey(new Date(event.start));return this.createUnique(`${this.settings.cardFolder}/日程`,`${date} ${event.title}`,'md',`---\ntype: calendar-event\ndate: ${date}\ncalendar-start: ${JSON.stringify(event.start)}\ncalendar-end: ${JSON.stringify(event.end)}\n---\n\n# ${event.title.replace(/[\r\n]+/g,' ')}\n\n## 记录\n\n## 后续行动\n\n`);},
+   openNote:async file=>this.openCalendarNote(file),changed:()=>this.refreshLargeCalendars()
+  });
+  this.register(()=>this.eventNoteLinks.dispose());
   this.largeCalendarHost={app:this.app,apple:this.appleCalendar,appleSettings:()=>this.settings.appleCalendar,
    saveAppleSettings:async settings=>this.saveAppleCalendarSettings(settings),changed:()=>this.refreshLargeCalendars(true),
-   tasks:async(start,end)=>{if(!this.initialTaskRead)this.initialTaskRead=this.taskPlanner.ready().catch(error=>{this.initialTaskRead=undefined;throw error;});await this.initialTaskRead;if(!this.ready)return [];return calendarTasks(this.taskPlanner.all(),start,end);},
+   tasks:async(start,end)=>calendarTasks(await this.calendarTaskIndex(),start,end),
+   unscheduledTasks:async()=>unscheduledCalendarTasks(await this.calendarTaskIndex()),
+   scheduleTask:async(task,date,start,end,clearTime)=>{const current=resolveCalendarTask(await this.calendarTaskIndex(),task);if(!this.ready)throw Error('日历插件已关闭');const change=taskSchedulingChange(task,date,start,end);if(clearTime){if(start!==undefined||end!==undefined)throw Error('清除时间不能同时设置时间');change.time=null;}await this.taskPlanner.update(current,change);},
+   toggleTask:async task=>{const current=resolveCalendarTask(await this.calendarTaskIndex(),task);if(!this.ready)throw Error('日历插件已关闭');await this.taskPlanner.update(current,{checked:!current.checked});},
+   canToggleTask:task=>{try{return this.ready&&this.taskPlanner.canToggle(resolveCalendarTask(this.taskPlanner.all(),task));}catch{return false;}},
    openJournal:async date=>{const day=dayKey(date);await this.getJournalFile(day);await this.selectJournalDay(day);},
    openTask:async task=>this.openCalendarTask(task),
+   eventNotes:event=>this.eventNoteLinks.linkedNotes(event).map(file=>({path:file.path,name:file.basename})),
+   openEventNote:async event=>{await this.eventNoteLinks.openOrCreate(event);},
+   linkEventNote:event=>{if(!this.ready)throw Error('日历插件已关闭');new CalendarNotePicker(this.app,async file=>{await this.eventNoteLinks.link(event,file);await this.openCalendarNote(file);},event.title).open();},
+   eventMoved:async(before,after)=>this.eventNoteLinks.rekey(before,after),
    lunar:date=>chineseDayPresentation(this.chinese.get(dayKey(date)),this.settings).label};
   this.openLargePane=registerLargeCalendar(this,this.largeCalendarHost);
   this.register(this.taskPlanner.subscribe(()=>{window.clearTimeout(this.largeRefreshTimer);this.largeRefreshTimer=window.setTimeout(()=>this.refreshLargeCalendars(),100);}));
@@ -59,6 +76,8 @@ export default class ThoughtSpaceCalendar extends Plugin{
   this.app.workspace.onLayoutReady(()=>{if(this.ready)this.configureLinks();});
  }
  private configureLinks(){if(this.journalLinks){this.removeChild(this.journalLinks);this.journalLinks=undefined;}if(this.settings.linkCreatedNotes)this.journalLinks=this.addChild(new JournalLinks(this.app,this));}
+ private async calendarTaskIndex(){if(!this.ready)return [];if(!this.initialTaskRead)this.initialTaskRead=this.taskPlanner.ready().catch(error=>{this.initialTaskRead=undefined;throw error;});await this.initialTaskRead;return this.ready?this.taskPlanner.all():[];}
+ private async openCalendarNote(file:TFile){if(!this.ready)throw Error('日历插件已关闭');if(this.app.vault.getAbstractFileByPath(file.path)!==file)throw Error('关联笔记已移动或删除，请刷新');const existing=this.app.workspace.getLeavesOfType('markdown').find(leaf=>(leaf.view as {file?:TFile}).file===file),leaf=existing||this.app.workspace.getLeaf('tab');if(!existing)await leaf.openFile(file);await this.app.workspace.revealLeaf(leaf);this.app.workspace.setActiveLeaf(leaf,{focus:true});}
  private persistSettings(patch:(current:CalendarSettings)=>CalendarSettings){const work=this.settingsWrites.catch(()=>{}).then(async()=>{if(!this.ready)throw Error('日历插件已关闭');const previous=this.settings,settings=patch(previous);await this.saveData(settings);this.settings=settings;return previous;});this.settingsWrites=work;return work;}
  async updateSettings(value:unknown,preserveApple=false){const previous=await this.persistSettings(current=>calendarSettings({...value as CalendarSettings,...(preserveApple?{appleCalendar:current.appleCalendar}:{})}));this.appleCalendar.invalidate();this.configureLinks();if(previous.journalFolder!==this.settings.journalFolder&&this.initialTaskRead)await this.taskPlanner.ready();await this.refreshViews();this.refreshLargeCalendars(true);}
  private async saveAppleCalendarSettings(appleCalendar:AppleCalendarSettings){await this.persistSettings(current=>calendarSettings({...current,appleCalendar}));}

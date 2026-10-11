@@ -6,6 +6,7 @@
   container-type:inline-size; container-name:tsc-calendar;
 }
 .tsc-large-calendar button, .tsc-dialog button { cursor:pointer; }
+.tsc-large-calendar [hidden], .tsc-dialog [hidden] {display:none!important;}
 .tsc-large-header { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
 .tsc-large-heading { margin-right:auto; min-width:190px; }
 .tsc-eyebrow { color:var(--text-muted); font-size:11px; letter-spacing:.08em; }
@@ -71,3 +72,36 @@
 @media(max-width:1050px) { .tsc-large-calendar { padding:16px!important; gap:14px; }.tsc-large-body { grid-template-columns:minmax(0,1fr) 210px; }.tsc-day-agenda { padding:14px; }.tsc-cell-lunar { display:none; } }
 @media(max-width:750px) { .tsc-large-body { display:block; overflow:auto; }.tsc-day-agenda { border-left:0; border-top:1px solid var(--tsc-line); overflow:visible; }.tsc-large-main { overflow:visible; }.tsc-large-heading { min-width:150px; }.tsc-month-day { padding:4px; }.tsc-month-grid { grid-template-rows:repeat(6,minmax(140px,1fr)); flex:none; }.tsc-large-heading h2 { font-size:20px; }.tsc-add-event span:last-child { display:none; }.tsc-large-calendar .tsc-add-event { padding:0 8px; }.tsc-large-main[data-mode=week] { overflow:auto; }.tsc-event-dates { grid-template-columns:1fr; } }
 @media(prefers-reduced-motion:reduce) { .tsc-large-calendar * { transition:none!important; } }
+
+/* A single daily rail joins Apple events, Markdown tasks and their source notes. */
+.tsc-agenda-items {display:flex;flex-direction:column;gap:10px;min-width:0;}
+.tsc-agenda-entry {--event-accent:var(--tsc-accent);position:relative;min-width:0;border:1px solid var(--tsc-line);border-radius:10px;background:var(--background-primary);overflow:hidden;}
+.tsc-large-calendar .tsc-agenda-entry .tsc-agenda-event {width:100%;padding:11px 12px;border:0;border-radius:0;border-left:3px solid var(--event-accent);background:transparent;}
+.tsc-entry-actions {display:flex;align-items:center;gap:6px;min-width:0;padding:4px 9px 6px;border-top:1px solid color-mix(in srgb,var(--tsc-line) 60%,transparent);}
+.tsc-large-calendar .tsc-entry-actions .tsc-icon-button {width:25px;height:25px;flex-shrink:0;margin-left:auto;}
+.tsc-large-calendar .tsc-note-link {min-width:0;max-width:100%;display:flex;align-items:center;gap:5px;height:25px;padding:0 2px;background:transparent;border:0;box-shadow:none;font-size:11px;color:var(--text-muted);}
+.tsc-note-link span:last-child {white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tsc-note-link svg {width:13px;height:13px;flex-shrink:0;}
+.tsc-task-source {font-size:10px;color:var(--text-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tsc-task-deadline {font-size:10px;color:var(--text-muted);margin-left:auto;white-space:nowrap;}
+.tsc-agenda-task-entry>.tsc-agenda-time {display:block;padding:10px 12px 0;font-size:11px;color:var(--tsc-accent);font-variant-numeric:tabular-nums;}
+.tsc-large-calendar .tsc-agenda-task-entry .tsc-agenda-task {padding:7px 9px;gap:5px;align-items:flex-start;}
+.tsc-large-calendar .tsc-agenda-task .tsc-icon-button {width:23px;height:23px;flex-shrink:0;color:var(--tsc-accent);}
+.tsc-large-calendar .tsc-task-title {flex:1;min-width:0;padding:3px 0;height:auto;line-height:1.5;background:transparent;border:0;box-shadow:none;text-align:left;justify-content:flex-start;white-space:normal;overflow-wrap:anywhere;font-size:12px;font-family:var(--font-text,var(--font-interface));}
+.tsc-agenda-task-entry.is-completed .tsc-task-title {color:var(--text-faint);text-decoration:line-through;}
+.tsc-agenda-disclosure {margin-top:18px;border-top:1px solid var(--tsc-line);padding-top:12px;}
+.tsc-agenda-disclosure>summary {font-size:12px;font-weight:550;color:var(--text-muted);cursor:pointer;margin-bottom:10px;}
+.tsc-linked-timeline {padding-left:10px;border-left:1px solid var(--tsc-line);}
+.tsc-linked-timeline .tsc-agenda-entry {overflow:visible;}
+.tsc-linked-timeline .tsc-agenda-entry::before {content:'';position:absolute;left:-15px;top:16px;width:6px;height:6px;border-radius:50%;background:var(--event-accent);box-shadow:0 0 0 3px var(--background-secondary);}
+.tsc-task-modal-title {font-family:var(--font-text,var(--font-interface));font-size:14px;line-height:1.6;overflow-wrap:anywhere;}
+.tsc-large-calendar [draggable=true] {cursor:grab;}
+.tsc-large-calendar .is-dragging {opacity:.45;cursor:grabbing;}
+.tsc-large-calendar .is-drop-target {background:color-mix(in srgb,var(--tsc-accent) 7%,var(--background-primary));outline:2px solid var(--tsc-accent);outline-offset:-2px;}
+.tsc-drop-preview {position:absolute;left:2px;right:2px;z-index:5;min-height:25px;padding:4px 6px;border:1px solid var(--tsc-accent);border-radius:5px;background:var(--background-primary);box-shadow:0 3px 10px #00000016;color:var(--tsc-accent);font-size:11px;pointer-events:none;}
+.tsc-resize-handle {position:absolute;left:15%;right:15%;bottom:0;height:8px;cursor:ns-resize;touch-action:none;opacity:0;}
+.tsc-resize-handle::after {content:'';position:absolute;left:30%;right:30%;bottom:2px;height:2px;border-radius:2px;background:currentColor;}
+.tsc-week-event:hover .tsc-resize-handle,.tsc-week-event:focus-visible .tsc-resize-handle,.tsc-week-event.is-resizing .tsc-resize-handle {opacity:.7;}
+.tsc-large-calendar .is-resizing {z-index:6;outline:2px solid var(--tsc-accent);cursor:ns-resize;}
+.tsc-large-calendar .tsc-week-event {align-items:flex-start;}
+.tsc-large-calendar.is-saving .tsc-large-status {color:var(--tsc-accent);}

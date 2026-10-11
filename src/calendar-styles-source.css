@@ -2077,6 +2077,8 @@
 .ts-task-quadrant .ts-task-title {position:relative;padding-right:12px;}
 .ts-task-drag-grip {position:absolute;right:-2px;top:3px;color:var(--text-faint);opacity:.6;}
 .ts-task-drag-grip svg {width:12px;height:14px;}
+.ts-task-row[draggable=true] .ts-task-title {position:relative;padding-right:18px;cursor:grab;}
+.ts-task-row[draggable=true]:hover .ts-task-drag-grip {opacity:1;color:var(--text-muted);}
 .ts-task-quadrant .ts-task-row[draggable=true] {cursor:grab;}
 .ts-task-quadrant .ts-task-row[draggable=true]:active {cursor:grabbing;}
 .ts-task-quadrant .ts-task-row:hover .ts-task-drag-grip {opacity:1;color:var(--text-muted);}

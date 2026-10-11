@@ -1,0 +1,188 @@
+{
+  "referenceRelease": "8.5.0",
+  "referenceUrl": "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/tag/8.5.0",
+  "bundleSha256": "7594ee5aff05a1e858a0e94b46b0928e2d34d7ddda88a913d6cbee5715f2496c",
+  "clock": "2026-10-11T12:00:00+08:00",
+  "tests": 19,
+  "passed": 19,
+  "bridgeVerified": true,
+  "limitations": [
+    "Only the real toggle API is exercised; UI, plugin startup, vault persistence, and custom statuses are not tested.",
+    "One-line output after recurrence end and with setDoneDate disabled is indistinguishable from a plain-checkbox fallback using this public API alone."
+  ],
+  "results": [
+    {
+      "name": "daily-repeat-and-block-id",
+      "passed": true,
+      "settings": {},
+      "source": "- [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "- [ ] Read 🔁 every day 📅 2026-10-12\n- [x] Read 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "undated-repeat-next-line-is-identical-to-source",
+      "passed": true,
+      "settings": {},
+      "source": "- [ ] Read 🔁 every day",
+      "actual": "- [ ] Read 🔁 every day\n- [x] Read 🔁 every day ✅ 2026-10-11",
+      "bridge": "accepted-unchanged",
+      "nextEqualsSource": true,
+      "note": "Exact source-line checks alone cannot reject a duplicate completion of this unchanged next occurrence."
+    },
+    {
+      "name": "weekday-friday-to-monday",
+      "passed": true,
+      "settings": {},
+      "source": "- [ ] Work 🔁 every weekday 📅 2026-10-09",
+      "actual": "- [ ] Work 🔁 every weekday 📅 2026-10-12\n- [x] Work 🔁 every weekday 📅 2026-10-09 ✅ 2026-10-11",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "repeat-relative-to-completion",
+      "passed": true,
+      "settings": {},
+      "source": "- [ ] Read 🔁 every day when done 📅 2026-10-01 ^read",
+      "actual": "- [ ] Read 🔁 every day when done 📅 2026-10-12\n- [x] Read 🔁 every day when done 📅 2026-10-01 ✅ 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "global-filter-missing-falls-back-to-checkbox-only",
+      "passed": true,
+      "settings": {
+        "globalFilter": "#task"
+      },
+      "source": "- [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "- [x] Read 🔁 every day 📅 2026-10-11 ^read",
+      "bridge": "safely-rejected-before-write"
+    },
+    {
+      "name": "global-filter-matching-generates-next",
+      "passed": true,
+      "settings": {
+        "globalFilter": "#task"
+      },
+      "source": "- [ ] Read #task 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "- [ ] Read #task 🔁 every day 📅 2026-10-12\n- [x] Read #task 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "done-date-disabled-still-repeats",
+      "passed": true,
+      "settings": {
+        "setDoneDate": false
+      },
+      "source": "- [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "- [ ] Read 🔁 every day 📅 2026-10-12\n- [x] Read 🔁 every day 📅 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "recurrence-order-setting",
+      "passed": true,
+      "settings": {
+        "recurrenceOnNextLine": true
+      },
+      "source": "- [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "- [x] Read 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read\n- [ ] Read 🔁 every day 📅 2026-10-12",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "invalid-recurrence-is-removed-by-upstream",
+      "passed": true,
+      "settings": {},
+      "source": "- [ ] Read 🔁 glorp 📅 2026-10-11 ^read",
+      "actual": "- [x] Read 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "safely-rejected-before-write"
+    },
+    {
+      "name": "ended-recurrence-legitimately-returns-one-line",
+      "passed": true,
+      "settings": {},
+      "source": "- [ ] Read 🔁 every day until 2026-10-11 📅 2026-10-11 ^read",
+      "actual": "- [x] Read 🔁 every day until 2026-10-11 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "safely-rejected-before-write"
+    },
+    {
+      "name": "ended-recurrence-without-done-date-is-ambiguous",
+      "passed": true,
+      "settings": {
+        "setDoneDate": false
+      },
+      "source": "- [ ] Read 🔁 every day until 2026-10-11 📅 2026-10-11 ^read",
+      "actual": "- [x] Read 🔁 every day until 2026-10-11 📅 2026-10-11 ^read",
+      "bridge": "safely-rejected-before-write"
+    },
+    {
+      "name": "missing-filter-with-ended-rule-produces-identical-output",
+      "passed": true,
+      "settings": {
+        "globalFilter": "#task",
+        "setDoneDate": false
+      },
+      "source": "- [ ] Read 🔁 every day until 2026-10-11 📅 2026-10-11 ^read",
+      "actual": "- [x] Read 🔁 every day until 2026-10-11 📅 2026-10-11 ^read",
+      "bridge": "safely-rejected-before-write"
+    },
+    {
+      "name": "reopen-done-task-does-not-generate-next",
+      "passed": true,
+      "settings": {},
+      "source": "- [x] Read 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "actual": "- [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "callout-prefix-preserved",
+      "passed": true,
+      "settings": {},
+      "source": "> - [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "> - [ ] Read 🔁 every day 📅 2026-10-12\n> - [x] Read 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "nested-callout-prefix-preserved",
+      "passed": true,
+      "settings": {},
+      "source": "> > - [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "> > - [ ] Read 🔁 every day 📅 2026-10-12\n> > - [x] Read 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "ordered-list-prefix-preserved",
+      "passed": true,
+      "settings": {},
+      "source": "1. [ ] Read 🔁 every day 📅 2026-10-11 ^read",
+      "actual": "1. [ ] Read 🔁 every day 📅 2026-10-12\n1. [x] Read 🔁 every day 📅 2026-10-11 ✅ 2026-10-11 ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "dataview-format-and-block-id",
+      "passed": true,
+      "settings": {
+        "taskFormat": "dataview"
+      },
+      "source": "- [ ] Read [repeat:: every day] [due:: 2026-10-11] ^read",
+      "actual": "- [ ] Read  [repeat:: every day]  [due:: 2026-10-12]\n- [x] Read  [repeat:: every day]  [due:: 2026-10-11]  [completion:: 2026-10-11] ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "dataview-reopen-removes-completion",
+      "passed": true,
+      "settings": {
+        "taskFormat": "dataview"
+      },
+      "source": "- [x] Read [repeat:: every day] [due:: 2026-10-11] [completion:: 2026-10-11] ^read",
+      "actual": "- [ ] Read  [repeat:: every day]  [due:: 2026-10-11] ^read",
+      "bridge": "accepted-unchanged"
+    },
+    {
+      "name": "dataview-round-brackets",
+      "passed": true,
+      "settings": {
+        "taskFormat": "dataview"
+      },
+      "source": "- [ ] Read (repeat:: every day) (due:: 2026-10-11) ^read",
+      "actual": "- [ ] Read  [repeat:: every day]  [due:: 2026-10-12]\n- [x] Read  [repeat:: every day]  [due:: 2026-10-11]  [completion:: 2026-10-11] ^read",
+      "bridge": "accepted-unchanged"
+    }
+  ]
+}
