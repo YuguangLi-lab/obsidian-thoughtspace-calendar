@@ -1,7 +1,8 @@
 import {ChineseCalendarOptions} from './chinese-calendar';
 import {defaultFilingSettings,validateFolders} from './filing';
 import {AppleCalendarSettings,defaultAppleSettings} from './calendar-model';
-export interface CalendarSettings extends ChineseCalendarOptions{journalFolder:string;cardFolder:string;surfaceStyle:'soft'|'paper';accent:'forest'|'blue'|'amber'|'rose';glassEffects:boolean;linkCreatedNotes:boolean;appleCalendar:AppleCalendarSettings;migratedFrom?:string;}
+import {normalizePomodoroConfig,type PomodoroConfig} from './pomodoro-model';
+export interface CalendarSettings extends ChineseCalendarOptions{journalFolder:string;cardFolder:string;surfaceStyle:'soft'|'paper';accent:'forest'|'blue'|'amber'|'rose';glassEffects:boolean;linkCreatedNotes:boolean;appleCalendar:AppleCalendarSettings;pomodoro:PomodoroConfig;migratedFrom?:string;}
 export function appleCalendarSettings(value:unknown):AppleCalendarSettings{
  const raw=value&&typeof value==='object'?value as Record<string,unknown>:{};
  return {...defaultAppleSettings,enabled:raw.enabled===true,
@@ -11,5 +12,5 @@ export function appleCalendarSettings(value:unknown):AppleCalendarSettings{
 export function calendarSettings(saved:unknown,legacy?:unknown):CalendarSettings{
  const own=!!saved&&typeof saved==='object',raw=(own?saved:legacy&&typeof legacy==='object'?legacy:{}) as Record<string,unknown>;
  const folders=validateFolders(typeof raw.cardFolder==='string'?raw.cardFolder:defaultFilingSettings.cardFolder,typeof raw.journalFolder==='string'?raw.journalFolder:defaultFilingSettings.journalFolder);
- return{...folders,showLunar:raw.showLunar!==false,showFestivals:raw.showFestivals!==false,showSolarTerms:raw.showSolarTerms!==false,showHolidays:raw.showHolidays!==false,calendarDensity:raw.calendarDensity==='compact'?'compact':'comfortable',surfaceStyle:raw.surfaceStyle==='paper'?'paper':'soft',accent:['forest','blue','amber','rose'].includes(String(raw.accent))?raw.accent as CalendarSettings['accent']:'forest',glassEffects:raw.glassEffects!==false,linkCreatedNotes:raw.linkCreatedNotes!==false,appleCalendar:appleCalendarSettings(own?raw.appleCalendar:undefined),...(!own&&legacy?{migratedFrom:'thoughtspace'}:typeof raw.migratedFrom==='string'?{migratedFrom:raw.migratedFrom}:{})};
+ return{...folders,showLunar:raw.showLunar!==false,showFestivals:raw.showFestivals!==false,showSolarTerms:raw.showSolarTerms!==false,showHolidays:raw.showHolidays!==false,calendarDensity:raw.calendarDensity==='compact'?'compact':'comfortable',surfaceStyle:raw.surfaceStyle==='paper'?'paper':'soft',accent:['forest','blue','amber','rose'].includes(String(raw.accent))?raw.accent as CalendarSettings['accent']:'forest',glassEffects:raw.glassEffects!==false,linkCreatedNotes:raw.linkCreatedNotes!==false,appleCalendar:appleCalendarSettings(own?raw.appleCalendar:undefined),pomodoro:normalizePomodoroConfig(raw.pomodoro),...(!own&&legacy?{migratedFrom:'thoughtspace'}:typeof raw.migratedFrom==='string'?{migratedFrom:raw.migratedFrom}:{})};
 }

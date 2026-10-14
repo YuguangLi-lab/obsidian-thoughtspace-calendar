@@ -1,0 +1,3526 @@
+{
+  "version": "1.4.5",
+  "verifiedAt": "2026-10-11T17:19:27.029347+00:00",
+  "status": "Verified locally in Obsidian with unmodified official Tasks 8.5.0; installed runtime matches this build. No GitHub publication performed.",
+  "build": "TypeScript and esbuild passed",
+  "automated": {
+    "passed": 365,
+    "failed": 0
+  },
+  "tasksNative": {
+    "checkedAt": "2026-10-12T01:17:35+0800",
+    "passed": 133,
+    "tests": 133,
+    "results": [
+      {
+        "name": "real API and file: exactApiOutput",
+        "passed": true
+      },
+      {
+        "name": "real API and file: nextOccurrence",
+        "passed": true
+      },
+      {
+        "name": "real API and file: completionDate",
+        "passed": true
+      },
+      {
+        "name": "real API and file: singleBlockReference",
+        "passed": true
+      },
+      {
+        "name": "real API and file: TasksCacheAgrees",
+        "passed": true
+      },
+      {
+        "name": "real API and file: oneNotification",
+        "passed": true
+      },
+      {
+        "name": "real API and file: exactUndo",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: queuedClickRejected",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: onlyOneCompletion",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: externalTasksRaceRejected",
+        "passed": true
+      },
+      {
+        "name": "undated recurrence race: externalTasksResultPreserved",
+        "passed": true
+      },
+      {
+        "name": "queued distinct recurrences: allQueuedActionsComplete",
+        "passed": true
+      },
+      {
+        "name": "queued distinct recurrences: oneNextOccurrenceEach",
+        "passed": true
+      },
+      {
+        "name": "source safety: CRLFPreserved",
+        "passed": true
+      },
+      {
+        "name": "source safety: undoPreservesOtherText",
+        "passed": true
+      },
+      {
+        "name": "source safety: reopenDoesNotGenerate",
+        "passed": true
+      },
+      {
+        "name": "source safety: changedGeneratedTaskBlocksUndo",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: doneFirst",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: noForcedCompletionDate",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+        "passed": true
+      },
+      {
+        "name": "configured Tasks behavior: invalidRulePreserved",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: recurrence",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: completion",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: priority",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: calendarDate",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: undoPreservesRoundBrackets",
+        "passed": true
+      },
+      {
+        "name": "native Dataview: scheduleKeepsFormat",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: listNativeClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: focusStaysInTaskPanel",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: oneListRender",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: fourQuadrants",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+        "passed": true
+      },
+      {
+        "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+        "passed": true
+      },
+      {
+        "name": "continuous keyboard and scroll: listScrollStable",
+        "passed": true
+      },
+      {
+        "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+        "passed": true
+      },
+      {
+        "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 列表SixCompletions",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 列表UndoOnlyLast",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 四象限SixCompletions",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 四象限UndoOnlyLast",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 时间线SixCompletions",
+        "passed": true
+      },
+      {
+        "name": "rapid native checkbox sequence: 时间线UndoOnlyLast",
+        "passed": true
+      },
+      {
+        "name": "queued property and completion: allThreeActionsComplete",
+        "passed": true
+      },
+      {
+        "name": "queued property and completion: oneNextKeepsTimeAndPriority",
+        "passed": true
+      },
+      {
+        "name": "queued property and completion: externalOccurrenceAttributesRejected",
+        "passed": true
+      },
+      {
+        "name": "queued completion undo and next task: allActionsComplete",
+        "passed": true
+      },
+      {
+        "name": "queued completion undo and next task: undoFirstThenCompleteSecond",
+        "passed": true
+      },
+      {
+        "name": "quadrant recurrence continuity: newQuadrantCompletes",
+        "passed": true
+      },
+      {
+        "name": "quadrant recurrence continuity: newReopenClearsCompletionDate",
+        "passed": true
+      },
+      {
+        "name": "quadrant recurrence continuity: legacyQuadrantCompletes",
+        "passed": true
+      },
+      {
+        "name": "quadrant recurrence continuity: legacyReopenClearsCompletionDate",
+        "passed": true
+      },
+      {
+        "name": "focus follows original task after insertion: 列表FocusIdentity",
+        "passed": true
+      },
+      {
+        "name": "focus follows original task after insertion: 四象限FocusIdentity",
+        "passed": true
+      },
+      {
+        "name": "focus follows original task after insertion: 时间线FocusIdentity",
+        "passed": true
+      },
+      {
+        "name": "calendar queued snapshots: allSnapshotsComplete",
+        "passed": true
+      },
+      {
+        "name": "calendar queued snapshots: eachGeneratesOnce",
+        "passed": true
+      },
+      {
+        "name": "focus collision with generated occurrence: 列表KeepsExistingOccurrence",
+        "passed": true
+      },
+      {
+        "name": "focus collision with generated occurrence: 四象限KeepsExistingOccurrence",
+        "passed": true
+      },
+      {
+        "name": "focus collision with generated occurrence: 时间线KeepsExistingOccurrence",
+        "passed": true
+      },
+      {
+        "name": "external occurrence preserves undo safety: staleUndoRejected",
+        "passed": true
+      },
+      {
+        "name": "external occurrence preserves undo safety: externalOccurrencesPreserved",
+        "passed": true
+      },
+      {
+        "name": "adding recurrence preserves undo safety: newRuleStaleUndoRejected",
+        "passed": true
+      },
+      {
+        "name": "adding recurrence preserves undo safety: newOccurrenceKeepsRule",
+        "passed": true
+      },
+      {
+        "name": "timeline search and tag: searchFiltersTimeline",
+        "passed": true
+      },
+      {
+        "name": "timeline search and tag: tagFiltersTimeline",
+        "passed": true
+      },
+      {
+        "name": "timeline search and tag: noMatchesStaysEmpty",
+        "passed": true
+      },
+      {
+        "name": "timeline search and tag: deletedLastTagClearsCaption",
+        "passed": true
+      },
+      {
+        "name": "timeline search and tag: deletedTagOnlyOneTimelineRender",
+        "passed": true
+      },
+      {
+        "name": "nested native recurrence: spacesCompletes",
+        "passed": true
+      },
+      {
+        "name": "nested native recurrence: spacesPreservesIndent",
+        "passed": true
+      },
+      {
+        "name": "nested native recurrence: spacesUndoExact",
+        "passed": true
+      },
+      {
+        "name": "nested native recurrence: tabCompletes",
+        "passed": true
+      },
+      {
+        "name": "nested native recurrence: tabPreservesIndent",
+        "passed": true
+      },
+      {
+        "name": "nested native recurrence: tabUndoExact",
+        "passed": true
+      },
+      {
+        "name": "quadrant scroll continuity: columnScrollPreserved",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: minuteKeepsRowIdentity",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: minuteKeepsFocusedControl",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: activeAtStart",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: inactiveAtEnd",
+        "passed": true
+      },
+      {
+        "name": "timeline minute tick: hidesYesterdayClock",
+        "passed": true
+      },
+      {
+        "name": "timeline direct time edit: timeButtonOpensPopulatedEditor",
+        "passed": true
+      },
+      {
+        "name": "timeline direct time edit: exactTimeKeepsRuleAndReference",
+        "passed": true
+      },
+      {
+        "name": "timeline direct time edit: timeEditUndoRestoresOriginal",
+        "passed": true
+      },
+      {
+        "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+        "passed": true
+      },
+      {
+        "name": "refresh and idle: unchangedIndexDoesNotNotify",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: timelineCardDraggable",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: opaquePayload",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: dropShowsTargetTime",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: localDropKeepsDurationRuleAndReference",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: dragUndoExact",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: timelineToWeekSchedulesDateAndTime",
+        "passed": true
+      },
+      {
+        "name": "native timeline task drag: crossViewUndoExact",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: pendingKeepsOriginalRows",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: singlePaintAfterSave",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: duplicateDropWritesOnce",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: timelineIdentityPreserved",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: savedRangePreservesMetadata",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: nextGestureAvailable",
+        "passed": true
+      },
+      {
+        "name": "timeline drop coalesces native refreshes: coalescedDropUndoExact",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: dragSelectsStartEnd",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: reverseSelectsOrderedRange",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: handleExtendsDuration",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: escapePreservesInputsAndDialog",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: pointerCancelPreservesInputs",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: keyboardExtendsOneMinute",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: manualMinuteDoesNotSnap",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: savedRangeKeepsRecurrenceAndReference",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: rangeEditUndoRestoresOriginal",
+        "passed": true
+      },
+      {
+        "name": "drag range picker native task editor: idleEscapeStillClosesDialog",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: pendingLocksTimeInputs",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: pendingKeyboardCannotChangeRange",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: failedSaveShowsError",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: failedSaveKeepsSource",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: doubleSubmitWritesOnce",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: retrySavesExactRange",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: retryKeepsRuleAndBlock",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: retryHasOneWrite",
+        "passed": true
+      },
+      {
+        "name": "schedule failure recovery and repeated saves: retryUndoExact",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 列表CleanTitle",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 列表RecurrenceBadge",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 列表SourcePreserved",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 四象限CleanTitle",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 四象限RecurrenceBadge",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 四象限SourcePreserved",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 时间线CleanTitle",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 时间线RecurrenceBadge",
+        "passed": true
+      },
+      {
+        "name": "task presentation in native views: 时间线SourcePreserved",
+        "passed": true
+      },
+      {
+        "name": "no new native errors",
+        "passed": true
+      },
+      {
+        "name": "fixtures removed and settings restored",
+        "passed": true
+      },
+      {
+        "name": "native workspace restored exactly",
+        "passed": true
+      }
+    ],
+    "metrics": {
+      "calendar": "1.4.5",
+      "tasks": "8.5.0",
+      "state": "Warm",
+      "completionMs": 16.200000047683716,
+      "notifications": 1,
+      "queuedMs": 231.5,
+      "queuedErrors": [],
+      "listClickMs": 1299.6000000238419,
+      "listRenders": 1,
+      "scrollAncestors": 1,
+      "scrollDelta": [
+        0
+      ],
+      "sixCheckboxWritesMs": {
+        "列表": 35.89999997615814,
+        "四象限": 97.80000007152557,
+        "时间线": 129.29999995231628
+      },
+      "sameTaskQueueErrors": [],
+      "calendarQueueErrors": [],
+      "quadrantScrollBefore": 100,
+      "quadrantScrollAfter": 100,
+      "minuteChildListChanges": 0,
+      "idleNotifications": 0,
+      "timelineDropPaints": 1,
+      "timelineDropWrites": 1,
+      "layoutCompletionSettled": true
+    },
+    "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+  },
+  "workflowNative": {
+    "passed": 41,
+    "checks": [
+      "native calendar 1.4.5 ready",
+      "fixture tasks indexed from native vault",
+      "exactMinutes",
+      "deadlinePreserved",
+      "blockIdPreserved",
+      "otherContentPreserved",
+      "scheduleUndoExact",
+      "completionWritesMarkdown",
+      "completionUndoExact",
+      "staleRejected",
+      "staleLeavesExternalText",
+      "recurringFallback",
+      "inboxOnlyUnscheduled",
+      "nativeDataviewDate",
+      "nativeDataviewRecurring",
+      "nativeDataviewPriority",
+      "nativeDataviewScheduleFormat",
+      "nativeDataviewMetadataPreserved",
+      "nativeDataviewUndoExact",
+      "nativePropertyLink",
+      "nativePropertyPreservesForeign",
+      "noteBodyPreserved",
+      "nativeRenameKeepsLink",
+      "nativeOccurrenceRekey",
+      "openLinkedNoteReusesNativeFile",
+      "nativeWeekSevenColumns",
+      "nativeMergedTimeline",
+      "nativeLinkedNoteAction",
+      "nativeScheduleForm",
+      "nativeModalWritesExactMinutes",
+      "nativeRefreshKeepsScroll",
+      "nativeNarrowStack",
+      "nativeWeekDragPrefillsRange",
+      "nativeRangePreviewRemoved",
+      "nativeWeekEscapeDoesNotOpenEditor",
+      "nativeWeekPointerCancelDoesNotOpenEditor",
+      "native view has no self-triggering refresh loop",
+      "no new captured native JavaScript errors",
+      "applePreferencesUnchanged",
+      "native fixture files cleaned",
+      "native workspace restored exactly"
+    ],
+    "scope": "Native vault, metadata and DOM. Apple events are synthetic; no permission request or real calendar read/write.",
+    "tasksPlugin": "Tasks was installed; its recurrence actions are checked with qa/native-tasks-check.py.",
+    "cleanup": "Unique fixtures deleted, native workspace restored, prior undo and journal-link component restored."
+  },
+  "browser": {
+    "checkedAt": "2026-10-11T17:07:22.818Z",
+    "checks": [
+      "month 42 cells",
+      "busy month date keeps combined previews and counters inside its own cell",
+      "condensed month previews still open the complete selected-day agenda",
+      "edit loads complete notes",
+      "edit and refresh",
+      "update preserves original occurrence",
+      "week 7 columns",
+      "refresh preserves week scroll position",
+      "scheduled local task opens original source",
+      "midnight cell preserves midnight time",
+      "all-day inclusive end converted to exclusive",
+      "read-only event cannot save",
+      "conflict preserves editor content",
+      "narrow split uses container layout inside wide window",
+      "narrow month no horizontal overflow",
+      "all six weeks remain above the narrow agenda",
+      "unified timeline interleaves tasks and Apple events chronologically",
+      "fully rendered sections hide the zero-count show-more button",
+      "refresh retains expanded unscheduled task tray",
+      "dragging an unscheduled task onto a month date updates the source safely",
+      "dragging an agenda task into the week grid schedules a 30-minute block",
+      "keyboard scheduling preserves exact 09:07 time rather than snapping it",
+      "clearing modal time keeps scheduled date and block reference",
+      "task resize saves the new end while retaining its exact start and block ID",
+      "Escape cancels a live resize without persisting a change",
+      "failed task drop restores the rendered task and preserves source content",
+      "event cards expose create/open and link-existing note actions",
+      "event drop preserves complete notes and revision and migrates occurrence-note link",
+      "resizing a next-day continuation to 02:00 preserves the original previous-day start",
+      "cross-day continuation stays non-draggable after resize and Escape cancellation",
+      "checking a task updates Markdown and removes its active time block",
+      "week drag previews the snapped start and end without opening or saving early",
+      "refresh during time selection is deferred without replacing its column",
+      "a second pointer cannot alter or commit another pointer’s live selection",
+      "release opens one event draft with the selected duration",
+      "reverse time selection sorts the range and keeps 15-minute snapping",
+      "a short drag still creates a positive 15-minute draft",
+      "late-night selection ends at 23:59 instead of silently changing the selected date",
+      "Escape cancels a time selection and suppresses its trailing click",
+      "pointercancel cancels a time selection and suppresses its trailing click",
+      "blur cancels a time selection and suppresses its trailing click",
+      "lostpointercapture cancels a time selection and suppresses its trailing click",
+      "a collapsed week column cancels on pointerup without opening a draft",
+      "a collapsed week column cancels on pointermove without opening a draft",
+      "time selection and cancelling drafts never writes an Apple event",
+      "an ordinary blank-time click keeps its existing one-hour default",
+      "closing the view releases a live selection without opening a draft",
+      "no uncaught browser errors"
+    ],
+    "errors": [],
+    "scope": "Synthetic fixture host only. No real Apple Calendar writes or Obsidian runtime integration.",
+    "passed": 48
+  },
+  "taskLayout": {
+    "checks": [
+      "light-280-列表: no overflow",
+      "light-280-四象限: no overflow, two columns",
+      "light-280-时间线: no overflow",
+      "light-420-列表: no overflow",
+      "light-420-四象限: no overflow, two columns",
+      "light-420-时间线: no overflow",
+      "dark-280-列表: no overflow",
+      "dark-280-四象限: no overflow, two columns",
+      "dark-280-时间线: no overflow",
+      "dark-420-列表: no overflow",
+      "dark-420-四象限: no overflow, two columns",
+      "dark-420-时间线: no overflow"
+    ],
+    "passed": 12,
+    "scope": "Native-generated synthetic task markup; layout and themes only."
+  },
+  "upstreamTasks": {
+    "passed": 29,
+    "tests": 29,
+    "baseContract": 19,
+    "quadrantAndNestedContract": 10,
+    "referenceRelease": "8.5.0",
+    "officialBundleSha256": "f901cc5537518787cd07db251d8b0db43491a127440d1b415f9cae950fbb587b"
+  },
+  "regressionEvidence": {
+    "baselineCommit": "7960969842dbb86d14ff40c4ca59f501f5b7db66",
+    "before": {
+      "checkedAt": "2026-10-11T22:07:00+0800",
+      "passed": 61,
+      "tests": 79,
+      "results": [
+        {
+          "name": "real API and file: exactApiOutput",
+          "passed": true
+        },
+        {
+          "name": "real API and file: nextOccurrence",
+          "passed": true
+        },
+        {
+          "name": "real API and file: completionDate",
+          "passed": true
+        },
+        {
+          "name": "real API and file: singleBlockReference",
+          "passed": true
+        },
+        {
+          "name": "real API and file: TasksCacheAgrees",
+          "passed": true
+        },
+        {
+          "name": "real API and file: oneNotification",
+          "passed": true
+        },
+        {
+          "name": "real API and file: exactUndo",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: queuedClickRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: onlyOneCompletion",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksRaceRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksResultPreserved",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: allQueuedActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: oneNextOccurrenceEach",
+          "passed": true
+        },
+        {
+          "name": "source safety: CRLFPreserved",
+          "passed": true
+        },
+        {
+          "name": "source safety: undoPreservesOtherText",
+          "passed": true
+        },
+        {
+          "name": "source safety: reopenDoesNotGenerate",
+          "passed": true
+        },
+        {
+          "name": "source safety: changedGeneratedTaskBlocksUndo",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: doneFirst",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: noForcedCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: invalidRulePreserved",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: recurrence",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: completion",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: priority",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: calendarDate",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: undoPreservesRoundBrackets",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: scheduleKeepsFormat",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: listNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: focusStaysInTaskPanel",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: oneListRender",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: fourQuadrants",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: listScrollStable",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: allThreeActionsComplete",
+          "passed": false
+        },
+        {
+          "name": "queued property and completion: oneNextKeepsTimeAndPriority",
+          "passed": false
+        },
+        {
+          "name": "queued property and completion: externalOccurrenceAttributesRejected",
+          "passed": false
+        },
+        {
+          "name": "queued completion undo and next task: allActionsComplete",
+          "passed": false
+        },
+        {
+          "name": "queued completion undo and next task: undoFirstThenCompleteSecond",
+          "passed": false
+        },
+        {
+          "name": "quadrant recurrence continuity: newQuadrantCompletes",
+          "passed": false
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyQuadrantCompletes",
+          "passed": false
+        },
+        {
+          "name": "focus follows original task after insertion: 列表FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 四象限FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 时间线FocusIdentity",
+          "passed": false
+        },
+        {
+          "name": "calendar queued snapshots: allSnapshotsComplete",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: eachGeneratesOnce",
+          "passed": true
+        },
+        {
+          "name": "external occurrence preserves undo safety: staleUndoRejected",
+          "passed": false
+        },
+        {
+          "name": "external occurrence preserves undo safety: externalOccurrencesPreserved",
+          "passed": false
+        },
+        {
+          "name": "timeline search and tag: searchFiltersTimeline",
+          "passed": false
+        },
+        {
+          "name": "timeline search and tag: tagFiltersTimeline",
+          "passed": false
+        },
+        {
+          "name": "timeline search and tag: noMatchesStaysEmpty",
+          "passed": false
+        },
+        {
+          "name": "nested native recurrence: spacesCompletes",
+          "passed": false
+        },
+        {
+          "name": "nested native recurrence: spacesPreservesIndent",
+          "passed": false
+        },
+        {
+          "name": "nested native recurrence: tabCompletes",
+          "passed": false
+        },
+        {
+          "name": "nested native recurrence: tabPreservesIndent",
+          "passed": false
+        },
+        {
+          "name": "quadrant scroll continuity: columnScrollPreserved",
+          "passed": false
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsRowIdentity",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsFocusedControl",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: activeAtStart",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: inactiveAtEnd",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: hidesYesterdayClock",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeButtonOpensPopulatedEditor",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: exactTimeKeepsRuleAndReference",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeEditUndoRestoresOriginal",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "refresh and idle: unchangedIndexDoesNotNotify",
+          "passed": true
+        },
+        {
+          "name": "no new native errors",
+          "passed": true
+        },
+        {
+          "name": "fixtures removed and settings restored",
+          "passed": true
+        }
+      ],
+      "metrics": {
+        "calendar": "1.4.4",
+        "tasks": "8.5.0",
+        "state": "Warm",
+        "completionMs": 12.300000071525574,
+        "notifications": 1,
+        "queuedMs": 16.399999976158142,
+        "queuedErrors": [],
+        "listClickMs": 26.799999952316284,
+        "listRenders": 1,
+        "scrollAncestors": 1,
+        "scrollDelta": [
+          0
+        ],
+        "sixCheckboxWritesMs": {
+          "列表": 26.199999928474426,
+          "四象限": 28.899999976158142,
+          "时间线": 21
+        },
+        "sameTaskQueueErrors": [
+          "Error: 任务原文已变化，请刷新后再操作",
+          "Error: 任务原文已变化，请刷新后再操作"
+        ],
+        "calendarQueueErrors": [],
+        "quadrantScrollBefore": 100,
+        "quadrantScrollAfter": 0,
+        "minuteChildListChanges": 0,
+        "idleNotifications": 0
+      },
+      "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+    },
+    "intermediateReviewBefore": {
+      "checkedAt": "2026-10-11T22:11:58+0800",
+      "passed": 83,
+      "tests": 88,
+      "results": [
+        {
+          "name": "real API and file: exactApiOutput",
+          "passed": true
+        },
+        {
+          "name": "real API and file: nextOccurrence",
+          "passed": true
+        },
+        {
+          "name": "real API and file: completionDate",
+          "passed": true
+        },
+        {
+          "name": "real API and file: singleBlockReference",
+          "passed": true
+        },
+        {
+          "name": "real API and file: TasksCacheAgrees",
+          "passed": true
+        },
+        {
+          "name": "real API and file: oneNotification",
+          "passed": true
+        },
+        {
+          "name": "real API and file: exactUndo",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: queuedClickRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: onlyOneCompletion",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksRaceRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksResultPreserved",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: allQueuedActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: oneNextOccurrenceEach",
+          "passed": true
+        },
+        {
+          "name": "source safety: CRLFPreserved",
+          "passed": true
+        },
+        {
+          "name": "source safety: undoPreservesOtherText",
+          "passed": true
+        },
+        {
+          "name": "source safety: reopenDoesNotGenerate",
+          "passed": true
+        },
+        {
+          "name": "source safety: changedGeneratedTaskBlocksUndo",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: doneFirst",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: noForcedCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: invalidRulePreserved",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: recurrence",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: completion",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: priority",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: calendarDate",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: undoPreservesRoundBrackets",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: scheduleKeepsFormat",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: listNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: focusStaysInTaskPanel",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: oneListRender",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: fourQuadrants",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: listScrollStable",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: allThreeActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: oneNextKeepsTimeAndPriority",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: externalOccurrenceAttributesRejected",
+          "passed": true
+        },
+        {
+          "name": "queued completion undo and next task: allActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued completion undo and next task: undoFirstThenCompleteSecond",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: newQuadrantCompletes",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: newReopenClearsCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyQuadrantCompletes",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyReopenClearsCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 列表FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 四象限FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 时间线FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: allSnapshotsComplete",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: eachGeneratesOnce",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 列表KeepsExistingOccurrence",
+          "passed": false
+        },
+        {
+          "name": "focus collision with generated occurrence: 四象限KeepsExistingOccurrence",
+          "passed": false
+        },
+        {
+          "name": "focus collision with generated occurrence: 时间线KeepsExistingOccurrence",
+          "passed": false
+        },
+        {
+          "name": "external occurrence preserves undo safety: staleUndoRejected",
+          "passed": true
+        },
+        {
+          "name": "external occurrence preserves undo safety: externalOccurrencesPreserved",
+          "passed": true
+        },
+        {
+          "name": "adding recurrence preserves undo safety: newRuleStaleUndoRejected",
+          "passed": false
+        },
+        {
+          "name": "adding recurrence preserves undo safety: newOccurrenceKeepsRule",
+          "passed": false
+        },
+        {
+          "name": "timeline search and tag: searchFiltersTimeline",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: tagFiltersTimeline",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: noMatchesStaysEmpty",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesCompletes",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesPreservesIndent",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesUndoExact",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabCompletes",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabPreservesIndent",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabUndoExact",
+          "passed": true
+        },
+        {
+          "name": "quadrant scroll continuity: columnScrollPreserved",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsRowIdentity",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsFocusedControl",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: activeAtStart",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: inactiveAtEnd",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: hidesYesterdayClock",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeButtonOpensPopulatedEditor",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: exactTimeKeepsRuleAndReference",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeEditUndoRestoresOriginal",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "refresh and idle: unchangedIndexDoesNotNotify",
+          "passed": true
+        },
+        {
+          "name": "no new native errors",
+          "passed": true
+        },
+        {
+          "name": "fixtures removed and settings restored",
+          "passed": true
+        }
+      ],
+      "metrics": {
+        "calendar": "1.4.5",
+        "tasks": "8.5.0",
+        "state": "Warm",
+        "completionMs": 21.199999928474426,
+        "notifications": 1,
+        "queuedMs": 41.89999997615814,
+        "queuedErrors": [],
+        "listClickMs": 33.699999928474426,
+        "listRenders": 1,
+        "scrollAncestors": 1,
+        "scrollDelta": [
+          0
+        ],
+        "sixCheckboxWritesMs": {
+          "列表": 18.40000009536743,
+          "四象限": 46.800000071525574,
+          "时间线": 26
+        },
+        "sameTaskQueueErrors": [],
+        "calendarQueueErrors": [],
+        "quadrantScrollBefore": 100,
+        "quadrantScrollAfter": 100,
+        "minuteChildListChanges": 0,
+        "idleNotifications": 0
+      },
+      "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+    },
+    "after": "tasksNative above",
+    "comparisonScope": "Before and after have different totals because conditional reopen/undo checks and review regressions were added. Individual test names identify the reproduced failures; failed assertions are not counted as separate bugs."
+  },
+  "dataPreservation": {
+    "originalMarkdownFiles": 101,
+    "unchangedSHA256": true,
+    "temporaryFixturesRemoved": true,
+    "tasksSettingsRestored": true,
+    "nativeWorkspaceRestored": true,
+    "installedRuntimeFilesMatch": true,
+    "pluginUserFilesPreserved": true,
+    "enabledPluginsPreserved": true
+  },
+  "runtimeSha256": {
+    "main.js": "cd3e92280ca0025d3bd6d843fd06986542d8cd75973310dbf93a4297ccc9f7ba",
+    "styles.css": "49cc46d42f5e210e88876dd4a8117700e0d1b846b00555e8189833bee3c686df",
+    "manifest.json": "17f95b4c07feeb21b683a164f6442665539132af3be19c14c9021a64da21cb1c",
+    "native/ThoughtSpaceCalendarBridge.app/Contents/Info.plist": "7dea7d588130839a15e8bfab79334285b8793d54390c6a9ea7d7e2785922e23e",
+    "native/ThoughtSpaceCalendarBridge.app/Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b",
+    "native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge": "486db0ba108588c0de8796cad7eeb92e500aaceb6871274064ce802aed2ed75d"
+  },
+  "limitations": [
+    "No real Apple Calendar read/write in this verification.",
+    "Finite recurrences yielding only one row and custom statuses still require the Tasks source editor.",
+    "Undo of a recurring change is conservatively blocked by other task changes in the same source note. Independent prose edits remain permitted when task rows stay intact.",
+    "Continuous action timing uses a short synthetic fixture, not a large-vault or long-duration benchmark.",
+    "UI geometry uses native-generated synthetic markup; no Windows/Linux/mobile native UI claim."
+  ],
+  "sidebarLayout": {
+    "checks": [
+      "light-280-calendar: no overflow, theme and layout preserved",
+      "light-280-day: no overflow, theme and layout preserved",
+      "light-280-agenda: no overflow, theme and layout preserved",
+      "light-280-year: no overflow, theme and layout preserved",
+      "light-420-calendar: no overflow, theme and layout preserved",
+      "light-420-day: no overflow, theme and layout preserved",
+      "light-420-agenda: no overflow, theme and layout preserved",
+      "light-420-year: no overflow, theme and layout preserved",
+      "dark-280-calendar: no overflow, theme and layout preserved",
+      "dark-280-day: no overflow, theme and layout preserved",
+      "dark-280-agenda: no overflow, theme and layout preserved",
+      "dark-280-year: no overflow, theme and layout preserved",
+      "dark-420-calendar: no overflow, theme and layout preserved",
+      "dark-420-day: no overflow, theme and layout preserved",
+      "dark-420-agenda: no overflow, theme and layout preserved",
+      "dark-420-year: no overflow, theme and layout preserved"
+    ],
+    "passed": 16,
+    "scope": "Native-generated synthetic diaries and calendar; CSS layout and theme checks."
+  },
+  "uiRevision": {
+    "scope": "Calendar, journal, periodic lists, task list/quadrants/timeline and large-calendar surfaces. No new dependencies or Apple Calendar access.",
+    "changes": [
+      "Dedicated diary styles restricted to journal entries",
+      "Read-only metadata presentation protecting code, links, escapes and unknown recurrence prose",
+      "Combined busy-day previews with complete agenda access",
+      "Theme, custom body fonts and fixed narrow 2x2 quadrants",
+      "Quarter-hour week range selection and prefilled event draft",
+      "Native task range rail and duration handles",
+      "Opaque timeline task drags with duration and source guards",
+      "Modal Escape scope only during selection and zero-geometry cancellation",
+      "Separated start/end handles with readable duration summary",
+      "Floating week-range label; live selection retains true time extent",
+      "Resize grip and active preview refined"
+    ],
+    "presentationRegressions": 15,
+    "nativePresentationChecks": 9,
+    "visualReview": "Light and dark task/sidebar screenshots at 280px and 420px, native Markdown markup and 420px time-range dialog reviewed."
+  },
+  "timeRangeBrowser": {
+    "checkedAt": "2026-10-11T17:15:48.260Z",
+    "passed": 115,
+    "checks": [
+      "light-280: live selection previews without editing native inputs",
+      "light-280: forward drag commits the snapped range once",
+      "light-280: reverse drag produces ordered start and end",
+      "light-280: end handle extends duration and keeps the precise start",
+      "light-280: Escape preserves inputs and clears the live selection",
+      "light-280: hand-entered minute precision is retained",
+      "light-280: keyboard handles support 15-minute and exact one-minute steps",
+      "light-280: keyboard End is clamped to 23:59",
+      "light-280: disabled native inputs also disable range gestures",
+      "light-280: fifty keyboard steps during disabled saving keep inputs unchanged",
+      "light-280: fifty precise end edits signal only the changed input; unchanged boundary steps signal none",
+      "light-280: no horizontal overflow with readable native fields",
+      "light-280: gestures and keyboard never submit the task form",
+      "light-280: a collapsed track cancels on pointerup without committing",
+      "light-280: a collapsed track cancels on pointermove without committing",
+      "light-280: losing pointer capture cancels the range without committing",
+      "light-280: immediate adoption before capture cancels on new-window-only release and releases Escape scope before retry",
+      "light-280: first retry in the adopted window commits and leaves no stale gesture",
+      "light-280: destroying an active control removes listeners without committing",
+      "light-360: live selection previews without editing native inputs",
+      "light-360: forward drag commits the snapped range once",
+      "light-360: reverse drag produces ordered start and end",
+      "light-360: end handle extends duration and keeps the precise start",
+      "light-360: Escape preserves inputs and clears the live selection",
+      "light-360: hand-entered minute precision is retained",
+      "light-360: keyboard handles support 15-minute and exact one-minute steps",
+      "light-360: keyboard End is clamped to 23:59",
+      "light-360: disabled native inputs also disable range gestures",
+      "light-360: fifty keyboard steps during disabled saving keep inputs unchanged",
+      "light-360: fifty precise end edits signal only the changed input; unchanged boundary steps signal none",
+      "light-360: no horizontal overflow with readable native fields",
+      "light-360: gestures and keyboard never submit the task form",
+      "light-360: a collapsed track cancels on pointerup without committing",
+      "light-360: a collapsed track cancels on pointermove without committing",
+      "light-360: losing pointer capture cancels the range without committing",
+      "light-360: immediate adoption before capture cancels on new-window-only release and releases Escape scope before retry",
+      "light-360: first retry in the adopted window commits and leaves no stale gesture",
+      "light-360: destroying an active control removes listeners without committing",
+      "light-420: live selection previews without editing native inputs",
+      "light-420: forward drag commits the snapped range once",
+      "light-420: reverse drag produces ordered start and end",
+      "light-420: end handle extends duration and keeps the precise start",
+      "light-420: Escape preserves inputs and clears the live selection",
+      "light-420: hand-entered minute precision is retained",
+      "light-420: keyboard handles support 15-minute and exact one-minute steps",
+      "light-420: keyboard End is clamped to 23:59",
+      "light-420: disabled native inputs also disable range gestures",
+      "light-420: fifty keyboard steps during disabled saving keep inputs unchanged",
+      "light-420: fifty precise end edits signal only the changed input; unchanged boundary steps signal none",
+      "light-420: no horizontal overflow with readable native fields",
+      "light-420: gestures and keyboard never submit the task form",
+      "light-420: a collapsed track cancels on pointerup without committing",
+      "light-420: a collapsed track cancels on pointermove without committing",
+      "light-420: losing pointer capture cancels the range without committing",
+      "light-420: immediate adoption before capture cancels on new-window-only release and releases Escape scope before retry",
+      "light-420: first retry in the adopted window commits and leaves no stale gesture",
+      "light-420: destroying an active control removes listeners without committing",
+      "dark-280: live selection previews without editing native inputs",
+      "dark-280: forward drag commits the snapped range once",
+      "dark-280: reverse drag produces ordered start and end",
+      "dark-280: end handle extends duration and keeps the precise start",
+      "dark-280: Escape preserves inputs and clears the live selection",
+      "dark-280: hand-entered minute precision is retained",
+      "dark-280: keyboard handles support 15-minute and exact one-minute steps",
+      "dark-280: keyboard End is clamped to 23:59",
+      "dark-280: disabled native inputs also disable range gestures",
+      "dark-280: fifty keyboard steps during disabled saving keep inputs unchanged",
+      "dark-280: fifty precise end edits signal only the changed input; unchanged boundary steps signal none",
+      "dark-280: no horizontal overflow with readable native fields",
+      "dark-280: gestures and keyboard never submit the task form",
+      "dark-280: a collapsed track cancels on pointerup without committing",
+      "dark-280: a collapsed track cancels on pointermove without committing",
+      "dark-280: losing pointer capture cancels the range without committing",
+      "dark-280: immediate adoption before capture cancels on new-window-only release and releases Escape scope before retry",
+      "dark-280: first retry in the adopted window commits and leaves no stale gesture",
+      "dark-280: destroying an active control removes listeners without committing",
+      "dark-360: live selection previews without editing native inputs",
+      "dark-360: forward drag commits the snapped range once",
+      "dark-360: reverse drag produces ordered start and end",
+      "dark-360: end handle extends duration and keeps the precise start",
+      "dark-360: Escape preserves inputs and clears the live selection",
+      "dark-360: hand-entered minute precision is retained",
+      "dark-360: keyboard handles support 15-minute and exact one-minute steps",
+      "dark-360: keyboard End is clamped to 23:59",
+      "dark-360: disabled native inputs also disable range gestures",
+      "dark-360: fifty keyboard steps during disabled saving keep inputs unchanged",
+      "dark-360: fifty precise end edits signal only the changed input; unchanged boundary steps signal none",
+      "dark-360: no horizontal overflow with readable native fields",
+      "dark-360: gestures and keyboard never submit the task form",
+      "dark-360: a collapsed track cancels on pointerup without committing",
+      "dark-360: a collapsed track cancels on pointermove without committing",
+      "dark-360: losing pointer capture cancels the range without committing",
+      "dark-360: immediate adoption before capture cancels on new-window-only release and releases Escape scope before retry",
+      "dark-360: first retry in the adopted window commits and leaves no stale gesture",
+      "dark-360: destroying an active control removes listeners without committing",
+      "dark-420: live selection previews without editing native inputs",
+      "dark-420: forward drag commits the snapped range once",
+      "dark-420: reverse drag produces ordered start and end",
+      "dark-420: end handle extends duration and keeps the precise start",
+      "dark-420: Escape preserves inputs and clears the live selection",
+      "dark-420: hand-entered minute precision is retained",
+      "dark-420: keyboard handles support 15-minute and exact one-minute steps",
+      "dark-420: keyboard End is clamped to 23:59",
+      "dark-420: disabled native inputs also disable range gestures",
+      "dark-420: fifty keyboard steps during disabled saving keep inputs unchanged",
+      "dark-420: fifty precise end edits signal only the changed input; unchanged boundary steps signal none",
+      "dark-420: no horizontal overflow with readable native fields",
+      "dark-420: gestures and keyboard never submit the task form",
+      "dark-420: a collapsed track cancels on pointerup without committing",
+      "dark-420: a collapsed track cancels on pointermove without committing",
+      "dark-420: losing pointer capture cancels the range without committing",
+      "dark-420: immediate adoption before capture cancels on new-window-only release and releases Escape scope before retry",
+      "dark-420: first retry in the adopted window commits and leaves no stale gesture",
+      "dark-420: destroying an active control removes listeners without committing",
+      "no uncaught browser errors"
+    ],
+    "layouts": [
+      {
+        "key": "light-280",
+        "overflow": 0,
+        "rootOverflow": 0,
+        "pickerOverflow": 0,
+        "trackWidth": 192,
+        "bodyFont": "system-ui",
+        "selectedWidth": 14
+      },
+      {
+        "key": "light-360",
+        "overflow": 0,
+        "rootOverflow": 0,
+        "pickerOverflow": 0,
+        "trackWidth": 252,
+        "bodyFont": "system-ui",
+        "selectedWidth": 18.375
+      },
+      {
+        "key": "light-420",
+        "overflow": 0,
+        "rootOverflow": 0,
+        "pickerOverflow": 0,
+        "trackWidth": 312,
+        "bodyFont": "system-ui",
+        "selectedWidth": 22.75
+      },
+      {
+        "key": "dark-280",
+        "overflow": 0,
+        "rootOverflow": 0,
+        "pickerOverflow": 0,
+        "trackWidth": 192,
+        "bodyFont": "system-ui",
+        "selectedWidth": 14
+      },
+      {
+        "key": "dark-360",
+        "overflow": 0,
+        "rootOverflow": 0,
+        "pickerOverflow": 0,
+        "trackWidth": 252,
+        "bodyFont": "system-ui",
+        "selectedWidth": 18.375
+      },
+      {
+        "key": "dark-420",
+        "overflow": 0,
+        "rootOverflow": 0,
+        "pickerOverflow": 0,
+        "trackWidth": 312,
+        "bodyFont": "system-ui",
+        "selectedWidth": 22.75
+      }
+    ],
+    "errors": [],
+    "scope": "Actual time-range-selection.ts and generated styles.css, synthetic form only. Real Playwright mouse and keyboard gestures; no Obsidian runtime or source writes."
+  },
+  "dragSelection": {
+    "nativeTasks": 33,
+    "nativeWeek": 4,
+    "largeCalendarBrowser": 48,
+    "timeRangeBrowser": 115,
+    "usesNativeKeymapScope": true,
+    "typedMinutesSnapped": false,
+    "appleEventsSavedByGestureAlone": false,
+    "sourceTaskMetadataPreserved": true,
+    "weekDragBrowser": 31
+  },
+  "dragAudit": {
+    "checkedAt": "2026-10-11T17:19:27.029347+00:00",
+    "scope": "Additional 2026-10-12 local drag and duration audit. Logical test groups may cover multiple failed assertions. No real Apple read/write. Native drag events are synthetic against real Obsidian DOM; owner migration uses real Chrome DOM and iframe.",
+    "confirmedIssueClasses": 21,
+    "weekIssues": [
+      "resize used stale grid coordinates after scrolling",
+      "unrelated pointer cancelled active resize",
+      "pointer release ignored its final coordinate",
+      "zero-height resize could start or save",
+      "secondary pointer could start resize",
+      "minor jitter snapped manually entered minutes",
+      "component unload left resize listeners active",
+      "cancel retained stale end-time tooltip",
+      "save unlocked old cards before new source snapshots loaded",
+      "zero-width blank-grid selection opened an event draft",
+      "midnight ending converted to an extra all-day date",
+      "late-day minimum duration previewed beyond the legal end"
+    ],
+    "timeControlAndTimelineIssues": [
+      "failed task save cleared the visible error",
+      "new-window gestures listened in the previous window",
+      "lost pointer capture could commit a preview",
+      "drag completion and pending save repainted repeatedly",
+      "unrelated timeline unload invalidated another drag token",
+      "boundary edits signalled unchanged fields",
+      "early document adoption retained the old gesture and Escape scope"
+    ],
+    "visualIssues": [
+      "short and late-day selection labels overflowed or clipped",
+      "selection label covered the sticky weekday header after scrolling"
+    ],
+    "beforeNative": {
+      "checkedAt": "2026-10-12T01:00:18+0800",
+      "passed": 130,
+      "tests": 133,
+      "results": [
+        {
+          "name": "real API and file: exactApiOutput",
+          "passed": true
+        },
+        {
+          "name": "real API and file: nextOccurrence",
+          "passed": true
+        },
+        {
+          "name": "real API and file: completionDate",
+          "passed": true
+        },
+        {
+          "name": "real API and file: singleBlockReference",
+          "passed": true
+        },
+        {
+          "name": "real API and file: TasksCacheAgrees",
+          "passed": true
+        },
+        {
+          "name": "real API and file: oneNotification",
+          "passed": true
+        },
+        {
+          "name": "real API and file: exactUndo",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: queuedClickRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: onlyOneCompletion",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksRaceRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksResultPreserved",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: allQueuedActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: oneNextOccurrenceEach",
+          "passed": true
+        },
+        {
+          "name": "source safety: CRLFPreserved",
+          "passed": true
+        },
+        {
+          "name": "source safety: undoPreservesOtherText",
+          "passed": true
+        },
+        {
+          "name": "source safety: reopenDoesNotGenerate",
+          "passed": true
+        },
+        {
+          "name": "source safety: changedGeneratedTaskBlocksUndo",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: doneFirst",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: noForcedCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: invalidRulePreserved",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: recurrence",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: completion",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: priority",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: calendarDate",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: undoPreservesRoundBrackets",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: scheduleKeepsFormat",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: listNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: focusStaysInTaskPanel",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: oneListRender",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: fourQuadrants",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: listScrollStable",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: allThreeActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: oneNextKeepsTimeAndPriority",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: externalOccurrenceAttributesRejected",
+          "passed": true
+        },
+        {
+          "name": "queued completion undo and next task: allActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued completion undo and next task: undoFirstThenCompleteSecond",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: newQuadrantCompletes",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: newReopenClearsCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyQuadrantCompletes",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyReopenClearsCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 列表FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 四象限FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 时间线FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: allSnapshotsComplete",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: eachGeneratesOnce",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 列表KeepsExistingOccurrence",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 四象限KeepsExistingOccurrence",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 时间线KeepsExistingOccurrence",
+          "passed": true
+        },
+        {
+          "name": "external occurrence preserves undo safety: staleUndoRejected",
+          "passed": true
+        },
+        {
+          "name": "external occurrence preserves undo safety: externalOccurrencesPreserved",
+          "passed": true
+        },
+        {
+          "name": "adding recurrence preserves undo safety: newRuleStaleUndoRejected",
+          "passed": true
+        },
+        {
+          "name": "adding recurrence preserves undo safety: newOccurrenceKeepsRule",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: searchFiltersTimeline",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: tagFiltersTimeline",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: noMatchesStaysEmpty",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: deletedLastTagClearsCaption",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: deletedTagOnlyOneTimelineRender",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesCompletes",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesPreservesIndent",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesUndoExact",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabCompletes",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabPreservesIndent",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabUndoExact",
+          "passed": true
+        },
+        {
+          "name": "quadrant scroll continuity: columnScrollPreserved",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsRowIdentity",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsFocusedControl",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: activeAtStart",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: inactiveAtEnd",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: hidesYesterdayClock",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeButtonOpensPopulatedEditor",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: exactTimeKeepsRuleAndReference",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeEditUndoRestoresOriginal",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "refresh and idle: unchangedIndexDoesNotNotify",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: timelineCardDraggable",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: opaquePayload",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: dropShowsTargetTime",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: localDropKeepsDurationRuleAndReference",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: dragUndoExact",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: timelineToWeekSchedulesDateAndTime",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: crossViewUndoExact",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: pendingKeepsOriginalRows",
+          "passed": false
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: singlePaintAfterSave",
+          "passed": false
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: duplicateDropWritesOnce",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: timelineIdentityPreserved",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: savedRangePreservesMetadata",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: nextGestureAvailable",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: coalescedDropUndoExact",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: dragSelectsStartEnd",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: reverseSelectsOrderedRange",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: handleExtendsDuration",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: escapePreservesInputsAndDialog",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: pointerCancelPreservesInputs",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: keyboardExtendsOneMinute",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: manualMinuteDoesNotSnap",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: savedRangeKeepsRecurrenceAndReference",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: rangeEditUndoRestoresOriginal",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: idleEscapeStillClosesDialog",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: pendingLocksTimeInputs",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: pendingKeyboardCannotChangeRange",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: failedSaveShowsError",
+          "passed": false
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: failedSaveKeepsSource",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: doubleSubmitWritesOnce",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retrySavesExactRange",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retryKeepsRuleAndBlock",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retryHasOneWrite",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retryUndoExact",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 列表CleanTitle",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 列表RecurrenceBadge",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 列表SourcePreserved",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 四象限CleanTitle",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 四象限RecurrenceBadge",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 四象限SourcePreserved",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 时间线CleanTitle",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 时间线RecurrenceBadge",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 时间线SourcePreserved",
+          "passed": true
+        },
+        {
+          "name": "no new native errors",
+          "passed": true
+        },
+        {
+          "name": "fixtures removed and settings restored",
+          "passed": true
+        },
+        {
+          "name": "native workspace restored exactly",
+          "passed": true
+        }
+      ],
+      "metrics": {
+        "calendar": "1.4.5",
+        "tasks": "8.5.0",
+        "state": "Warm",
+        "completionMs": 6.899999976158142,
+        "notifications": 1,
+        "queuedMs": 17.899999976158142,
+        "queuedErrors": [],
+        "listClickMs": 1899.6000000238419,
+        "listRenders": 1,
+        "scrollAncestors": 1,
+        "scrollDelta": [
+          0
+        ],
+        "sixCheckboxWritesMs": {
+          "列表": 75.70000004768372,
+          "四象限": 194,
+          "时间线": 130
+        },
+        "sameTaskQueueErrors": [],
+        "calendarQueueErrors": [],
+        "quadrantScrollBefore": 100,
+        "quadrantScrollAfter": 100,
+        "minuteChildListChanges": 0,
+        "idleNotifications": 0,
+        "timelineDropPaints": 4,
+        "timelineDropWrites": 1,
+        "layoutCompletionSettled": true
+      },
+      "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+    },
+    "beforeWeek": {
+      "RED": {
+        "checkedAt": "2026-10-11T16:52:35.871Z",
+        "passed": 5,
+        "failed": 10,
+        "results": [
+          {
+            "name": "resize recomputes civil minute after the time grid scrolls",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /09:00 - 10:00/. Input:\n\n'- [ ] 09:00 - 09:15 测试双向联动和日期切换 ⏳ 2026-10-01 ^scheduled'\n"
+          },
+          {
+            "name": "another pointercancel cannot cancel the active resize",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n"
+          },
+          {
+            "name": "pointerup consumes the final resize coordinate",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: The input did not match the regular expression /09:00 - 11:00/. Input:\n\n'- [ ] 09:00 - 10:00 测试双向联动和日期切换 ⏳ 2026-10-01 ^scheduled'\n"
+          },
+          {
+            "name": "a collapsed column cancels resize on pointermove without writing",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "a collapsed column cancels resize on pointerup without writing",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "a secondary pointer cannot begin resize",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "zero-height geometry cannot begin a resize",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "an untouched handle preserves exact manually entered minutes",
+            "passed": true
+          },
+          {
+            "name": "minor pointer jitter preserves precise end minutes without a write",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n2 !== 1\n"
+          },
+          {
+            "name": "component unload cancels resize even without an onClose callback",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "Escape restores resizing state and does not leave a stale end label",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '结束 11:00'\n- '拖动调整结束时间；精确时间可打开编辑'\n"
+          },
+          {
+            "name": "close during active resize cancels all listeners and writes",
+            "passed": true
+          },
+          {
+            "name": "resize defers refresh and preserves its original chip until release",
+            "passed": true
+          },
+          {
+            "name": "an asynchronous task resize blocks another mutation and refreshes before the next edit",
+            "passed": true
+          },
+          {
+            "name": "two consecutive Apple resizes preserve notes and validate fresh revision",
+            "passed": true
+          }
+        ],
+        "errors": [],
+        "scope": "Synthetic isolated Apple fixture. No real Apple writes or native Obsidian."
+      },
+      "RED-ASYNC": {
+        "checkedAt": "2026-10-11T16:55:48.359Z",
+        "passed": 20,
+        "failed": 2,
+        "results": [
+          {
+            "name": "resize recomputes civil minute after the time grid scrolls",
+            "passed": true
+          },
+          {
+            "name": "another pointercancel cannot cancel the active resize",
+            "passed": true
+          },
+          {
+            "name": "pointerup consumes the final resize coordinate",
+            "passed": true
+          },
+          {
+            "name": "a collapsed column cancels resize on pointermove without writing",
+            "passed": true
+          },
+          {
+            "name": "a collapsed column cancels resize on pointerup without writing",
+            "passed": true
+          },
+          {
+            "name": "a secondary pointer cannot begin resize",
+            "passed": true
+          },
+          {
+            "name": "zero-height geometry cannot begin a resize",
+            "passed": true
+          },
+          {
+            "name": "an untouched handle preserves exact manually entered minutes",
+            "passed": true
+          },
+          {
+            "name": "minor pointer jitter preserves precise end minutes without a write",
+            "passed": true
+          },
+          {
+            "name": "component unload cancels resize even without an onClose callback",
+            "passed": true
+          },
+          {
+            "name": "Escape restores resizing state and does not leave a stale end label",
+            "passed": true
+          },
+          {
+            "name": "close during active resize cancels all listeners and writes",
+            "passed": true
+          },
+          {
+            "name": "resize defers refresh and preserves its original chip until release",
+            "passed": true
+          },
+          {
+            "name": "an asynchronous task resize blocks another mutation and refreshes before the next edit",
+            "passed": true
+          },
+          {
+            "name": "post-save refresh keeps editing locked until new source snapshots reach the grid",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n0 !== 1\n"
+          },
+          {
+            "name": "lost pointer capture cancels a resize without persisting its preview",
+            "passed": true
+          },
+          {
+            "name": "pointercancel cancels active resize and restores draggable state",
+            "passed": true
+          },
+          {
+            "name": "blur cancels active resize and restores draggable state",
+            "passed": true
+          },
+          {
+            "name": "narrowing the pane mid-resize uses its current column geometry",
+            "passed": true
+          },
+          {
+            "name": "range selection cancels if its column loses width before release",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "range selection remains on the original date while crossing a neighbouring column",
+            "passed": true
+          },
+          {
+            "name": "two consecutive Apple resizes preserve notes and validate fresh revision",
+            "passed": true
+          }
+        ],
+        "errors": [],
+        "scope": "Synthetic isolated Apple fixture. No real Apple writes or native Obsidian."
+      },
+      "RED-MODAL": {
+        "checkedAt": "2026-10-11T16:59:36.710Z",
+        "passed": 23,
+        "failed": 2,
+        "results": [
+          {
+            "name": "resize recomputes civil minute after the time grid scrolls",
+            "passed": true
+          },
+          {
+            "name": "another pointercancel cannot cancel the active resize",
+            "passed": true
+          },
+          {
+            "name": "pointerup consumes the final resize coordinate",
+            "passed": true
+          },
+          {
+            "name": "a collapsed column cancels resize on pointermove without writing",
+            "passed": true
+          },
+          {
+            "name": "a collapsed column cancels resize on pointerup without writing",
+            "passed": true
+          },
+          {
+            "name": "a secondary pointer cannot begin resize",
+            "passed": true
+          },
+          {
+            "name": "zero-height geometry cannot begin a resize",
+            "passed": true
+          },
+          {
+            "name": "an untouched handle preserves exact manually entered minutes",
+            "passed": true
+          },
+          {
+            "name": "minor pointer jitter preserves precise end minutes without a write",
+            "passed": true
+          },
+          {
+            "name": "component unload cancels resize even without an onClose callback",
+            "passed": true
+          },
+          {
+            "name": "Escape restores resizing state and does not leave a stale end label",
+            "passed": true
+          },
+          {
+            "name": "close during active resize cancels all listeners and writes",
+            "passed": true
+          },
+          {
+            "name": "resize defers refresh and preserves its original chip until release",
+            "passed": true
+          },
+          {
+            "name": "an asynchronous task resize blocks another mutation and refreshes before the next edit",
+            "passed": true
+          },
+          {
+            "name": "post-save refresh keeps editing locked until new source snapshots reach the grid",
+            "passed": true
+          },
+          {
+            "name": "lost pointer capture cancels a resize without persisting its preview",
+            "passed": true
+          },
+          {
+            "name": "pointercancel cancels active resize and restores draggable state",
+            "passed": true
+          },
+          {
+            "name": "blur cancels active resize and restores draggable state",
+            "passed": true
+          },
+          {
+            "name": "narrowing the pane mid-resize uses its current column geometry",
+            "passed": true
+          },
+          {
+            "name": "range selection cancels if its column loses width before release",
+            "passed": true
+          },
+          {
+            "name": "range selection remains on the original date while crossing a neighbouring column",
+            "passed": true
+          },
+          {
+            "name": "old task and event controls stay inactive while the saved grid is reconciling",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n"
+          },
+          {
+            "name": "switching an exact-midnight ending to all-day excludes the following date",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '2026-10-02'\n- '2026-10-01'\n            ^\n"
+          },
+          {
+            "name": "switching a genuine cross-midnight duration to all-day retains both occupied dates",
+            "passed": true
+          },
+          {
+            "name": "two consecutive Apple resizes preserve notes and validate fresh revision",
+            "passed": true
+          }
+        ],
+        "errors": [],
+        "scope": "Synthetic isolated Apple fixture. No real Apple writes or native Obsidian."
+      },
+      "RED-LATE-RESIZE": {
+        "checkedAt": "2026-10-11T17:04:51.029Z",
+        "passed": 29,
+        "failed": 1,
+        "results": [
+          {
+            "name": "resize recomputes civil minute after the time grid scrolls",
+            "passed": true
+          },
+          {
+            "name": "another pointercancel cannot cancel the active resize",
+            "passed": true
+          },
+          {
+            "name": "pointerup consumes the final resize coordinate",
+            "passed": true
+          },
+          {
+            "name": "a collapsed column cancels resize on pointermove without writing",
+            "passed": true
+          },
+          {
+            "name": "a collapsed column cancels resize on pointerup without writing",
+            "passed": true
+          },
+          {
+            "name": "a secondary pointer cannot begin resize",
+            "passed": true
+          },
+          {
+            "name": "zero-height geometry cannot begin a resize",
+            "passed": true
+          },
+          {
+            "name": "an untouched handle preserves exact manually entered minutes",
+            "passed": true
+          },
+          {
+            "name": "minor pointer jitter preserves precise end minutes without a write",
+            "passed": true
+          },
+          {
+            "name": "component unload cancels resize even without an onClose callback",
+            "passed": true
+          },
+          {
+            "name": "Escape restores resizing state and does not leave a stale end label",
+            "passed": true
+          },
+          {
+            "name": "close during active resize cancels all listeners and writes",
+            "passed": true
+          },
+          {
+            "name": "resize defers refresh and preserves its original chip until release",
+            "passed": true
+          },
+          {
+            "name": "an asynchronous task resize blocks another mutation and refreshes before the next edit",
+            "passed": true
+          },
+          {
+            "name": "post-save refresh keeps editing locked until new source snapshots reach the grid",
+            "passed": true
+          },
+          {
+            "name": "lost pointer capture cancels a resize without persisting its preview",
+            "passed": true
+          },
+          {
+            "name": "pointercancel cancels active resize and restores draggable state",
+            "passed": true
+          },
+          {
+            "name": "blur cancels active resize and restores draggable state",
+            "passed": true
+          },
+          {
+            "name": "narrowing the pane mid-resize uses its current column geometry",
+            "passed": true
+          },
+          {
+            "name": "range selection cancels if its column loses width before release",
+            "passed": true
+          },
+          {
+            "name": "range selection remains on the original date while crossing a neighbouring column",
+            "passed": true
+          },
+          {
+            "name": "old task and event controls stay inactive while the saved grid is reconciling",
+            "passed": true
+          },
+          {
+            "name": "switching an exact-midnight ending to all-day excludes the following date",
+            "passed": true
+          },
+          {
+            "name": "switching a genuine cross-midnight duration to all-day retains both occupied dates",
+            "passed": true
+          },
+          {
+            "name": "short 0–15 selection label fits the civil-day column without stretching its time range",
+            "passed": true
+          },
+          {
+            "name": "short 540–555 selection label fits the civil-day column without stretching its time range",
+            "passed": true
+          },
+          {
+            "name": "short 1425–1440 selection label fits the civil-day column without stretching its time range",
+            "passed": true
+          },
+          {
+            "name": "a 23:50 task resize cannot preview past 23:59 or write an unchanged clipped end",
+            "passed": false,
+            "error": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ '23:50–24:05 · 15 分钟'\n- '23:50–23:59 · 9 分钟'\n          ^\n"
+          },
+          {
+            "name": "an event beginning 23:50 resizes only to midnight rather than 24:05",
+            "passed": true
+          },
+          {
+            "name": "two consecutive Apple resizes preserve notes and validate fresh revision",
+            "passed": true
+          }
+        ],
+        "errors": [],
+        "scope": "Synthetic isolated Apple fixture. No real Apple writes or native Obsidian."
+      }
+    },
+    "afterNative": {
+      "checkedAt": "2026-10-12T01:17:35+0800",
+      "passed": 133,
+      "tests": 133,
+      "results": [
+        {
+          "name": "real API and file: exactApiOutput",
+          "passed": true
+        },
+        {
+          "name": "real API and file: nextOccurrence",
+          "passed": true
+        },
+        {
+          "name": "real API and file: completionDate",
+          "passed": true
+        },
+        {
+          "name": "real API and file: singleBlockReference",
+          "passed": true
+        },
+        {
+          "name": "real API and file: TasksCacheAgrees",
+          "passed": true
+        },
+        {
+          "name": "real API and file: oneNotification",
+          "passed": true
+        },
+        {
+          "name": "real API and file: exactUndo",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: queuedClickRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: onlyOneCompletion",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksRaceRejected",
+          "passed": true
+        },
+        {
+          "name": "undated recurrence race: externalTasksResultPreserved",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: allQueuedActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued distinct recurrences: oneNextOccurrenceEach",
+          "passed": true
+        },
+        {
+          "name": "source safety: CRLFPreserved",
+          "passed": true
+        },
+        {
+          "name": "source safety: undoPreservesOtherText",
+          "passed": true
+        },
+        {
+          "name": "source safety: reopenDoesNotGenerate",
+          "passed": true
+        },
+        {
+          "name": "source safety: changedGeneratedTaskBlocksUndo",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: doneFirst",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: noForcedCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: missingGlobalFilterPreservesSource",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: matchingGlobalFilterRepeats",
+          "passed": true
+        },
+        {
+          "name": "configured Tasks behavior: invalidRulePreserved",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: recurrence",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: completion",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: priority",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: calendarDate",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: undoPreservesRoundBrackets",
+          "passed": true
+        },
+        {
+          "name": "native Dataview: scheduleKeepsFormat",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: listNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: focusStaysInTaskPanel",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: oneListRender",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantsNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: fourQuadrants",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantSelectKeepsFocus",
+          "passed": true
+        },
+        {
+          "name": "native list and quadrants UI: quadrantMovePreservesRecurrence",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: listScrollStable",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: timelineFocusStaysInTasks",
+          "passed": true
+        },
+        {
+          "name": "continuous keyboard and scroll: sameTitleKeepsCorrectFocus",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 列表UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 四象限UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线SixCompletions",
+          "passed": true
+        },
+        {
+          "name": "rapid native checkbox sequence: 时间线UndoOnlyLast",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: allThreeActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: oneNextKeepsTimeAndPriority",
+          "passed": true
+        },
+        {
+          "name": "queued property and completion: externalOccurrenceAttributesRejected",
+          "passed": true
+        },
+        {
+          "name": "queued completion undo and next task: allActionsComplete",
+          "passed": true
+        },
+        {
+          "name": "queued completion undo and next task: undoFirstThenCompleteSecond",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: newQuadrantCompletes",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: newReopenClearsCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyQuadrantCompletes",
+          "passed": true
+        },
+        {
+          "name": "quadrant recurrence continuity: legacyReopenClearsCompletionDate",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 列表FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 四象限FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "focus follows original task after insertion: 时间线FocusIdentity",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: allSnapshotsComplete",
+          "passed": true
+        },
+        {
+          "name": "calendar queued snapshots: eachGeneratesOnce",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 列表KeepsExistingOccurrence",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 四象限KeepsExistingOccurrence",
+          "passed": true
+        },
+        {
+          "name": "focus collision with generated occurrence: 时间线KeepsExistingOccurrence",
+          "passed": true
+        },
+        {
+          "name": "external occurrence preserves undo safety: staleUndoRejected",
+          "passed": true
+        },
+        {
+          "name": "external occurrence preserves undo safety: externalOccurrencesPreserved",
+          "passed": true
+        },
+        {
+          "name": "adding recurrence preserves undo safety: newRuleStaleUndoRejected",
+          "passed": true
+        },
+        {
+          "name": "adding recurrence preserves undo safety: newOccurrenceKeepsRule",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: searchFiltersTimeline",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: tagFiltersTimeline",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: noMatchesStaysEmpty",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: deletedLastTagClearsCaption",
+          "passed": true
+        },
+        {
+          "name": "timeline search and tag: deletedTagOnlyOneTimelineRender",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesCompletes",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesPreservesIndent",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: spacesUndoExact",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabCompletes",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabPreservesIndent",
+          "passed": true
+        },
+        {
+          "name": "nested native recurrence: tabUndoExact",
+          "passed": true
+        },
+        {
+          "name": "quadrant scroll continuity: columnScrollPreserved",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsRowIdentity",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: minuteKeepsFocusedControl",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: activeAtStart",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: inactiveAtEnd",
+          "passed": true
+        },
+        {
+          "name": "timeline minute tick: hidesYesterdayClock",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeButtonOpensPopulatedEditor",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: exactTimeKeepsRuleAndReference",
+          "passed": true
+        },
+        {
+          "name": "timeline direct time edit: timeEditUndoRestoresOriginal",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: timelineNativeClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "timeline and large calendar UI: largeCalendarClickCreatesNext",
+          "passed": true
+        },
+        {
+          "name": "refresh and idle: unchangedIndexDoesNotNotify",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: timelineCardDraggable",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: opaquePayload",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: dropShowsTargetTime",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: localDropKeepsDurationRuleAndReference",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: dragUndoExact",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: timelineToWeekSchedulesDateAndTime",
+          "passed": true
+        },
+        {
+          "name": "native timeline task drag: crossViewUndoExact",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: pendingKeepsOriginalRows",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: singlePaintAfterSave",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: duplicateDropWritesOnce",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: timelineIdentityPreserved",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: savedRangePreservesMetadata",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: nextGestureAvailable",
+          "passed": true
+        },
+        {
+          "name": "timeline drop coalesces native refreshes: coalescedDropUndoExact",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: dragSelectsStartEnd",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: reverseSelectsOrderedRange",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: handleExtendsDuration",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: escapePreservesInputsAndDialog",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: pointerCancelPreservesInputs",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: keyboardExtendsOneMinute",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: manualMinuteDoesNotSnap",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: savedRangeKeepsRecurrenceAndReference",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: rangeEditUndoRestoresOriginal",
+          "passed": true
+        },
+        {
+          "name": "drag range picker native task editor: idleEscapeStillClosesDialog",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: pendingLocksTimeInputs",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: pendingKeyboardCannotChangeRange",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: failedSaveShowsError",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: failedSaveKeepsSource",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: doubleSubmitWritesOnce",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retrySavesExactRange",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retryKeepsRuleAndBlock",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retryHasOneWrite",
+          "passed": true
+        },
+        {
+          "name": "schedule failure recovery and repeated saves: retryUndoExact",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 列表CleanTitle",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 列表RecurrenceBadge",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 列表SourcePreserved",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 四象限CleanTitle",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 四象限RecurrenceBadge",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 四象限SourcePreserved",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 时间线CleanTitle",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 时间线RecurrenceBadge",
+          "passed": true
+        },
+        {
+          "name": "task presentation in native views: 时间线SourcePreserved",
+          "passed": true
+        },
+        {
+          "name": "no new native errors",
+          "passed": true
+        },
+        {
+          "name": "fixtures removed and settings restored",
+          "passed": true
+        },
+        {
+          "name": "native workspace restored exactly",
+          "passed": true
+        }
+      ],
+      "metrics": {
+        "calendar": "1.4.5",
+        "tasks": "8.5.0",
+        "state": "Warm",
+        "completionMs": 16.200000047683716,
+        "notifications": 1,
+        "queuedMs": 231.5,
+        "queuedErrors": [],
+        "listClickMs": 1299.6000000238419,
+        "listRenders": 1,
+        "scrollAncestors": 1,
+        "scrollDelta": [
+          0
+        ],
+        "sixCheckboxWritesMs": {
+          "列表": 35.89999997615814,
+          "四象限": 97.80000007152557,
+          "时间线": 129.29999995231628
+        },
+        "sameTaskQueueErrors": [],
+        "calendarQueueErrors": [],
+        "quadrantScrollBefore": 100,
+        "quadrantScrollAfter": 100,
+        "minuteChildListChanges": 0,
+        "idleNotifications": 0,
+        "timelineDropPaints": 1,
+        "timelineDropWrites": 1,
+        "layoutCompletionSettled": true
+      },
+      "scope": "Installed official Tasks; native vault writes, cache and DOM checkbox actions. Temporary settings restored; unique fixtures deleted; no Apple access."
+    },
+    "afterWeek": {
+      "checkedAt": "2026-10-11T17:07:25.613Z",
+      "passed": 31,
+      "failed": 0,
+      "results": [
+        {
+          "name": "resize recomputes civil minute after the time grid scrolls",
+          "passed": true
+        },
+        {
+          "name": "another pointercancel cannot cancel the active resize",
+          "passed": true
+        },
+        {
+          "name": "pointerup consumes the final resize coordinate",
+          "passed": true
+        },
+        {
+          "name": "a collapsed column cancels resize on pointermove without writing",
+          "passed": true
+        },
+        {
+          "name": "a collapsed column cancels resize on pointerup without writing",
+          "passed": true
+        },
+        {
+          "name": "a secondary pointer cannot begin resize",
+          "passed": true
+        },
+        {
+          "name": "zero-height geometry cannot begin a resize",
+          "passed": true
+        },
+        {
+          "name": "an untouched handle preserves exact manually entered minutes",
+          "passed": true
+        },
+        {
+          "name": "minor pointer jitter preserves precise end minutes without a write",
+          "passed": true
+        },
+        {
+          "name": "component unload cancels resize even without an onClose callback",
+          "passed": true
+        },
+        {
+          "name": "Escape restores resizing state and does not leave a stale end label",
+          "passed": true
+        },
+        {
+          "name": "close during active resize cancels all listeners and writes",
+          "passed": true
+        },
+        {
+          "name": "resize defers refresh and preserves its original chip until release",
+          "passed": true
+        },
+        {
+          "name": "an asynchronous task resize blocks another mutation and refreshes before the next edit",
+          "passed": true
+        },
+        {
+          "name": "post-save refresh keeps editing locked until new source snapshots reach the grid",
+          "passed": true
+        },
+        {
+          "name": "lost pointer capture cancels a resize without persisting its preview",
+          "passed": true
+        },
+        {
+          "name": "pointercancel cancels active resize and restores draggable state",
+          "passed": true
+        },
+        {
+          "name": "blur cancels active resize and restores draggable state",
+          "passed": true
+        },
+        {
+          "name": "narrowing the pane mid-resize uses its current column geometry",
+          "passed": true
+        },
+        {
+          "name": "range selection cancels if its column loses width before release",
+          "passed": true
+        },
+        {
+          "name": "range selection remains on the original date while crossing a neighbouring column",
+          "passed": true
+        },
+        {
+          "name": "old task and event controls stay inactive while the saved grid is reconciling",
+          "passed": true
+        },
+        {
+          "name": "switching an exact-midnight ending to all-day excludes the following date",
+          "passed": true
+        },
+        {
+          "name": "switching a genuine cross-midnight duration to all-day retains both occupied dates",
+          "passed": true
+        },
+        {
+          "name": "short 0–15 selection label fits the civil-day column without stretching its time range",
+          "passed": true
+        },
+        {
+          "name": "short 540–555 selection label fits the civil-day column without stretching its time range",
+          "passed": true
+        },
+        {
+          "name": "short 1425–1440 selection label fits the civil-day column without stretching its time range",
+          "passed": true
+        },
+        {
+          "name": "the first visible 09:00 selection label stays beneath the sticky weekday header",
+          "passed": true
+        },
+        {
+          "name": "a 23:50 task resize cannot preview past 23:59 or write an unchanged clipped end",
+          "passed": true
+        },
+        {
+          "name": "an event beginning 23:50 resizes only to midnight rather than 24:05",
+          "passed": true
+        },
+        {
+          "name": "two consecutive Apple resizes preserve notes and validate fresh revision",
+          "passed": true
+        }
+      ],
+      "errors": [],
+      "scope": "Synthetic isolated Apple fixture. No real Apple writes or native Obsidian."
+    },
+    "ownerAdoptionBefore": {
+      "status": "RED",
+      "captured_at": "2026-10-11 17:16:17 UTC",
+      "evidence_origin": "Independent reviewer tool stdout from the original pre-fix Chrome run; complete trial rows were not retained on disk.",
+      "runner": "owner-adoption-review-runner.mjs",
+      "source_before_fix": {
+        "file": "src/time-range-selection.ts",
+        "description": "Gesture tracked the original window and relied on old-window events or lostpointercapture for cleanup. No gesture-only migration MutationObserver or cross-window cancellation before the down guard was present.",
+        "hash": null
+      },
+      "repro": "Native pointerdown on time rail; immediately adopt the picker parent into an iframe document before pointer capture activates; move and release only in the new document; then attempt the first new-window gesture.",
+      "observed": {
+        "trials": 20,
+        "stale_gestures_after_new_document_release": 19,
+        "first_retries_without_commit": 19
+      },
+      "assertions": {
+        "unchanged_original_inputs": {
+          "observed": "09:07 and 10:08 remained unchanged in both failure examples visible in the original tool stdout.",
+          "complete_trial_count": null
+        },
+        "scope_cleanup_before_retry": {
+          "passed": false,
+          "observed_failures": 19,
+          "trials": 20,
+          "example_scope": {
+            "acquired": 1,
+            "released": 0
+          }
+        },
+        "first_retry_commits": {
+          "passed": false,
+          "observed_failures": 19,
+          "trials": 20
+        }
+      },
+      "limitations": "observer counts recorded in review but original rows not retained",
+      "native_obsidian_tested": false
+    },
+    "ownerAdoptionAfter": {
+      "status": "PASS",
+      "captured_at": "2026-10-11T17:17:05.687Z",
+      "runner": "owner-adoption-review-runner.mjs",
+      "browser": "Installed Google Chrome, Playwright, headless",
+      "repro": "Native pointerdown; immediate DOM adoption before capture activation; pointerup only in the new document; first fresh gesture in that document.",
+      "source": {
+        "file": "src/time-range-selection.ts",
+        "sha256": "bf3b7c172568232e948fe4736609b98d72f075689f962718c620354657df193c"
+      },
+      "counts": {
+        "trials": 20,
+        "originalInputsPreserved": 20,
+        "scopeReleasedBeforeRetry": 20,
+        "firstRetryCommits": 20,
+        "scopesBalancedAfterRetry": 20,
+        "stale": 0,
+        "lostFirstRetry": 0
+      },
+      "assertions": {
+        "unchanged_original_inputs": true,
+        "scope_cleanup_before_retry": true,
+        "first_retry_commits": true,
+        "scopes_balanced_after_retry": true,
+        "no_stale_gestures": true,
+        "no_lost_first_retries": true
+      },
+      "native_obsidian_tested": false
+    },
+    "performance": {
+      "scenario": "Deferred and overlapping refresh requests during a native timeline drop with an 80 ms delayed fixture write",
+      "beforeBodyPaints": 4,
+      "afterBodyPaints": 1,
+      "afterTaskWrites": 1,
+      "generalLatencyGuarantee": false
+    },
+    "visualReview": [
+      "15 minute selection uses true range height",
+      "23:45-23:59 label remains within day column",
+      "visible first row label avoids sticky header",
+      "narrow week label displays two readable lines",
+      "light/dark task controls and time rail visually inspected"
+    ],
+    "independentReview": "Focused code review and 20 real Chrome adoption trials passed; no further actionable findings in narrow scope.",
+    "baselineLocalVersion": "1.4.5 before this additional audit",
+    "baselineRuntimeSha256": {
+      "main.js": "dcf20176e1c5d0933cdd140d003aa3c3f8086f1a125e7d57c4bb4437a61621f9",
+      "styles.css": "53460376882a11212385bc1d30b6529d65ae83dacedb2bcdd818d855e26ff4ca",
+      "manifest.json": "17f95b4c07feeb21b683a164f6442665539132af3be19c14c9021a64da21cb1c",
+      "native/ThoughtSpaceCalendarBridge.app/Contents/Info.plist": "7dea7d588130839a15e8bfab79334285b8793d54390c6a9ea7d7e2785922e23e",
+      "native/ThoughtSpaceCalendarBridge.app/Contents/_CodeSignature/CodeResources": "6686de10a28a2fe11b36cbb86dcbacc827cfc4ea116b4dabf1845e5aee629e9b",
+      "native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge": "486db0ba108588c0de8796cad7eeb92e500aaceb6871274064ce802aed2ed75d"
+    }
+  }
+}

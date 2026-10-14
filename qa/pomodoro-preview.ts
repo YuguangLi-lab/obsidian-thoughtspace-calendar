@@ -1,0 +1,11 @@
+import {PomodoroController} from '../src/pomodoro';
+import {PomodoroView} from '../src/pomodoro-view';
+import {defaultPomodoroConfig,type PomodoroState,type PomodoroRecord} from '../src/pomodoro-model';
+let now=new Date().setHours(9,0,0,0),saved:PomodoroState|undefined,fail=false,writes=0,opened=0;
+const calendarDays:string[]=[];
+let config={...defaultPomodoroConfig};
+const controller=new PomodoroController({load:async()=>saved||null,save:async state=>{if(fail)throw Error('模拟磁盘写入失败');writes++;saved=structuredClone(state);}},()=>config,{now:()=>now,interval:false});
+await controller.initialize();
+const makeView=()=>new PomodoroView({} as any,controller,async()=>{opened++;},async day=>{calendarDays.push(day);});
+let view=makeView();await view.onOpen();
+(window as any).qaPomodoro={controller,now:()=>now,seedRecords:(records:PomodoroRecord[])=>{controller.snapshot().state.records=structuredClone(records);controller.tick();},advance:async(ms:number)=>{now+=ms;controller.tick();await controller.settled();},fail:(v:boolean)=>fail=v,writes:()=>writes,opened:()=>opened,calendarDays:()=>calendarDays,open:async()=>{view=makeView();await view.onOpen();},close:()=>view.onClose(),state:()=>controller.snapshot(),dispose:()=>controller.dispose()};

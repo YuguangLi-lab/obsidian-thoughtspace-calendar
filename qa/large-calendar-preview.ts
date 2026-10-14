@@ -5,6 +5,8 @@ import {calendarTasks,unscheduledCalendarTasks} from '../src/calendar-task-adapt
 import {planTasks,changeTask} from '../src/task-planner-model';
 import {resolveCalendarTask,taskSchedulingChange} from '../src/calendar-scheduling';
 import {calendarEventNoteKey} from '../src/calendar-note-links';
+import {createPomodoroState,defaultPomodoroConfig} from '../src/pomodoro-model';
+import type {PomodoroTarget,TimerMode} from '../src/pomodoro-model';
 let settings:AppleCalendarSettings={enabled:true,selectedCalendarIds:['work','life'],defaultCalendarId:'work'};
 const events:CalendarEvent[]=[
   {id:'meeting',calendarId:'work',title:'产品讨论 · 日历联动',start:'2026-10-01T02:00:00.000Z',end:'2026-10-01T03:00:00.000Z',allDay:false,location:'会议室 A',notes:'完整备注\n保留原始内容。',revision:'a'.repeat(64),recurring:true,editable:true,color:'#5a7fca'},
@@ -41,6 +43,8 @@ const transport:CalendarBridgeTransport={
 };
 const client=new AppleCalendarClient(transport,()=>settings);
 let view:LargeCalendarView;
+let timerState=createPomodoroState(defaultPomodoroConfig,Date.now()),timerElapsed=0,timerRemaining=timerState.session.remainingMs;
+const startTimer=async(target:PomodoroTarget,mode:TimerMode='stopwatch',durationMinutes?:number)=>{requests.push({action:'timer-start',target:structuredClone(target),mode,durationMinutes});timerState={...timerState,session:{...timerState.session,id:`timer-${requests.length}`,mode,status:'running',target,startedAt:Date.now(),activeStartedAt:Date.now(),elapsedMs:0} as any};timerElapsed=0;timerRemaining=mode==='countdown'?(durationMinutes??25)*60_000:0;view.refreshTimer();};
 const schedule=async(task:CalendarTask,date:string,start?:number,end?:number,clearTime?:boolean)=>{
  if(failSchedule)throw Error('任务原文已变化，请刷新后再操作');
  const current=resolveCalendarTask(allTasks(),task);
@@ -57,6 +61,9 @@ const host:LargeCalendarHost={
   toggleTask:async task=>{const current=resolveCalendarTask(allTasks(),task);taskMarkdown[current.path]=changeTask(taskMarkdown[current.path],current,{checked:!current.checked,completedOn:current.checked?'':'2026-10-01'});requests.push({action:'task-toggle',id:task.id});},
   openJournal:async date=>{(window as any).journalDate=dayKey(date);},
   openTask:async task=>{(window as any).openedTask=task.id;},
+  timerSnapshot:()=>({state:timerState,remainingMs:timerRemaining,elapsedMs:timerElapsed,busy:false}),
+  startTimer,openTimer:async()=>{requests.push({action:'timer-open'});},
+  startPomodoro:async task=>{const current=resolveCalendarTask(allTasks(),task);const plannedStart=task.startMinute===undefined?undefined:+new Date(`${task.date}T00:00:00`)+task.startMinute*60_000,plannedEnd=plannedStart===undefined||task.endMinute===undefined?undefined:plannedStart+(task.endMinute-task.startMinute!)*60_000,duration=plannedStart!==undefined&&plannedEnd!==undefined?(plannedEnd-plannedStart)/60_000:0,countdown=duration>0&&duration<=1440;await startTimer({title:current.title,path:current.path,line:current.line,source:current.source,...(plannedStart!==undefined&&plannedEnd!==undefined?{plannedStart,plannedEnd,plannedDurationMs:plannedEnd-plannedStart}:{})},countdown?'countdown':'stopwatch',countdown?Math.ceil(duration):undefined);},
   eventNotes:event=>noteLinks.get(calendarEventNoteKey(event))??[],
   openEventNote:async event=>{const key=calendarEventNoteKey(event);if(!noteLinks.has(key))noteLinks.set(key,[{path:'日程/产品会议记录.md',name:'产品会议记录'}]);requests.push({action:'note-open',id:event.id});await view.refresh();},
   linkEventNote:event=>{noteLinks.set(calendarEventNoteKey(event),[{path:'资料/既有讨论笔记.md',name:'既有讨论笔记'}]);requests.push({action:'note-link',id:event.id});void view.refresh();},
@@ -67,4 +74,8 @@ view=new LargeCalendarView({} as any,host);
 await view.onOpen();
 // Setup/control helpers only; tests drive all editing, dragging and clicking through DOM.
 Object.assign(window,{view,events,requests,setFailSave:(value:boolean)=>failSave=value,
- qaFixture:{setFailSchedule:(value:boolean)=>failSchedule=value,state:()=>structuredClone({events,taskMarkdown,requests,notes:[...noteLinks]})}});
+ qaFixture:{setFailSchedule:(value:boolean)=>failSchedule=value,state:()=>structuredClone({events,taskMarkdown,requests,notes:[...noteLinks],timerState}),
+  setTimerRecords:(records:any[])=>{timerState={...timerState,records};view.refreshTimer();},
+  setActiveTimer:(mode:TimerMode,elapsed:number,remaining:number)=>{timerState={...timerState,session:{...timerState.session,mode,status:'running',target:{title:'当前工作'}} as any};timerElapsed=elapsed;timerRemaining=remaining;view.refreshTimer();},
+  clockTick:(elapsed:number,remaining:number)=>{timerElapsed=elapsed;timerRemaining=remaining;view.refreshTimerClock(host.timerSnapshot!());}
+ }});

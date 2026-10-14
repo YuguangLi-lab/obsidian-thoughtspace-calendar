@@ -8,9 +8,9 @@ var __hasOwnProp = Object.prototype.hasOwnProperty;
 var __commonJS = (cb, mod) => function __require() {
   return mod || (0, cb[__getOwnPropNames(cb)[0]])((mod = { exports: {} }).exports, mod), mod.exports;
 };
-var __export = (target, all) => {
+var __export = (target2, all) => {
   for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+    __defProp(target2, name, { get: all[name], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -20,12 +20,12 @@ var __copyProps = (to, from, except, desc) => {
   }
   return to;
 };
-var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
+var __toESM = (mod, isNodeMode, target2) => (target2 = mod != null ? __create(__getProtoOf(mod)) : {}, __copyProps(
   // If the importer is in node compatibility mode or this is not an ESM
   // file that has been converted to a CommonJS file using a Babel-
   // compatible transform (i.e. "__esModule" has not been set), then set
   // "default" to the CommonJS "module.exports" for node compatibility.
-  isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
+  isNodeMode || !mod || !mod.__esModule ? __defProp(target2, "default", { value: mod, enumerable: true }) : target2,
   mod
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
@@ -3824,7 +3824,7 @@ __export(main_exports, {
   default: () => ThoughtSpaceCalendar
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian13 = require("obsidian");
+var import_obsidian16 = require("obsidian");
 
 // node_modules/lunar-typescript/dist/index.mjs
 var _SolarUtil = class {
@@ -5774,11 +5774,11 @@ LunarUtil.DAY_SHEN_SHA = [
   ";000A003837041A1316624640425D6A5F;01360B00042D194A5E6B4B60;020009111B032C06100548413C;030020321C310310061F056869;0400224754495C7344;05070D1D334F505651523F3E;063509232F01554C4D4E453C59;070C24575864615A;0802270E34082A01433D;09020721282908016E653D66;0A0A042B15536C3C6F;0B360B0412182526300F14175B633E;0C1A13031605624640425D6A6D5F;0D2D03194A5E6B4B60;0E2E111B33061048413C;0F0020321C31031E061F68693F;1035090022034754495C44;11000C070D1D334F505651523E;1200232F01554C4D4E453C59;130024575864616D5A;140A0204270E0F082A01433D;15360B0204072128290801653D66;162B15536C3C;17121825260D0F14175B633E;181A1316624640425D6A5F82;192D03194A5E6B4B3F60;1A35092E111B032C061048413C;1B0C20321C31031E061F056869;1C224754495C44;1D07121D334F505651523E;1E0A04232F01554C4D4E453C59;1F360B0424575864615A;2002270E34082A01433D;2102072128290801653D66;222B15536C3C;2312182526300F14175B633F3E;2435091A13031605624640425D6A5F;250C2D03194A5E6B4B60;262E111B2C06100548413C;2720321C311E061F056869;280A04224746495C44;29360B04070D1D334F505651523E;2A232F01554C4D4E45703C59;2B2457586461675A96;2C02270E34082A433D;2D0002072128290801653F3D66;2E3509002B15536C3C;2F000C12182526300F14175B633E;30001A1316624640717D425D6A5F82;31002D194A5E6B4B676D6076;320A042E111B2C06100548413C6F67;33360B0420321C311E061F0568696E;3422034754495C44;35070D1D334F50567051523E;36232F554C4D4E453C59;3724575864613F675A;38350902270E34082A01433D67;39020C07212829080175653D66;3A2B15536C3C;3B12182526300F14175B63727D3E7974;"
 ];
 var Holiday = class _Holiday {
-  constructor(day, name, work, target) {
+  constructor(day, name, work, target2) {
     this._day = _Holiday._ymd(day);
     this._name = name;
     this._work = work;
-    this._target = _Holiday._ymd(target);
+    this._target = _Holiday._ymd(target2);
   }
   static _ymd(s) {
     return s.indexOf("-") < 0 ? s.substring(0, 4) + "-" + s.substring(4, 6) + "-" + s.substring(6) : s;
@@ -5853,16 +5853,16 @@ var _HolidayUtil = class {
     const day = s.substring(0, 8);
     const name = _HolidayUtil._NAMES_IN_USE[s.charCodeAt(8) - _HolidayUtil._ZERO];
     const work = s.charCodeAt(9) === _HolidayUtil._ZERO;
-    const target = s.substring(10, 18);
-    return new Holiday(day, name, work, target);
+    const target2 = s.substring(10, 18);
+    return new Holiday(day, name, work, target2);
   }
   static _buildHolidayBackward(s) {
     const size = s.length;
     const day = s.substring(size - 18, size - 10);
     const name = _HolidayUtil._NAMES_IN_USE[s.charCodeAt(size - 10) - _HolidayUtil._ZERO];
     const work = s.charCodeAt(size - 9) === _HolidayUtil._ZERO;
-    const target = s.substring(size - 8);
-    return new Holiday(day, name, work, target);
+    const target2 = s.substring(size - 8);
+    return new Holiday(day, name, work, target2);
   }
   static _findHolidaysForward(key) {
     const l = [];
@@ -15107,17 +15107,17 @@ Solar.J2000 = 2451545;
 I18n.init();
 
 // src/markdown-literals.ts
-function inlineCodeRanges(text) {
+function inlineCodeRanges(text3) {
   const runs = [], last = /* @__PURE__ */ new Map();
-  for (let i = 0; i < text.length; ) {
-    if (text[i] !== "`") {
+  for (let i = 0; i < text3.length; ) {
+    if (text3[i] !== "`") {
       i++;
       continue;
     }
     const from = i;
-    while (text[i] === "`") i++;
+    while (text3[i] === "`") i++;
     let slash = from;
-    while (slash > 0 && text[slash - 1] === "\\") slash--;
+    while (slash > 0 && text3[slash - 1] === "\\") slash--;
     runs.push({ from, to: i, escaped: (from - slash) % 2 === 1, next: -1 });
   }
   for (let i = runs.length - 1; i >= 0; i--) {
@@ -15134,30 +15134,30 @@ function inlineCodeRanges(text) {
   }
   return ranges;
 }
-function maskInlineCode(text) {
+function maskInlineCode(text3) {
   let at = 0, result = "";
-  for (const range of inlineCodeRanges(text)) {
-    result += text.slice(at, range.from) + "\uFFFC".repeat(range.to - range.from);
+  for (const range of inlineCodeRanges(text3)) {
+    result += text3.slice(at, range.from) + "\uFFFC".repeat(range.to - range.from);
     at = range.to;
   }
-  return result + text.slice(at);
+  return result + text3.slice(at);
 }
-function inlineLiteralRanges(text) {
-  const code = inlineCodeRanges(text), ranges = [];
+function inlineLiteralRanges(text3) {
+  const code = inlineCodeRanges(text3), ranges = [];
   let next = 0;
-  for (let i = 0; i < text.length; ) {
+  for (let i = 0; i < text3.length; ) {
     while (next < code.length && code[next].to <= i) next++;
     if (next < code.length && code[next].from === i) {
       ranges.push({ ...code[next], comment: false });
       i = code[next++].to;
       continue;
     }
-    const token = text.startsWith("<!--", i) ? "<!--" : text.startsWith("%%", i) ? "%%" : void 0;
+    const token = text3.startsWith("<!--", i) ? "<!--" : text3.startsWith("%%", i) ? "%%" : void 0;
     if (token) {
       let slash = i;
-      while (slash > 0 && text[slash - 1] === "\\") slash--;
+      while (slash > 0 && text3[slash - 1] === "\\") slash--;
       if ((i - slash) % 2 === 0) {
-        const endToken = token === "<!--" ? "-->" : "%%", end = text.indexOf(endToken, i + token.length), to = end < 0 ? text.length : end + endToken.length;
+        const endToken = token === "<!--" ? "-->" : "%%", end = text3.indexOf(endToken, i + token.length), to = end < 0 ? text3.length : end + endToken.length;
         ranges.push({ from: i, to, comment: true });
         i = to;
         continue;
@@ -15167,29 +15167,29 @@ function inlineLiteralRanges(text) {
   }
   return ranges;
 }
-function outsideInlineLiterals(text, transform) {
+function outsideInlineLiterals(text3, transform) {
   let at = 0, result = "";
-  for (const r of inlineLiteralRanges(text)) {
-    result += transform(text.slice(at, r.from)) + text.slice(r.from, r.to);
+  for (const r of inlineLiteralRanges(text3)) {
+    result += transform(text3.slice(at, r.from)) + text3.slice(r.from, r.to);
     at = r.to;
   }
-  return result + transform(text.slice(at));
+  return result + transform(text3.slice(at));
 }
-function maskInlineLiterals(text) {
+function maskInlineLiterals(text3) {
   let at = 0, result = "";
-  for (const r of inlineLiteralRanges(text)) {
-    result += text.slice(at, r.from) + "\uFFFC".repeat(r.to - r.from);
+  for (const r of inlineLiteralRanges(text3)) {
+    result += text3.slice(at, r.from) + "\uFFFC".repeat(r.to - r.from);
     at = r.to;
   }
-  return result + text.slice(at);
+  return result + text3.slice(at);
 }
-function stripInlineComments(text) {
+function stripInlineComments(text3) {
   let at = 0, result = "";
-  for (const r of inlineLiteralRanges(text).filter((r2) => r2.comment)) {
-    result += text.slice(at, r.from) + " ";
+  for (const r of inlineLiteralRanges(text3).filter((r2) => r2.comment)) {
+    result += text3.slice(at, r.from) + " ";
     at = r.to;
   }
-  return result + text.slice(at);
+  return result + text3.slice(at);
 }
 
 // src/markdown-context.ts
@@ -15198,8 +15198,8 @@ var markdownColumns = (s, initial = 0) => {
   for (const c of s) col = c === "	" ? col + 4 - col % 4 : col + 1;
   return col;
 };
-function* markdownRows(text) {
-  const sources = text.split("\n"), frontEnd = /^---\r?\n/.test(text) ? sources.findIndex((s, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(s)) : -1;
+function* markdownRows(text3) {
+  const sources = text3.split("\n"), frontEnd = /^---\r?\n/.test(text3) ? sources.findIndex((s, i) => i > 0 && /^(---|\.\.\.)\s*$/.test(s)) : -1;
   let fence = "", quoteDepth = 0, comment = "", lists = [];
   for (let line = 0; line < sources.length; line++) {
     const source = sources[line], raw = source.replace(/\r$/, "");
@@ -15316,12 +15316,12 @@ function monthGrid(month) {
   return Array.from({ length: 42 }, (_, i) => shiftDay(start, i));
 }
 function monthDisplayGrid(month) {
-  const dates = monthGrid(month);
+  const dates2 = monthGrid(month);
   let last = 0;
-  dates.forEach((day, i) => {
+  dates2.forEach((day, i) => {
     if (day.slice(0, 7) === month) last = i;
   });
-  return dates.slice(0, (Math.floor(last / 7) + 1) * 7);
+  return dates2.slice(0, (Math.floor(last / 7) + 1) * 7);
 }
 function monthDays(month) {
   dateOf(`${month}-01`);
@@ -15351,15 +15351,15 @@ ${entries.length ? entries.map((e) => `- [[${e.path}|${e.day}]]`).join("\n") : "
 - [ ] 
 `;
 }
-function appendJournalTask(text, task) {
+function appendJournalTask(text3, task) {
   const clean = task.trim();
   if (!clean || /[\r\n]/.test(clean)) throw Error("\u8BF7\u8F93\u5165\u4E00\u884C\u5F85\u529E\u5185\u5BB9");
-  const newline = text.includes("\r\n") ? "\r\n" : "\n";
+  const newline = text3.includes("\r\n") ? "\r\n" : "\n";
   const headings = [];
-  let offset = 0, fence = false, frontmatter = /^---\r?\n[^\n]+:[^\n]*/.test(text) && !/^---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.test(text), comment = false;
-  for (const row of markdownRows(text)) {
+  let offset = 0, fence = false, frontmatter = /^---\r?\n[^\n]+:[^\n]*/.test(text3) && !/^---\r?\n[\s\S]*?\r?\n(?:---|\.\.\.)(?:\r?\n|$)/.test(text3), comment = false;
+  for (const row of markdownRows(text3)) {
     const start = offset;
-    offset += row.source.length + (offset + row.source.length < text.length ? 1 : 0);
+    offset += row.source.length + (offset + row.source.length < text3.length ? 1 : 0);
     fence = "openBlock" in row && !!row.openBlock;
     if (row.code || !row.topLevel || row.commentBefore) continue;
     const heading = row.visible.replace(/\r$/, "").match(/^ {0,3}(#{1,6})(?:[ \t]+(.*)|$)/);
@@ -15368,20 +15368,20 @@ function appendJournalTask(text, task) {
   const section = headings.find((h) => h.level === 2 && h.title === "\u4ECA\u65E5\u4EFB\u52A1");
   const boundary = section ? headings.find((h) => h.start >= section.end && h.level <= 2)?.start : void 0;
   if (section) {
-    const end = boundary ?? text.length, body = text.slice(section.end, end);
+    const end = boundary ?? text3.length, body = text3.slice(section.end, end);
     const placeholder = body.match(/^(?:[ \t]*\r?\n)*([ \t]{0,3}[-*+] \[ \])[ \t]*(?=\r?\n|$)/);
     if (placeholder) {
       const at3 = section.end + placeholder[0].length;
-      return text.slice(0, at3).replace(/[ \t]*$/, "") + " " + clean + text.slice(at3);
+      return text3.slice(0, at3).replace(/[ \t]*$/, "") + " " + clean + text3.slice(at3);
     }
     if (boundary === void 0 && (fence || frontmatter || comment)) throw Error("\u65E5\u8BB0\u4E2D\u6709\u672A\u95ED\u5408\u7684\u4EE3\u7801\u5757\u6216\u6CE8\u91CA\uFF0C\u8BF7\u5148\u5728\u539F\u6587\u4E2D\u8865\u9F50");
-    const at2 = section.end + body.search(/\s*$/), prefix2 = text.slice(0, at2), suffix2 = text.slice(at2);
+    const at2 = section.end + body.search(/\s*$/), prefix2 = text3.slice(0, at2), suffix2 = text3.slice(at2);
     const separator = prefix2.endsWith("\n") || /^ {0,3}[-*+] \[[ xX]\]/.test(prefix2.split(/\r?\n/).pop() || "") ? newline : newline + newline;
     return prefix2 + separator + "- [ ] " + clean + (suffix2.startsWith("\n") || suffix2.startsWith("\r\n") ? "" : newline) + suffix2;
   }
   if (fence || frontmatter || comment) throw Error("\u65E5\u8BB0\u4E2D\u6709\u672A\u95ED\u5408\u7684\u4EE3\u7801\u5757\u6216\u6CE8\u91CA\uFF0C\u8BF7\u5148\u5728\u539F\u6587\u4E2D\u8865\u9F50");
-  const at = headings.find((h) => h.level === 2 && h.title === "\u9605\u8BFB\u4E0E\u5173\u8054")?.start ?? text.length;
-  const prefix = text.slice(0, at), suffix = text.slice(at);
+  const at = headings.find((h) => h.level === 2 && h.title === "\u9605\u8BFB\u4E0E\u5173\u8054")?.start ?? text3.length;
+  const prefix = text3.slice(0, at), suffix = text3.slice(at);
   return prefix + (prefix.endsWith(newline + newline) ? "" : prefix.endsWith("\n") ? newline : prefix ? newline + newline : "") + "## \u4ECA\u65E5\u4EFB\u52A1" + newline + newline + "- [ ] " + clean + newline + (suffix ? newline : "") + suffix;
 }
 function isoWeek(day) {
@@ -15396,8 +15396,8 @@ function periodSpec(kind, anchor) {
   const week = isoWeek(anchor), title = kind === "week" ? `${week.year}-W${String(week.week).padStart(2, "0")} \u5468\u8BB0` : kind === "month" ? `${month} \u6708\u8BB0` : kind === "quarter" ? `${year}-Q${quarter} \u5B63\u8BB0` : `${year} \u5E74\u8BB0`;
   return { days, title, year: kind === "week" ? String(week.year) : year, legacyTitle: kind === "week" ? `${days[0]} \u5468\u56DE\u987E` : kind === "month" ? `${month} \u6708\u56DE\u987E` : void 0 };
 }
-function journalExcerpt(text) {
-  return stripInlineComments(text).replace(/(?:^## 待办与未完成\r?\n\s*)?```thoughtspace-tasks[^\n]*\n[\s\S]*?```\r?\n?/gm, "").replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "").replace(/^# \d{4}-\d{2}-\d{2}\r?\n/, "").replace(/^#{1,6} .+$/gm, "").replace(/^\s*-\s*\[[ xX]\]\s*$/gm, "").replace(/<!--[\s\S]*?-->/g, "").replace(/!?\[\[([^|\]]+)(?:\|([^\]]+))?\]\]/g, (_match, path, label2) => label2 || path.split("/").pop().replace(/\.md$/i, "")).replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/[#*`\[\]]/g, "").replace(/\s+/g, " ").trim().slice(0, 140);
+function journalExcerpt(text3) {
+  return stripInlineComments(text3).replace(/(?:^## 待办与未完成\r?\n\s*)?```thoughtspace-tasks[^\n]*\n[\s\S]*?```\r?\n?/gm, "").replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, "").replace(/^# \d{4}-\d{2}-\d{2}\r?\n/, "").replace(/^#{1,6} .+$/gm, "").replace(/^\s*-\s*\[[ xX]\]\s*$/gm, "").replace(/<!--[\s\S]*?-->/g, "").replace(/!?\[\[([^|\]]+)(?:\|([^\]]+))?\]\]/g, (_match, path, label2) => label2 || path.split("/").pop().replace(/\.md$/i, "")).replace(/\[([^\]]+)\]\([^)]*\)/g, "$1").replace(/[#*`\[\]]/g, "").replace(/\s+/g, " ").trim().slice(0, 140);
 }
 function calendarKeyDay(day, key, shift = false) {
   const offsets = { ArrowLeft: -1, ArrowRight: 1, ArrowUp: -7, ArrowDown: 7 };
@@ -15487,12 +15487,16 @@ function preserveTaskRowFocus(root, rowSelector = ".ts-task-row", fallbackSelect
   if (!active2 || !row || !root.contains(row)) return () => {
   };
   const rows = Array.from(root.querySelectorAll(rowSelector));
-  const index = rows.indexOf(row), path = row.dataset.path, line = row.dataset.line;
+  const index = rows.indexOf(row), path = row.dataset.path, line = row.dataset.line, source = row.dataset.source, key = row.dataset.focusKey;
+  const sourceRows = source === void 0 ? [] : rows.filter((el) => el.dataset.path === path && el.dataset.source === source), occurrence = sourceRows.indexOf(row);
   const label2 = active2.getAttribute("aria-label"), checkbox = active2.matches("input[type=checkbox]");
   return () => {
     if (active2.isConnected || doc.activeElement !== doc.body) return;
     const current = Array.from(root.querySelectorAll(rowSelector));
-    const nextRow = current.find((el) => el.dataset.path === path && el.dataset.line === line) || current[Math.min(index, current.length - 1)];
+    const sameSource = source === void 0 ? [] : current.filter((el) => el.dataset.path === path && el.dataset.source === source);
+    const occurrenceRow = sameSource.length === sourceRows.length ? sameSource[occurrence] : void 0;
+    sameSource.sort((a, b) => Math.abs(Number(a.dataset.line) - Number(line)) - Math.abs(Number(b.dataset.line) - Number(line)));
+    const nextRow = (key ? current.find((el) => el.dataset.focusKey === key) : occurrenceRow || sameSource[0] || current.find((el) => el.dataset.path === path && el.dataset.line === line)) || current[Math.min(index, current.length - 1)];
     let next;
     if (checkbox) next = nextRow?.querySelector("input[type=checkbox]:not(:disabled)") || void 0;
     else if (label2) next = Array.from(nextRow?.querySelectorAll("[aria-label]") || []).find((el) => el.getAttribute("aria-label") === label2 && !el.matches(":disabled"));
@@ -15502,7 +15506,7 @@ function preserveTaskRowFocus(root, rowSelector = ".ts-task-row", fallbackSelect
 }
 
 // src/task-schedule-view.ts
-var import_obsidian = require("obsidian");
+var import_obsidian2 = require("obsidian");
 
 // src/task-time.ts
 var clockLabel = (minutes2) => `${String(Math.floor(minutes2 / 60)).padStart(2, "0")}:${String(minutes2 % 60).padStart(2, "0")}`;
@@ -15511,11 +15515,11 @@ var minutes = (time2) => {
   const [h, m] = time2.split(":").map(Number);
   return h * 60 + m;
 };
-function timeSlot(text) {
-  const match = new RegExp(`(?:^|\\s)(${clock})(?:\\s*[-\u2013\u2014~\uFF5E]\\s*(${clock}))?(?=\\s|$|[\xB7])`).exec(maskInlineLiterals(text));
+function timeSlot(text3) {
+  const match = new RegExp(`(?:^|\\s)(${clock})(?:\\s*[-\u2013\u2014~\uFF5E]\\s*(${clock}))?(?=\\s|$|[\xB7])`).exec(maskInlineLiterals(text3));
   if (!match) return;
-  const start = minutes(match[1]), finish = match[2] ? minutes(match[2]) : void 0, end = finish !== void 0 && finish > start ? finish : void 0;
-  return { start, end, endInput: match[2] ? clockLabel(finish) : void 0, label: clockLabel(start) + (end !== void 0 ? "\u2013" + clockLabel(end) : ""), title: (text.slice(0, match.index) + " " + text.slice(match.index + match[0].length)).replace(/^\s*[·]\s*/, "").trim(), invalidRange: finish !== void 0 && end === void 0 };
+  const start = minutes(match[1]), finish2 = match[2] ? minutes(match[2]) : void 0, end = finish2 !== void 0 && finish2 > start ? finish2 : void 0;
+  return { start, end, endInput: match[2] ? clockLabel(finish2) : void 0, label: clockLabel(start) + (end !== void 0 ? "\u2013" + clockLabel(end) : ""), title: (text3.slice(0, match.index) + " " + text3.slice(match.index + match[0].length)).replace(/^\s*[·]\s*/, "").trim(), invalidRange: finish2 !== void 0 && end === void 0 };
 }
 function scheduleText(title, start, end = "") {
   const clean = title.trim();
@@ -15525,6 +15529,54 @@ function scheduleText(title, start, end = "") {
   return `${clockLabel(minutes(start))}${end ? " - " + clockLabel(minutes(end)) : ""} ${clean}`;
 }
 
+// src/task-dataview.ts
+var keys = "due|scheduled|completion|priority|repeat|start|created|cancelled|onCompletion|id|dependsOn";
+var dateKeys = /* @__PURE__ */ new Set(["due", "scheduled", "completion", "start", "created", "cancelled"]);
+function validValue(key, value) {
+  if (dateKeys.has(key)) return /^\d{4}-\d{2}-\d{2}$/.test(value);
+  if (key === "priority") return /^(highest|high|medium|low|lowest)$/.test(value);
+  if (key === "repeat") return true;
+  if (key === "onCompletion") return /^[a-zA-Z]+$/.test(value);
+  return /^[a-zA-Z0-9]+(?:\s*,\s*[a-zA-Z0-9]+)*$/.test(value);
+}
+function dataviewTaskFields(text3) {
+  if (!text3.includes("::")) return [];
+  const prose = maskInlineLiterals(text3), fields = [];
+  for (const open of ["[", "("]) {
+    const close = open === "[" ? "]" : ")";
+    const pattern = new RegExp(`(\\${open}[ \\t]*(${keys})::[ \\t]*)([^\\[\\]\\(\\)\\r\\n]*?)([ \\t]*\\${close}(?:[ \\t]*,)?)(?![\\[(])`, "g");
+    for (const match of prose.matchAll(pattern)) {
+      const from = match.index, key = match[2], value = match[3].trim();
+      let slash = from;
+      while (slash > 0 && prose[slash - 1] === "\\") slash--;
+      if ((from - slash) % 2 || prose[from - 1] === "[" || !validValue(key, value)) continue;
+      fields.push({ from, to: from + match[0].length, key, value, open, prefix: match[1], suffix: match[4] });
+    }
+  }
+  return fields.sort((a, b) => a.from - b.from);
+}
+function updateDataviewTaskField(text3, key, value) {
+  const fields = dataviewTaskFields(text3).filter((field) => field.key === key);
+  let result = "", at = 0;
+  for (let i = 0; i < fields.length; i++) {
+    const field = fields[i], prefix = text3.slice(at, field.from);
+    result += value && i === 0 ? prefix + field.prefix + value + field.suffix : prefix.replace(/[ \t]+$/, "");
+    at = field.to;
+  }
+  return { text: result + text3.slice(at), found: fields.length > 0 };
+}
+function dataviewTaskFieldText(key, value, open) {
+  return `${open}${key}:: ${value}${open === "[" ? "]" : ")"}`;
+}
+function stripDataviewTaskFields(text3, keys2) {
+  let result = "", at = 0;
+  for (const field of dataviewTaskFields(text3)) if (keys2.has(field.key)) {
+    result += text3.slice(at, field.from).replace(/[ \t]+$/, "");
+    at = field.to;
+  }
+  return result + text3.slice(at);
+}
+
 // src/task-quadrants.ts
 var TASK_QUADRANTS = [
   { id: "q1", label: "\u91CD\u8981\u4E14\u7D27\u6025", hint: "\u4F18\u5148\u5904\u7406" },
@@ -15532,18 +15584,18 @@ var TASK_QUADRANTS = [
   { id: "q3", label: "\u7D27\u6025\u4E0D\u91CD\u8981", hint: "\u5C3D\u5FEB\u5904\u7406\u6216\u59D4\u6258" },
   { id: "q4", label: "\u4E0D\u91CD\u8981\u4E0D\u7D27\u6025", hint: "\u7A0D\u540E\u8003\u8651" }
 ];
-var quadrantRanges = (text) => inlineLiteralRanges(text).filter((r) => r.comment && /^<!--\s*thoughtspace:quadrant=q[1-4]\s*-->$/.test(text.slice(r.from, r.to)));
-function quadrantOverride(text) {
-  const r = quadrantRanges(text)[0];
-  return r ? text.slice(r.from, r.to).match(/=(q[1-4])/)[1] : void 0;
+var quadrantRanges = (text3) => inlineLiteralRanges(text3).filter((r) => r.comment && /^<!--\s*thoughtspace:quadrant=q[1-4]\s*-->$/.test(text3.slice(r.from, r.to)));
+function quadrantOverride(text3) {
+  const r = quadrantRanges(text3)[0];
+  return r ? text3.slice(r.from, r.to).match(/=(q[1-4])/)[1] : void 0;
 }
-function stripQuadrant(text) {
+function stripQuadrant(text3) {
   let result = "", at = 0;
-  for (const r of quadrantRanges(text)) {
-    result += text.slice(at, r.from).replace(/[ \t]*$/, "");
+  for (const r of quadrantRanges(text3)) {
+    result += text3.slice(at, r.from).replace(/[ \t]*$/, "");
     at = r.to;
   }
-  return result + text.slice(at);
+  return result + text3.slice(at);
 }
 function taskQuadrant(task, day) {
   const explicit = quadrantOverride(task.text);
@@ -15551,14 +15603,20 @@ function taskQuadrant(task, day) {
   const important = task.priority <= 1, urgent = !!task.due && task.due <= day;
   return important ? urgent ? "q1" : "q2" : urgent ? "q3" : "q4";
 }
-function setTaskQuadrant(text, target) {
-  if (target !== "auto" && !TASK_QUADRANTS.some((q) => q.id === target)) throw Error("\u4EFB\u52A1\u8C61\u9650\u65E0\u6548");
-  const id = text.match(/\s+\^[A-Za-z0-9-]+\s*$/)?.[0] || "", body = id ? text.slice(0, -id.length) : text;
-  const clean = stripQuadrant(body).trimEnd();
-  if (target === "auto") return clean + id;
-  const last = inlineLiteralRanges(clean).at(-1), raw = last ? clean.slice(last.from) : "", open = last?.comment && (raw.startsWith("<!--") ? !raw.endsWith("-->") : raw.length < 4 || !raw.endsWith("%%"));
-  const marker = `<!-- thoughtspace:quadrant=${target} -->`;
-  return (open ? clean.slice(0, last.from).trimEnd() + " " + marker + " " + raw : clean + " " + marker) + id;
+function setTaskQuadrant(text3, target2) {
+  if (target2 !== "auto" && !TASK_QUADRANTS.some((q) => q.id === target2)) throw Error("\u4EFB\u52A1\u8C61\u9650\u65E0\u6548");
+  const id2 = text3.match(/\s+\^[A-Za-z0-9-]+\s*$/)?.[0] || "", body = id2 ? text3.slice(0, -id2.length) : text3;
+  const clean = stripQuadrant(body).trim();
+  if (target2 === "auto") return clean + id2;
+  const marker = `<!-- thoughtspace:quadrant=${target2} -->`;
+  const metadata = /(?:^|\s)(?:[🔁📅⏳✅🔺⏫🔼🔽⏬🛫➕❌🏁🆔⛔])/u.exec(maskInlineLiterals(clean));
+  const emojiAt = metadata ? metadata.index + (/^\s/.test(metadata[0]) ? 1 : 0) : void 0;
+  const last = inlineLiteralRanges(clean).at(-1), raw = last ? clean.slice(last.from) : "";
+  const open = last?.comment && last.to === clean.length && (raw.startsWith("<!--") ? !raw.endsWith("-->") : raw.length < 4 || !raw.endsWith("%%"));
+  const positions = [emojiAt, dataviewTaskFields(clean)[0]?.from, open ? last.from : void 0].filter((at2) => at2 !== void 0);
+  const at = positions.length ? Math.min(...positions) : clean.length;
+  const before = clean.slice(0, at).trimEnd(), after = clean.slice(at).trimStart();
+  return (before ? before + " " : "") + marker + (after ? " " + after : "") + id2;
 }
 
 // src/model.ts
@@ -15588,54 +15646,6 @@ function safeName(name) {
   return name.replace(/[\\/:*?"<>|\[\]#^]/g, "-").replace(/^\.+/, "").trim().slice(0, 100) || "\u672A\u547D\u540D";
 }
 
-// src/task-dataview.ts
-var keys = "due|scheduled|completion|priority|repeat|start|created|cancelled|onCompletion|id|dependsOn";
-var dateKeys = /* @__PURE__ */ new Set(["due", "scheduled", "completion", "start", "created", "cancelled"]);
-function validValue(key, value) {
-  if (dateKeys.has(key)) return /^\d{4}-\d{2}-\d{2}$/.test(value);
-  if (key === "priority") return /^(highest|high|medium|low|lowest)$/.test(value);
-  if (key === "repeat") return true;
-  if (key === "onCompletion") return /^[a-zA-Z]+$/.test(value);
-  return /^[a-zA-Z0-9]+(?:\s*,\s*[a-zA-Z0-9]+)*$/.test(value);
-}
-function dataviewTaskFields(text) {
-  if (!text.includes("::")) return [];
-  const prose = maskInlineLiterals(text), fields = [];
-  for (const open of ["[", "("]) {
-    const close = open === "[" ? "]" : ")";
-    const pattern = new RegExp(`(\\${open}[ \\t]*(${keys})::[ \\t]*)([^\\[\\]\\(\\)\\r\\n]*?)([ \\t]*\\${close}(?:[ \\t]*,)?)(?![\\[(])`, "g");
-    for (const match of prose.matchAll(pattern)) {
-      const from = match.index, key = match[2], value = match[3].trim();
-      let slash = from;
-      while (slash > 0 && prose[slash - 1] === "\\") slash--;
-      if ((from - slash) % 2 || prose[from - 1] === "[" || !validValue(key, value)) continue;
-      fields.push({ from, to: from + match[0].length, key, value, open, prefix: match[1], suffix: match[4] });
-    }
-  }
-  return fields.sort((a, b) => a.from - b.from);
-}
-function updateDataviewTaskField(text, key, value) {
-  const fields = dataviewTaskFields(text).filter((field) => field.key === key);
-  let result = "", at = 0;
-  for (let i = 0; i < fields.length; i++) {
-    const field = fields[i], prefix = text.slice(at, field.from);
-    result += value && i === 0 ? prefix + field.prefix + value + field.suffix : prefix.replace(/[ \t]+$/, "");
-    at = field.to;
-  }
-  return { text: result + text.slice(at), found: fields.length > 0 };
-}
-function dataviewTaskFieldText(key, value, open) {
-  return `${open}${key}:: ${value}${open === "[" ? "]" : ")"}`;
-}
-function stripDataviewTaskFields(text, keys2) {
-  let result = "", at = 0;
-  for (const field of dataviewTaskFields(text)) if (keys2.has(field.key)) {
-    result += text.slice(at, field.from).replace(/[ \t]+$/, "");
-    at = field.to;
-  }
-  return result + text.slice(at);
-}
-
 // src/task-planner-model.ts
 var priorities = ["\u{1F53A}", "\u23EB", "\u{1F53C}", "", "\u{1F53D}", "\u23EC"];
 var dataviewPriorities = ["highest", "high", "medium", "", "low", "lowest"];
@@ -15649,9 +15659,9 @@ function validDay(value) {
     return;
   }
 }
-function planTasks(text, path, journalRoot) {
+function planTasks(text3, path, journalRoot) {
   const day = path.startsWith(journalRoot + "/") ? validDay(path.split("/").pop()?.replace(/\.md$/i, "")) : void 0;
-  return extractTasks(text).filter((t) => t.text.trim()).map((t) => {
+  return extractTasks(text3).filter((t) => t.text.trim()).map((t) => {
     const prose = maskInlineLiterals(t.text), fields = dataviewTaskFields(t.text), field = (key) => fields.find((f) => f.key === key)?.value;
     const due = validDay(field("due") ?? prose.match(/📅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]), scheduled = validDay(field("scheduled") ?? prose.match(/⏳\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
     const completedOn = validDay(field("completion") ?? prose.match(/✅\s*(\d{4}-\d{2}-\d{2})(?![\d-])/)?.[1]);
@@ -15674,8 +15684,8 @@ function taskMatches(t, day, filter) {
   if (filter === "unfinished") return true;
   if (filter === "overdue") return !!t.due && t.due < day;
   if (filter === "inbox") return !t.due && !t.scheduled && !t.day;
-  const end = shiftDay(day, 7), dates = t.scheduled || t.due ? [t.scheduled, t.due] : [t.day];
-  return dates.some((date) => !!date && date > day && date <= end);
+  const end = shiftDay(day, 7), dates2 = t.scheduled || t.due ? [t.scheduled, t.due] : [t.day];
+  return dates2.some((date) => !!date && date > day && date <= end);
 }
 function selectTasks(tasks, day, filter, query = "", tag = "", sort = "priority") {
   const q = query.trim().toLocaleLowerCase();
@@ -15694,8 +15704,8 @@ function appendMetadata(line, value) {
   }
   return line + " " + value;
 }
-function changeTask(text, task, change) {
-  const lines = text.split("\n");
+function changeTask(text3, task, change) {
+  const lines = text3.split("\n");
   if (lines[task.line] !== task.source) throw Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
   if (task.recurring && change.checked !== void 0) throw Error("\u91CD\u590D\u4EFB\u52A1\u8BF7\u5728\u539F\u6587\u4F7F\u7528 Tasks \u63D2\u4EF6\u5B8C\u6210\uFF0C\u4EE5\u4FDD\u7559\u5176\u91CD\u590D\u89C4\u5219");
   let line = task.source;
@@ -15752,10 +15762,10 @@ function groupTasks(tasks, by) {
   }
   return [...groups].sort(([a], [b]) => a.localeCompare(b, "zh-CN")).map(([key, tasks2]) => ({ label: by === "priority" ? ["\u6700\u9AD8\u4F18\u5148\u7EA7", "\u9AD8\u4F18\u5148\u7EA7", "\u4E2D\u4F18\u5148\u7EA7", "\u666E\u901A\u4F18\u5148\u7EA7", "\u4F4E\u4F18\u5148\u7EA7", "\u6700\u4F4E\u4F18\u5148\u7EA7"][Number(key)] : key, tasks: tasks2 }));
 }
-function journalTaskBlock(text, day) {
+function journalTaskBlock(text3, day) {
   dateOf(day);
-  if ([...markdownRows(text)].some((r) => "fenceOpening" in r && r.fenceOpening && /^ {0,3}`{3,}thoughtspace-tasks\s*$/.test(r.source))) return text;
-  return text + (text.endsWith("\n\n") ? "" : text.endsWith("\n") ? "\n" : "\n\n") + "## \u5F85\u529E\u4E0E\u672A\u5B8C\u6210\n\n```thoughtspace-tasks\n" + day + "\n```\n";
+  if ([...markdownRows(text3)].some((r) => "fenceOpening" in r && r.fenceOpening && /^ {0,3}`{3,}thoughtspace-tasks\s*$/.test(r.source))) return text3;
+  return text3 + (text3.endsWith("\n\n") ? "" : text3.endsWith("\n") ? "\n" : "\n\n") + "## \u5F85\u529E\u4E0E\u672A\u5B8C\u6210\n\n```thoughtspace-tasks\n" + day + "\n```\n";
 }
 
 // src/ui-tokens.ts
@@ -15777,15 +15787,246 @@ function themeSurface(el, appearance) {
   el.dataset.glass = String(appearance?.glassEffects ?? source?.dataset.glass !== "false");
 }
 
+// src/time-range-selection.ts
+var clamp = (value, min, max) => Math.min(max, Math.max(min, value));
+function timeRangeMinute(x, left, width) {
+  if (![x, left, width].every(Number.isFinite) || width <= 0) throw Error("\u65F6\u95F4\u9009\u62E9\u8303\u56F4\u65E0\u6548");
+  return clamp(Math.round((x - left) / width * 1440 / 15) * 15, 0, 1440);
+}
+function draggedTimeRange(anchor, current) {
+  if (![anchor, current].every(Number.isFinite)) throw Error("\u65F6\u95F4\u9009\u62E9\u65E0\u6548");
+  const start = clamp(Math.min(anchor, current), 0, 1425), end = clamp(Math.max(anchor, current), 0, 1439);
+  return { start, end: end > start ? end : Math.min(1439, start + 30) };
+}
+function parseTimeMinute(value) {
+  const match = /^([01]\d|2[0-3]):([0-5]\d)$/.exec(value);
+  return match ? Number(match[1]) * 60 + Number(match[2]) : void 0;
+}
+function mountTimeRangePicker(parent, start, end, bindEscape) {
+  const document2 = parent.ownerDocument;
+  const create = (tag, cls, text3) => {
+    const el = document2.createElement(tag);
+    el.className = cls;
+    if (text3) el.textContent = text3;
+    return el;
+  };
+  const root = create("div", "ts-time-range-picker"), heading = create("div", "ts-time-range-heading"), caption = create("span", "ts-time-range-caption", "\u62D6\u52A8\u9009\u62E9\u65F6\u95F4"), summary = create("span", "ts-time-range-summary");
+  heading.append(caption, summary);
+  root.append(heading);
+  const track = create("div", "ts-time-range-track");
+  track.setAttribute("aria-label", "\u62D6\u52A8\u9009\u62E9\u5177\u4F53\u65F6\u95F4");
+  const selection = create("div", "ts-time-range-selection");
+  track.append(selection);
+  const handles = [["start", "\u5F00\u59CB\u65F6\u95F4"], ["end", "\u7ED3\u675F\u65F6\u95F4"]].map(([edge, label2]) => {
+    const handle = create("button", "ts-time-range-handle");
+    handle.type = "button";
+    handle.dataset.edge = edge;
+    handle.setAttribute("role", "slider");
+    handle.setAttribute("aria-label", label2);
+    handle.setAttribute("aria-valuemin", "0");
+    handle.setAttribute("aria-valuemax", "1439");
+    track.append(handle);
+    return handle;
+  });
+  root.append(track);
+  const ticks = create("div", "ts-time-range-ticks");
+  for (const hour of [0, 6, 12, 18, 24]) ticks.append(create("span", "", String(hour).padStart(2, "0") + ":00"));
+  root.append(ticks);
+  parent.append(root);
+  let preview, gesture, destroyed = false, releaseEscape, migrationObserver;
+  const current = () => {
+    const from = parseTimeMinute(start.value), to = parseTimeMinute(end.value);
+    return from === void 0 ? void 0 : { start: from, end: to !== void 0 && to > from ? to : Math.min(1439, from + 30) };
+  };
+  const paint = () => {
+    if (destroyed) return;
+    const range = preview || current();
+    selection.hidden = !range;
+    handles.forEach((handle) => handle.hidden = !range);
+    summary.textContent = range ? `${clockLabel(range.start)} \u2013 ${clockLabel(range.end)} \xB7 ${range.end - range.start} \u5206\u949F` : "00:00 \u2013 24:00";
+    if (!range) return;
+    selection.style.left = range.start / 1440 * 100 + "%";
+    selection.style.width = (range.end - range.start) / 1440 * 100 + "%";
+    handles.forEach((handle, i) => {
+      const minute = i ? range.end : range.start;
+      handle.style.left = minute / 1440 * 100 + "%";
+      handle.setAttribute("aria-valuenow", String(minute));
+      handle.setAttribute("aria-valuetext", clockLabel(minute));
+      handle.disabled = start.disabled || end.disabled;
+    });
+  };
+  const commit = (range) => {
+    const values = [clockLabel(range.start), clockLabel(range.end)], inputs = [start, end], changed = inputs.filter((input2, i) => input2.value !== values[i]);
+    inputs.forEach((input2, i) => input2.value = values[i]);
+    for (const input2 of changed) {
+      const event = input2.ownerDocument.createEvent("Event");
+      event.initEvent("input", true, false);
+      input2.dispatchEvent(event);
+    }
+    paint();
+  };
+  const cleanup = () => {
+    const previous = gesture;
+    gesture = void 0;
+    preview = void 0;
+    const release = releaseEscape;
+    releaseEscape = void 0;
+    const observer = migrationObserver;
+    migrationObserver = void 0;
+    try {
+      release?.();
+    } finally {
+      observer?.disconnect();
+      root.classList.remove("is-selecting");
+      const win = previous?.win;
+      win?.removeEventListener("pointermove", move);
+      win?.removeEventListener("pointerup", up);
+      win?.removeEventListener("pointercancel", cancel);
+      win?.removeEventListener("blur", cancel);
+      win?.removeEventListener("keydown", escape, true);
+      if (previous) try {
+        if (track.hasPointerCapture?.(previous.pointer)) track.releasePointerCapture(previous.pointer);
+      } catch {
+      }
+    }
+  };
+  const cancel = (event) => {
+    if ((event?.type === "pointercancel" || event?.type === "lostpointercapture") && gesture && event.pointerId !== gesture.pointer) return;
+    cleanup();
+    paint();
+  };
+  const escape = (event) => {
+    if (event.key !== "Escape" || !gesture) return;
+    event.preventDefault();
+    event.stopPropagation();
+    cancel();
+  };
+  const position = (event) => {
+    if (gesture && gesture.win !== track.ownerDocument.defaultView) return;
+    const box = track.getBoundingClientRect();
+    if (![event.clientX, box.left, box.width].every(Number.isFinite) || box.width <= 0) return;
+    return timeRangeMinute(event.clientX, box.left, box.width);
+  };
+  const move = (event) => {
+    if (!gesture || event.pointerId !== gesture.pointer) return;
+    event.preventDefault();
+    const at = position(event);
+    if (at === void 0) {
+      cancel();
+      return;
+    }
+    const old = preview || current();
+    preview = gesture.edge && old ? gesture.edge === "start" ? { start: Math.min(at, old.end - 1), end: old.end } : { start: old.start, end: clamp(at, old.start + 1, 1439) } : draggedTimeRange(gesture.anchor, at);
+    paint();
+  };
+  const up = (event) => {
+    if (!gesture || event.pointerId !== gesture.pointer) return;
+    move(event);
+    if (!gesture) return;
+    const range = preview;
+    cleanup();
+    if (range) commit(range);
+    else paint();
+  };
+  const down = (event) => {
+    if (gesture && gesture.win !== track.ownerDocument.defaultView) cancel();
+    if (destroyed || gesture || event.isPrimary === false || event.button !== 0 || start.disabled || end.disabled) return;
+    const box = track.getBoundingClientRect();
+    if (box.width <= 0) return;
+    const anchor = position(event);
+    if (anchor === void 0) return;
+    event.preventDefault();
+    const target2 = event.target, edge = target2.closest(".ts-time-range-handle")?.dataset.edge;
+    const win = track.ownerDocument.defaultView;
+    if (!win) return;
+    gesture = { pointer: event.pointerId, anchor, edge, win };
+    preview = edge ? current() : draggedTimeRange(anchor, anchor);
+    root.classList.add("is-selecting");
+    paint();
+    releaseEscape = bindEscape?.(cancel);
+    win.addEventListener("pointermove", move);
+    win.addEventListener("pointerup", up);
+    win.addEventListener("pointercancel", cancel);
+    win.addEventListener("blur", cancel);
+    win.addEventListener("keydown", escape, true);
+    const Observer = win.MutationObserver;
+    if (Observer) {
+      migrationObserver = new Observer(() => {
+        if (gesture && (gesture.win !== track.ownerDocument.defaultView || root.isConnected === false)) cancel();
+      });
+      migrationObserver.observe(track.ownerDocument, { childList: true, subtree: true });
+    }
+    try {
+      track.setPointerCapture?.(event.pointerId);
+    } catch {
+    }
+  };
+  const input = () => {
+    if (gesture) cleanup();
+    paint();
+  };
+  const keyboard = (event) => {
+    const target2 = event.target, edge = target2.dataset.edge, range = current();
+    if (!range || !edge || start.disabled || end.disabled) return;
+    if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
+    event.preventDefault();
+    const step = event.shiftKey ? 1 : 15, direction = ["ArrowLeft", "ArrowDown"].includes(event.key) ? -1 : 1;
+    const value = event.key === "Home" ? 0 : event.key === "End" ? 1439 : (edge === "start" ? range.start : range.end) + direction * step;
+    commit(edge === "start" ? { start: clamp(value, 0, range.end - 1), end: range.end } : { start: range.start, end: clamp(value, range.start + 1, 1439) });
+  };
+  track.addEventListener("pointerdown", down);
+  track.addEventListener("lostpointercapture", cancel);
+  track.addEventListener("keydown", keyboard);
+  start.addEventListener("input", input);
+  end.addEventListener("input", input);
+  paint();
+  return { refresh: input, destroy() {
+    if (destroyed) return;
+    cleanup();
+    destroyed = true;
+    track.removeEventListener("pointerdown", down);
+    track.removeEventListener("lostpointercapture", cancel);
+    track.removeEventListener("keydown", keyboard);
+    start.removeEventListener("input", input);
+    end.removeEventListener("input", input);
+    root.remove();
+  } };
+}
+
+// src/time-range-keymap.ts
+var import_obsidian = require("obsidian");
+function timeRangeEscape(app, parent) {
+  return (cancel) => {
+    const scope = new import_obsidian.Scope(parent);
+    let active2 = true;
+    scope.register(null, "Escape", (event) => {
+      event.preventDefault();
+      cancel();
+      return false;
+    });
+    app.keymap.pushScope(scope);
+    return () => {
+      if (active2) {
+        active2 = false;
+        app.keymap.popScope(scope);
+      }
+    };
+  };
+}
+
 // src/task-schedule-view.ts
-var TaskScheduleModal = class extends import_obsidian.Modal {
+var TaskScheduleModal = class extends import_obsidian2.Modal {
   constructor(app, planner, task, day) {
     super(app);
     this.planner = planner;
     this.task = task;
     this.day = day;
   }
+  timeRange;
+  pending = false;
+  closed = false;
   onOpen() {
+    this.closed = false;
     themeSurface(this.modalEl);
     this.modalEl.addClass("ts-task-schedule-modal");
     this.titleEl.setText("\u5B89\u6392\u4EFB\u52A1");
@@ -15793,14 +16034,14 @@ var TaskScheduleModal = class extends import_obsidian.Modal {
     this.contentEl.createDiv({ cls: "ts-schedule-task-name", text: display?.title || task.title });
     this.contentEl.createDiv({ cls: "ts-schedule-source", text: task.path, attr: { title: task.path } });
     const form = this.contentEl.createEl("form");
-    const dates = form.createDiv("ts-schedule-fields");
+    const dates2 = form.createDiv("ts-schedule-fields");
     const field = (parent, label2, type, value) => {
       const wrap = parent.createEl("label");
       wrap.createSpan({ text: label2 });
       return wrap.createEl("input", { type, value, attr: { "aria-label": label2 } });
     };
-    const scheduled = field(dates, "\u8BA1\u5212\u65E5\u671F", "date", task.scheduled || (!task.due && !task.day ? this.day : ""));
-    const due = field(dates, "\u622A\u6B62\u65E5\u671F", "date", task.due || "");
+    const scheduled = field(dates2, "\u8BA1\u5212\u65E5\u671F", "date", task.scheduled || (!task.due && !task.day ? this.day : ""));
+    const due = field(dates2, "\u622A\u6B62\u65E5\u671F", "date", task.due || "");
     const section = form.createDiv("ts-schedule-time-section");
     const heading = section.createDiv("ts-schedule-section-heading");
     heading.createSpan({ text: "\u5177\u4F53\u65F6\u95F4" });
@@ -15809,16 +16050,17 @@ var TaskScheduleModal = class extends import_obsidian.Modal {
     const times = section.createDiv("ts-schedule-fields");
     const start = field(times, "\u5F00\u59CB\u65F6\u95F4", "time", slot ? clockLabel(slot.start) : "");
     const end = field(times, "\u7ED3\u675F\u65F6\u95F4\uFF08\u53EF\u9009\uFF09", "time", slot?.endInput || "");
+    this.timeRange = mountTimeRangePicker(section, start, end, timeRangeEscape(this.app, this.scope));
     const presets = section.createDiv({ cls: "ts-schedule-presets", attr: { role: "group", "aria-label": "\u5FEB\u6377\u65F6\u957F" } });
     const durationButtons = [];
-    for (const duration of [15, 30, 60, 90]) {
-      const b = presets.createEl("button", { type: "button", text: duration + " \u5206\u949F", attr: { "aria-label": "\u65F6\u957F " + duration + " \u5206\u949F" } });
+    for (const duration2 of [15, 30, 60, 90]) {
+      const b = presets.createEl("button", { type: "button", text: duration2 + " \u5206\u949F", attr: { "aria-label": "\u65F6\u957F " + duration2 + " \u5206\u949F" } });
       b.type = "button";
-      durationButtons.push({ button: b, duration });
+      durationButtons.push({ button: b, duration: duration2 });
       b.onclick = () => {
         const value = timeSlot(start.value);
-        if (value && value.start + duration < 1440) {
-          end.value = clockLabel(value.start + duration);
+        if (value && value.start + duration2 < 1440) {
+          end.value = clockLabel(value.start + duration2);
           refresh();
         }
       };
@@ -15828,7 +16070,7 @@ var TaskScheduleModal = class extends import_obsidian.Modal {
     const priorityLabel = form.createEl("label", { cls: "ts-schedule-priority" });
     priorityLabel.createSpan({ text: "\u4F18\u5148\u7EA7" });
     const priority = priorityLabel.createEl("select", { attr: { "aria-label": "\u4F18\u5148\u7EA7" } });
-    for (const [value, text] of ["\u6700\u9AD8", "\u9AD8", "\u4E2D", "\u666E\u901A", "\u4F4E", "\u6700\u4F4E"].entries()) priority.createEl("option", { value: String(value), text });
+    for (const [value, text3] of ["\u6700\u9AD8", "\u9AD8", "\u4E2D", "\u666E\u901A", "\u4F4E", "\u6700\u4F4E"].entries()) priority.createEl("option", { value: String(value), text: text3 });
     priority.value = String(task.priority);
     const error = form.createDiv({ cls: "ts-schedule-error", attr: { role: "alert" } });
     const footer = form.createDiv("ts-schedule-footer");
@@ -15838,12 +16080,13 @@ var TaskScheduleModal = class extends import_obsidian.Modal {
     const save = footer.createEl("button", { type: "submit", cls: "mod-cta", text: "\u4FDD\u5B58\u5B89\u6392" });
     save.type = "submit";
     const refresh = () => {
+      this.timeRange?.refresh();
       error.empty();
       const first = timeSlot(start.value), last = timeSlot(end.value), length = first && last ? last.start - first.start : 0;
       clear.disabled = !start.value && !end.value;
-      for (const { button, duration } of durationButtons) {
-        button.disabled = !first || first.start + duration >= 1440;
-        button.setAttribute("aria-pressed", String(length === duration));
+      for (const { button, duration: duration2 } of durationButtons) {
+        button.disabled = !first || first.start + duration2 >= 1440;
+        button.setAttribute("aria-pressed", String(length === duration2));
       }
       const date = scheduled.value || due.value || task.day || this.day;
       status.setText(!first ? "\u4E0D\u8BBE\u65F6\u95F4 \xB7 \u53EA\u5B89\u6392\u65E5\u671F" : length > 0 ? `${length} \u5206\u949F \xB7 ${date}` : end.value ? "\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4" : `\u4EC5\u8BBE\u5F00\u59CB\u65F6\u95F4 \xB7 ${date}`);
@@ -15863,17 +16106,26 @@ var TaskScheduleModal = class extends import_obsidian.Modal {
     for (const input of [scheduled, due, start, end]) input.oninput = refresh;
     form.onsubmit = (e) => {
       e.preventDefault();
-      if (save.disabled) return;
+      if (this.closed || this.pending || save.disabled) return;
+      const focused = this.contentEl.ownerDocument.activeElement;
       void (async () => {
         try {
           if (end.value && !start.value) throw Error("\u8BF7\u5148\u586B\u5199\u5F00\u59CB\u65F6\u95F4");
           if (start.value) scheduleText(slot?.title || task.text, start.value, end.value);
-          save.disabled = true;
+          this.pending = true;
+          form.querySelectorAll("input,button,select").forEach((el) => el.disabled = true);
+          this.timeRange?.refresh();
           await this.planner.update(task, { scheduled: scheduled.value || (!due.value && !task.day && start.value ? this.day : ""), due: due.value, priority: Number(priority.value), time: start.value ? { start: start.value, end: end.value } : null });
-          this.close();
+          if (!this.closed) this.close();
         } catch (reason) {
-          error.setText(reason instanceof Error ? reason.message : String(reason));
-          save.disabled = false;
+          if (!this.closed) {
+            form.querySelectorAll("input,button,select").forEach((el) => el.disabled = false);
+            refresh();
+            error.setText(reason instanceof Error ? reason.message : String(reason));
+            if (focused && form.contains(focused)) focused.focus();
+          }
+        } finally {
+          this.pending = false;
         }
       })();
     };
@@ -15883,15 +16135,21 @@ var TaskScheduleModal = class extends import_obsidian.Modal {
     refresh();
     start.focus();
   }
+  onClose() {
+    this.closed = true;
+    this.timeRange?.destroy();
+    this.timeRange = void 0;
+    this.contentEl.empty();
+  }
 };
 
 // src/day-timeline-view.ts
-var import_obsidian2 = require("obsidian");
+var import_obsidian3 = require("obsidian");
 
 // src/day-timeline-model.ts
-function journalRecords(text, path) {
+function journalRecords(text3, path) {
   const rows = [];
-  for (const row of markdownRows(text)) {
+  for (const row of markdownRows(text3)) {
     if (row.code) continue;
     const match = row.visible.match(/^(?:(?: {0,3}>[ \t]?)+)?\s*(?:#{1,6}\s+|[-*+]\s+)(?!\[[ xX]\]\s)(.*)$/);
     if (!match) continue;
@@ -15932,271 +16190,150 @@ function timelineGaps(items) {
   return gaps;
 }
 
-// src/day-timeline-view.ts
-var DayTimeline = class extends import_obsidian2.Component {
-  constructor(app, el, planner, day, journal, state, add, embedded = false) {
-    super();
-    this.app = app;
-    this.el = el;
-    this.planner = planner;
-    this.day = day;
-    this.journal = journal;
-    this.state = state;
-    this.add = add;
-    this.embedded = embedded;
-    this.records = journal ? journalRecords(journal.text, journal.path) : [];
+// src/timeline-selection.ts
+function timelineSelection(tasks, day, records, query = "", tag = "") {
+  const q = query.trim().toLocaleLowerCase();
+  const match = (text3, path) => !q || `${text3} ${path}`.toLocaleLowerCase().includes(q);
+  const taskMatch = (task) => (!tag || task.tags.includes(tag)) && match(task.text, task.path);
+  const all = dayTimeline(tasks, day, records);
+  return { items: all.items.filter((item) => item.task ? taskMatch(item.task) : match(item.title, item.path) && (!tag || (maskInlineLiterals(item.title).match(/#[\p{L}\p{N}_/-]+/gu) || []).some((value) => value === tag))), untimed: all.untimed.filter(taskMatch) };
+}
+
+// src/task-display.ts
+var dates = /* @__PURE__ */ new Set(["due", "scheduled", "completion", "start", "created", "cancelled"]);
+function escaped(text3, at) {
+  let start = at;
+  while (start > 0 && text3[start - 1] === "\\") start--;
+  return (at - start) % 2 === 1;
+}
+function mergeRanges(ranges) {
+  const merged = [];
+  for (const r of [...ranges].sort((a, b) => a.from - b.from)) {
+    const last = merged.at(-1);
+    if (last && r.from <= last.to) last.to = Math.max(last.to, r.to);
+    else merged.push({ ...r });
   }
-  records = [];
-  active = false;
-  limit = 40;
-  body;
-  clock;
-  toggle;
-  done;
-  button(parent, label2, icon, run2) {
-    const b = parent.createEl("button", { attr: { "aria-label": label2, title: label2 } });
-    (0, import_obsidian2.setIcon)(b, icon);
-    b.onclick = () => {
-      b.disabled = true;
-      Promise.resolve().then(run2).catch((e) => new import_obsidian2.Notice(String(e))).finally(() => b.disabled = false);
-    };
-    return b;
+  return merged;
+}
+function maskRanges(text3, ranges) {
+  let at = 0, result = "";
+  for (const r of mergeRanges(ranges)) {
+    result += text3.slice(at, r.from) + "\uFFFC".repeat(r.to - r.from);
+    at = r.to;
   }
-  onload() {
-    this.active = true;
-    this.el.addClass("ts-day-timeline");
-    this.el.toggleClass("is-embedded", this.embedded);
-    this.el.setAttribute("aria-label", "\u6240\u9009\u65E5\u671F\u65F6\u95F4\u7EBF");
-    this.el.dataset.day = this.day;
-    const head = this.el.createDiv("ts-day-timeline-head");
-    if (!this.embedded) {
-      head.createEl("h3", { text: "\u65F6\u95F4\u7EBF" });
-      head.createSpan({ cls: "ts-day-timeline-date", text: this.day === localDay() ? "\u4ECA\u5929" : `${Number(this.day.slice(5, 7))}\u6708${Number(this.day.slice(8))}\u65E5` });
+  return result + text3.slice(at);
+}
+function bracketEnds(text3) {
+  const ends = /* @__PURE__ */ new Map(), square = [], round = [], wiki = [];
+  let escape = false;
+  for (let i = 0; i < text3.length; i++) {
+    const char = text3[i];
+    if (char === "\\") {
+      escape = !escape;
+      continue;
     }
-    this.clock = head.createSpan("ts-day-timeline-clock");
-    const actions = head.createDiv("ts-day-timeline-actions");
-    this.done = this.button(actions, "\u9690\u85CF\u5DF2\u5B8C\u6210\u4E8B\u9879", "check-check", () => {
-      this.state.hideDone = !this.state.hideDone;
-      this.app.workspace.requestSaveLayout();
-      this.render();
-    });
-    if (!this.embedded) this.button(actions, "\u65B0\u589E\u65F6\u95F4\u5B89\u6392", "plus", () => this.edit());
-    this.toggle = this.button(actions, "\u6536\u8D77\u65F6\u95F4\u7EBF", "chevron-up", () => {
-      this.state.collapsed = !this.state.collapsed;
-      this.app.workspace.requestSaveLayout();
-      this.render();
-    });
-    this.toggle.hidden = this.embedded;
-    this.body = this.el.createDiv("ts-day-timeline-body");
-    this.register(this.planner.subscribe(() => this.render()));
-    this.registerInterval(window.setInterval(() => this.refreshClock(), 6e4));
-    this.body.setText("\u6B63\u5728\u8BFB\u53D6\u65F6\u95F4\u5B89\u6392\u2026");
-    void this.planner.ready().then(() => this.render()).catch((e) => {
-      if (this.active) this.body.setText("\u65F6\u95F4\u5B89\u6392\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF1A" + String(e));
-    });
-  }
-  async open(path, line) {
-    const file = this.app.vault.getAbstractFileByPath(path);
-    if (!(file instanceof import_obsidian2.TFile)) throw Error("\u6765\u6E90\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
-    const leaf = this.app.workspace.getLeavesOfType("markdown").find((l) => l.view.file === file) || this.app.workspace.getLeaf("tab");
-    await leaf.openFile(file, { eState: { line } });
-    await this.app.workspace.revealLeaf(leaf);
-  }
-  edit(task, startAt, endAt) {
-    if (task) {
-      new TaskScheduleModal(this.app, this.planner, task, this.day).open();
-      return;
+    const literal = escape;
+    escape = false;
+    if (char === "]" && text3[i + 1] === "]") wiki.push(i);
+    if (literal) continue;
+    if (char === "[") square.push(i);
+    else if (char === "(") round.push(i);
+    else if (char === "]") {
+      const open = square.pop();
+      if (open !== void 0) ends.set(open, i + 1);
+    } else if (char === ")") {
+      const open = round.pop();
+      if (open !== void 0) ends.set(open, i + 1);
     }
-    const m = new import_obsidian2.Modal(this.app);
-    m.modalEl.addClass("ts-timeline-modal");
-    m.modalEl.addClass("ts-calendar-plugin");
-    m.titleEl.setText("\u65B0\u589E\u65F6\u95F4\u5B89\u6392");
-    m.contentEl.createEl("p", { text: this.day, cls: "ts-muted" });
-    const title = m.contentEl.createEl("input", { type: "text", value: "", attr: { placeholder: "\u51C6\u5907\u505A\u4EC0\u4E48\uFF1F", "aria-label": "\u65F6\u95F4\u5B89\u6392\u5185\u5BB9" } });
-    const times = m.contentEl.createDiv("ts-timeline-time-fields");
-    const field = (label2, value) => {
-      const wrap = times.createEl("label");
-      wrap.createSpan({ text: label2 });
-      return wrap.createEl("input", { type: "time", value, attr: { "aria-label": label2 } });
-    };
-    const now = /* @__PURE__ */ new Date(), start = field("\u5F00\u59CB\u65F6\u95F4", startAt || clockLabel(now.getHours() * 60 + now.getMinutes())), end = field("\u7ED3\u675F\u65F6\u95F4\uFF08\u53EF\u9009\uFF09", endAt || "");
-    const error = m.contentEl.createDiv({ cls: "ts-timeline-error", attr: { role: "alert" } });
-    const save = m.contentEl.createEl("button", { text: "\u4FDD\u5B58\u5B89\u6392", cls: "mod-cta" });
-    const submit = async () => {
-      if (save.disabled) return;
-      try {
-        const text = scheduleText(title.value, start.value, end.value);
-        save.disabled = true;
-        await this.add(text);
-        m.close();
-      } catch (e) {
-        error.setText(e instanceof Error ? e.message : String(e));
-        save.disabled = false;
+  }
+  return { ends, wiki };
+}
+function linkRanges(text3) {
+  const prose = maskRanges(text3, inlineCodeRanges(text3)), ranges = [], { ends, wiki } = bracketEnds(prose);
+  let nextWiki = 0;
+  for (let i = 0; i < prose.length; i++) {
+    if (prose[i] !== "[" || escaped(prose, i)) continue;
+    if (prose.startsWith("[[", i)) {
+      while (nextWiki < wiki.length && wiki[nextWiki] < i + 2) nextWiki++;
+      const end2 = wiki[nextWiki];
+      if (end2 !== void 0) {
+        ranges.push({ from: i, to: end2 + 2 });
+        i = end2 + 1;
       }
-    };
-    save.onclick = () => void submit();
-    title.onkeydown = (e) => {
-      if (e.key === "Enter" && !e.isComposing) {
-        e.preventDefault();
-        void submit();
-      }
-    };
-    m.open();
-    title.focus();
-  }
-  taskCheck(parent, task) {
-    const check = parent.createEl("input", { type: "checkbox", attr: { "aria-label": `${task.checked ? "\u91CD\u65B0\u6253\u5F00" : "\u5B8C\u6210"}\u4EFB\u52A1\uFF1A${task.title}` } });
-    check.checked = task.checked;
-    check.disabled = !this.planner.canToggle(task);
-    if (task.recurring) check.title = check.disabled ? "\u91CD\u590D\u4EFB\u52A1\u9700\u8981\u542F\u7528 Tasks 7.2 \u6216\u66F4\u65B0\u7248\u672C\uFF0C\u4E5F\u53EF\u4EE5\u5728\u539F\u6587\u5B8C\u6210" : task.checked ? "\u901A\u8FC7 Tasks \u91CD\u65B0\u6253\u5F00\u6B64\u4EFB\u52A1" : "\u901A\u8FC7 Tasks \u5B8C\u6210\uFF0C\u5E76\u6309\u91CD\u590D\u89C4\u5219\u751F\u6210\u4E0B\u4E00\u9879";
-    check.onchange = () => {
-      const restore = this.preserveFocus();
-      check.disabled = true;
-      void this.planner.update(task, { checked: check.checked }).catch((e) => {
-        new import_obsidian2.Notice(String(e));
-        this.render();
-      }).finally(restore);
-    };
-  }
-  row(parent, item) {
-    const row = parent.createDiv("ts-timeline-item");
-    row.dataset.path = item.path;
-    row.dataset.line = String(item.line);
-    row.dataset.kind = item.kind;
-    row.dataset.priority = item.task && item.task.priority <= 1 ? "high" : "normal";
-    row.toggleClass("is-done", !!item.task?.checked);
-    row.toggleClass("has-conflict", !!item.conflict);
-    row.dataset.start = String(item.slot.start);
-    if (item.slot.end !== void 0) row.dataset.end = String(item.slot.end);
-    const duration = item.slot.end !== void 0 ? item.slot.end - item.slot.start : 0;
-    row.style.setProperty("--node-height", `${Math.min(72, 36 + duration * 0.32)}px`);
-    const now = /* @__PURE__ */ new Date(), minute = now.getHours() * 60 + now.getMinutes(), current = this.day === localDay() && !item.task?.checked && item.slot.end !== void 0 && minute >= item.slot.start && minute < item.slot.end;
-    row.toggleClass("is-current", current);
-    const icon = item.kind === "record" ? "notebook-pen" : item.task?.checked ? "check" : /阅读|读书|read|book/i.test(item.title) ? "book-open" : /写作|整理|write|专注/i.test(item.title) ? "pencil" : /会议|讨论|meet/i.test(item.title) ? "messages-square" : /休息|咖啡|break/i.test(item.title) ? "coffee" : "circle-dot";
-    const node = row.createSpan({ cls: "ts-timeline-node", attr: { "aria-hidden": "true" } });
-    (0, import_obsidian2.setIcon)(node, icon);
-    const card = row.createDiv("ts-timeline-card"), time2 = item.task ? card.createEl("button", { cls: "ts-timeline-time is-editable", attr: { "aria-label": "\u8C03\u6574\u65F6\u95F4\uFF1A" + item.title, title: "\u70B9\u51FB\u8C03\u6574\u65E5\u671F\u3001\u65F6\u95F4\u548C\u4F18\u5148\u7EA7" } }) : card.createDiv("ts-timeline-time");
-    if (item.task) time2.onclick = () => this.edit(item.task);
-    time2.createSpan({ text: clockLabel(item.slot.start) });
-    if (item.slot.end !== void 0) {
-      time2.createSpan({ cls: "ts-timeline-end", text: "\u2013 " + clockLabel(item.slot.end) });
-      time2.createSpan({ cls: "ts-timeline-duration", text: `${duration} \u5206\u949F` });
+      continue;
     }
-    const activeLabel = time2.createSpan({ cls: "ts-timeline-active-label", text: "\u8FDB\u884C\u4E2D" });
-    activeLabel.hidden = !current;
-    const heading = card.createDiv("ts-timeline-card-heading");
-    const title = heading.createEl("button", { cls: "ts-timeline-title", text: item.title, attr: { title: "\u6253\u5F00\u6765\u6E90\uFF1A" + item.path, "aria-label": "\u6253\u5F00\u6765\u6E90\uFF1A" + item.title } });
-    title.onclick = () => void this.open(item.path, item.line).catch((e) => new import_obsidian2.Notice(String(e)));
-    if (item.task) this.taskCheck(heading, item.task);
-    if (item.conflict || item.slot.invalidRange) card.createSpan({ cls: "ts-timeline-conflict", text: item.conflict ? "\u65F6\u95F4\u91CD\u53E0" : "\u8BF7\u68C0\u67E5\u7ED3\u675F\u65F6\u95F4" });
-    const meta = card.createDiv("ts-timeline-meta"), source = this.button(meta, "\u6765\u6E90\uFF1A" + item.path, "file-text", () => this.open(item.path, item.line));
-    source.addClass("ts-timeline-source");
-    source.createSpan({ text: item.path.split("/").pop().replace(/\.md$/i, "") });
-    if (item.task) this.button(meta, "\u7F16\u8F91\u5B89\u6392\uFF1A" + item.title, "sliders-horizontal", () => this.edit(item.task));
-  }
-  /** Keep cards, focus and expanded sections intact when only the minute changes. */
-  refreshClock(now = /* @__PURE__ */ new Date()) {
-    if (!this.active) return;
-    const today = this.day === localDay(now), minute = now.getHours() * 60 + now.getMinutes(), label2 = today ? clockLabel(minute) : "";
-    if (this.clock.textContent !== label2) this.clock.setText(label2);
-    const track = this.body.querySelector(".ts-timeline-track");
-    if (!track) return;
-    const rows = Array.from(track.querySelectorAll(".ts-timeline-item"));
-    for (const row of rows) {
-      const current = today && !row.hasClass("is-done") && row.dataset.end !== void 0 && minute >= Number(row.dataset.start) && minute < Number(row.dataset.end);
-      row.toggleClass("is-current", current);
-      const label3 = row.querySelector(".ts-timeline-active-label");
-      if (label3) label3.hidden = !current;
-    }
-    const marker = track.querySelector(".ts-timeline-now");
-    if (!marker) return;
-    const next = rows.find((row) => Number(row.dataset.start) >= minute);
-    marker.hidden = !today || !next && track.dataset.hasMore === "true";
-    const time2 = marker.querySelector(".ts-timeline-now-time");
-    if (time2 && time2.textContent !== label2) time2.setText(label2);
-    if (!marker.hidden && marker.nextElementSibling !== (next || null)) track.insertBefore(marker, next || null);
-  }
-  preserveFocus() {
-    return preserveTaskRowFocus(this.el, ".ts-timeline-item,.ts-timeline-untimed-row", ".ts-day-timeline-actions button");
-  }
-  render() {
-    if (!this.active) return;
-    const restore = this.preserveFocus();
-    try {
-      this.renderContents();
-    } finally {
-      restore();
+    const labelEnd = ends.get(i);
+    if (labelEnd === void 0) continue;
+    const next = prose[labelEnd], end = next === "(" || next === "[" ? ends.get(labelEnd) : void 0;
+    if (end !== void 0) {
+      ranges.push({ from: i, to: end });
+      i = end - 1;
     }
   }
-  renderContents() {
-    const scroll = this.body.scrollTop;
-    const now = /* @__PURE__ */ new Date(), minute = now.getHours() * 60 + now.getMinutes(), today = this.day === localDay();
-    this.clock.setText(today ? clockLabel(minute) : "");
-    this.body.hidden = !this.embedded && !!this.state.collapsed;
-    this.toggle.setAttribute("aria-expanded", String(!this.state.collapsed));
-    this.toggle.setAttribute("aria-label", this.state.collapsed ? "\u5C55\u5F00\u65F6\u95F4\u7EBF" : "\u6536\u8D77\u65F6\u95F4\u7EBF");
-    this.toggle.title = this.state.collapsed ? "\u5C55\u5F00\u65F6\u95F4\u7EBF" : "\u6536\u8D77\u65F6\u95F4\u7EBF";
-    (0, import_obsidian2.setIcon)(this.toggle, this.state.collapsed ? "chevron-down" : "chevron-up");
-    this.done.setAttribute("aria-pressed", String(!!this.state.hideDone));
-    this.done.setAttribute("aria-label", this.state.hideDone ? "\u663E\u793A\u5DF2\u5B8C\u6210\u4E8B\u9879" : "\u9690\u85CF\u5DF2\u5B8C\u6210\u4E8B\u9879");
-    this.done.title = this.state.hideDone ? "\u663E\u793A\u5DF2\u5B8C\u6210\u4E8B\u9879" : "\u9690\u85CF\u5DF2\u5B8C\u6210\u4E8B\u9879";
-    this.body.empty();
-    if (!this.embedded && this.state.collapsed) return;
-    if (this.planner.failures.size) this.body.createDiv({ cls: "ts-timeline-error", text: "\u90E8\u5206\u4EFB\u52A1\u6765\u6E90\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6" });
-    const all = dayTimeline(this.planner.all(), this.day, this.records), items = this.state.hideDone ? all.items.filter((i) => !i.task?.checked) : all.items, untimed = this.state.hideDone ? all.untimed.filter((t) => !t.checked) : all.untimed, list = this.body.createDiv("ts-timeline-track"), gaps = timelineGaps(all.items);
-    list.dataset.hasMore = String(items.length > this.limit);
-    let gapIndex = 0;
-    for (const item of items.slice(0, this.limit)) {
-      while (gapIndex < gaps.length && gaps[gapIndex].end <= item.slot.start) {
-        const gap = gaps[gapIndex++], button = this.button(list, `\u5B89\u6392\u7A7A\u6863 ${clockLabel(gap.start)}\u2013${clockLabel(gap.end)}`, "plus", () => this.edit(void 0, clockLabel(gap.start), clockLabel(gap.end)));
-        button.addClass("ts-timeline-gap");
-        button.createSpan({ text: `${gap.end - gap.start} \u5206\u949F\u7A7A\u6863` });
-      }
-      this.row(list, item);
-    }
-    const marker = list.createDiv("ts-timeline-now");
-    marker.createSpan({ cls: "ts-timeline-now-time" });
-    marker.createSpan({ text: "\u73B0\u5728" });
-    this.refreshClock(now);
-    if (!items.length) this.body.createDiv({ cls: "ts-timeline-empty", text: "\u8FD9\u4E00\u5929\u8FD8\u6CA1\u6709\u65F6\u95F4\u5B89\u6392\u3002\u70B9\u51FB \uFF0B\uFF0C\u6216\u5728\u4EFB\u52A1\u524D\u5199 09:00 - 10:00\u3002" });
-    if (items.length > this.limit) {
-      const more = this.body.createEl("button", { cls: "ts-timeline-more", text: `\u663E\u793A\u66F4\u591A\uFF08\u5269\u4F59 ${items.length - this.limit}\uFF09` });
-      more.onclick = () => {
-        this.limit += 40;
-        this.render();
-      };
-    }
-    if (untimed.length) {
-      const details = this.body.createEl("details", { cls: "ts-timeline-untimed" });
-      details.open = !!this.state.untimedOpen;
-      details.createEl("summary", { text: `\u672A\u5B9A\u65F6\u95F4 \xB7 ${untimed.length}` });
-      details.ontoggle = () => {
-        this.state.untimedOpen = details.open;
-      };
-      for (const task of untimed.slice(0, this.limit)) {
-        const row = details.createDiv("ts-timeline-untimed-row");
-        row.dataset.path = task.path;
-        row.dataset.line = String(task.line);
-        this.taskCheck(row, task);
-        const title = row.createEl("button", { cls: "ts-timeline-title", text: task.title });
-        title.onclick = () => void this.open(task.path, task.line).catch((e) => new import_obsidian2.Notice(String(e)));
-        this.button(row, "\u5B89\u6392\u65F6\u95F4\uFF1A" + task.title, "clock-3", () => this.edit(task));
-      }
-      if (untimed.length > this.limit) {
-        const more = details.createEl("button", { text: "\u663E\u793A\u66F4\u591A\u672A\u5B9A\u65F6\u95F4\u4E8B\u9879" });
-        more.onclick = () => {
-          this.limit += 40;
-          this.render();
-        };
-      }
-    }
-    this.body.scrollTop = scroll;
+  for (const m of prose.matchAll(/\b(?:https?:\/\/|obsidian:\/\/|www\.)[^\s<>]+/giu)) ranges.push({ from: m.index, to: m.index + m[0].length });
+  return mergeRanges(ranges);
+}
+function literalRanges(text3) {
+  const links = linkRanges(text3), comments = inlineLiteralRanges(maskRanges(text3, links)).filter((r) => r.comment);
+  return { protected: mergeRanges([...inlineCodeRanges(text3), ...links, ...comments]), comments };
+}
+function validDate(day) {
+  try {
+    dateOf(day);
+    return true;
+  } catch {
+    return false;
   }
-  onunload() {
-    this.active = false;
-    this.el.empty();
+}
+function knownRepeat(value) {
+  const clean = value.toLowerCase();
+  if (!/^every\s+(?:\d+\s+)?(?:day|days|weekday|weekdays|week|weeks|month|months|year|years|monday|tuesday|wednesday|thursday|friday|saturday|sunday|january|february|march|april|may|june|july|august|september|october|november|december)\b/.test(clean)) return false;
+  const words = clean.split(/[\s,]+/), known = /* @__PURE__ */ new Set(["every", "day", "days", "weekday", "weekdays", "week", "weeks", "month", "months", "year", "years", "on", "the", "of", "and", "last", "first", "second", "third", "fourth", "fifth", "when", "done", "until", "for", "times", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"]);
+  return words.every((w) => known.has(w) || /^\d+(?:st|nd|rd|th)?$/.test(w) || /^\d{4}-\d{2}-\d{2}$/.test(w));
+}
+function cleanWhitespace(text3) {
+  let at = 0, result = "";
+  for (const r of mergeRanges([...inlineCodeRanges(text3), ...linkRanges(text3)])) {
+    result += text3.slice(at, r.from).replace(/[ \t]+/g, " ") + text3.slice(r.from, r.to);
+    at = r.to;
   }
-};
+  return (result + text3.slice(at).replace(/[ \t]+/g, " ")).trim();
+}
+function taskPresentation(task) {
+  const text3 = task.text, literals = literalRanges(text3), prose = maskRanges(text3, literals.protected), remove = [...literals.comments], tags = [];
+  let recurrence, blockId2;
+  for (const field of dataviewTaskFields(prose)) {
+    if (dates.has(field.key) && !validDate(field.value)) continue;
+    remove.push(field);
+    if (field.key === "repeat" && !recurrence) recurrence = field.value || "\u91CD\u590D";
+  }
+  for (const m of prose.matchAll(/(?:^|(?<=\s))(?:📅|⏳|✅|🛫|➕|❌)[ \t]*(\d{4}-\d{2}-\d{2})(?=\s|$)/gu)) if (validDate(m[1])) remove.push({ from: m.index, to: m.index + m[0].length });
+  for (const m of prose.matchAll(/(?:^|(?<=\s))(?:🔺|⏫|🔼|🔽|⏬)(?=\s|$)/gu)) remove.push({ from: m.index, to: m.index + m[0].length });
+  for (const m of prose.matchAll(/(?<![\p{L}\p{N}_/\\])#[\p{L}\p{N}_/-]+/gu)) {
+    if (!/[\p{L}_-]/u.test(m[0])) continue;
+    if (!tags.includes(m[0])) tags.push(m[0]);
+    remove.push({ from: m.index, to: m.index + m[0].length });
+  }
+  const reference = prose.match(/(?:^|(?<=\s))\^[A-Za-z0-9-]+[ \t]*$/);
+  if (reference) {
+    blockId2 = reference[0].trim();
+    remove.push({ from: reference.index, to: reference.index + reference[0].length });
+  }
+  const repeats = [...prose.matchAll(/(?:^|(?<=\s))🔁[ \t]+/gu)];
+  for (const [i, m] of repeats.entries()) {
+    const from = m.index, start = from + m[0].length, end = Math.min(repeats[i + 1]?.index ?? text3.length, ...remove.filter((r) => r.from >= start).map((r) => r.from)), rule = text3.slice(start, end).trim();
+    if (!knownRepeat(rule)) continue;
+    remove.push({ from, to: end });
+    recurrence ??= rule;
+  }
+  let at = 0, title = "";
+  for (const r of mergeRanges(remove)) {
+    title += text3.slice(at, r.from) + " ";
+    at = r.to;
+  }
+  title = cleanWhitespace(title + text3.slice(at)) || "\u672A\u547D\u540D\u4EFB\u52A1";
+  return { title, tags, ...recurrence ? { recurrence } : {}, ...blockId2 ? { blockId: blockId2 } : {} };
+}
 
 // src/calendar-model.ts
 var defaultAppleSettings = {
@@ -16218,12 +16355,12 @@ function addDays(date, days) {
 function weekStart(date) {
   return addDays(date, -(date.getDay() + 6) % 7);
 }
-function visibleDays(date, mode) {
-  const start = mode === "week" ? weekStart(date) : weekStart(new Date(date.getFullYear(), date.getMonth(), 1));
-  return Array.from({ length: mode === "week" ? 7 : 42 }, (_, i) => addDays(start, i));
+function visibleDays(date, mode2) {
+  const start = mode2 === "week" ? weekStart(date) : weekStart(new Date(date.getFullYear(), date.getMonth(), 1));
+  return Array.from({ length: mode2 === "week" ? 7 : 42 }, (_, i) => addDays(start, i));
 }
-function movePeriod(date, mode, direction) {
-  if (mode === "week") return addDays(date, direction * 7);
+function movePeriod(date, mode2, direction) {
+  if (mode2 === "week") return addDays(date, direction * 7);
   const first = new Date(date.getFullYear(), date.getMonth() + direction, 1);
   const last = new Date(first.getFullYear(), first.getMonth() + 1, 0).getDate();
   return new Date(first.getFullYear(), first.getMonth(), Math.min(date.getDate(), last));
@@ -16386,11 +16523,507 @@ function endCalendarTaskDrag(app) {
   sessions.delete(app);
 }
 
+// src/calendar-scheduling.ts
+var stale = () => new Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
+function resolveCalendarTask(tasks, displayed) {
+  if (!Number.isInteger(displayed.line) || (displayed.line ?? -1) < 0 || typeof displayed.sourceSnapshot !== "string") throw stale();
+  const current = tasks.find((task) => task.path === displayed.source && task.line === displayed.line);
+  if (!current || current.source !== displayed.sourceSnapshot || current.checked !== displayed.completed) throw stale();
+  if (current.recurring && current.indexRevision !== displayed.indexRevision) throw stale();
+  const role = displayed.dateRole;
+  const expected = role === "scheduled" ? current.scheduled : role === "due" ? current.due : role === "day" ? !current.scheduled && !current.due ? current.day : void 0 : role === "unscheduled" && !current.scheduled && !current.due && !current.day ? "" : void 0;
+  if (expected === void 0 || expected !== displayed.date || current.scheduled !== displayed.scheduledDate) throw stale();
+  return current;
+}
+function calendarTaskCanSchedule(task) {
+  return !task.completed && typeof task.sourceSnapshot === "string" && Number.isInteger(task.line) && (task.line ?? -1) >= 0 && !!task.dateRole && !(task.dateRole === "due" && !!task.scheduledDate);
+}
+function snapCalendarMinute(value) {
+  if (!Number.isFinite(value)) throw Error("\u65F6\u95F4\u65E0\u6548");
+  return Math.min(1440, Math.max(0, Math.round(value / 15) * 15));
+}
+function taskSchedulingChange(task, date, startMinute, endMinute) {
+  parseDay(date);
+  if (!calendarTaskCanSchedule(task)) throw Error(task.completed ? "\u5DF2\u5B8C\u6210\u4EFB\u52A1\u4E0D\u80FD\u91CD\u65B0\u5B89\u6392" : task.dateRole === "due" && task.scheduledDate ? "\u8FD9\u662F\u622A\u6B62\u65E5\u671F\uFF0C\u8BF7\u62D6\u52A8\u4EFB\u52A1\u7684\u5B89\u6392\u65E5\u671F" : "\u8BF7\u5237\u65B0\u4EFB\u52A1\u540E\u518D\u5B89\u6392");
+  if (startMinute === void 0) {
+    if (endMinute !== void 0) throw Error("\u8BF7\u5148\u8BBE\u7F6E\u5F00\u59CB\u65F6\u95F4");
+    return { scheduled: date };
+  }
+  if (!Number.isInteger(startMinute) || startMinute < 0 || startMinute > 1438) throw Error("\u5F00\u59CB\u65F6\u95F4\u987B\u5728 00:00 \u81F3 23:58 \u4E4B\u95F4");
+  const start = startMinute;
+  if (endMinute !== void 0 && (!Number.isInteger(endMinute) || endMinute <= start || endMinute > 1440)) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u4E14\u4E0D\u8D85\u8FC7\u5F53\u5929");
+  const duration2 = task.endMinute !== void 0 && task.startMinute !== void 0 && task.endMinute > task.startMinute ? task.endMinute - task.startMinute : 30;
+  const finish2 = endMinute === void 0 ? start + duration2 : endMinute;
+  const end = Math.min(1439, finish2);
+  return { scheduled: date, time: { start: clockLabel(start), end: clockLabel(end) } };
+}
+function assertEvent(event) {
+  if (!event.editable) throw Error("\u8FD9\u4E2A\u65E5\u7A0B\u53EA\u8BFB\uFF0C\u65E0\u6CD5\u8C03\u6574");
+  const start = new Date(event.start), end = new Date(event.end);
+  if (!Number.isFinite(+start) || !Number.isFinite(+end) || end <= start) throw Error("\u65E5\u7A0B\u65F6\u95F4\u65E0\u6548");
+  if (!event.id || !event.calendarId || !event.revision) throw Error("\u8BF7\u5237\u65B0\u65E5\u7A0B\u540E\u518D\u8C03\u6574");
+  return { start, end };
+}
+function draft(event, start, end) {
+  if (end <= start || +end - +start > 366 * 864e5) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u6700\u957F\u4E00\u5E74");
+  parseDay(dayKey(start));
+  parseDay(dayKey(end));
+  return { title: event.title, start: start.toISOString(), end: end.toISOString(), allDay: event.allDay, calendarId: event.calendarId, location: event.location, notes: event.notes, eventId: event.id, originalStart: event.start, revision: event.revision };
+}
+function localMinute(date, minute) {
+  if (minute === 1440) return addDays(parseDay(date), 1);
+  return parseDateInput(`${date}T${clockLabel(minute)}`, false);
+}
+var civilDayNumber = (date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 864e5;
+function eventMoveDraft(event, date, startMinute) {
+  const original = assertEvent(event), day = parseDay(date);
+  if (startMinute === void 0 && dayKey(original.start) === date) return draft(event, original.start, original.end);
+  if (event.allDay) {
+    if (startMinute !== void 0) throw Error("\u5168\u5929\u65E5\u7A0B\u8BF7\u62D6\u5230\u65E5\u671F\u6216\u5168\u5929\u533A\u57DF");
+    const days = civilDayNumber(original.end) - civilDayNumber(original.start);
+    if (days < 1 || !Number.isInteger(days)) throw Error("\u5168\u5929\u65E5\u7A0B\u65F6\u95F4\u65E0\u6548");
+    return draft(event, day, addDays(day, days));
+  }
+  const minute = startMinute === void 0 ? original.start.getHours() * 60 + original.start.getMinutes() : Math.min(1425, snapCalendarMinute(startMinute));
+  const start = localMinute(date, minute);
+  if (startMinute === void 0) start.setSeconds(original.start.getSeconds(), original.start.getMilliseconds());
+  return draft(event, start, new Date(+start + (+original.end - +original.start)));
+}
+function eventResizeDraft(event, date, endMinute) {
+  const { start, end } = assertEvent(event);
+  parseDay(date);
+  if (event.allDay) throw Error("\u5168\u5929\u65E5\u7A0B\u8BF7\u6253\u5F00\u7F16\u8F91\u7A97\u53E3\u8C03\u6574\u65E5\u671F");
+  const snapped = snapCalendarMinute(endMinute);
+  if (dayKey(end) === date && end.getHours() * 60 + end.getMinutes() === snapped) return draft(event, start, end);
+  return draft(event, start, localMinute(date, snapped));
+}
+
+// src/day-timeline-view.ts
+var DayTimeline = class extends import_obsidian3.Component {
+  constructor(app, el, planner, day, journal, state, add, embedded = false, pomodoro) {
+    super();
+    this.app = app;
+    this.el = el;
+    this.planner = planner;
+    this.day = day;
+    this.journal = journal;
+    this.state = state;
+    this.add = add;
+    this.embedded = embedded;
+    this.pomodoro = pomodoro;
+    this.records = journal ? journalRecords(journal.text, journal.path) : [];
+  }
+  records = [];
+  query = "";
+  tag = "";
+  active = false;
+  limit = 40;
+  body;
+  clock;
+  toggle;
+  done;
+  dragging = false;
+  externalDragging = false;
+  deferredRender = false;
+  dragTimer;
+  dropSaving = false;
+  button(parent, label2, icon, run2) {
+    const b = parent.createEl("button", { attr: { "aria-label": label2, title: label2 } });
+    (0, import_obsidian3.setIcon)(b, icon);
+    b.onclick = () => {
+      b.disabled = true;
+      Promise.resolve().then(run2).catch((e) => new import_obsidian3.Notice(String(e))).finally(() => b.disabled = false);
+    };
+    return b;
+  }
+  onload() {
+    this.active = true;
+    this.el.addClass("ts-day-timeline");
+    this.el.toggleClass("is-embedded", this.embedded);
+    this.el.setAttribute("aria-label", "\u6240\u9009\u65E5\u671F\u65F6\u95F4\u7EBF");
+    this.el.dataset.day = this.day;
+    const head = this.el.createDiv("ts-day-timeline-head");
+    if (!this.embedded) {
+      head.createEl("h3", { text: "\u65F6\u95F4\u7EBF" });
+      head.createSpan({ cls: "ts-day-timeline-date", text: this.day === localDay() ? "\u4ECA\u5929" : `${Number(this.day.slice(5, 7))}\u6708${Number(this.day.slice(8))}\u65E5` });
+    }
+    this.clock = head.createSpan("ts-day-timeline-clock");
+    const actions = head.createDiv("ts-day-timeline-actions");
+    this.done = this.button(actions, "\u9690\u85CF\u5DF2\u5B8C\u6210\u4E8B\u9879", "check-check", () => {
+      this.state.hideDone = !this.state.hideDone;
+      this.app.workspace.requestSaveLayout();
+      this.render();
+    });
+    if (!this.embedded) this.button(actions, "\u65B0\u589E\u65F6\u95F4\u5B89\u6392", "plus", () => this.edit());
+    this.toggle = this.button(actions, "\u6536\u8D77\u65F6\u95F4\u7EBF", "chevron-up", () => {
+      this.state.collapsed = !this.state.collapsed;
+      this.app.workspace.requestSaveLayout();
+      this.render();
+    });
+    this.toggle.hidden = this.embedded;
+    this.body = this.el.createDiv("ts-day-timeline-body");
+    this.register(this.planner.subscribe(() => this.render()));
+    this.registerInterval(window.setInterval(() => this.refreshClock(), 6e4));
+    this.body.setText("\u6B63\u5728\u8BFB\u53D6\u65F6\u95F4\u5B89\u6392\u2026");
+    void this.planner.ready().then(() => this.render()).catch((e) => {
+      if (this.active) this.body.setText("\u65F6\u95F4\u5B89\u6392\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF1A" + String(e));
+    });
+  }
+  async open(path, line) {
+    const file = this.app.vault.getAbstractFileByPath(path);
+    if (!(file instanceof import_obsidian3.TFile)) throw Error("\u6765\u6E90\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+    const leaf = this.app.workspace.getLeavesOfType("markdown").find((l) => l.view.file === file) || this.app.workspace.getLeaf("tab");
+    await leaf.openFile(file, { eState: { line } });
+    await this.app.workspace.revealLeaf(leaf);
+  }
+  edit(task, startAt, endAt) {
+    if (task) {
+      new TaskScheduleModal(this.app, this.planner, task, this.day).open();
+      return;
+    }
+    const m = new import_obsidian3.Modal(this.app);
+    m.modalEl.addClass("ts-timeline-modal");
+    m.modalEl.addClass("ts-calendar-plugin");
+    m.titleEl.setText("\u65B0\u589E\u65F6\u95F4\u5B89\u6392");
+    m.contentEl.createEl("p", { text: this.day, cls: "ts-muted" });
+    const title = m.contentEl.createEl("input", { type: "text", value: "", attr: { placeholder: "\u51C6\u5907\u505A\u4EC0\u4E48\uFF1F", "aria-label": "\u65F6\u95F4\u5B89\u6392\u5185\u5BB9" } });
+    const times = m.contentEl.createDiv("ts-timeline-time-fields");
+    const field = (label2, value) => {
+      const wrap = times.createEl("label");
+      wrap.createSpan({ text: label2 });
+      return wrap.createEl("input", { type: "time", value, attr: { "aria-label": label2 } });
+    };
+    const now = /* @__PURE__ */ new Date(), start = field("\u5F00\u59CB\u65F6\u95F4", startAt || clockLabel(now.getHours() * 60 + now.getMinutes())), end = field("\u7ED3\u675F\u65F6\u95F4\uFF08\u53EF\u9009\uFF09", endAt || "");
+    const picker = mountTimeRangePicker(m.contentEl, start, end, timeRangeEscape(this.app, m.scope));
+    m.onClose = () => {
+      picker.destroy();
+      m.contentEl.empty();
+    };
+    const error = m.contentEl.createDiv({ cls: "ts-timeline-error", attr: { role: "alert" } });
+    const save = m.contentEl.createEl("button", { text: "\u4FDD\u5B58\u5B89\u6392", cls: "mod-cta" });
+    const submit = async () => {
+      if (save.disabled) return;
+      try {
+        const text3 = scheduleText(title.value, start.value, end.value);
+        [title, start, end, save].forEach((el) => el.disabled = true);
+        picker.refresh();
+        await this.add(text3);
+        m.close();
+      } catch (e) {
+        error.setText(e instanceof Error ? e.message : String(e));
+        [title, start, end, save].forEach((el) => el.disabled = false);
+        picker.refresh();
+      }
+    };
+    save.onclick = () => void submit();
+    title.onkeydown = (e) => {
+      if (e.key === "Enter" && !e.isComposing) {
+        e.preventDefault();
+        void submit();
+      }
+    };
+    m.open();
+    title.focus();
+  }
+  taskCheck(parent, task) {
+    const check = parent.createEl("input", { type: "checkbox", attr: { "aria-label": `${task.checked ? "\u91CD\u65B0\u6253\u5F00" : "\u5B8C\u6210"}\u4EFB\u52A1\uFF1A${task.title}` } });
+    check.checked = task.checked;
+    check.disabled = !this.planner.canToggle(task);
+    if (task.recurring) check.title = check.disabled ? "\u91CD\u590D\u4EFB\u52A1\u9700\u8981\u542F\u7528 Tasks 7.2 \u6216\u66F4\u65B0\u7248\u672C\uFF0C\u4E5F\u53EF\u4EE5\u5728\u539F\u6587\u5B8C\u6210" : task.checked ? "\u901A\u8FC7 Tasks \u91CD\u65B0\u6253\u5F00\u6B64\u4EFB\u52A1" : "\u901A\u8FC7 Tasks \u5B8C\u6210\uFF0C\u5E76\u6309\u91CD\u590D\u89C4\u5219\u751F\u6210\u4E0B\u4E00\u9879";
+    check.onchange = () => {
+      const restore = this.preserveFocus();
+      check.disabled = true;
+      void this.planner.update(task, { checked: check.checked }).catch((e) => {
+        new import_obsidian3.Notice(String(e));
+        this.render();
+      }).finally(restore);
+    };
+  }
+  taskLabels(parent, presentation, limit = 2) {
+    if (!presentation.tags.length && !presentation.recurrence) return;
+    const labels = parent.createDiv("ts-task-labels");
+    for (const tag of presentation.tags.slice(0, limit)) labels.createSpan({ cls: "ts-task-label is-tag", attr: { title: tag } }).createSpan({ text: tag });
+    if (presentation.tags.length > limit) labels.createSpan({ cls: "ts-task-label", attr: { title: presentation.tags.slice(limit).join(" ") } }).createSpan({ text: "+" + (presentation.tags.length - limit) });
+    if (presentation.recurrence) {
+      const repeat = labels.createSpan({ cls: "ts-task-label is-repeat", attr: { title: "\u91CD\u590D\u89C4\u5219\uFF1A" + presentation.recurrence, "aria-label": "\u91CD\u590D\u89C4\u5219\uFF1A" + presentation.recurrence } });
+      (0, import_obsidian3.setIcon)(repeat.createSpan({ attr: { "aria-hidden": "true" } }), "repeat-2");
+      repeat.createSpan({ text: "\u91CD\u590D" });
+    }
+  }
+  clearDropPreview() {
+    this.el.querySelectorAll(".is-timeline-drop-target").forEach((el) => el.removeClass("is-timeline-drop-target"));
+    this.el.querySelectorAll(".ts-timeline-drop-preview").forEach((el) => el.remove());
+  }
+  endDrag() {
+    this.el.ownerDocument.defaultView.clearTimeout(this.dragTimer);
+    this.dragTimer = void 0;
+    const owned = this.dragging;
+    this.dragging = false;
+    this.externalDragging = false;
+    if (owned) endCalendarTaskDrag(this.app);
+    this.el.removeClass("is-timeline-dragging");
+    this.el.querySelectorAll(".is-timeline-drag-source").forEach((el) => el.removeClass("is-timeline-drag-source"));
+    this.clearDropPreview();
+    if (this.deferredRender) {
+      this.deferredRender = false;
+      this.render();
+    }
+  }
+  /** The shared opaque token works across side panels and the large calendar. */
+  bindTaskDrag(row, task) {
+    if (task.checked) return;
+    row.draggable = true;
+    row.title = "\u62D6\u52A8\u5B89\u6392\u65F6\u95F4\uFF0C\u6216\u62D6\u5230\u5927\u65E5\u5386\uFF1A" + task.title;
+    const grip = row.createSpan({ cls: "ts-timeline-drag-grip", attr: { "aria-hidden": "true" } });
+    (0, import_obsidian3.setIcon)(grip, "grip-vertical");
+    let interactive = false;
+    row.onpointerdown = (e) => {
+      interactive = !!e.target.closest("button,input,select,a,textarea,[contenteditable=true]");
+    };
+    row.ondragstart = (e) => {
+      if (interactive || this.dropSaving || !e.dataTransfer) {
+        e.preventDefault();
+        return;
+      }
+      e.stopPropagation();
+      try {
+        startCalendarTaskDrag(this.app, task, e.dataTransfer);
+      } catch (error) {
+        e.preventDefault();
+        new import_obsidian3.Notice(String(error));
+        return;
+      }
+      this.dragging = true;
+      row.addClass("is-timeline-drag-source");
+      this.el.addClass("is-timeline-dragging");
+    };
+    row.ondragend = (e) => {
+      e.stopPropagation();
+      this.endDrag();
+    };
+  }
+  bindDropTarget(target2, startMinute) {
+    const accepts = (e) => !this.dropSaving && canReadCalendarTaskDrag(this.app, e.dataTransfer);
+    target2.ondragover = (e) => {
+      if (!accepts(e)) return;
+      e.preventDefault();
+      e.stopPropagation();
+      e.dataTransfer.dropEffect = "move";
+      this.externalDragging = true;
+      const win = this.el.ownerDocument.defaultView;
+      win.clearTimeout(this.dragTimer);
+      this.dragTimer = win.setTimeout(() => {
+        this.externalDragging = false;
+        this.clearDropPreview();
+        if (this.deferredRender && !this.dragging) {
+          this.deferredRender = false;
+          this.render();
+        }
+      }, 350);
+      if (target2.hasClass("is-timeline-drop-target")) return;
+      this.clearDropPreview();
+      target2.addClass("is-timeline-drop-target");
+      target2.createSpan({ cls: "ts-timeline-drop-preview", text: "\u5B89\u6392\u81F3 " + clockLabel(startMinute) });
+    };
+    target2.ondragleave = (e) => {
+      if (!target2.contains(e.relatedTarget)) this.clearDropPreview();
+    };
+    target2.ondrop = (e) => {
+      if (!accepts(e)) return;
+      const displayed = readCalendarTaskDrag(this.app, e.dataTransfer);
+      if (!displayed) return;
+      e.preventDefault();
+      e.stopPropagation();
+      this.dropSaving = true;
+      endCalendarTaskDrag(this.app);
+      this.endDrag();
+      void this.planner.ready().then(() => {
+        if (!this.active) throw Error("\u65F6\u95F4\u7EBF\u5DF2\u5173\u95ED\uFF0C\u5B89\u6392\u5DF2\u53D6\u6D88");
+        const current = resolveCalendarTask(this.planner.all(), displayed);
+        return this.planner.update(current, taskSchedulingChange(displayed, this.day, startMinute));
+      }).catch((error) => {
+        if (this.active) new import_obsidian3.Notice(String(error));
+      }).finally(() => {
+        this.dropSaving = false;
+        if (this.deferredRender) {
+          this.deferredRender = false;
+          this.render();
+        }
+      });
+    };
+  }
+  row(parent, item) {
+    const row = parent.createDiv("ts-timeline-item");
+    row.dataset.path = item.path;
+    row.dataset.line = String(item.line);
+    row.dataset.source = item.task?.source || item.title;
+    if (item.task) row.dataset.focusKey = this.planner.focusKey(item.task);
+    row.dataset.kind = item.kind;
+    row.dataset.priority = item.task && item.task.priority <= 1 ? "high" : "normal";
+    row.toggleClass("is-done", !!item.task?.checked);
+    row.toggleClass("has-conflict", !!item.conflict);
+    row.dataset.start = String(item.slot.start);
+    if (item.slot.end !== void 0) row.dataset.end = String(item.slot.end);
+    const duration2 = item.slot.end !== void 0 ? item.slot.end - item.slot.start : 0;
+    row.style.setProperty("--node-height", `${Math.min(72, 36 + duration2 * 0.32)}px`);
+    const now = /* @__PURE__ */ new Date(), minute = now.getHours() * 60 + now.getMinutes(), current = this.day === localDay() && !item.task?.checked && item.slot.end !== void 0 && minute >= item.slot.start && minute < item.slot.end;
+    row.toggleClass("is-current", current);
+    const icon = item.kind === "record" ? "notebook-pen" : item.task?.checked ? "check" : /阅读|读书|read|book/i.test(item.title) ? "book-open" : /写作|整理|write|专注/i.test(item.title) ? "pencil" : /会议|讨论|meet/i.test(item.title) ? "messages-square" : /休息|咖啡|break/i.test(item.title) ? "coffee" : "circle-dot";
+    const node = row.createSpan({ cls: "ts-timeline-node", attr: { "aria-hidden": "true" } });
+    (0, import_obsidian3.setIcon)(node, icon);
+    const card = row.createDiv("ts-timeline-card"), time2 = item.task ? card.createEl("button", { cls: "ts-timeline-time is-editable", attr: { "aria-label": "\u8C03\u6574\u65F6\u95F4\uFF1A" + item.title, title: "\u70B9\u51FB\u8C03\u6574\u65E5\u671F\u3001\u65F6\u95F4\u548C\u4F18\u5148\u7EA7" } }) : card.createDiv("ts-timeline-time");
+    if (item.task) time2.onclick = () => this.edit(item.task);
+    time2.createSpan({ text: clockLabel(item.slot.start) });
+    if (item.slot.end !== void 0) {
+      time2.createSpan({ cls: "ts-timeline-end", text: "\u2013 " + clockLabel(item.slot.end) });
+      time2.createSpan({ cls: "ts-timeline-duration", text: `${duration2} \u5206\u949F` });
+    }
+    const activeLabel = time2.createSpan({ cls: "ts-timeline-active-label", text: "\u8FDB\u884C\u4E2D" });
+    activeLabel.hidden = !current;
+    const heading = card.createDiv("ts-timeline-card-heading"), presentation = item.task ? taskPresentation(item.task) : void 0, displayTitle = presentation ? timeSlot(presentation.title)?.title || presentation.title : item.title;
+    const title = heading.createEl("button", { cls: "ts-timeline-title", text: displayTitle, attr: { title: "\u6253\u5F00\u6765\u6E90\uFF1A" + item.path, "aria-label": "\u6253\u5F00\u6765\u6E90\uFF1A" + item.title } });
+    title.onclick = () => void this.open(item.path, item.line).catch((e) => new import_obsidian3.Notice(String(e)));
+    if (item.task) this.taskCheck(heading, item.task);
+    if (presentation) this.taskLabels(card, presentation);
+    if (item.conflict || item.slot.invalidRange) card.createSpan({ cls: "ts-timeline-conflict", text: item.conflict ? "\u65F6\u95F4\u91CD\u53E0" : "\u8BF7\u68C0\u67E5\u7ED3\u675F\u65F6\u95F4" });
+    const meta = card.createDiv("ts-timeline-meta"), source = this.button(meta, "\u6765\u6E90\uFF1A" + item.path, "file-text", () => this.open(item.path, item.line));
+    source.addClass("ts-timeline-source");
+    source.createSpan({ text: item.path.split("/").pop().replace(/\.md$/i, "") });
+    if (item.task) this.button(meta, "\u7F16\u8F91\u5B89\u6392\uFF1A" + item.title, "sliders-horizontal", () => this.edit(item.task));
+    const task = item.task;
+    if (task && !task.checked && this.pomodoro) this.button(meta, "\u5F00\u59CB\u8BA1\u65F6\uFF1A" + task.title, "timer", () => this.pomodoro.startTask(task)).addClass("ts-timeline-pomodoro");
+    this.bindDropTarget(row, item.slot.start);
+    if (item.task) this.bindTaskDrag(row, item.task);
+  }
+  /** Keep cards, focus and expanded sections intact when only the minute changes. */
+  refreshClock(now = /* @__PURE__ */ new Date()) {
+    if (!this.active) return;
+    const today = this.day === localDay(now), minute = now.getHours() * 60 + now.getMinutes(), label2 = today ? clockLabel(minute) : "";
+    if (this.clock.textContent !== label2) this.clock.setText(label2);
+    if (this.dragging || this.externalDragging || this.dropSaving) return;
+    const track = this.body.querySelector(".ts-timeline-track");
+    if (!track) return;
+    const rows = Array.from(track.querySelectorAll(".ts-timeline-item"));
+    for (const row of rows) {
+      const current = today && !row.hasClass("is-done") && row.dataset.end !== void 0 && minute >= Number(row.dataset.start) && minute < Number(row.dataset.end);
+      row.toggleClass("is-current", current);
+      const label3 = row.querySelector(".ts-timeline-active-label");
+      if (label3) label3.hidden = !current;
+    }
+    const marker = track.querySelector(".ts-timeline-now");
+    if (!marker) return;
+    const next = rows.find((row) => Number(row.dataset.start) >= minute);
+    marker.hidden = !today || !next && track.dataset.hasMore === "true";
+    const time2 = marker.querySelector(".ts-timeline-now-time");
+    if (time2 && time2.textContent !== label2) time2.setText(label2);
+    if (!marker.hidden && marker.nextElementSibling !== (next || null)) track.insertBefore(marker, next || null);
+  }
+  setFilter(query = "", tag = "", quiet = false) {
+    if (this.query === query && this.tag === tag) return;
+    this.query = query;
+    this.tag = tag;
+    this.limit = 40;
+    if (!quiet) this.render();
+  }
+  preserveFocus() {
+    return preserveTaskRowFocus(this.el, ".ts-timeline-item,.ts-timeline-untimed-row", ".ts-day-timeline-actions button");
+  }
+  render() {
+    if (!this.active) return;
+    if (this.dragging || this.externalDragging || this.dropSaving) {
+      this.deferredRender = true;
+      return;
+    }
+    const restore = this.preserveFocus();
+    try {
+      this.renderContents();
+    } finally {
+      restore();
+    }
+  }
+  renderContents() {
+    const scroll = this.body.scrollTop;
+    const now = /* @__PURE__ */ new Date(), minute = now.getHours() * 60 + now.getMinutes(), today = this.day === localDay();
+    this.clock.setText(today ? clockLabel(minute) : "");
+    this.body.hidden = !this.embedded && !!this.state.collapsed;
+    this.toggle.setAttribute("aria-expanded", String(!this.state.collapsed));
+    this.toggle.setAttribute("aria-label", this.state.collapsed ? "\u5C55\u5F00\u65F6\u95F4\u7EBF" : "\u6536\u8D77\u65F6\u95F4\u7EBF");
+    this.toggle.title = this.state.collapsed ? "\u5C55\u5F00\u65F6\u95F4\u7EBF" : "\u6536\u8D77\u65F6\u95F4\u7EBF";
+    (0, import_obsidian3.setIcon)(this.toggle, this.state.collapsed ? "chevron-down" : "chevron-up");
+    this.done.setAttribute("aria-pressed", String(!!this.state.hideDone));
+    this.done.setAttribute("aria-label", this.state.hideDone ? "\u663E\u793A\u5DF2\u5B8C\u6210\u4E8B\u9879" : "\u9690\u85CF\u5DF2\u5B8C\u6210\u4E8B\u9879");
+    this.done.title = this.state.hideDone ? "\u663E\u793A\u5DF2\u5B8C\u6210\u4E8B\u9879" : "\u9690\u85CF\u5DF2\u5B8C\u6210\u4E8B\u9879";
+    this.body.empty();
+    if (!this.embedded && this.state.collapsed) return;
+    if (this.planner.failures.size) this.body.createDiv({ cls: "ts-timeline-error", text: "\u90E8\u5206\u4EFB\u52A1\u6765\u6E90\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6" });
+    const all = timelineSelection(this.planner.all(), this.day, this.records, this.query, this.tag), items = this.state.hideDone ? all.items.filter((i) => !i.task?.checked) : all.items, untimed = this.state.hideDone ? all.untimed.filter((t) => !t.checked) : all.untimed, list = this.body.createDiv("ts-timeline-track"), gaps = this.query.trim() || this.tag ? [] : timelineGaps(all.items);
+    list.dataset.hasMore = String(items.length > this.limit);
+    let gapIndex = 0;
+    for (const item of items.slice(0, this.limit)) {
+      while (gapIndex < gaps.length && gaps[gapIndex].end <= item.slot.start) {
+        const gap = gaps[gapIndex++], button = this.button(list, `\u5B89\u6392\u7A7A\u6863 ${clockLabel(gap.start)}\u2013${clockLabel(gap.end)}`, "plus", () => this.edit(void 0, clockLabel(gap.start), clockLabel(gap.end)));
+        button.addClass("ts-timeline-gap");
+        button.createSpan({ text: `${gap.end - gap.start} \u5206\u949F\u7A7A\u6863` });
+        this.bindDropTarget(button, gap.start);
+      }
+      this.row(list, item);
+    }
+    const marker = list.createDiv("ts-timeline-now");
+    marker.createSpan({ cls: "ts-timeline-now-time" });
+    marker.createSpan({ text: "\u73B0\u5728" });
+    this.refreshClock(now);
+    if (!items.length) this.body.createDiv({ cls: "ts-timeline-empty", text: this.query.trim() || this.tag ? "\u6CA1\u6709\u5339\u914D\u7684\u65F6\u95F4\u5B89\u6392\u3002\u53EF\u6E05\u7A7A\u641C\u7D22\u6216\u6807\u7B7E\u7B5B\u9009\u3002" : "\u8FD9\u4E00\u5929\u8FD8\u6CA1\u6709\u65F6\u95F4\u5B89\u6392\u3002\u70B9\u51FB \uFF0B\uFF0C\u6216\u5728\u4EFB\u52A1\u524D\u5199 09:00 - 10:00\u3002" });
+    if (items.length > this.limit) {
+      const more = this.body.createEl("button", { cls: "ts-timeline-more", text: `\u663E\u793A\u66F4\u591A\uFF08\u5269\u4F59 ${items.length - this.limit}\uFF09` });
+      more.onclick = () => {
+        this.limit += 40;
+        this.render();
+      };
+    }
+    if (untimed.length) {
+      const details = this.body.createEl("details", { cls: "ts-timeline-untimed" });
+      details.open = !!this.state.untimedOpen;
+      details.createEl("summary", { text: `\u672A\u5B9A\u65F6\u95F4 \xB7 ${untimed.length}` });
+      details.ontoggle = () => {
+        this.state.untimedOpen = details.open;
+      };
+      for (const task of untimed.slice(0, this.limit)) {
+        const row = details.createDiv("ts-timeline-untimed-row");
+        row.dataset.path = task.path;
+        row.dataset.line = String(task.line);
+        row.dataset.source = task.source;
+        row.dataset.focusKey = this.planner.focusKey(task);
+        this.taskCheck(row, task);
+        const content = row.createDiv("ts-timeline-untimed-content"), presentation = taskPresentation(task), title = content.createEl("button", { cls: "ts-timeline-title", text: presentation.title });
+        title.onclick = () => void this.open(task.path, task.line).catch((e) => new import_obsidian3.Notice(String(e)));
+        this.taskLabels(content, presentation, 1);
+        if (!task.checked && this.pomodoro) this.button(row, "\u5F00\u59CB\u8BA1\u65F6\uFF1A" + task.title, "timer", () => this.pomodoro.startTask(task)).addClass("ts-timeline-pomodoro");
+        this.button(row, "\u5B89\u6392\u65F6\u95F4\uFF1A" + task.title, "clock-3", () => this.edit(task));
+        this.bindTaskDrag(row, task);
+      }
+      if (untimed.length > this.limit) {
+        const more = details.createEl("button", { text: "\u663E\u793A\u66F4\u591A\u672A\u5B9A\u65F6\u95F4\u4E8B\u9879" });
+        more.onclick = () => {
+          this.limit += 40;
+          this.render();
+        };
+      }
+    }
+    this.body.scrollTop = scroll;
+  }
+  onunload() {
+    this.active = false;
+    this.endDrag();
+    this.el.empty();
+  }
+};
+
 // src/task-planner-view.ts
-var import_obsidian3 = require("obsidian");
+var import_obsidian4 = require("obsidian");
 var modes = [["today", "\u5F53\u5929\u5F85\u529E"], ["unfinished", "\u672A\u5B8C\u6210"], ["overdue", "\u5DF2\u903E\u671F"], ["upcoming", "\u672A\u6765\u4E03\u5929"], ["inbox", "\u672A\u5B89\u6392"], ["done", "\u5F53\u5929\u5DF2\u5B8C\u6210"], ["timeline", "\u65F6\u95F4\u7EBF"], ["completed", "\u5168\u90E8\u5DF2\u5B8C\u6210"]];
-var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
-  constructor(app, el, planner, day, state = {}, compact = false, actionHost, timelineFactory) {
+var scopes = [["today", "\u5F53\u5929\u5F85\u529E"], ["unfinished", "\u5168\u90E8\u5F85\u529E"], ["overdue", "\u903E\u671F"], ["done", "\u5F53\u5929\u5B8C\u6210"]];
+var TaskPanel = class extends import_obsidian4.MarkdownRenderChild {
+  constructor(app, el, planner, day, state = {}, compact = false, actionHost, timelineFactory, pomodoro) {
     super(el);
     this.app = app;
     this.el = el;
@@ -16400,6 +17033,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     this.compact = compact;
     this.actionHost = actionHost;
     this.timelineFactory = timelineFactory;
+    this.pomodoro = pomodoro;
     dateOf(day);
     Object.assign(this, state);
     if (this.view === "timeline" && !timelineFactory) this.view = "list";
@@ -16426,10 +17060,10 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
   searchInput;
   button(el, title, icon, fn) {
     const b = el.createEl("button", { attr: { "aria-label": title, title } });
-    (0, import_obsidian3.setIcon)(b, icon);
+    (0, import_obsidian4.setIcon)(b, icon);
     b.onclick = () => {
       b.disabled = true;
-      Promise.resolve().then(fn).catch((e) => new import_obsidian3.Notice(String(e))).finally(() => b.disabled = false);
+      Promise.resolve().then(fn).catch((e) => new import_obsidian4.Notice(String(e))).finally(() => b.disabled = false);
     };
     return b;
   }
@@ -16459,17 +17093,17 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       this.actionHost.prepend(views);
       this.register(() => views.remove());
     }
-    for (const [id, label2, icon] of [["list", "\u5217\u8868", "list"], ["quadrants", "\u56DB\u8C61\u9650", "layout-grid"], ["timeline", "\u65F6\u95F4\u7EBF", "clock-3"]]) {
-      if (id === "timeline" && !this.timelineFactory) continue;
+    for (const [id2, label2, icon] of [["list", "\u5217\u8868", "list"], ["quadrants", "\u56DB\u8C61\u9650", "layout-grid"], ["timeline", "\u65F6\u95F4\u7EBF", "clock-3"]]) {
+      if (id2 === "timeline" && !this.timelineFactory) continue;
       const b = views.createEl("button", { attr: { "aria-label": label2 + "\u6A21\u5F0F", title: label2 + "\u6A21\u5F0F" } });
-      (0, import_obsidian3.setIcon)(b.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+      (0, import_obsidian4.setIcon)(b.createSpan({ attr: { "aria-hidden": "true" } }), icon);
       b.onclick = () => {
-        this.view = id;
-        this.state.view = id;
+        this.view = id2;
+        this.state.view = id2;
         this.app.workspace.requestSaveLayout();
         this.render();
       };
-      this.viewButtons.set(id, b);
+      this.viewButtons.set(id2, b);
     }
     this.summary = this.el.createDiv({ cls: "ts-task-summary ts-task-scope-switch", text: "\u6B63\u5728\u8BFB\u53D6\u7B14\u8BB0\u4E2D\u7684\u4EFB\u52A1\u2026", attr: { role: "group", "aria-label": "\u5E38\u7528\u4EFB\u52A1\u8303\u56F4" } });
     let filterHost = this.el;
@@ -16483,10 +17117,10 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       filterHost = disclosure;
     }
     const tabs = filterHost.createDiv({ cls: "ts-task-filters", attr: { role: "group", "aria-label": "\u4EFB\u52A1\u8303\u56F4" } });
-    for (const [id, label2] of modes) {
+    for (const [id2, label2] of modes) {
       const b = tabs.createEl("button", { text: label2 });
-      b.onclick = () => this.setFilter(id);
-      this.tabs.set(id, b);
+      b.onclick = () => this.setFilter(id2);
+      this.tabs.set(id2, b);
     }
     const tools = filterHost.createDiv("ts-task-tools");
     const search = tools.createEl("input", { type: "search", attr: { placeholder: "\u641C\u7D22\u4EFB\u52A1\u6216\u7B14\u8BB0\u2026", "aria-label": "\u641C\u7D22\u6C47\u603B\u4EFB\u52A1" } });
@@ -16495,7 +17129,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     search.oninput = () => {
       this.query = search.value;
       this.limit = 30;
-      this.render();
+      this.render(true);
     };
     search.onkeydown = (e) => {
       if (e.key === "Escape" && !e.isComposing && search.value) {
@@ -16504,7 +17138,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
         search.value = "";
         this.query = "";
         this.limit = 30;
-        this.render();
+        this.render(true);
       }
     };
     const selects = tools.createDiv("ts-task-selects");
@@ -16512,7 +17146,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     this.tagSelect.onchange = () => {
       this.tag = this.tagSelect.value;
       this.limit = 30;
-      this.render();
+      this.render(true);
     };
     const sort = selects.createEl("select", { attr: { "aria-label": "\u4EFB\u52A1\u6392\u5E8F" } });
     for (const [value, label2] of [["priority", "\u4F18\u5148\u7EA7\u6392\u5E8F"], ["date", "\u65E5\u671F\u6392\u5E8F"], ["source", "\u6765\u6E90\u6392\u5E8F"], ["time", "\u65F6\u95F4\u6392\u5E8F"]]) sort.createEl("option", { value, text: label2 });
@@ -16529,7 +17163,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       this.render();
     };
     this.rows = this.el.createDiv("ts-task-rows");
-    this.register(this.planner.subscribe(() => this.render()));
+    this.register(this.planner.subscribe(() => this.render(false, true)));
     void this.planner.ready().then(() => this.render()).catch((e) => {
       if (this.active) this.summary.setText("\u4EFB\u52A1\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF1A" + String(e));
     });
@@ -16543,7 +17177,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
   }
   async open(task) {
     const f = this.app.vault.getAbstractFileByPath(task.path);
-    if (!(f instanceof import_obsidian3.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\uFF0C\u8BF7\u5237\u65B0");
+    if (!(f instanceof import_obsidian4.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\uFF0C\u8BF7\u5237\u65B0");
     const old = this.app.workspace.getLeavesOfType("markdown").find((l) => l.view.file === f);
     const leaf = old || this.app.workspace.getLeaf("tab");
     await leaf.openFile(f, { eState: { line: task.line } });
@@ -16560,10 +17194,10 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       this.tag = "";
       if (this.searchInput) this.searchInput.value = "";
     }
-    this.render();
+    this.render(true);
   }
   editContent(task) {
-    const m = new import_obsidian3.Modal(this.app);
+    const m = new import_obsidian4.Modal(this.app);
     themeSurface(m.modalEl);
     m.modalEl.addClass("ts-task-edit");
     m.titleEl.setText("\u7F16\u8F91\u4EFB\u52A1");
@@ -16574,7 +17208,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     save.onclick = () => {
       save.disabled = true;
       void this.planner.update(task, { content: input.value }).then(() => m.close()).catch((e) => {
-        new import_obsidian3.Notice(String(e));
+        new import_obsidian4.Notice(String(e));
         save.disabled = false;
       });
     };
@@ -16589,63 +17223,47 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
   }
   menuActions(task) {
     const actions = [{ title: "\u5B89\u6392\u65E5\u671F\u3001\u65F6\u95F4\u548C\u4F18\u5148\u7EA7", icon: "calendar-clock", run: () => this.edit(task) }, { title: "\u7F16\u8F91\u4EFB\u52A1\u5185\u5BB9", icon: "pencil", run: () => this.editContent(task) }, { title: "\u6253\u5F00\u4EFB\u52A1\u539F\u6587", icon: "arrow-up-right", run: () => this.open(task) }];
+    if (!task.checked && this.pomodoro) actions.push({ title: "\u5F00\u59CB\u8BA1\u65F6", icon: "timer", run: () => this.pomodoro.startTask(task) });
     if (!task.checked) actions.push({ title: "\u5B89\u6392\u5230\u6240\u9009\u65E5", icon: "calendar-check", run: () => this.planner.update(task, { scheduled: this.day }) }, { title: "\u5B89\u6392\u5230\u4E03\u5929\u540E", icon: "calendar-plus", run: () => this.planner.update(task, { scheduled: shiftDay(this.day, 7) }) }, { title: "\u6E05\u9664\u8BA1\u5212\u4E0E\u622A\u6B62\u65E5\u671F", icon: "calendar-x", run: () => this.planner.update(task, { scheduled: "", due: "" }) });
     return actions;
   }
   more(task, event) {
-    const menu = new import_obsidian3.Menu();
+    const menu = new import_obsidian4.Menu();
     for (const action of this.menuActions(task)) menu.addItem((i) => i.setTitle(action.title).setIcon(action.icon).onClick(() => {
-      void Promise.resolve().then(action.run).catch((e) => new import_obsidian3.Notice(String(e)));
+      void Promise.resolve().then(action.run).catch((e) => new import_obsidian4.Notice(String(e)));
     }));
     menu.showAtMouseEvent(event);
   }
-  render() {
+  render(resetScroll = false, fromIndex = false) {
     if (!this.active || this.drag) return;
-    const restore = preserveTaskRowFocus(this.el);
+    const restore = preserveTaskRowFocus(this.el), scroll = /* @__PURE__ */ new Map();
+    if (!resetScroll) for (const box of this.el.querySelectorAll(".ts-task-quadrant")) scroll.set(box.dataset.quadrant, box.scrollTop);
     try {
-      this.renderContents();
+      this.renderContents(fromIndex);
     } finally {
+      for (const box of this.el.querySelectorAll(".ts-task-quadrant")) if (scroll.has(box.dataset.quadrant)) box.scrollTop = scroll.get(box.dataset.quadrant);
       restore();
     }
   }
-  renderContents() {
+  renderContents(fromIndex = false) {
     const all = this.planner.all(), count = (filter) => all.reduce((n, task) => n + Number(taskMatches(task, this.day, filter)), 0);
     this.el.dataset.taskView = this.view;
-    for (const [id, b] of this.viewButtons) {
-      b.toggleClass("is-active", id === this.view);
-      b.setAttribute("aria-pressed", String(id === this.view));
+    for (const [id2, b] of this.viewButtons) {
+      b.toggleClass("is-active", id2 === this.view);
+      b.setAttribute("aria-pressed", String(id2 === this.view));
     }
     const grouping = this.el.querySelector(".ts-task-group-select");
-    if (grouping) grouping.hidden = this.view === "quadrants";
+    if (grouping) grouping.hidden = this.view !== "list";
+    const ranges = this.el.querySelector(".ts-task-filters");
+    if (ranges) ranges.hidden = this.view === "timeline";
+    const sorting = this.el.querySelector("select[aria-label=\u4EFB\u52A1\u6392\u5E8F]");
+    if (sorting) sorting.hidden = this.view === "timeline";
     if (this.undoButton) this.undoButton.disabled = !this.planner.canUndo();
-    if (this.view === "timeline" && this.timelineFactory) {
-      if (!this.timeline) {
-        this.rows.empty();
-        this.timeline = this.timelineFactory(this.rows.createDiv());
-        this.addChild(this.timeline);
-      }
-      return;
+    for (const [id2, b] of this.tabs) {
+      b.hidden = this.view === "list" && scopes.some(([scope]) => scope === id2);
+      b.toggleClass("is-active", this.filter === id2);
+      b.setAttribute("aria-pressed", String(this.filter === id2));
     }
-    if (this.timeline) {
-      this.removeChild(this.timeline);
-      this.timeline = void 0;
-    }
-    const activeElement = this.el.ownerDocument.activeElement, focusedScope = activeElement && this.summary.contains(activeElement) ? activeElement.getAttribute("data-filter") : void 0;
-    this.summary.empty();
-    for (const [n, label2, filter] of [[count("today"), "\u5F53\u5929\u5F85\u529E", "today"], [count("unfinished"), "\u5168\u90E8\u5F85\u529E", "unfinished"], [count("overdue"), "\u903E\u671F", "overdue"], [count("done"), "\u5F53\u5929\u5B8C\u6210", "done"]]) {
-      const stat = this.summary.createEl("button", { attr: { "aria-label": label2 + "\uFF0C" + n + " \u9879", title: filter === "unfinished" ? "\u6574\u4E2A\u4ED3\u5E93\u7684\u672A\u5B8C\u6210\u4EFB\u52A1" : filter === "done" ? this.day + " \u5DF2\u5B8C\u6210\u4EFB\u52A1" : filter === "today" ? this.day + " \u7684\u5F85\u529E\u4EFB\u52A1" : "\u622A\u6B62\u65E5\u671F\u5DF2\u8FC7\u7684\u672A\u5B8C\u6210\u4EFB\u52A1" } });
-      stat.dataset.filter = filter;
-      stat.setAttribute("aria-pressed", String(this.filter === filter));
-      stat.onclick = () => this.setFilter(filter, true);
-      stat.createEl("strong", { text: String(n) });
-      stat.createSpan({ text: label2 });
-    }
-    if (focusedScope) this.summary.querySelector(`button[data-filter="${focusedScope}"]`)?.focus({ preventScroll: true });
-    for (const [id, b] of this.tabs) {
-      b.toggleClass("is-active", this.filter === id);
-      b.setAttribute("aria-pressed", String(this.filter === id));
-    }
-    this.filterSummary?.setText(`\u66F4\u591A\u7B5B\u9009 \xB7 ${modes.find(([id]) => id === this.filter)?.[1] || "\u5F53\u5929\u5F85\u529E"}${this.query || this.tag ? " \xB7 \u5DF2\u7B5B\u9009" : ""}`);
     const tags = [...new Set(all.flatMap((t) => t.tags))].sort();
     const tagKey = JSON.stringify(tags);
     if (tagKey !== this.tagOptionsKey) {
@@ -16656,19 +17274,48 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     }
     if (this.tag && !tags.includes(this.tag)) this.tag = "";
     this.tagSelect.value = this.tag;
+    const extraScope = this.view === "timeline" ? "\u65F6\u95F4\u7EBF" : scopes.some(([id2]) => id2 === this.filter) ? "" : modes.find(([id2]) => id2 === this.filter)?.[1];
+    this.filterSummary?.setText(`\u66F4\u591A\u7B5B\u9009${extraScope ? " \xB7 " + extraScope : ""}${this.query || this.tag ? " \xB7 \u5DF2\u7B5B\u9009" : ""}`);
+    if (this.view === "timeline" && this.timelineFactory) {
+      if (!this.timeline) {
+        this.rows.empty();
+        this.timeline = this.timelineFactory(this.rows.createDiv());
+        this.timeline.setFilter(this.query, this.tag);
+        this.addChild(this.timeline);
+      } else if (fromIndex) this.timeline.setFilter(this.query, this.tag, true);
+      else this.timeline.setFilter(this.query, this.tag);
+      return;
+    }
+    if (this.timeline) {
+      this.removeChild(this.timeline);
+      this.timeline = void 0;
+    }
+    const activeElement = this.el.ownerDocument.activeElement, focusedScope = activeElement && this.summary.contains(activeElement) ? activeElement.getAttribute("data-filter") : void 0;
+    this.summary.empty();
+    for (const [filter, label2] of scopes) {
+      const n = count(filter), scope = this.summary.createEl("button", { attr: { "aria-label": label2 + "\uFF0C" + n + " \u9879", title: filter === "unfinished" ? "\u6574\u4E2A\u4ED3\u5E93\u7684\u672A\u5B8C\u6210\u4EFB\u52A1" : filter === "done" ? this.day + " \u5DF2\u5B8C\u6210\u4EFB\u52A1" : filter === "today" ? this.day + " \u7684\u5F85\u529E\u4EFB\u52A1" : "\u622A\u6B62\u65E5\u671F\u5DF2\u8FC7\u7684\u672A\u5B8C\u6210\u4EFB\u52A1" } });
+      scope.dataset.filter = filter;
+      scope.setAttribute("aria-pressed", String(this.filter === filter));
+      scope.onclick = () => this.setFilter(filter, true);
+      scope.createSpan({ text: label2 });
+      scope.createEl("strong", { text: String(n) });
+    }
+    if (focusedScope) this.summary.querySelector(`button[data-filter="${focusedScope}"]`)?.focus({ preventScroll: true });
     const tasks = selectTasks(all, this.day, this.filter, this.query, this.tag, this.sort);
     this.rows.empty();
     if (this.planner.failures.size) this.rows.createDiv({ cls: "ts-task-warning", text: `${this.planner.failures.size} \u7BC7\u7B14\u8BB0\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF0C\u7ED3\u679C\u53EF\u80FD\u4E0D\u5B8C\u6574\u3002` });
-    if (this.view === "list" || this.query || this.tag) {
+    if (this.query || this.tag) {
       const resultHead = this.rows.createDiv("ts-task-result-header");
-      if (this.view === "list") resultHead.createDiv({ cls: "ts-task-result-count", text: `${tasks.length} \u9879 \xB7 ${modes.find(([id]) => id === this.filter)?.[1]}${["today", "done", "timeline"].includes(this.filter) ? " \xB7 " + this.day : ""}` });
-      if (this.query || this.tag) {
-        const reset = resultHead.createEl("button", { text: "\u6E05\u9664\u7B5B\u9009", attr: { "aria-label": "\u6E05\u9664\u4EFB\u52A1\u641C\u7D22\u548C\u6807\u7B7E" } });
-        reset.onclick = () => this.setFilter(this.filter, true);
-      }
+      resultHead.createDiv({ cls: "ts-task-result-count", text: `${tasks.length} \u9879\u5339\u914D`, attr: { role: "status", "aria-live": "polite" } });
+      const reset = resultHead.createEl("button", { text: "\u6E05\u9664\u7B5B\u9009", attr: { "aria-label": "\u6E05\u9664\u4EFB\u52A1\u641C\u7D22\u548C\u6807\u7B7E" } });
+      reset.onclick = () => this.setFilter(this.filter, true);
     }
     if (this.view === "quadrants") {
       this.renderQuadrants(tasks);
+      return;
+    }
+    if (!tasks.length) {
+      this.rows.createDiv({ cls: "ts-task-empty", text: this.query || this.tag ? "\u6CA1\u6709\u5339\u914D\u7684\u4EFB\u52A1" : "\u6B64\u8303\u56F4\u6682\u65E0\u4EFB\u52A1" });
       return;
     }
     const grouped = groupTasks(tasks, this.group);
@@ -16693,10 +17340,23 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       };
     }
   }
+  taskLabels(parent, presentation) {
+    if (!presentation.tags.length && !presentation.recurrence) return;
+    const labels = parent.createDiv("ts-task-labels"), limit = this.view === "quadrants" ? 1 : 2;
+    for (const tag of presentation.tags.slice(0, limit)) labels.createSpan({ cls: "ts-task-label is-tag", attr: { title: tag } }).createSpan({ text: tag });
+    if (presentation.tags.length > limit) labels.createSpan({ cls: "ts-task-label", attr: { title: presentation.tags.slice(limit).join(" ") } }).createSpan({ text: "+" + (presentation.tags.length - limit) });
+    if (presentation.recurrence) {
+      const repeat = labels.createSpan({ cls: "ts-task-label is-repeat", attr: { title: "\u91CD\u590D\u89C4\u5219\uFF1A" + presentation.recurrence, "aria-label": "\u91CD\u590D\u89C4\u5219\uFF1A" + presentation.recurrence } });
+      (0, import_obsidian4.setIcon)(repeat.createSpan({ attr: { "aria-hidden": "true" } }), "repeat-2");
+      repeat.createSpan({ text: "\u91CD\u590D" });
+    }
+  }
   renderTaskRow(parent, task) {
     const row = parent.createDiv("ts-task-row");
     row.dataset.path = task.path;
     row.dataset.line = String(task.line);
+    row.dataset.source = task.source;
+    row.dataset.focusKey = this.planner.focusKey(task);
     row.toggleClass("is-done", task.checked);
     row.toggleClass("is-overdue", !!task.due && task.due < this.day && !task.checked);
     const top = row.createDiv("ts-task-row-main");
@@ -16708,19 +17368,20 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       const restore = preserveTaskRowFocus(this.el);
       check.disabled = true;
       void this.planner.update(task, { checked: check.checked }).catch((e) => {
-        new import_obsidian3.Notice(String(e));
+        new import_obsidian4.Notice(String(e));
         this.render();
       }).finally(restore);
     };
-    const slot = timeSlot(task.title), title = top.createDiv("ts-task-title");
-    title.createSpan({ text: slot?.title || task.title });
+    const presentation = taskPresentation(task), slot = timeSlot(presentation.title), title = top.createDiv("ts-task-title");
+    title.createSpan({ text: slot?.title || presentation.title });
     const meta = row.createDiv("ts-task-meta");
-    const source = meta.createEl("button", { attr: { title: task.path, "aria-label": "\u6253\u5F00\u4EFB\u52A1\u539F\u6587" } });
-    (0, import_obsidian3.setIcon)(source.createSpan({ cls: "ts-task-source-icon", attr: { "aria-hidden": "true" } }), "file-text");
+    const source = meta.createEl("button", { cls: "ts-task-source", attr: { title: task.path, "aria-label": "\u6253\u5F00\u4EFB\u52A1\u539F\u6587" } });
+    (0, import_obsidian4.setIcon)(source.createSpan({ cls: "ts-task-source-icon", attr: { "aria-hidden": "true" } }), "file-text");
     source.createSpan({ cls: "ts-task-source-name", text: task.path.split("/").pop().replace(/\.md$/i, "") });
     source.onclick = () => {
-      void this.open(task).catch((e) => new import_obsidian3.Notice(String(e)));
+      void this.open(task).catch((e) => new import_obsidian4.Notice(String(e)));
     };
+    this.taskLabels(meta, presentation);
     if (task.priority !== 3) meta.createSpan({ cls: "ts-task-priority", text: ["\u6700\u9AD8", "\u9AD8", "\u4E2D", "\u666E\u901A", "\u4F4E", "\u6700\u4F4E"][task.priority] });
     for (const [label2, date] of [["\u622A\u6B62", task.due], ["\u8BA1\u5212", task.scheduled]]) if (date) meta.createSpan({ cls: label2 === "\u622A\u6B62" ? "ts-task-date is-due" : "ts-task-date", text: `${label2} ${date.slice(0, 4) === this.day.slice(0, 4) ? date.slice(5).replace("-", "/") : date}`, attr: { title: `${label2} ${date}`, "aria-label": `${label2} ${date}` } });
     const time2 = this.button(meta, slot ? "\u8C03\u6574\u4EFB\u52A1\u65F6\u95F4\uFF1A" + task.title : "\u6DFB\u52A0\u4EFB\u52A1\u65F6\u95F4\uFF1A" + task.title, "clock-3", () => this.edit(task));
@@ -16730,6 +17391,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     time2.createSpan({ text: slot ? slot.invalidRange ? "\u68C0\u67E5\u65F6\u95F4" : slot.label : "\u5B89\u6392\u65F6\u95F4" });
     if (slot?.end !== void 0) time2.title = slot.label + " \xB7 " + (slot.end - slot.start) + " \u5206\u949F \xB7 \u70B9\u51FB\u4FEE\u6539";
     const actions = row.createDiv("ts-task-row-actions");
+    if (!task.checked && this.pomodoro) this.button(actions, "\u5F00\u59CB\u8BA1\u65F6\uFF1A" + task.title, "timer", () => this.pomodoro.startTask(task)).addClass("ts-task-pomodoro");
     const more = this.button(actions, "\u66F4\u591A\u4EFB\u52A1\u64CD\u4F5C", "ellipsis", () => {
     });
     more.onclick = (e) => this.more(task, e);
@@ -16758,7 +17420,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
           const restore = preserveTaskRowFocus(this.el);
           select.disabled = true;
           void this.planner.update(task, { content: setTaskQuadrant(task.text, select.value) }).catch((e) => {
-            new import_obsidian3.Notice(String(e));
+            new import_obsidian4.Notice(String(e));
             this.render();
           }).finally(restore);
         };
@@ -16784,7 +17446,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
     row.draggable = true;
     row.title = task.title + (quadrant ? " \xB7 \u62D6\u52A8\u5230\u5176\u4ED6\u8C61\u9650\u6216\u5927\u65E5\u5386" : " \xB7 \u62D6\u52A8\u5230\u5927\u65E5\u5386\u5B89\u6392\u65F6\u95F4");
     const grip = row.querySelector(".ts-task-title").createSpan({ cls: "ts-task-drag-grip", attr: { "aria-hidden": "true" } });
-    (0, import_obsidian3.setIcon)(grip, "grip-vertical");
+    (0, import_obsidian4.setIcon)(grip, "grip-vertical");
     let interactive = false;
     row.onpointerdown = (e) => {
       interactive = !!e.target.closest("button,input,select,option,a,textarea,[contenteditable=true]");
@@ -16802,7 +17464,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
       } catch (error) {
         e.preventDefault();
         endCalendarTaskDrag(this.app);
-        new import_obsidian3.Notice(String(error));
+        new import_obsidian4.Notice(String(error));
         return;
       }
       this.drag = { task, token, quadrant };
@@ -16841,7 +17503,7 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
         return;
       }
       void this.planner.update(source.task, { content: setTaskQuadrant(source.task.text, quadrant) }).catch((error) => {
-        new import_obsidian3.Notice(String(error));
+        new import_obsidian4.Notice(String(error));
         this.render();
       });
     };
@@ -16855,10 +17517,10 @@ var TaskPanel = class extends import_obsidian3.MarkdownRenderChild {
 };
 
 // src/journal-view.ts
-var import_obsidian5 = require("obsidian");
+var import_obsidian7 = require("obsidian");
 
 // src/content-tools.ts
-var import_obsidian4 = require("obsidian");
+var import_obsidian5 = require("obsidian");
 
 // src/workspace.ts
 function isWorkspaceFile(file) {
@@ -16866,7 +17528,7 @@ function isWorkspaceFile(file) {
 }
 
 // src/content-tools.ts
-var TextModal = class extends import_obsidian4.Modal {
+var TextModal = class extends import_obsidian5.Modal {
   constructor(app, heading, initial, save) {
     super(app);
     this.heading = heading;
@@ -16887,7 +17549,7 @@ var TextModal = class extends import_obsidian4.Modal {
         await this.save(input.value);
         this.close();
       } catch (e) {
-        new import_obsidian4.Notice(String(e));
+        new import_obsidian5.Notice(String(e));
       } finally {
         save.disabled = false;
       }
@@ -16920,10 +17582,10 @@ function createdNoteLink(path) {
   if (/[\[\]#^|\r\n]/.test(path)) return `[${name.replace(/[\\\[\]]/g, "\\$&")}](${encodeURI(path).replace(/[()#^|\[\]]/g, (c) => "%" + c.charCodeAt(0).toString(16))})`;
   return `[[${path}|${name}]]`;
 }
-function syncCreatedNotes(text, paths) {
-  const starts = [], ends = [], literals = inlineCodeRanges(text);
+function syncCreatedNotes(text3, paths) {
+  const starts = [], ends = [], literals = inlineCodeRanges(text3);
   let offset = 0, literal = 0;
-  for (const row of markdownRows(text)) {
+  for (const row of markdownRows(text3)) {
     if (!row.code && row.topLevel && !row.commentBefore) {
       const prose = maskInlineCode(row.source), trimmed = prose.trim();
       while (literal < literals.length && literals[literal].to <= offset) literal++;
@@ -16941,20 +17603,20 @@ function syncCreatedNotes(text, paths) {
   const start = starts[0] ?? -1, end = ends[0] ?? -1;
   if (starts.length !== ends.length || starts.length > 1 || end < start) throw Error("\u5F53\u65E5\u65B0\u5EFA\u7B14\u8BB0\u7D22\u5F15\u6807\u8BB0\u4E0D\u5B8C\u6574\uFF0C\u8BF7\u68C0\u67E5\u65E5\u8BB0\u4E2D\u7684 ThoughtSpace \u6CE8\u91CA");
   const unique = [...new Set(paths)].sort((a, b) => a.localeCompare(b, "zh-CN"));
-  if (start < 0 && !unique.length) return text;
+  if (start < 0 && !unique.length) return text3;
   const block = `${CREATED_START}
 ## \u5F53\u65E5\u65B0\u5EFA\u7B14\u8BB0
 
 ${unique.length ? unique.map((path) => "- " + createdNoteLink(path)).join("\n") : "\u5F53\u5929\u8FD8\u6CA1\u6709\u65B0\u5EFA\u7B14\u8BB0\u3002"}
 ${CREATED_END}`;
-  return start >= 0 ? text.slice(0, start) + block + text.slice(end + CREATED_END.length) : text + (text.endsWith("\n\n") ? "" : text.endsWith("\n") ? "\n" : "\n\n") + block + "\n";
+  return start >= 0 ? text3.slice(0, start) + block + text3.slice(end + CREATED_END.length) : text3 + (text3.endsWith("\n\n") ? "" : text3.endsWith("\n") ? "\n" : "\n\n") + block + "\n";
 }
 
 // src/journal-presentation.ts
-function journalPresentation(text) {
+function journalPresentation(text3) {
   const starts = [], ends = [];
   let offset = 0;
-  for (const row of markdownRows(text)) {
+  for (const row of markdownRows(text3)) {
     const trimmed = row.source.trim();
     if (!row.code && row.topLevel && !row.commentBefore) {
       if (trimmed === CREATED_START) starts.push(offset + row.source.indexOf(CREATED_START));
@@ -16963,14 +17625,337 @@ function journalPresentation(text) {
     offset += row.source.length + 1;
   }
   const start = starts[0] ?? -1, end = ends[0] ?? -1;
-  if (starts.length !== 1 || ends.length !== 1 || end < start) return { body: text, links: void 0 };
-  return { body: text.slice(0, start) + text.slice(end + CREATED_END.length), links: text.slice(start + CREATED_START.length, end).replace(/^\s*## 当日新建笔记\s*\r?\n/, "").trim() };
+  if (starts.length !== 1 || ends.length !== 1 || end < start) return { body: text3, links: void 0 };
+  return { body: text3.slice(0, start) + text3.slice(end + CREATED_END.length), links: text3.slice(start + CREATED_START.length, end).replace(/^\s*## 当日新建笔记\s*\r?\n/, "").trim() };
 }
+
+// src/pomodoro-strip.ts
+var import_obsidian6 = require("obsidian");
+var nextStripId = 0;
+function clockText(ms, remaining) {
+  const seconds = Math.max(0, remaining ? Math.ceil(ms / 1e3) : Math.floor(ms / 1e3));
+  const tail = String(seconds % 60).padStart(2, "0");
+  return seconds >= 3600 ? `${String(Math.floor(seconds / 3600)).padStart(2, "0")}:${String(Math.floor(seconds / 60) % 60).padStart(2, "0")}:${tail}` : `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${tail}`;
+}
+function text(el, value) {
+  if (el.textContent !== value) el.textContent = value;
+}
+function followingPhase(snapshot, longBreakEvery) {
+  const { session, cycle, records } = snapshot.state;
+  if (session.phase !== "focus") return "focus";
+  const outcome = session.outcome ?? records.find((record) => record.id === session.id)?.outcome;
+  return outcome !== "stopped" && cycle > 0 && cycle % longBreakEvery === 0 ? "long-break" : "short-break";
+}
+var PomodoroStrip = class extends import_obsidian6.Component {
+  constructor(el, controller, onOpen, presentation = "compact") {
+    super();
+    this.el = el;
+    this.controller = controller;
+    this.onOpen = onOpen;
+    this.presentation = presentation;
+  }
+  active = false;
+  pendingAction = false;
+  opening = false;
+  menuOpen = false;
+  menuSession;
+  actionError = "";
+  errorState;
+  latest;
+  chromeKey;
+  root;
+  title;
+  clock;
+  progress;
+  primary;
+  primaryIcon;
+  more;
+  expand;
+  feedback;
+  status;
+  error;
+  stop;
+  cancel;
+  panelPhase;
+  panelPhaseIcon;
+  panelState;
+  panelCaption;
+  primaryText;
+  onload() {
+    this.active = true;
+    this.build();
+    this.register(this.controller.subscribe((snapshot) => this.update(snapshot)));
+  }
+  build() {
+    const doc = this.el.ownerDocument;
+    this.root = doc.createElement("div");
+    this.root.className = "ts-calendar-plugin ts-calendar-pomodoro-strip";
+    this.root.dataset.presentation = this.presentation;
+    this.root.setAttribute("role", "group");
+    this.root.setAttribute("aria-label", "\u4FA7\u680F\u4E13\u6CE8\u8BA1\u65F6");
+    this.el.append(this.root);
+    const row = this.create("div", "ts-calendar-pomodoro-strip-row");
+    let tools = row;
+    if (this.presentation === "panel") {
+      tools = this.create("div", "ts-calendar-pomodoro-strip-panel-header", row);
+      const heading = this.create("div", "ts-calendar-pomodoro-strip-panel-heading", tools);
+      this.panelPhaseIcon = this.create("span", "ts-calendar-pomodoro-strip-panel-phase-icon", heading);
+      this.panelPhaseIcon.setAttribute("aria-hidden", "true");
+      this.panelPhase = this.create("span", "ts-calendar-pomodoro-strip-panel-phase", heading);
+      this.panelState = this.create("span", "ts-calendar-pomodoro-strip-panel-state", tools);
+      this.panelState.setAttribute("aria-hidden", "true");
+    }
+    this.title = this.create("span", "ts-calendar-pomodoro-strip-title", row);
+    this.clock = this.create("span", "ts-calendar-pomodoro-strip-clock", row);
+    this.clock.setAttribute("role", "timer");
+    this.clock.setAttribute("aria-live", "off");
+    this.clock.setAttribute("aria-atomic", "true");
+    if (this.presentation === "panel") this.panelCaption = this.create("span", "ts-calendar-pomodoro-strip-panel-caption", row);
+    this.primary = this.button(row, "\u5F00\u59CB\u4E13\u6CE8", "");
+    this.primary.classList.add("ts-calendar-pomodoro-strip-primary");
+    this.primaryIcon = this.create("span", "", this.primary);
+    this.primaryIcon.setAttribute("aria-hidden", "true");
+    if (this.presentation === "panel") this.primaryText = this.create("span", "ts-calendar-pomodoro-strip-primary-text", this.primary);
+    this.listen(this.primary, "click", () => void this.primaryAction());
+    this.more = this.button(tools, "\u66F4\u591A\u8BA1\u65F6\u64CD\u4F5C", "ellipsis");
+    this.more.classList.add("ts-calendar-pomodoro-strip-more");
+    this.more.setAttribute("aria-expanded", "false");
+    this.listen(this.more, "click", () => this.toggleMenu());
+    this.expand = this.button(tools, "\u5C55\u5F00\u5B8C\u6574\u8BA1\u65F6\u5668", "maximize-2");
+    this.listen(this.expand, "click", () => void this.open());
+    this.feedback = this.create("div", "ts-calendar-pomodoro-strip-feedback");
+    this.feedback.id = `ts-pomodoro-strip-feedback-${++nextStripId}`;
+    this.more.setAttribute("aria-controls", this.feedback.id);
+    this.status = this.create("span", "ts-calendar-pomodoro-strip-status", this.feedback);
+    this.status.setAttribute("role", "status");
+    this.status.setAttribute("aria-live", "polite");
+    this.status.setAttribute("aria-atomic", "true");
+    this.error = this.create("span", "ts-calendar-pomodoro-strip-error", this.feedback);
+    this.error.setAttribute("role", "alert");
+    this.error.hidden = true;
+    this.stop = this.button(this.feedback, "\u7ED3\u675F\u5E76\u8BB0\u5F55", "");
+    this.stop.classList.add("ts-calendar-pomodoro-strip-stop");
+    text(this.stop, "\u7ED3\u675F\u5E76\u8BB0\u5F55");
+    this.stop.title = "\u7ED3\u675F\u672C\u6B21\u8BA1\u65F6\uFF0C\u4FDD\u5B58\u5B9E\u9645\u7528\u65F6";
+    this.stop.hidden = true;
+    this.listen(this.stop, "click", () => void this.run(() => this.controller.stop()));
+    this.cancel = this.button(this.feedback, "\u53D6\u6D88\u7ED3\u675F\u8BA1\u65F6", "x");
+    this.cancel.classList.add("ts-calendar-pomodoro-strip-cancel");
+    this.cancel.hidden = true;
+    this.listen(this.cancel, "click", () => this.closeMenu(true));
+    this.listen(this.root, "keydown", (event) => {
+      if (event.key === "Escape" && this.menuOpen) {
+        event.preventDefault();
+        event.stopPropagation();
+        this.closeMenu(true);
+      }
+    });
+    const track = this.create("div", "ts-calendar-pomodoro-strip-track", this.presentation === "panel" ? row : this.root);
+    track.setAttribute("aria-hidden", "true");
+    if (this.presentation === "panel") {
+      const svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 200 110");
+      svg.setAttribute("class", "ts-calendar-pomodoro-strip-ring");
+      for (const cls of ["ts-calendar-pomodoro-strip-ring-track", "ts-calendar-pomodoro-strip-progress"]) {
+        const arc = doc.createElementNS("http://www.w3.org/2000/svg", "path");
+        arc.setAttribute("d", "M 3 102 A 97 92 0 0 1 197 102");
+        arc.setAttribute("class", cls);
+        arc.setAttribute("pathLength", "100");
+        svg.append(arc);
+        if (cls === "ts-calendar-pomodoro-strip-progress") this.progress = arc;
+      }
+      track.append(svg);
+    } else this.progress = this.create("div", "ts-calendar-pomodoro-strip-progress", track);
+  }
+  create(tag, cls, parent = this.root) {
+    const el = this.el.ownerDocument.createElement(tag);
+    if (cls) el.className = cls;
+    parent.append(el);
+    return el;
+  }
+  button(parent, label2, icon) {
+    const button = this.create("button", "ts-calendar-pomodoro-strip-button", parent);
+    button.type = "button";
+    button.setAttribute("aria-label", label2);
+    button.title = label2;
+    if (icon) (0, import_obsidian6.setIcon)(button, icon);
+    return button;
+  }
+  listen(el, event, listener) {
+    el.addEventListener(event, listener);
+    this.register(() => el.removeEventListener(event, listener));
+  }
+  update(snapshot) {
+    if (!this.active) return;
+    this.latest = snapshot;
+    if (this.actionError && this.errorState !== snapshot.state) this.actionError = "";
+    const { session } = snapshot.state;
+    if (this.menuOpen && (session.id !== this.menuSession || !["running", "paused"].includes(session.status))) this.closeMenu(false);
+    const focusEntry = session.mode !== "pomodoro" && (session.status === "idle" || session.status === "finished");
+    const phasePreview = this.presentation === "panel" && session.mode === "pomodoro" && session.status === "finished";
+    const config = this.controller.config;
+    const nextPhase = phasePreview ? followingPhase(snapshot, config.longBreakEvery) : session.phase;
+    const previewMinutes = nextPhase === "focus" ? config.focusMinutes : nextPhase === "short-break" ? config.shortBreakMinutes : config.longBreakMinutes;
+    const remaining = focusEntry || session.mode !== "stopwatch";
+    const displayedMs = focusEntry ? config.focusMinutes * 6e4 : phasePreview ? previewMinutes * 6e4 : remaining ? snapshot.remainingMs : snapshot.elapsedMs;
+    const displayed = clockText(displayedMs, remaining);
+    text(this.clock, displayed);
+    if (this.presentation === "panel" && this.clock.dataset.hours !== String(displayedMs >= 36e5)) this.clock.dataset.hours = String(displayedMs >= 36e5);
+    const fraction = focusEntry || phasePreview ? 0 : remaining && session.durationMs > 0 ? Math.max(0, Math.min(1, 1 - snapshot.remainingMs / session.durationMs)) : 1;
+    if (this.presentation === "panel") this.progress.style.strokeDashoffset = String(100 * (1 - fraction));
+    else this.progress.style.transform = `scaleX(${fraction})`;
+    const key = JSON.stringify([
+      session.id,
+      session.mode,
+      session.phase,
+      session.status,
+      session.target?.title,
+      snapshot.state.cycle,
+      config.focusMinutes,
+      config.shortBreakMinutes,
+      config.longBreakMinutes,
+      config.longBreakEvery,
+      session.outcome,
+      snapshot.busy,
+      snapshot.error,
+      this.pendingAction,
+      this.opening,
+      this.menuOpen,
+      this.actionError
+    ]);
+    if (key === this.chromeKey) return;
+    this.chromeKey = key;
+    this.renderChrome(snapshot);
+  }
+  renderChrome(snapshot) {
+    const { session } = snapshot.state, { mode: mode2, phase, status } = session;
+    const active2 = status === "running" || status === "paused";
+    const focusEntry = mode2 !== "pomodoro" && !active2;
+    const saving = snapshot.busy || this.pendingAction;
+    const panel = this.presentation === "panel";
+    const phasePreview = panel && mode2 === "pomodoro" && status === "finished";
+    const nextPhase = followingPhase(snapshot, this.controller.config.longBreakEvery);
+    const shownPhase = focusEntry ? "focus" : phasePreview ? nextPhase : phase;
+    const phaseLabel = shownPhase === "focus" ? "\u756A\u8304\u4E13\u6CE8" : shownPhase === "short-break" ? "\u77ED\u4F11\u606F" : "\u957F\u4F11\u606F";
+    const modeLabel = mode2 === "pomodoro" ? phaseLabel : mode2 === "stopwatch" ? "\u6B63\u8BA1\u65F6" : "\u5012\u8BA1\u65F6";
+    const title = panel ? session.target?.title || (focusEntry || mode2 === "pomodoro" && shownPhase === "focus" ? "\u81EA\u7531\u4E13\u6CE8" : mode2 === "pomodoro" ? "\u4F11\u606F\u7247\u523B" : "\u81EA\u7531\u8BA1\u65F6") : focusEntry ? "\u756A\u8304\u4E13\u6CE8" : session.target?.title || modeLabel;
+    text(this.title, title);
+    this.title.title = title;
+    this.root.dataset.mode = focusEntry ? "pomodoro" : mode2;
+    this.root.dataset.phase = shownPhase;
+    this.root.dataset.status = status;
+    this.root.setAttribute("aria-busy", String(saving || this.opening));
+    this.clock.title = focusEntry ? "\u756A\u8304\u4E13\u6CE8\u9884\u8BBE\u65F6\u957F" : phasePreview ? "\u4E0B\u4E00\u9636\u6BB5\u9884\u8BBE\u65F6\u957F" : mode2 === "stopwatch" ? "\u7D2F\u8BA1\u5B9E\u9645\u7528\u65F6" : "\u5269\u4F59\u65F6\u95F4";
+    this.clock.setAttribute("aria-label", this.clock.title);
+    const label2 = status === "running" ? "\u6682\u505C" : status === "paused" ? "\u7EE7\u7EED" : panel ? shownPhase === "focus" ? "\u5F00\u59CB\u4E13\u6CE8" : `\u5F00\u59CB${phaseLabel}` : mode2 === "pomodoro" ? (status === "finished" ? phase !== "focus" : phase === "focus") ? "\u5F00\u59CB\u4E13\u6CE8" : "\u5F00\u59CB\u4F11\u606F" : "\u5F00\u59CB\u756A\u8304\u4E13\u6CE8";
+    this.primary.setAttribute("aria-label", label2);
+    this.primary.title = label2;
+    (0, import_obsidian6.setIcon)(this.primaryIcon, status === "running" ? "pause" : "play");
+    if (this.primaryText) text(this.primaryText, label2);
+    this.primary.disabled = saving;
+    this.more.disabled = saving || !active2;
+    this.more.setAttribute("aria-expanded", String(this.menuOpen));
+    this.expand.disabled = this.opening;
+    this.stop.disabled = saving;
+    this.cancel.disabled = saving;
+    this.stop.hidden = !this.menuOpen;
+    this.cancel.hidden = !this.menuOpen;
+    const nextLabel = nextPhase === "focus" ? "\u4E13\u6CE8" : nextPhase === "short-break" ? "\u77ED\u4F11\u606F" : "\u957F\u4F11\u606F";
+    const statusText = focusEntry ? "\u51C6\u5907\u756A\u8304\u4E13\u6CE8" : status === "paused" ? `${modeLabel} \xB7 \u5DF2\u6682\u505C` : status === "running" ? `${modeLabel} \xB7 ${mode2 === "stopwatch" ? "\u7D2F\u8BA1\u7528\u65F6" : "\u8FDB\u884C\u4E2D"}` : status === "finished" ? mode2 === "pomodoro" ? `\u672C\u9636\u6BB5\u7ED3\u675F \xB7 \u5F00\u59CB${nextLabel}` : `${modeLabel}\u5DF2\u7ED3\u675F \xB7 \u5F00\u59CB\u756A\u8304\u4E13\u6CE8` : mode2 === "pomodoro" ? `\u51C6\u5907${phase === "focus" ? "\u4E13\u6CE8" : phaseLabel}` : `${modeLabel}\u5F85\u673A \xB7 \u5F00\u59CB\u756A\u8304\u4E13\u6CE8`;
+    const error = saving ? "" : this.actionError || snapshot.error || "";
+    this.root.dataset.error = String(!!error);
+    this.error.hidden = !error;
+    this.status.hidden = !!error;
+    text(this.error, error);
+    this.error.title = error;
+    const hint = saving ? "\u6B63\u5728\u4FDD\u5B58\u2026" : this.opening ? "\u6B63\u5728\u6253\u5F00\u2026" : this.menuOpen ? "\u4FDD\u5B58\u5B9E\u9645\u7528\u65F6" : statusText;
+    text(this.status, hint);
+    this.status.title = hint;
+    this.feedback.dataset.expanded = String(!!error || this.menuOpen || !panel && mode2 === "pomodoro" && status === "finished");
+    if (this.panelPhase && this.panelPhaseIcon && this.panelState && this.panelCaption) {
+      const shownMode = focusEntry ? "\u756A\u8304\u4E13\u6CE8" : modeLabel;
+      text(this.panelPhase, shownMode);
+      (0, import_obsidian6.setIcon)(this.panelPhaseIcon, focusEntry || mode2 === "pomodoro" && shownPhase === "focus" ? "timer" : mode2 === "stopwatch" ? "timer" : mode2 === "countdown" ? "hourglass" : shownPhase === "long-break" ? "armchair" : "coffee");
+      text(this.panelState, saving ? "\u4FDD\u5B58\u4E2D" : this.opening ? "\u6253\u5F00\u4E2D" : error ? "\u64CD\u4F5C\u5931\u8D25" : status === "paused" ? "\u5DF2\u6682\u505C" : status === "running" ? "\u8FDB\u884C\u4E2D" : "\u5F85\u5F00\u59CB");
+      text(this.panelCaption, focusEntry || phasePreview ? "\u51C6\u5907\u5F00\u59CB" : mode2 === "stopwatch" ? "\u7D2F\u8BA1\u5B9E\u9645\u7528\u65F6" : "\u5269\u4F59\u65F6\u95F4");
+    }
+    this.root.title = `${title} \xB7 ${hint}`;
+  }
+  refresh() {
+    if (this.latest) this.update(this.latest);
+  }
+  toggleMenu() {
+    if (!this.active || this.more.disabled) return;
+    this.menuOpen = !this.menuOpen;
+    this.menuSession = this.latest?.state.session.id;
+    this.refresh();
+    if (this.menuOpen) this.stop.focus();
+  }
+  closeMenu(returnFocus) {
+    this.menuOpen = false;
+    this.chromeKey = void 0;
+    if (returnFocus) {
+      this.refresh();
+      this.more.focus();
+    }
+  }
+  async primaryAction() {
+    const session = this.latest?.state.session;
+    if (!session) return;
+    await this.run(() => session.status === "running" ? this.controller.pause() : session.status === "paused" ? this.controller.resume() : session.mode === "pomodoro" ? this.controller.start() : this.controller.startFocus());
+  }
+  async run(action) {
+    if (!this.active || this.pendingAction || this.latest?.busy) return;
+    const focusedStop = this.el.ownerDocument.activeElement === this.stop;
+    this.pendingAction = true;
+    this.actionError = "";
+    this.refresh();
+    try {
+      await action();
+    } catch (error) {
+      if (this.active && !this.latest?.error) {
+        this.actionError = String(error);
+        this.errorState = this.latest?.state;
+      }
+    } finally {
+      if (this.active) {
+        this.pendingAction = false;
+        this.refresh();
+        if (focusedStop && (this.el.ownerDocument.activeElement === this.stop || this.el.ownerDocument.activeElement === this.el.ownerDocument.body)) {
+          (this.stop.hidden ? this.primary : this.stop).focus();
+        }
+      }
+    }
+  }
+  async open() {
+    if (!this.active || this.opening) return;
+    this.opening = true;
+    this.actionError = "";
+    this.refresh();
+    try {
+      await this.onOpen();
+    } catch (error) {
+      if (this.active) {
+        this.actionError = String(error);
+        this.errorState = this.latest?.state;
+      }
+    } finally {
+      if (this.active) {
+        this.opening = false;
+        this.refresh();
+      }
+    }
+  }
+  onunload() {
+    this.active = false;
+    this.root?.remove();
+  }
+};
 
 // src/journal-view.ts
 var JOURNAL = "thoughtspace-journal";
 var CALENDAR = "thoughtspace-calendar";
-var JournalView = class extends import_obsidian5.ItemView {
+var JournalView = class extends import_obsidian7.ItemView {
   constructor(leaf, host, part = "combined") {
     super(leaf);
     this.host = host;
@@ -16982,6 +17967,9 @@ var JournalView = class extends import_obsidian5.ItemView {
   day = localDay();
   month = this.day.slice(0, 7);
   today = localDay();
+  topPane = "calendar";
+  topPanels;
+  topButtons;
   mode = "day";
   query = "";
   onlyTodo = false;
@@ -17008,9 +17996,10 @@ var JournalView = class extends import_obsidian5.ItemView {
     return this.part === "entries" ? "notebook-pen" : "calendar-days";
   }
   getState() {
-    return { calendarView: this.calendarView, timeline: { ...this.timelineState }, day: this.day, month: this.month, mode: this.mode, sort: this.sort, onlyTodo: this.onlyTodo, calendarCollapsed: this.calendarCollapsed, taskView: this.taskPanelState.view || "list" };
+    return { topPane: this.topPane, calendarView: this.calendarView, timeline: { ...this.timelineState }, day: this.day, month: this.month, mode: this.mode, sort: this.sort, onlyTodo: this.onlyTodo, calendarCollapsed: this.calendarCollapsed, taskView: this.taskPanelState.view || "list" };
   }
   async setState(state) {
+    if (state.topPane === "calendar" || state.topPane === "timer") this.topPane = state.topPane;
     if (state.calendarView === "month" || state.calendarView === "year") this.calendarView = state.calendarView;
     if (state.timeline && typeof state.timeline === "object") {
       for (const key of ["collapsed", "hideDone", "untimedOpen"]) {
@@ -17089,7 +18078,7 @@ var JournalView = class extends import_obsidian5.ItemView {
   find(day, root = this.host.settings.journalFolder) {
     for (const path of journalPaths(day, root)) {
       const f = this.app.vault.getAbstractFileByPath(path);
-      if (f instanceof import_obsidian5.TFile) return f;
+      if (f instanceof import_obsidian7.TFile) return f;
     }
     return void 0;
   }
@@ -17132,11 +18121,11 @@ var JournalView = class extends import_obsidian5.ItemView {
   }
   control(parent, label2, icon, fn, showText = false) {
     const b = parent.createEl("button", { attr: { "aria-label": label2, title: label2 } });
-    if (icon) (0, import_obsidian5.setIcon)(b.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+    if (icon) (0, import_obsidian7.setIcon)(b.createSpan({ attr: { "aria-hidden": "true" } }), icon);
     if (!icon || showText) b.createSpan({ text: label2 });
     b.onclick = () => {
       b.disabled = true;
-      Promise.resolve().then(fn).catch((e) => new import_obsidian5.Notice(String(e))).finally(() => b.disabled = false);
+      Promise.resolve().then(fn).catch((e) => new import_obsidian7.Notice(String(e))).finally(() => b.disabled = false);
     };
     return b;
   }
@@ -17166,7 +18155,7 @@ var JournalView = class extends import_obsidian5.ItemView {
       const folder = `${root}/\u5468\u671F/${spec.year}`, paths = [`${folder}/${spec.title}.md`, ...spec.legacyTitle ? [`${root}/\u56DE\u987E/${spec.days[0].slice(0, 4)}/${spec.legacyTitle}.md`] : []];
       for (const path of paths) {
         const existing = this.app.vault.getAbstractFileByPath(path);
-        if (existing instanceof import_obsidian5.TFile) {
+        if (existing instanceof import_obsidian7.TFile) {
           await this.openNote(existing);
           return existing;
         }
@@ -17183,7 +18172,7 @@ var JournalView = class extends import_obsidian5.ItemView {
     return work;
   }
   openDatePicker() {
-    const modal = new import_obsidian5.Modal(this.app);
+    const modal = new import_obsidian7.Modal(this.app);
     modal.modalEl.addClass("ts-calendar-plugin");
     modal.modalEl.addClass("ts-journal-jump-modal");
     modal.titleEl.setText("\u8DF3\u8F6C\u65E5\u671F");
@@ -17195,7 +18184,7 @@ var JournalView = class extends import_obsidian5.ItemView {
     input.onkeydown = (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        void this.showDay(input.value).then(() => modal.close()).catch((e2) => new import_obsidian5.Notice(String(e2)));
+        void this.showDay(input.value).then(() => modal.close()).catch((e2) => new import_obsidian7.Notice(String(e2)));
       }
     };
     const months = modal.contentEl.createDiv("ts-journal-month-picker");
@@ -17242,35 +18231,35 @@ var JournalView = class extends import_obsidian5.ItemView {
     });
   }
   async jumpEntry(direction) {
-    const target = adjacentJournalDay(this.knownDays(), this.day, direction);
-    if (target) await this.showDay(target);
+    const target2 = adjacentJournalDay(this.knownDays(), this.day, direction);
+    if (target2) await this.showDay(target2);
   }
   async calendarKey(event, day) {
-    const target = calendarKeyDay(day, event.key, event.shiftKey);
-    if (!target) return;
+    const target2 = calendarKeyDay(day, event.key, event.shiftKey);
+    if (!target2) return;
     event.preventDefault();
     event.stopPropagation();
-    this.focusedDay = target;
-    if (target.slice(0, 7) !== this.month) {
-      this.month = target.slice(0, 7);
+    this.focusedDay = target2;
+    if (target2.slice(0, 7) !== this.month) {
+      this.month = target2.slice(0, 7);
       this.app.workspace.requestSaveLayout();
       await this.refresh();
     }
-    this.contentEl.querySelectorAll(".ts-calendar-day").forEach((b) => b.tabIndex = b.dataset.day === target ? 0 : -1);
-    this.contentEl.querySelector(`[data-day="${target}"]`)?.focus();
+    this.contentEl.querySelectorAll(".ts-calendar-day").forEach((b) => b.tabIndex = b.dataset.day === target2 ? 0 : -1);
+    this.contentEl.querySelector(`[data-day="${target2}"]`)?.focus();
   }
   async appendTask(task) {
     const day = this.day;
     appendJournalTask("", task);
     const f = await this.host.getJournalFile(day);
-    await this.app.vault.process(f, (text) => appendJournalTask(text, task));
+    await this.app.vault.process(f, (text3) => appendJournalTask(text3, task));
     await this.refresh();
   }
   async linkBoard() {
     const day = this.day, board = this.host.currentBoard?.file;
-    if (!(board instanceof import_obsidian5.TFile)) throw Error("\u8BF7\u5148\u6253\u5F00\u8981\u5173\u8054\u7684\u767D\u677F");
+    if (!(board instanceof import_obsidian7.TFile)) throw Error("\u8BF7\u5148\u6253\u5F00\u8981\u5173\u8054\u7684\u767D\u677F");
     const link = `[[${board.path}]]`, f = await this.host.getJournalFile(day);
-    await this.app.vault.process(f, (text) => text.includes(link) ? text : `${text.trimEnd()}
+    await this.app.vault.process(f, (text3) => text3.includes(link) ? text3 : `${text3.trimEnd()}
 
 ${link}
 `);
@@ -17278,7 +18267,7 @@ ${link}
   }
   menu(event, day) {
     event.preventDefault();
-    const menu = new import_obsidian5.Menu();
+    const menu = new import_obsidian7.Menu();
     menu.addItem((i) => i.setTitle("\u67E5\u770B\u8FD9\u4E00\u5929").setIcon("calendar-days").onClick(() => void this.showDay(day)));
     const f = this.find(day);
     menu.addItem((i) => i.setTitle(f ? "\u6253\u5F00\u65E5\u8BB0\u539F\u6587" : "\u521B\u5EFA\u8FD9\u4E00\u5929\u7684\u65E5\u8BB0").setIcon("file-plus").onClick(async () => {
@@ -17287,7 +18276,7 @@ ${link}
         await this.showDay(day);
         this.host.editJournal(file);
       } catch (e) {
-        new import_obsidian5.Notice(String(e));
+        new import_obsidian7.Notice(String(e));
       }
     }));
     menu.showAtMouseEvent(event);
@@ -17314,38 +18303,33 @@ ${link}
     this.contentEl.dataset.surface = this.host.settings.surfaceStyle || "soft";
     this.contentEl.dataset.accent = this.host.settings.accent || "forest";
     this.renderScope?.unload();
-    const scope = this.renderScope = new import_obsidian5.Component();
+    const scope = this.renderScope = new import_obsidian7.Component();
     scope.load();
     this.contentEl.empty();
     this.visibleEntries.clear();
     const layout = this.contentEl.createDiv("ts-journal-layout"), calendarPane = layout.createDiv("ts-journal-calendar-pane"), detailPane = layout.createDiv("ts-journal-detail-pane");
     if (this.part === "entries") calendarPane.remove();
     if (this.part === "calendar") detailPane.remove();
-    const calendar = calendarPane.createDiv("ts-calendar");
-    const calendarTop = calendar.createDiv("ts-calendar-top");
-    const calendarHead = calendarTop.createDiv("ts-calendar-heading");
-    calendarHead.createDiv({ cls: "ts-calendar-kicker", text: this.part === "calendar" ? "\u65E5\u5386" : "\u65E5\u5386\u4E0E\u65E5\u8BB0" });
+    let calendarHost = calendarPane, timerHost = calendarPane;
+    if (this.part !== "entries" && this.host.pomodoro && this.host.pomodoroActions) {
+      const panels = this.createTopSwitch(calendarPane);
+      calendarHost = panels.calendar;
+      timerHost = panels.timer;
+    }
+    const calendar = calendarHost.createDiv("ts-calendar"), calendarTop = calendar.createDiv("ts-calendar-top");
     calendar.toggleClass("is-collapsed", this.calendarCollapsed);
-    const collapse = this.control(calendarHead, this.calendarCollapsed ? "\u5C55\u5F00\u6708\u5386" : "\u6536\u8D77\u6708\u5386", this.calendarCollapsed ? "chevron-down" : "chevron-up", () => {
-      this.calendarCollapsed = !this.calendarCollapsed;
-      this.app.workspace.requestSaveLayout();
-      return this.refresh();
-    });
-    collapse.className = "ts-calendar-collapse";
-    collapse.setAttribute("aria-expanded", String(!this.calendarCollapsed));
-    this.control(calendarHead, "\u8DF3\u8F6C\u65E5\u671F", "calendar-search", () => this.openDatePicker()).className = "ts-calendar-jump-button";
-    this.control(calendarHead, "\u6536\u96C6\u7B14\u8BB0", "plus", () => this.host.quickCapture(), true).className = "ts-calendar-capture";
-    const switchView = this.control(calendarHead, this.calendarView === "month" ? "\u5207\u6362\u5E74\u5386" : "\u5207\u6362\u6708\u5386", this.calendarView === "month" ? "layout-grid" : "calendar-days", () => {
-      this.calendarView = this.calendarView === "month" ? "year" : "month";
-      this.app.workspace.requestSaveLayout();
-      return this.refresh();
-    });
-    switchView.className = "ts-calendar-view-toggle";
-    switchView.setAttribute("aria-pressed", String(this.calendarView === "year"));
     calendar.dataset.view = this.calendarView;
-    const nav = calendar.createDiv("ts-calendar-nav");
+    const nav = calendarTop.createDiv("ts-calendar-nav"), primaryNav = nav.createDiv("ts-calendar-primary-nav"), periodControls = primaryNav.createDiv("ts-calendar-period-label");
     const monthNumber = Number(month.slice(5)), monthNames = ["\u4E00\u6708", "\u4E8C\u6708", "\u4E09\u6708", "\u56DB\u6708", "\u4E94\u6708", "\u516D\u6708", "\u4E03\u6708", "\u516B\u6708", "\u4E5D\u6708", "\u5341\u6708", "\u5341\u4E00\u6708", "\u5341\u4E8C\u6708"];
-    const monthLabel = this.control(nav, this.calendarView === "year" ? "\u8FD4\u56DE\u6708\u5386" : `\u6253\u5F00 ${month} \u6708\u8BB0`, "", () => {
+    const year = this.control(periodControls, `\u6253\u5F00 ${month.slice(0, 4)} \u5E74\u8BB0`, "", () => this.createReview("year", `${month.slice(0, 4)}-01-01`));
+    year.className = "ts-calendar-year";
+    year.setText(month.slice(0, 4));
+    year.title = "\u70B9\u51FB\u6253\u5F00\u5E74\u8BB0\uFF1B\u53F3\u952E\u8DF3\u8F6C\u65E5\u671F";
+    year.oncontextmenu = (e) => {
+      e.preventDefault();
+      this.openDatePicker();
+    };
+    const monthLabel = this.control(periodControls, this.calendarView === "year" ? "\u8FD4\u56DE\u6708\u5386" : `\u6253\u5F00 ${month} \u6708\u8BB0`, "", () => {
       if (this.calendarView === "year") {
         this.calendarView = "month";
         this.app.workspace.requestSaveLayout();
@@ -17356,53 +18340,39 @@ ${link}
     monthLabel.className = "ts-calendar-month";
     monthLabel.empty();
     monthLabel.createSpan({ cls: "ts-calendar-month-name", text: this.calendarView === "year" ? "\u5E74\u89C8" : monthNames[monthNumber - 1] });
-    const quarter = this.control(nav, `\u6253\u5F00 ${month.slice(0, 4)} Q${Math.ceil(monthNumber / 3)} \u5B63\u8BB0`, "", () => this.createReview("quarter", `${month}-01`));
-    quarter.className = "ts-calendar-quarter";
-    quarter.setText(`Q${Math.ceil(monthNumber / 3)}`);
     monthLabel.title = this.calendarView === "year" ? "\u8FD4\u56DE\u6708\u5386" : "\u70B9\u51FB\u6253\u5F00\u6708\u8BB0\uFF1B\u53F3\u952E\u8DF3\u8F6C\u65E5\u671F";
     monthLabel.oncontextmenu = (e) => {
       e.preventDefault();
       this.openDatePicker();
     };
-    if (this.host.openLargeCalendar) this.control(calendarHead, "\u6253\u5F00\u5927\u65E5\u5386", "maximize-2", () => this.host.openLargeCalendar?.(this.day)).className = "ts-calendar-large-button";
-    calendarTop.insertBefore(monthLabel, calendarHead);
-    const yearNav = nav.createDiv("ts-calendar-year-nav");
-    this.control(yearNav, "\u4E0A\u4E00\u5E74", "chevron-left", () => {
-      this.month = shiftMonth(month, -12);
-      this.app.workspace.requestSaveLayout();
-      return this.refresh();
-    });
-    const year = this.control(yearNav, `\u6253\u5F00 ${month.slice(0, 4)} \u5E74\u8BB0`, "", () => this.createReview("year", `${month.slice(0, 4)}-01-01`));
-    year.className = "ts-calendar-year";
-    year.setText(month.slice(0, 4));
-    year.title = "\u70B9\u51FB\u6253\u5F00\u5E74\u8BB0\uFF1B\u53F3\u952E\u8DF3\u8F6C\u65E5\u671F";
-    year.oncontextmenu = (e) => {
-      e.preventDefault();
-      this.openDatePicker();
-    };
-    this.control(yearNav, "\u4E0B\u4E00\u5E74", "chevron-right", () => {
-      this.month = shiftMonth(month, 12);
-      this.app.workspace.requestSaveLayout();
-      return this.refresh();
-    });
-    const monthNav = nav.createDiv("ts-calendar-month-nav");
-    this.control(monthNav, "\u4E0A\u4E2A\u6708", "chevron-left", () => {
-      this.month = shiftMonth(month, -1);
+    const monthNav = primaryNav.createDiv("ts-calendar-month-nav"), yearView = this.calendarView === "year";
+    this.control(monthNav, yearView ? "\u4E0A\u4E00\u5E74" : "\u4E0A\u4E2A\u6708", "chevron-left", () => {
+      this.month = shiftMonth(month, yearView ? -12 : -1);
       this.app.workspace.requestSaveLayout();
       return this.refresh();
     });
     this.control(monthNav, "\u4ECA\u5929", "", () => this.showDay(localDay()));
-    this.control(monthNav, "\u4E0B\u4E2A\u6708", "chevron-right", () => {
-      this.month = shiftMonth(month, 1);
+    this.control(monthNav, yearView ? "\u4E0B\u4E00\u5E74" : "\u4E0B\u4E2A\u6708", "chevron-right", () => {
+      this.month = shiftMonth(month, yearView ? 12 : 1);
       this.app.workspace.requestSaveLayout();
       return this.refresh();
     });
+    const calendarHead = calendarTop.createDiv("ts-calendar-heading");
+    const collapse = this.control(calendarHead, this.calendarCollapsed ? "\u5C55\u5F00\u6708\u5386" : "\u6536\u8D77\u6708\u5386", this.calendarCollapsed ? "chevron-down" : "chevron-up", () => {
+      this.calendarCollapsed = !this.calendarCollapsed;
+      this.app.workspace.requestSaveLayout();
+      return this.refresh();
+    });
+    collapse.className = "ts-calendar-collapse";
+    collapse.setAttribute("aria-expanded", String(!this.calendarCollapsed));
+    this.control(calendarHead, "\u6536\u96C6\u7B14\u8BB0", "plus", () => this.host.quickCapture()).className = "ts-calendar-capture";
+    this.control(calendarHead, "\u66F4\u591A\u65E5\u5386\u5DE5\u5177", "ellipsis", () => this.calendarTools()).className = "ts-calendar-tools";
     const selected = this.chinese.get(day);
     if (this.calendarView === "year") this.renderYear(calendar, month.slice(0, 4));
     const displayDates = monthDisplayGrid(month);
     const grid = calendar.createDiv({ cls: "ts-calendar-grid", attr: { role: "group", "aria-label": "\u65E5\u8BB0\u6708\u5386" } });
     grid.createSpan({ cls: "ts-calendar-week-heading", attr: { "aria-label": "ISO \u5468\u6570" } });
-    for (const text of ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u65E5"]) grid.createSpan({ cls: "ts-calendar-weekday", text });
+    for (const text3 of ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u65E5"]) grid.createSpan({ cls: "ts-calendar-weekday", text: text3 });
     const cells = /* @__PURE__ */ new Map();
     for (const [index, date] of displayDates.entries()) {
       if (index % 7 === 0) {
@@ -17441,22 +18411,24 @@ ${link}
       if (date === localDay()) b.setAttribute("aria-current", "date");
       b.oncontextmenu = (e) => this.menu(e, date);
       b.onkeydown = (e) => {
-        void this.calendarKey(e, date).catch((e2) => new import_obsidian5.Notice(String(e2)));
+        void this.calendarKey(e, date).catch((e2) => new import_obsidian7.Notice(String(e2)));
       };
       cells.set(date, b);
     }
     grid.hidden = this.calendarView === "year";
     if (this.host.settings.showHolidays !== false && selected && !this.chinese.get(`${month}-01`)?.holidaysKnown) calendar.createDiv({ cls: "ts-calendar-data-note", text: `${month.slice(0, 4)} \u5E74\u8C03\u4F11\u6570\u636E\u672A\u6536\u5F55` });
+    if (this.part !== "entries") this.renderFocusStrip(timerHost, scope, this.topPanels ? "panel" : "compact");
     const tabs = detailPane.createDiv({ cls: "ts-journal-tabs", attr: { role: "group", "aria-label": "\u65E5\u8BB0\u663E\u793A\u65B9\u5F0F" } });
-    for (const [id, label2] of [["day", "\u65E5\u8BB0"], ["week", "\u672C\u5468\u6E05\u5355"], ["agenda", "\u672C\u6708\u6E05\u5355"]]) {
-      const b = this.control(tabs, label2, id === "day" ? "notebook-pen" : id === "week" ? "calendar-range" : "list-todo", () => {
-        this.mode = id;
+    for (const [id2, label2] of [["day", "\u65E5\u8BB0"], ["week", "\u672C\u5468\u6E05\u5355"], ["agenda", "\u672C\u6708\u6E05\u5355"]]) {
+      const b = this.control(tabs, label2, id2 === "day" ? "notebook-pen" : id2 === "week" ? "calendar-range" : "list-todo", () => {
+        this.mode = id2;
         this.app.workspace.requestSaveLayout();
         return this.refresh();
       }, true);
-      b.toggleClass("is-active", this.mode === id);
-      b.setAttribute("aria-pressed", String(this.mode === id));
+      b.toggleClass("is-active", this.mode === id2);
+      b.setAttribute("aria-pressed", String(this.mode === id2));
     }
+    if (this.part === "entries") this.renderFocusStrip(detailPane, scope);
     const content = detailPane.createDiv("ts-journal-content");
     let agenda;
     const weekly = this.mode === "week", week = weekDays(day), periodLabel = weekly ? "\u672C\u5468" : "\u672C\u6708";
@@ -17485,7 +18457,7 @@ ${link}
       filter.className = "ts-calendar-filter";
       filter.setAttribute("aria-pressed", String(this.onlyTodo));
       const sort = filterRow.createEl("select", { attr: { "aria-label": "\u65E5\u8BB0\u6392\u5E8F" } });
-      for (const [value, text] of [["newest", "\u6700\u65B0\u5728\u524D"], ["oldest", "\u6700\u65E9\u5728\u524D"]]) sort.createEl("option", { value, text });
+      for (const [value, text3] of [["newest", "\u6700\u65B0\u5728\u524D"], ["oldest", "\u6700\u65E9\u5728\u524D"]]) sort.createEl("option", { value, text: text3 });
       sort.value = this.sort;
       sort.onchange = () => {
         this.sort = sort.value;
@@ -17494,7 +18466,7 @@ ${link}
       };
       agenda = content.createDiv("ts-calendar-agenda");
     }
-    const failures = /* @__PURE__ */ new Set(), entries = /* @__PURE__ */ new Map(), days = [.../* @__PURE__ */ new Set([...displayDates, ...weekly ? week : []])];
+    const failures = /* @__PURE__ */ new Set(), entries = /* @__PURE__ */ new Map(), days = this.part === "entries" && this.mode === "day" ? [day] : [.../* @__PURE__ */ new Set([...displayDates, ...weekly ? week : []])];
     let cursor = 0;
     await Promise.all(Array.from({ length: 4 }, async () => {
       while (cursor < days.length && run2 === this.generation) {
@@ -17543,7 +18515,8 @@ ${link}
     const heading = header.createDiv("ts-journal-heading");
     const dateTitle = heading.createEl("h2", { attr: { "aria-label": `${Number(day.slice(5, 7))}\u6708${Number(day.slice(8))}\u65E5` } });
     dateTitle.createSpan({ cls: "ts-journal-month-label", text: `${Number(day.slice(5, 7))}\u6708` });
-    dateTitle.createSpan({ cls: "ts-journal-day-number", text: String(Number(day.slice(8))).padStart(2, "0") });
+    dateTitle.createSpan({ cls: "ts-journal-day-number", text: String(Number(day.slice(8))) });
+    dateTitle.createSpan({ cls: "ts-journal-date-unit", text: "\u65E5" });
     heading.createDiv({ cls: "ts-journal-date", text: `${day.slice(0, 4)} \xB7 ${dateOf(day).toLocaleDateString("zh-CN", { weekday: "long" })}${day === localDay() ? " \xB7 \u4ECA\u5929" : ""}` });
     const lunarHeading = chineseDayPresentation(this.chinese.get(day), this.host.settings);
     if (lunarHeading.description) heading.createDiv({ cls: "ts-journal-lunar-date", text: lunarHeading.description });
@@ -17553,16 +18526,16 @@ ${link}
     previous.disabled = !adjacentJournalDay(known, day, -1);
     const next = this.control(history, "\u4E0B\u4E00\u7BC7\u65E5\u8BB0", "chevron-right", () => this.jumpEntry(1));
     next.disabled = !adjacentJournalDay(known, day, 1);
-    const actions = content.createDiv("ts-journal-actions");
+    const actions = header.createDiv("ts-journal-actions");
     const candidate = this.find(day);
     if (candidate) {
       this.control(actions, "\u7F16\u8F91\u65E5\u8BB0", "pencil", () => this.host.editJournal(candidate), true);
-      this.control(actions, "\u8FFD\u52A0\u60F3\u6CD5", "plus", () => new TextModal(this.app, `\u8FFD\u52A0\u5230 ${day}`, "", async (text) => {
+      this.control(actions, "\u8FFD\u52A0\u60F3\u6CD5", "plus", () => new TextModal(this.app, `\u8FFD\u52A0\u5230 ${day}`, "", async (text3) => {
         await this.app.vault.process(candidate, (current) => `${current.trimEnd()}
 
 ### ${(/* @__PURE__ */ new Date()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })} \xB7 \u968F\u8BB0
 
-${text.trim()}
+${text3.trim()}
 `);
       }).open());
       this.control(actions, "\u6253\u5F00\u539F\u6587", "arrow-up-right", () => this.app.workspace.getLeaf("tab").openFile(candidate));
@@ -17574,6 +18547,7 @@ ${text.trim()}
       }, true);
       content.createDiv({ cls: "ts-journal-empty", text: "\u8FD9\u4E00\u5929\u8FD8\u6CA1\u6709\u8BB0\u5F55\u3002\u5199\u4E0B\u4E00\u4E2A\u60F3\u6CD5\uFF0C\u7559\u4F4F\u4ECA\u5929\u3002" });
     }
+    if (!this.host.pomodoro && this.host.pomodoroActions) this.control(actions, "\u6253\u5F00\u8BA1\u65F6\u5668", "timer", () => this.host.pomodoroActions.open());
     if (this.host.currentBoard?.file) this.control(actions, "\u5173\u8054\u5F53\u524D\u767D\u677F", "link", () => this.linkBoard()).className = "ts-journal-link-board";
     const body = content.createDiv("ts-journal-body");
     if (this.part === "combined") {
@@ -17593,7 +18567,7 @@ ${text.trim()}
     this.visibleEntries.set(day, entry);
     const presentation = journalPresentation(entry.text);
     try {
-      await import_obsidian5.MarkdownRenderer.render(this.app, presentation.body.replace(/(?:^## 待办与未完成\r?\n\s*)?```thoughtspace-tasks[^\n]*\n[\s\S]*?```\r?\n?/gm, "").replace(new RegExp("^# " + day + "\\r?\\n"), ""), body, candidate.path, scope);
+      await import_obsidian7.MarkdownRenderer.render(this.app, presentation.body.replace(/(?:^## 待办与未完成\r?\n\s*)?```thoughtspace-tasks[^\n]*\n[\s\S]*?```\r?\n?/gm, "").replace(new RegExp("^# " + day + "\\r?\\n"), ""), body, candidate.path, scope);
       if (run2 !== this.generation) {
         scope.unload();
         return;
@@ -17605,7 +18579,7 @@ ${text.trim()}
         summary.createSpan({ text: "\u5F53\u65E5\u65B0\u5EFA\u7B14\u8BB0" });
         const count = summary.createSpan({ cls: "ts-journal-linked-count" });
         const list = links.createDiv("ts-journal-linked-list");
-        await import_obsidian5.MarkdownRenderer.render(this.app, presentation.links, list, candidate.path, scope);
+        await import_obsidian7.MarkdownRenderer.render(this.app, presentation.links, list, candidate.path, scope);
         if (run2 !== this.generation) {
           scope.unload();
           return;
@@ -17623,6 +18597,66 @@ ${text.trim()}
       this.contentEl.scrollTop = oldScroll;
     } catch (e) {
       if (run2 === this.generation) body.setText(`\u65E5\u8BB0\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF1A${String(e)}`);
+    }
+  }
+  createTopSwitch(parent) {
+    const id2 = "ts-sidebar-top-" + crypto.randomUUID(), tabs = parent.createDiv({ cls: "ts-journal-top-switch", attr: { role: "tablist", "aria-label": "\u65E5\u5386\u6216\u8BA1\u65F6" } });
+    const panels = { calendar: parent.createDiv({ cls: "ts-journal-calendar-panel", attr: { id: id2 + "-calendar", role: "tabpanel", "aria-labelledby": id2 + "-calendar-tab" } }), timer: parent.createDiv({ cls: "ts-journal-timer-panel", attr: { id: id2 + "-timer", role: "tabpanel", "aria-labelledby": id2 + "-timer-tab" } }) };
+    this.topPanels = panels;
+    this.topButtons = /* @__PURE__ */ new Map();
+    for (const [mode2, label2, icon] of [["calendar", "\u65E5\u5386", "calendar-days"], ["timer", "\u8BA1\u65F6", "timer"]]) {
+      const button = tabs.createEl("button", { attr: { id: id2 + "-" + mode2 + "-tab", type: "button", role: "tab", "aria-controls": id2 + "-" + mode2, "aria-label": label2 } });
+      button.dataset.topPane = mode2;
+      (0, import_obsidian7.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+      button.createSpan({ text: label2 });
+      button.onclick = () => this.selectTopPane(mode2, true);
+      button.onkeydown = (event) => {
+        const next = event.key === "Home" ? "calendar" : event.key === "End" ? "timer" : event.key === "ArrowLeft" || event.key === "ArrowRight" ? mode2 === "calendar" ? "timer" : "calendar" : void 0;
+        if (next) {
+          event.preventDefault();
+          event.stopPropagation();
+          this.selectTopPane(next, true);
+        }
+      };
+      this.topButtons.set(mode2, button);
+    }
+    this.selectTopPane(this.topPane);
+    return panels;
+  }
+  selectTopPane(mode2, focus = false) {
+    this.topPane = mode2;
+    if (focus) this.topButtons?.get(mode2)?.focus({ preventScroll: true });
+    if (this.topPanels) {
+      this.topPanels.calendar.hidden = mode2 !== "calendar";
+      this.topPanels.timer.hidden = mode2 !== "timer";
+    }
+    for (const [key, button] of this.topButtons || []) {
+      button.setAttribute("aria-selected", String(key === mode2));
+      button.tabIndex = key === mode2 ? 0 : -1;
+      button.toggleClass("is-active", key === mode2);
+    }
+    if (focus) this.app.workspace.requestSaveLayout();
+  }
+  renderFocusStrip(parent, scope, presentation = "compact") {
+    if (this.host.pomodoro && this.host.pomodoroActions) scope.addChild(new PomodoroStrip(parent.createDiv("ts-journal-focus"), this.host.pomodoro, () => this.host.pomodoroActions.open(), presentation));
+  }
+  calendarTools() {
+    const menu = new import_obsidian7.Menu(), run2 = (fn) => {
+      void Promise.resolve().then(fn).catch((error) => new import_obsidian7.Notice(String(error)));
+    };
+    menu.addItem((item) => item.setTitle("\u8DF3\u8F6C\u65E5\u671F / \u6708\u4EFD").setIcon("calendar-search").onClick(() => this.openDatePicker()));
+    menu.addItem((item) => item.setTitle(this.calendarView === "month" ? "\u5207\u6362\u5E74\u5386" : "\u5207\u6362\u6708\u5386").setIcon(this.calendarView === "month" ? "layout-grid" : "calendar-days").onClick(() => run2(() => {
+      this.calendarView = this.calendarView === "month" ? "year" : "month";
+      this.app.workspace.requestSaveLayout();
+      return this.refresh();
+    })));
+    menu.addItem((item) => item.setTitle(`\u6253\u5F00 Q${Math.ceil(Number(this.month.slice(5)) / 3)} \u5B63\u8BB0`).setIcon("notebook-pen").onClick(() => run2(() => this.createReview("quarter", this.month + "-01"))));
+    if (this.host.openLargeCalendar) menu.addItem((item) => item.setTitle("\u6253\u5F00\u5927\u65E5\u5386").setIcon("maximize-2").onClick(() => run2(() => this.host.openLargeCalendar?.(this.day))));
+    if (!this.host.pomodoro && this.host.pomodoroActions) menu.addItem((item) => item.setTitle("\u6253\u5F00\u8BA1\u65F6\u5668").setIcon("timer").onClick(() => run2(() => this.host.pomodoroActions.open())));
+    const button = this.contentEl.querySelector(".ts-calendar-tools");
+    if (button) {
+      const rect = button.getBoundingClientRect();
+      menu.showAtPosition({ x: rect.right, y: rect.bottom });
     }
   }
   renderYear(parent, year) {
@@ -17647,7 +18681,7 @@ ${text.trim()}
       header.createEl("strong", { text: `${i}\u6708` });
       header.createSpan({ text: recorded.size ? `${recorded.size} \u7BC7` : "", cls: "ts-calendar-mini-count" });
       const mini = cell.createSpan({ cls: "ts-calendar-mini-grid", attr: { "aria-hidden": "true" } });
-      for (const text of ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u65E5"]) mini.createSpan({ text, cls: "ts-calendar-mini-weekday" });
+      for (const text3 of ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u65E5"]) mini.createSpan({ text: text3, cls: "ts-calendar-mini-weekday" });
       for (const day of days) {
         const d = mini.createSpan({ text: day.startsWith(month) ? String(Number(day.slice(8))) : "" });
         d.toggleClass("has-entry", recorded.has(day));
@@ -17655,8 +18689,8 @@ ${text.trim()}
       }
       cell.oncontextmenu = (event) => {
         event.preventDefault();
-        new import_obsidian5.Menu().addItem((item) => item.setTitle("\u6253\u5F00\u6708\u8BB0").setIcon("notebook-pen").onClick(() => {
-          void this.createReview("month", month + "-01").catch((e) => new import_obsidian5.Notice(String(e)));
+        new import_obsidian7.Menu().addItem((item) => item.setTitle("\u6253\u5F00\u6708\u8BB0").setIcon("notebook-pen").onClick(() => {
+          void this.createReview("month", month + "-01").catch((e) => new import_obsidian7.Notice(String(e)));
         })).showAtMouseEvent(event);
       };
     }
@@ -17669,6 +18703,7 @@ ${text.trim()}
     taskHeading.createSpan({ text: "\u5F85\u529E" });
     taskHeading.createSpan({ cls: "ts-journal-task-date", text: day === localDay() ? "\u4ECA\u5929" : `${Number(day.slice(5, 7))}\u6708${Number(day.slice(8))}\u65E5` });
     const headingActions = taskHeading.createDiv("ts-journal-task-actions");
+    if (!this.host.pomodoro && this.host.pomodoroActions) this.control(headingActions, "\u6253\u5F00\u8BA1\u65F6\u5668", "timer", () => this.host.pomodoroActions.open()).addClass("ts-journal-task-pomodoro");
     const quick = taskArea.createDiv({ cls: "ts-journal-quick", attr: { id: "ts-task-capture-" + crypto.randomUUID() } });
     const input = quick.createEl("input", { type: "text", attr: { placeholder: "\u8BB0\u4E00\u9879\u5F85\u529E\u2026", "aria-label": "\u65E5\u8BB0\u5F85\u529E\u5185\u5BB9" } });
     const toggle = this.control(headingActions, "\u65B0\u5EFA\u5F85\u529E", "plus", () => {
@@ -17706,7 +18741,7 @@ ${text.trim()}
       input.disabled = true;
       try {
         const file = await this.host.getJournalFile(day);
-        await this.app.vault.process(file, (text) => appendJournalTask(text, value));
+        await this.app.vault.process(file, (text3) => appendJournalTask(text3, value));
         if (this.drafts.get(day) === value) this.drafts.delete(day);
         if (this.quickOpenDay === day) this.quickOpenDay = void 0;
       } finally {
@@ -17725,15 +18760,15 @@ ${text.trim()}
         setOpen(false, true);
       } else if (e.key === "Enter" && !e.isComposing) {
         e.preventDefault();
-        void submit().catch((e2) => new import_obsidian5.Notice(String(e2)));
+        void submit().catch((e2) => new import_obsidian7.Notice(String(e2)));
       }
     };
     if (this.host.taskPlanner) {
       const planner = this.host.taskPlanner;
-      panel = scope.addChild(new TaskPanel(this.app, taskArea.createDiv(), planner, day, this.taskPanelState, true, headingActions, this.part === "calendar" ? (el) => new DayTimeline(this.app, el, planner, day, entry ? { path: entry.file.path, text: entry.text } : void 0, this.timelineState, async (text) => {
+      panel = scope.addChild(new TaskPanel(this.app, taskArea.createDiv(), planner, day, this.taskPanelState, true, headingActions, this.part === "calendar" ? (el) => new DayTimeline(this.app, el, planner, day, entry ? { path: entry.file.path, text: entry.text } : void 0, this.timelineState, async (text3) => {
         const file = await this.host.getJournalFile(day);
-        await this.app.vault.process(file, (current) => appendJournalTask(current, text));
-      }, true) : void 0));
+        await this.app.vault.process(file, (current) => appendJournalTask(current, text3));
+      }, true, this.host.pomodoroActions) : void 0, this.host.pomodoroActions));
     }
   }
   renderAgenda(agenda, entries, weekly, week, month) {
@@ -17770,8 +18805,8 @@ ${text.trim()}
       label2.createSpan({ text: task.text });
       check.onchange = () => {
         check.disabled = true;
-        void this.app.vault.process(entry.file, (text) => toggleTask(text, task)).then(() => this.refresh()).catch((e) => {
-          new import_obsidian5.Notice(String(e));
+        void this.app.vault.process(entry.file, (text3) => toggleTask(text3, task)).then(() => this.refresh()).catch((e) => {
+          new import_obsidian7.Notice(String(e));
           void this.refresh();
         });
       };
@@ -17791,8 +18826,8 @@ ${text.trim()}
 };
 
 // src/journal-links.ts
-var import_obsidian6 = require("obsidian");
-var JournalLinks = class extends import_obsidian6.Component {
+var import_obsidian8 = require("obsidian");
+var JournalLinks = class extends import_obsidian8.Component {
   constructor(app, host) {
     super();
     this.app = app;
@@ -17809,7 +18844,7 @@ var JournalLinks = class extends import_obsidian6.Component {
     this.stopped = false;
     this.rebuild();
     this.registerEvent(this.app.vault.on("create", (file) => {
-      if (!(file instanceof import_obsidian6.TFile)) return;
+      if (!(file instanceof import_obsidian8.TFile)) return;
       this.ensureIndex();
       const day = this.add(file);
       if (day) this.schedule(day, day === localDay());
@@ -17829,7 +18864,7 @@ var JournalLinks = class extends import_obsidian6.Component {
         this.remove(f);
         this.schedule(day, false);
       }
-      const added = file instanceof import_obsidian6.TFile ? [file] : this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(file.path + "/"));
+      const added = file instanceof import_obsidian8.TFile ? [file] : this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(file.path + "/"));
       for (const f of added) {
         const day = this.add(f);
         if (day) this.schedule(day, false);
@@ -17869,7 +18904,7 @@ var JournalLinks = class extends import_obsidian6.Component {
     this.pending.set(day, create || this.pending.get(day) || false);
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
-      void this.flush().catch((e) => new import_obsidian6.Notice(String(e)));
+      void this.flush().catch((e) => new import_obsidian8.Notice(String(e)));
     }, 250);
   }
   async flush() {
@@ -17879,7 +18914,7 @@ var JournalLinks = class extends import_obsidian6.Component {
     this.pending.clear();
     for (const [day, create] of tasks) {
       if (this.stopped || root !== this.host.settings.journalFolder) return;
-      let file = journalPaths(day, root).map((path) => this.app.vault.getAbstractFileByPath(path)).find((f) => f instanceof import_obsidian6.TFile);
+      let file = journalPaths(day, root).map((path) => this.app.vault.getAbstractFileByPath(path)).find((f) => f instanceof import_obsidian8.TFile);
       if (!file && create && this.byDay.get(day)?.size) file = await this.host.ensureJournalFile(day);
       if (file) await this.sync(day, file);
     }
@@ -17894,7 +18929,7 @@ var JournalLinks = class extends import_obsidian6.Component {
       const paths = [...this.byDay.get(day) || []].filter((f) => f !== file && this.app.vault.getAbstractFileByPath(f.path) === f && createdNoteDay(f, root) === day).map((f) => f.path);
       const current = await this.app.vault.cachedRead(file);
       if (syncCreatedNotes(current, paths) === current) return;
-      await this.app.vault.process(file, (text) => syncCreatedNotes(text, paths));
+      await this.app.vault.process(file, (text3) => syncCreatedNotes(text3, paths));
     });
     this.queue = work;
     return work;
@@ -17909,7 +18944,7 @@ var JournalLinks = class extends import_obsidian6.Component {
 };
 
 // src/task-planner.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian9 = require("obsidian");
 
 // src/tasks-integration.ts
 function tasksToggleApi(app) {
@@ -17921,17 +18956,26 @@ var TASKS_REQUIRED = "\u91CD\u590D\u4EFB\u52A1\u9700\u8981\u542F\u7528 Tasks 7.2
 var TASKS_REPEAT_NOT_GENERATED = "Tasks \u672A\u751F\u6210\u4E0B\u4E00\u6B21\u4EFB\u52A1\uFF0C\u672A\u4FEE\u6539\u539F\u6587\u3002\u8BF7\u68C0\u67E5\u91CD\u590D\u89C4\u5219\u3001Tasks \u5168\u5C40\u8FC7\u6EE4\u5668\u548C\u4EFB\u52A1\u683C\u5F0F\uFF1B\u89C4\u5219\u5DF2\u7ED3\u675F\u65F6\u8BF7\u5728\u539F\u6587\u5B8C\u6210";
 var taskLine = /^(?:(?: {0,3}>[\t ]?)+)?[\t ]*(?:[-*+]|\d+[.)])[\t ]+\[([ xX])\][\t ]+\S/;
 var blockId = (line) => line.match(/\s+(\^[A-Za-z0-9-]+)\s*$/)?.[1];
+function tasksSource(task, source) {
+  const quadrant = quadrantOverride(source);
+  if (!quadrant) return source;
+  const at = taskCheckbox(task);
+  if (at < 0 || !/^\[[ xX]\]/.test(source.slice(at))) return source;
+  const end = at + 3 + (source.slice(at + 3).match(/^[\t ]*/)?.[0].length || 0);
+  return source.slice(0, end) + setTaskQuadrant(source.slice(end), quadrant);
+}
 function tasksToggleLines(api, task, newline = task.source.endsWith("\r") ? "\r\n" : "\n") {
-  const source = task.source.replace(/\r$/, ""), result = api.executeToggleTaskDoneCommand(source, task.path);
+  const source = task.source.replace(/\r$/, ""), result = api.executeToggleTaskDoneCommand(tasksSource(task, source), task.path);
   if (typeof result !== "string" || !result.trim()) throw Error("Tasks \u8FD4\u56DE\u4E86\u5220\u9664\u64CD\u4F5C\u6216\u7A7A\u5185\u5BB9\uFF0C\u8BF7\u5728\u539F\u6587\u5B8C\u6210\u6B64\u4EFB\u52A1");
   if (result.length > 1e6) throw Error("Tasks \u8FD4\u56DE\u7684\u5185\u5BB9\u8FC7\u957F\uFF0C\u8BF7\u5728\u539F\u6587\u5B8C\u6210\u6B64\u4EFB\u52A1");
   const lines = result.replace(/\r\n/g, "\n").split("\n");
   if (lines.length > 2 || lines.some((line) => !taskLine.test(line) || line.includes("\r")))
     throw Error("Tasks \u8FD4\u56DE\u4E86\u6682\u4E0D\u652F\u6301\u7684\u4EFB\u52A1\u72B6\u6001\u6216\u683C\u5F0F\uFF0C\u8BF7\u5728\u539F\u6587\u5B8C\u6210\u6B64\u4EFB\u52A1");
-  const id = blockId(source);
-  if (id && lines.filter((line) => blockId(line) === id).length !== 1)
+  const id2 = blockId(source);
+  if (id2 && lines.filter((line) => blockId(line) === id2).length !== 1)
     throw Error("Tasks \u8FD4\u56DE\u7684\u5185\u5BB9\u6539\u53D8\u4E86\u4EFB\u52A1\u5757\u5F15\u7528\uFF0C\u8BF7\u5728\u539F\u6587\u68C0\u67E5");
-  const updated = planTasks(lines.join("\n"), task.path, "");
+  const validation = lines.map((line) => line.replace(/^(?:(?: {0,3}>[\t ]?)+)?[\t ]*/, ""));
+  const updated = planTasks(validation.join("\n"), task.path, "");
   if (!task.checked) {
     if (updated.length !== 2 || updated.filter((row) => row.checked).length !== 1 || updated.filter((row) => !row.checked && row.recurring).length !== 1)
       throw Error(TASKS_REPEAT_NOT_GENERATED);
@@ -17941,8 +18985,8 @@ function tasksToggleLines(api, task, newline = task.source.endsWith("\r") ? "\r\
   const ending = task.source.endsWith("\r") ? "\r" : "";
   return lines.map((line, index) => line + (index < lines.length - 1 && newline === "\r\n" ? "\r" : ending));
 }
-function replaceTaskSpan(text, line, expected, replacement) {
-  const lines = text.split("\n");
+function replaceTaskSpan(text3, line, expected, replacement) {
+  const lines = text3.split("\n");
   if (!Number.isInteger(line) || line < 0 || !expected.length || expected.some((value, index) => lines[line + index] !== value))
     throw Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
   lines.splice(line, expected.length, ...replacement);
@@ -17950,7 +18994,7 @@ function replaceTaskSpan(text, line, expected, replacement) {
 }
 
 // src/task-planner.ts
-var TaskPlanner = class extends import_obsidian7.Component {
+var TaskPlanner = class extends import_obsidian9.Component {
   constructor(app, root) {
     super();
     this.app = app;
@@ -17977,10 +19021,21 @@ var TaskPlanner = class extends import_obsidian7.Component {
   undo;
   writes = Promise.resolve();
   queuedUpdates = /* @__PURE__ */ new Set();
+  focusIds = /* @__PURE__ */ new WeakMap();
+  focusSequence = 0;
+  /** UI identity only: it never authorizes a write to an old occurrence. */
+  focusKey(task) {
+    let key = this.focusIds.get(task);
+    if (!key) {
+      key = String(++this.focusSequence);
+      this.focusIds.set(task, key);
+    }
+    return key;
+  }
   onload() {
     this.stopped = false;
     const changed = (f) => {
-      if (f instanceof import_obsidian7.TFile && f.extension === "md") {
+      if (f instanceof import_obsidian9.TFile && f.extension === "md") {
         this.invalidate(f);
         this.pending.add(f);
         this.schedule();
@@ -17993,7 +19048,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
       this.emit();
     }));
     this.registerEvent(this.app.vault.on("rename", (f) => {
-      if (f instanceof import_obsidian7.TFile) changed(f);
+      if (f instanceof import_obsidian9.TFile) changed(f);
       else for (const file of this.app.vault.getMarkdownFiles()) if (file.path.startsWith(f.path + "/")) changed(file);
     }));
   }
@@ -18040,7 +19095,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
     this.reads.set(file, read);
     const current = () => !this.stopped && this.reads.get(file) === read && (this.revisions.get(file) || 0) === revision && file.path === path && root === this.root() && this.app.vault.getAbstractFileByPath(path) === file;
     try {
-      const text = await (force || this.dirty.has(file) ? this.app.vault.read(file) : this.app.vault.cachedRead(file));
+      const text3 = await (force || this.dirty.has(file) ? this.app.vault.read(file) : this.app.vault.cachedRead(file));
       if (!current()) return;
       if (key !== `${file.path}:${file.stat.mtime}:${file.stat.size}`) {
         this.invalidate(file);
@@ -18048,7 +19103,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
         this.schedule();
         return;
       }
-      const parsed = planTasks(text, path, root), previous = this.entries.get(file)?.tasks;
+      const parsed = planTasks(text3, path, root), previous = this.entries.get(file)?.tasks;
       const same = previous?.length === parsed.length && parsed.every((task, index) => {
         const old = previous[index];
         return old.source === task.source && old.line === task.line && old.path === task.path && old.day === task.day && old.text === task.text;
@@ -18058,7 +19113,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
       this.entries.set(file, { key, root, tasks });
       this.dirty.delete(file);
       if (this.failures.delete(path)) this.notificationPending = true;
-      return text;
+      return text3;
     } catch {
       if (current()) {
         this.removeEntry(file);
@@ -18081,7 +19136,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
     }
     for (const path of this.failures) {
       const f = this.app.vault.getAbstractFileByPath(path);
-      if (f instanceof import_obsidian7.TFile) this.pending.add(f);
+      if (f instanceof import_obsidian9.TFile) this.pending.add(f);
       else {
         this.failures.delete(path);
         this.notificationPending = true;
@@ -18131,13 +19186,41 @@ var TaskPlanner = class extends import_obsidian7.Component {
     });
     return next;
   }
+  queuedFollowers(file, text3, line, removed, after, sameOccurrence = false) {
+    if (this.dirty.has(file)) return [];
+    const followers = [], lines = text3.split("\n");
+    for (const row of this.entries.get(file)?.tasks || []) {
+      if (row.path !== file.path) continue;
+      const replaced = row.line >= line && row.line < line + removed;
+      if (replaced && (!sameOccurrence || row.line !== line)) continue;
+      if (lines[row.line] !== row.source) continue;
+      followers.push({ before: row, line: row.line + (row.line >= line + removed ? after.length - removed : 0), source: replaced ? after[0] : row.source });
+    }
+    return followers;
+  }
+  rebaseFollowers(file, followers, expected, indexedText) {
+    if (expected === void 0 || indexedText !== expected || this.dirty.has(file)) return;
+    const previousRows = new Map(followers.map((follower) => [follower.before.line, follower])), indexedRows = new Map(this.entries.get(file)?.tasks.map((row) => [row.line, row]));
+    for (const follower of followers) {
+      const current = indexedRows.get(follower.line), key = this.focusIds.get(follower.before);
+      if (key && current?.source === follower.source) this.focusIds.set(current, key);
+    }
+    for (const intent of this.queuedUpdates) {
+      const row = intent.task;
+      if (row.path !== file.path) continue;
+      const follower = previousRows.get(row.line);
+      if (!follower || row.indexRevision !== follower.before.indexRevision || row.source !== follower.before.source) continue;
+      const current = indexedRows.get(follower.line);
+      if (current?.source === follower.source) intent.task = current;
+    }
+  }
   update(original, change) {
     const intent = { task: original };
     this.queuedUpdates.add(intent);
     return this.mutate(async () => {
       const task = intent.task;
       const file = this.app.vault.getAbstractFileByPath(task.path);
-      if (!(file instanceof import_obsidian7.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+      if (!(file instanceof import_obsidian9.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
       const update = { ...change }, repeatingToggle = task.recurring && update.checked !== void 0 && update.checked !== task.checked;
       const api = repeatingToggle ? tasksToggleApi(this.app) : void 0;
       if (repeatingToggle && !api) throw Error(TASKS_REQUIRED);
@@ -18146,36 +19229,35 @@ var TaskPlanner = class extends import_obsidian7.Component {
       if (task.recurring && !repeatingToggle) delete update.checked;
       let receipt, expected;
       let followers = [];
-      await this.app.vault.process(file, (text) => {
+      await this.app.vault.process(file, (text3) => {
         if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
         if (file.path !== task.path || this.app.vault.getAbstractFileByPath(task.path) !== file) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
         let next, after;
-        if (repeatingToggle) {
+        if (task.recurring) {
           if (this.dirty.has(file)) throw Error("\u4EFB\u52A1\u539F\u6587\u6B63\u5728\u5237\u65B0\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
-          const lines = text.split("\n");
+          const lines = text3.split("\n");
           if (lines[task.line] !== task.source) throw Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
           const current = this.entries.get(file)?.tasks.find((row) => row.line === task.line);
           if (current?.indexRevision !== task.indexRevision) throw Error("\u4EFB\u52A1\u7248\u672C\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
-          const currentApi = tasksToggleApi(this.app);
+        }
+        if (repeatingToggle) {
+          const lines = text3.split("\n"), currentApi = tasksToggleApi(this.app);
           if (!currentApi) throw Error(TASKS_REQUIRED);
-          after = tasksToggleLines(currentApi, task, text.includes("\r\n") ? "\r\n" : "\n");
+          after = tasksToggleLines(currentApi, task, text3.includes("\r\n") ? "\r\n" : "\n");
           lines.splice(task.line, 1, ...after);
           next = lines.join("\n");
         } else {
-          next = changeTask(text, task, update);
+          next = changeTask(text3, task, update);
           after = [next.split("\n")[task.line]];
         }
-        if (next !== text) {
+        if (next !== text3) {
           receipt = { file, line: task.line, before: [task.source], after };
           expected = next;
-          const lines = text.split("\n"), indexedRows = new Map(this.entries.get(file)?.tasks.map((row) => [row.line, row]));
-          if (!this.dirty.has(file)) for (const queued of this.queuedUpdates) {
-            const row = queued.task;
-            if (row.path !== task.path || row.line === task.line) continue;
-            const indexed = indexedRows.get(row.line);
-            if (indexed?.indexRevision !== row.indexRevision || indexed?.source !== row.source || lines[row.line] !== row.source) continue;
-            followers.push({ intent: queued, line: row.line + (row.line > task.line ? after.length - 1 : 0) });
+          if (task.recurring || update.content !== void 0) {
+            const rows = planTasks(next, file.path, this.root());
+            if (task.recurring || rows.some((row) => row.line === task.line && row.recurring)) receipt.occurrences = rows.map(({ line, source }) => ({ line, source }));
           }
+          followers = this.queuedFollowers(file, text3, task.line, 1, after, !repeatingToggle);
         }
         return next;
       });
@@ -18186,10 +19268,7 @@ var TaskPlanner = class extends import_obsidian7.Component {
       }
       this.invalidate(file);
       const indexedText = await this.read(file, true);
-      if (expected !== void 0 && indexedText === expected && !this.dirty.has(file)) for (const follower of followers) {
-        const current = this.entries.get(file)?.tasks.find((row) => row.line === follower.line);
-        if (current?.source === follower.intent.task.source) follower.intent.task = current;
-      }
+      this.rebaseFollowers(file, followers, expected, indexedText);
       await this.flush();
     }).finally(() => this.queuedUpdates.delete(intent));
   }
@@ -18201,17 +19280,28 @@ var TaskPlanner = class extends import_obsidian7.Component {
       const record = this.undo;
       if (!record) return;
       if (this.app.vault.getAbstractFileByPath(record.file.path) !== record.file) throw Error("\u4EFB\u52A1\u6765\u6E90\u6587\u4EF6\u5DF2\u5220\u9664");
-      await this.app.vault.process(record.file, (text) => {
+      let expected, followers = [];
+      await this.app.vault.process(record.file, (text3) => {
         if (this.stopped) throw Error("\u63D2\u4EF6\u5DF2\u91CD\u8F7D\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u4EFB\u52A1\u9762\u677F");
         if (this.app.vault.getAbstractFileByPath(record.file.path) !== record.file) throw Error("\u4EFB\u52A1\u6765\u6E90\u6587\u4EF6\u5DF2\u5220\u9664");
-        return replaceTaskSpan(text, record.line, record.after, record.before);
+        if (record.occurrences) {
+          const rows = planTasks(text3, record.file.path, this.root());
+          if (rows.length !== record.occurrences.length || rows.some((row, index) => row.line !== record.occurrences[index].line || row.source !== record.occurrences[index].source)) throw Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u65E0\u6CD5\u5B89\u5168\u64A4\u9500\uFF0C\u8BF7\u6253\u5F00\u539F\u6587\u68C0\u67E5");
+        }
+        const next = replaceTaskSpan(text3, record.line, record.after, record.before);
+        if (next !== text3) {
+          expected = next;
+          followers = this.queuedFollowers(record.file, text3, record.line, record.after.length, record.before);
+        }
+        return next;
       });
       if (this.undo === record) {
         this.undo = void 0;
         this.notificationPending = true;
       }
       this.invalidate(record.file);
-      await this.read(record.file, true);
+      const indexedText = await this.read(record.file, true);
+      this.rebaseFollowers(record.file, followers, expected, indexedText);
       await this.flush();
     });
   }
@@ -18237,20 +19327,392 @@ var TaskPlanner = class extends import_obsidian7.Component {
   }
 };
 
+// src/pomodoro-model.ts
+var MAX_TIMER_SEGMENTS = 500;
+var MAX_TIMER_DURATION_MS = 7 * 24 * 60 * 6e4;
+var MINUTE = 6e4;
+var MAX_COUNTDOWN = 1440 * MINUTE;
+var MAX_RECORDS = 200;
+var MAX_CLOCK = Number.MAX_SAFE_INTEGER - MAX_TIMER_DURATION_MS;
+var nextId = 0;
+var defaultPomodoroConfig = Object.freeze({ focusMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, longBreakEvery: 4 });
+function object(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value) ? value : void 0;
+}
+function finite(value) {
+  return typeof value === "number" && Number.isFinite(value);
+}
+function bounded(value, fallback, min, max) {
+  return finite(value) ? Math.min(max, Math.max(min, Math.round(value))) : fallback;
+}
+function clock2(now) {
+  return finite(now) ? Math.min(MAX_CLOCK, Math.max(0, Math.trunc(now))) : 0;
+}
+function timestamp(value) {
+  return finite(value) && value >= 0 && value <= MAX_CLOCK ? Math.trunc(value) : void 0;
+}
+function text2(value, max) {
+  if (typeof value !== "string") return void 0;
+  return value.replace(/[\u0000-\u001f\u007f]/g, " ").trim().slice(0, max) || void 0;
+}
+function validMode(value) {
+  return value === "pomodoro" || value === "countdown" || value === "stopwatch";
+}
+function mode(value) {
+  return validMode(value) ? value : "pomodoro";
+}
+function target(value) {
+  const raw = object(value), title = text2(raw?.title, 500);
+  if (!raw || !title) return void 0;
+  const normalized = { title };
+  for (const [key, max] of [["path", 2048], ["source", 2e3], ["eventId", 500], ["calendarId", 500]]) {
+    const value2 = text2(raw[key], max);
+    if (value2) normalized[key] = value2;
+  }
+  if (finite(raw.line) && Number.isInteger(raw.line) && raw.line >= 0 && raw.line <= 1e7) normalized.line = raw.line;
+  const start = timestamp(raw.plannedStart), end = timestamp(raw.plannedEnd);
+  if (start !== void 0) normalized.plannedStart = start;
+  if (end !== void 0 && (start === void 0 || end > start)) normalized.plannedEnd = end;
+  if (finite(raw.plannedDurationMs) && raw.plannedDurationMs > 0) normalized.plannedDurationMs = Math.max(1, Math.min(MAX_TIMER_DURATION_MS, Math.round(raw.plannedDurationMs)));
+  return normalized;
+}
+function sameTarget(a, b) {
+  return a?.title === b?.title && a?.path === b?.path && a?.line === b?.line && a?.source === b?.source && a?.eventId === b?.eventId && a?.calendarId === b?.calendarId && a?.plannedStart === b?.plannedStart && a?.plannedEnd === b?.plannedEnd && a?.plannedDurationMs === b?.plannedDurationMs;
+}
+function id(now) {
+  nextId++;
+  return `pomodoro-${clock2(now).toString(36)}-${nextId.toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
+}
+function normalizePomodoroConfig(value) {
+  const raw = object(value);
+  return {
+    focusMinutes: bounded(raw?.focusMinutes, defaultPomodoroConfig.focusMinutes, 1, 180),
+    shortBreakMinutes: bounded(raw?.shortBreakMinutes, defaultPomodoroConfig.shortBreakMinutes, 1, 60),
+    longBreakMinutes: bounded(raw?.longBreakMinutes, defaultPomodoroConfig.longBreakMinutes, 1, 60),
+    longBreakEvery: bounded(raw?.longBreakEvery, defaultPomodoroConfig.longBreakEvery, 2, 12)
+  };
+}
+function duration(phase, config) {
+  return (phase === "focus" ? config.focusMinutes : phase === "short-break" ? config.shortBreakMinutes : config.longBreakMinutes) * MINUTE;
+}
+function countdownDuration(minutes2, fallback) {
+  return bounded(minutes2, fallback / MINUTE, 1, 1440) * MINUTE;
+}
+function freshSession(phase, config, now, assigned, timerMode = "pomodoro", durationMs) {
+  const amount = timerMode === "stopwatch" ? MAX_TIMER_DURATION_MS : timerMode === "countdown" ? countdownDuration((durationMs ?? duration("focus", config)) / MINUTE, duration("focus", config)) : duration(phase, config);
+  return {
+    id: id(now),
+    mode: timerMode,
+    phase: timerMode === "pomodoro" ? phase : "focus",
+    status: "idle",
+    durationMs: amount,
+    remainingMs: timerMode === "stopwatch" ? 0 : amount,
+    elapsedMs: 0,
+    segments: [],
+    ...assigned ? { target: { ...assigned } } : {}
+  };
+}
+function createPomodoroState(config, now) {
+  return { session: freshSession("focus", normalizePomodoroConfig(config), now), cycle: 0, records: [] };
+}
+function segmentDuration(segments) {
+  return segments.reduce((sum, segment) => sum + Math.max(0, segment.end - segment.start), 0);
+}
+function normalizedSegments(value, min = 0, max = MAX_CLOCK, limit = MAX_TIMER_DURATION_MS) {
+  if (!Array.isArray(value) || limit <= 0) return [];
+  const intervals = [];
+  for (const candidate of value.slice(-MAX_TIMER_SEGMENTS)) {
+    const raw = object(candidate), start = timestamp(raw?.start), end = timestamp(raw?.end);
+    if (start === void 0 || end === void 0 || end <= start) continue;
+    const clipped = { start: Math.max(min, start), end: Math.min(max, end) };
+    if (clipped.end > clipped.start) intervals.push(clipped);
+  }
+  intervals.sort((a, b) => a.start - b.start || a.end - b.end);
+  const merged = [];
+  let active2 = 0;
+  for (const interval of intervals) {
+    const last = merged.at(-1);
+    if (last && interval.start <= last.end) {
+      const addition = Math.min(limit - active2, Math.max(0, interval.end - last.end));
+      last.end += addition;
+      active2 += addition;
+    } else {
+      const amount = Math.min(limit - active2, interval.end - interval.start);
+      if (amount <= 0) break;
+      merged.push({ start: interval.start, end: interval.start + amount });
+      active2 += amount;
+    }
+    if (active2 >= limit) break;
+  }
+  return merged;
+}
+function normalizedRecords(value) {
+  if (!Array.isArray(value)) return [];
+  const seen = /* @__PURE__ */ new Set(), records = [];
+  for (const candidate of value.slice(-MAX_RECORDS * 2).reverse()) {
+    const raw = object(candidate);
+    if (!raw) continue;
+    const recordId = text2(raw.id, 160), startedAt = timestamp(raw.startedAt), completedAt = timestamp(raw.completedAt);
+    const recordMode = validMode(raw.mode) ? raw.mode : void 0;
+    const phase = raw.phase === "focus" || raw.phase === "short-break" || raw.phase === "long-break" ? raw.phase : void 0;
+    const recordLimit = recordMode === "stopwatch" ? MAX_TIMER_DURATION_MS : recordMode === "countdown" ? MAX_COUNTDOWN : (phase === "short-break" || phase === "long-break" ? 60 : 180) * MINUTE;
+    if (!recordId || seen.has(recordId) || startedAt === void 0 || completedAt === void 0 || completedAt < startedAt || raw.mode !== void 0 && !recordMode || !finite(raw.durationMs) || raw.durationMs < (recordMode ? 1 : MINUTE) || raw.durationMs > recordLimit) continue;
+    const assigned = target(raw.target), segments = Array.isArray(raw.segments) ? normalizedSegments(raw.segments, startedAt, completedAt, recordLimit) : void 0;
+    const actualDuration = segments ? segmentDuration(segments) : Math.trunc(raw.durationMs);
+    if (actualDuration <= 0) continue;
+    const outcome = raw.outcome === "completed" || raw.outcome === "stopped" ? raw.outcome : void 0;
+    seen.add(recordId);
+    records.push({
+      id: recordId,
+      startedAt,
+      completedAt,
+      durationMs: actualDuration,
+      ...assigned ? { target: assigned } : {},
+      ...recordMode ? { mode: recordMode } : {},
+      ...outcome ? { outcome } : {},
+      ...phase ? { phase } : {},
+      ...segments ? { segments } : {},
+      ...raw.segmentsEstimated === true ? { segmentsEstimated: true } : {}
+    });
+    if (records.length === MAX_RECORDS) break;
+  }
+  return records.reverse();
+}
+function normalizePomodoroState(rawValue, config, now) {
+  const normalizedConfig = normalizePomodoroConfig(config), safeNow = clock2(now), raw = object(rawValue), candidate = object(raw?.session);
+  const records = normalizedRecords(raw?.records), cycle = bounded(raw?.cycle, 0, 0, 1e6);
+  if (!candidate) return { ...createPomodoroState(normalizedConfig, safeNow), records, cycle };
+  const timerMode = mode(candidate.mode);
+  const phase = timerMode === "pomodoro" && (candidate.phase === "short-break" || candidate.phase === "long-break") ? candidate.phase : "focus";
+  const status = candidate.status === "running" || candidate.status === "paused" || candidate.status === "finished" ? candidate.status : "idle";
+  const durationMs = timerMode === "stopwatch" ? MAX_TIMER_DURATION_MS : bounded(
+    candidate.durationMs,
+    duration(phase, normalizedConfig),
+    status === "finished" ? 0 : MINUTE,
+    timerMode === "countdown" ? MAX_COUNTDOWN : (phase === "focus" ? 180 : 60) * MINUTE
+  );
+  const assigned = target(candidate.target), startedAt = timestamp(candidate.startedAt);
+  const session = {
+    id: text2(candidate.id, 160) ?? id(safeNow),
+    mode: timerMode,
+    phase,
+    status,
+    durationMs,
+    remainingMs: timerMode === "stopwatch" ? 0 : bounded(candidate.remainingMs, durationMs, 0, durationMs),
+    elapsedMs: 0,
+    segments: [],
+    ...assigned ? { target: assigned } : {}
+  };
+  if (status === "finished") {
+    const outcome = candidate.outcome === "completed" || candidate.outcome === "stopped" ? candidate.outcome : records.find((record) => record.id === session.id)?.outcome;
+    if (outcome) session.outcome = outcome;
+  }
+  if (status !== "idle" && startedAt !== void 0) session.startedAt = Math.min(startedAt, safeNow);
+  if (status === "idle") session.remainingMs = timerMode === "stopwatch" ? 0 : durationMs;
+  if (status === "finished") session.remainingMs = 0;
+  if (status === "paused" && timerMode !== "stopwatch" && session.remainingMs === 0) {
+    session.status = "idle";
+    session.remainingMs = durationMs;
+    delete session.startedAt;
+  }
+  const hasSegments = Array.isArray(candidate.segments);
+  if (session.status !== "idle") {
+    session.segments = normalizedSegments(candidate.segments, session.startedAt ?? 0, safeNow, durationMs);
+    if (!hasSegments && timerMode !== "stopwatch") {
+      const elapsed = Math.max(0, durationMs - session.remainingMs);
+      if (elapsed > 0 && session.startedAt !== void 0) session.segments = normalizedSegments([{ start: session.startedAt, end: session.startedAt + elapsed }], session.startedAt, safeNow, durationMs);
+    }
+    session.elapsedMs = segmentDuration(session.segments);
+    if (session.segments.length > 0 && (candidate.segmentsEstimated === true || !hasSegments)) session.segmentsEstimated = true;
+    if (timerMode !== "stopwatch") session.remainingMs = Math.min(session.remainingMs, Math.max(0, durationMs - session.elapsedMs));
+  }
+  if (session.status === "running") {
+    if (timerMode === "stopwatch") {
+      const activeStart = timestamp(candidate.activeStartedAt) ?? startedAt;
+      if (activeStart === void 0 || activeStart > safeNow || activeStart < (session.segments?.at(-1)?.end ?? 0)) session.status = "paused";
+      else session.activeStartedAt = activeStart;
+    } else {
+      const deadline = timestamp(candidate.deadline);
+      if (deadline === void 0 || startedAt === void 0 || deadline - startedAt < session.remainingMs) {
+        session.status = "paused";
+        if (session.remainingMs === 0) session.remainingMs = durationMs;
+      } else {
+        session.deadline = Math.min(deadline, safeNow + session.remainingMs);
+        const inferredStart = Math.max(0, session.deadline - session.remainingMs);
+        const rawActive = timestamp(candidate.activeStartedAt);
+        if (rawActive !== void 0 && (rawActive > safeNow || rawActive < (session.segments?.at(-1)?.end ?? 0))) {
+          session.status = "paused";
+          delete session.deadline;
+        } else session.activeStartedAt = Math.min(safeNow, rawActive === void 0 ? inferredStart : Math.max(inferredStart, rawActive));
+      }
+    }
+  }
+  if (session.status === "running" && (session.segments?.length ?? 0) >= MAX_TIMER_SEGMENTS) {
+    session.status = "paused";
+    delete session.activeStartedAt;
+    delete session.deadline;
+  }
+  return advancePomodoro({ session, records, cycle }, safeNow);
+}
+function timerSegments(state, now) {
+  const session = state.session, limit = session.mode === "stopwatch" ? MAX_TIMER_DURATION_MS : session.durationMs;
+  const segments = normalizedSegments(session.segments, 0, MAX_CLOCK, limit);
+  if (session.status !== "running" || session.activeStartedAt === void 0) return segments;
+  const end = session.mode === "stopwatch" ? clock2(now) : Math.min(clock2(now), session.deadline ?? clock2(now));
+  const amount = Math.min(limit - segmentDuration(segments), Math.max(0, end - session.activeStartedAt));
+  if (amount > 0) {
+    const last = segments.at(-1);
+    if (last && session.activeStartedAt <= last.end) last.end = Math.max(last.end, session.activeStartedAt + amount);
+    else if (segments.length < MAX_TIMER_SEGMENTS) segments.push({ start: session.activeStartedAt, end: session.activeStartedAt + amount });
+  }
+  return normalizedSegments(segments, 0, MAX_CLOCK, limit);
+}
+function pomodoroElapsed(state, now) {
+  return segmentDuration(timerSegments(state, now));
+}
+function pomodoroRemaining(state, now) {
+  const session = state.session;
+  if (session.mode === "stopwatch" || session.status === "finished") return 0;
+  const remaining = bounded(session.remainingMs, 0, 0, Math.max(0, session.durationMs));
+  if (session.status !== "running" || !finite(session.deadline)) return remaining;
+  return Math.max(0, Math.min(remaining, session.deadline - clock2(now)));
+}
+function closeActive(state, now) {
+  const segments = timerSegments(state, now), session = { ...state.session, segments, elapsedMs: segmentDuration(segments) };
+  delete session.activeStartedAt;
+  delete session.deadline;
+  return session;
+}
+function finish(state, now, outcome) {
+  const previous = state.session, session = { ...closeActive(state, now), status: "finished", remainingMs: 0, outcome };
+  const recordsWork = outcome === "stopped" || previous.mode !== "pomodoro" || previous.phase === "focus";
+  if (!recordsWork || (session.elapsedMs ?? 0) <= 0 || state.records.some((record2) => record2.id === previous.id)) return { ...state, session };
+  const segments = session.segments ?? [], fallbackEnd = clock2(now);
+  const startedAt = segments.length ? Math.min(...segments.map((segment) => segment.start)) : Math.min(fallbackEnd, previous.startedAt ?? fallbackEnd);
+  const completedAt = segments.length ? Math.max(...segments.map((segment) => segment.end)) : fallbackEnd;
+  const record = {
+    id: previous.id,
+    startedAt,
+    completedAt,
+    durationMs: session.elapsedMs ?? 0,
+    mode: previous.mode,
+    outcome,
+    phase: previous.phase,
+    segments: segments.map((segment) => ({ ...segment })),
+    ...previous.target ? { target: { ...previous.target } } : {},
+    ...previous.segmentsEstimated ? { segmentsEstimated: true } : {}
+  };
+  const credit = outcome === "completed" && previous.mode === "pomodoro" && previous.phase === "focus";
+  return { session, cycle: credit ? Math.min(1e6, state.cycle + 1) : state.cycle, records: [...state.records, record].slice(-MAX_RECORDS) };
+}
+function advancePomodoro(state, now) {
+  if (state.session.status !== "running" || state.session.mode === "stopwatch" || pomodoroRemaining(state, now) > 0) return state;
+  return finish(state, now, "completed");
+}
+function followingPhase2(state, config) {
+  if (state.session.phase !== "focus") return "focus";
+  const completed = state.session.outcome ?? state.records.find((record) => record.id === state.session.id)?.outcome;
+  return state.session.status === "finished" && completed !== "stopped" && state.cycle > 0 && state.cycle % config.longBreakEvery === 0 ? "long-break" : "short-break";
+}
+function running(state, now) {
+  const safeNow = clock2(now), old = state.session;
+  if ((old.segments?.length ?? 0) >= MAX_TIMER_SEGMENTS) throw Error("\u6682\u505C\u6B21\u6570\u5DF2\u8FBE\u4E0A\u9650\uFF0C\u8BF7\u5148\u7ED3\u675F\u5F53\u524D\u8BA1\u65F6\u518D\u5F00\u59CB\u3002");
+  if (old.mode === "stopwatch" && (old.elapsedMs ?? 0) >= MAX_TIMER_DURATION_MS) throw Error("\u79D2\u8868\u5DF2\u8FBE\u5230 7 \u5929\u4E0A\u9650\uFF0C\u8BF7\u5148\u7ED3\u675F\u5F53\u524D\u8BA1\u65F6\u3002");
+  const session = { ...old, status: "running", startedAt: Math.min(old.startedAt ?? safeNow, safeNow), activeStartedAt: safeNow };
+  if (old.mode !== "stopwatch") session.deadline = safeNow + old.remainingMs;
+  else delete session.deadline;
+  return advancePomodoro({ ...state, session }, safeNow);
+}
+function assignedTarget(session, value) {
+  const assigned = value === void 0 ? session.target : target(value);
+  if (value !== void 0 && !assigned) throw Error("\u4E13\u6CE8\u4EFB\u52A1\u6807\u9898\u4E0D\u80FD\u4E3A\u7A7A\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u4EFB\u52A1\u3002");
+  return assigned;
+}
+function activeConflict(session, assigned, provided) {
+  if ((session.status === "running" || session.status === "paused") && provided && !sameTarget(session.target, assigned))
+    throw Error("\u5F53\u524D\u8BA1\u65F6\u5DF2\u6709\u4E13\u6CE8\u4EFB\u52A1\uFF0C\u8BF7\u5148\u7ED3\u675F\u5E76\u8BB0\u5F55\u5F53\u524D\u8BA1\u65F6\uFF1B\u5982\u9700\u653E\u5F03\uFF0C\u8BF7\u5148\u91CD\u7F6E\u6216\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u518D\u9009\u62E9\u5176\u4ED6\u4EFB\u52A1\u3002");
+}
+function transitionPomodoro(state, action, config, now) {
+  const current = advancePomodoro(state, now), normalizedConfig = normalizePomodoroConfig(config), session = current.session;
+  const active2 = session.status === "running" || session.status === "paused";
+  if (action.type === "pause") {
+    if (session.status !== "running") return current;
+    return { ...current, session: { ...closeActive(current, now), status: "paused", remainingMs: pomodoroRemaining(current, now) } };
+  }
+  if (action.type === "resume") return session.status === "paused" ? running(current, now) : current;
+  if (action.type === "stop") return active2 ? finish(current, now, "stopped") : current;
+  if (action.type === "reset") return { ...current, session: freshSession(session.phase, normalizedConfig, now, session.target, session.mode, session.durationMs) };
+  if (action.type === "next") return { ...current, session: freshSession(session.mode === "pomodoro" ? followingPhase2(current, normalizedConfig) : "focus", normalizedConfig, now, session.target, session.mode, session.durationMs) };
+  if (action.type === "select-mode") {
+    if (active2) throw Error("\u8BA1\u65F6\u6B63\u5728\u8FDB\u884C\uFF0C\u8BF7\u5148\u7ED3\u675F\u6216\u91CD\u7F6E\u540E\u5207\u6362\u6A21\u5F0F\u3002");
+    if (!validMode(action.mode)) throw Error("\u8BF7\u9009\u62E9\u6709\u6548\u7684\u8BA1\u65F6\u6A21\u5F0F\u3002");
+    const amount = countdownDuration(action.durationMinutes, session.mode === "countdown" ? session.durationMs : duration("focus", normalizedConfig));
+    if (session.status === "idle" && session.mode === action.mode && (action.mode !== "countdown" || amount === session.durationMs)) return current;
+    return { ...current, session: freshSession("focus", normalizedConfig, now, session.target, action.mode, amount) };
+  }
+  if (action.type === "duration") {
+    if (session.status !== "idle") throw Error("\u8BF7\u5728\u8BA1\u65F6\u5F00\u59CB\u524D\u8BBE\u7F6E\u65F6\u957F\u3002");
+    if (session.mode !== "countdown") throw Error("\u81EA\u5B9A\u4E49\u65F6\u957F\u4EC5\u9002\u7528\u4E8E\u5012\u8BA1\u65F6\u6A21\u5F0F\u3002");
+    if (!finite(action.minutes)) throw Error("\u8BF7\u8F93\u5165\u6709\u6548\u7684\u5206\u949F\u6570\u3002");
+    const amount = countdownDuration(action.minutes, session.durationMs);
+    return amount === session.durationMs ? current : { ...current, session: { ...session, durationMs: amount, remainingMs: amount } };
+  }
+  if (action.type === "adjust") {
+    if (session.mode !== "countdown" || !active2) throw Error("\u53EA\u6709\u6B63\u5728\u8FD0\u884C\u6216\u6682\u505C\u7684\u5012\u8BA1\u65F6\u53EF\u4EE5\u8C03\u6574\u65F6\u957F\u3002");
+    if (!finite(action.minutes)) throw Error("\u8BF7\u8F93\u5165\u6709\u6548\u7684\u8C03\u6574\u5206\u949F\u6570\u3002");
+    const closed = closeActive(current, now), elapsed = closed.elapsedMs ?? 0;
+    const remaining = Math.max(0, Math.min(MAX_COUNTDOWN - elapsed, pomodoroRemaining(current, now) + Math.round(action.minutes * MINUTE)));
+    if (remaining === pomodoroRemaining(current, now)) return current;
+    const adjusted = { ...current, session: { ...closed, durationMs: elapsed + remaining, remainingMs: remaining } };
+    if (remaining === 0) return finish(adjusted, now, "completed");
+    return session.status === "running" ? running(adjusted, now) : adjusted;
+  }
+  if (action.type === "timer") {
+    const selected = action.mode ?? session.mode;
+    if (!validMode(selected)) throw Error("\u8BF7\u9009\u62E9\u6709\u6548\u7684\u8BA1\u65F6\u6A21\u5F0F\u3002");
+    const assigned2 = assignedTarget(session, action.target);
+    activeConflict(session, assigned2, action.target !== void 0);
+    if (active2 && selected !== session.mode) throw Error("\u5DF2\u6709\u8BA1\u65F6\u6B63\u5728\u8FDB\u884C\uFF0C\u8BF7\u5148\u7ED3\u675F\u6216\u91CD\u7F6E\u540E\u5F00\u59CB\u53E6\u4E00\u79CD\u8BA1\u65F6\u3002");
+    if (active2) {
+      if (selected === "pomodoro" && session.phase !== "focus") throw Error("\u4F11\u606F\u6B63\u5728\u8FDB\u884C\uFF0C\u8BF7\u5148\u7ED3\u675F\u6216\u8DF3\u8FC7\u540E\u5F00\u59CB\u4E13\u6CE8\u3002");
+      return session.status === "paused" ? running(current, now) : current;
+    }
+    const amount = countdownDuration(action.durationMinutes, selected === session.mode ? session.durationMs : duration("focus", normalizedConfig));
+    if (selected === "pomodoro") return running({ ...current, session: session.status === "idle" && session.mode === "pomodoro" && session.phase === "focus" ? { ...session, ...assigned2 ? { target: { ...assigned2 } } : {} } : freshSession("focus", normalizedConfig, now, assigned2) }, now);
+    const next = session.status === "idle" && session.mode === selected ? {
+      ...session,
+      target: assigned2,
+      ...selected === "countdown" ? { durationMs: amount, remainingMs: amount } : {}
+    } : freshSession("focus", normalizedConfig, now, assigned2, selected, amount);
+    return running({ ...current, session: next }, now);
+  }
+  const assigned = assignedTarget(session, action.target);
+  if (action.type === "focus" && session.mode !== "pomodoro") {
+    if (active2) throw Error("\u5DF2\u6709\u8BA1\u65F6\u6B63\u5728\u8FDB\u884C\uFF0C\u8BF7\u5148\u7ED3\u675F\u6216\u91CD\u7F6E\u540E\u5F00\u59CB\u756A\u8304\u4E13\u6CE8\u3002");
+    return running({ ...current, session: freshSession("focus", normalizedConfig, now, assigned) }, now);
+  }
+  if (action.type === "start" || session.phase === "focus") activeConflict(session, assigned, action.target !== void 0);
+  if (action.type === "focus" && (session.phase !== "focus" || session.status === "finished")) return running({ ...current, session: freshSession("focus", normalizedConfig, now, assigned) }, now);
+  if (session.status === "running") return current;
+  if (session.status === "paused") return running(current, now);
+  if (session.status === "finished") return running({ ...current, session: freshSession(session.mode === "pomodoro" ? followingPhase2(current, normalizedConfig) : "focus", normalizedConfig, now, assigned, session.mode, session.durationMs) }, now);
+  return running({ ...current, session: { ...session, ...assigned ? { target: { ...assigned } } : {} } }, now);
+}
+
 // src/calendar-settings.ts
 function appleCalendarSettings(value) {
   const raw = value && typeof value === "object" ? value : {};
   return {
     ...defaultAppleSettings,
     enabled: raw.enabled === true,
-    selectedCalendarIds: Array.isArray(raw.selectedCalendarIds) ? [...new Set(raw.selectedCalendarIds.filter((id) => typeof id === "string" && id.length > 0 && id.length <= 1024))].slice(0, 200) : [],
+    selectedCalendarIds: Array.isArray(raw.selectedCalendarIds) ? [...new Set(raw.selectedCalendarIds.filter((id2) => typeof id2 === "string" && id2.length > 0 && id2.length <= 1024))].slice(0, 200) : [],
     defaultCalendarId: typeof raw.defaultCalendarId === "string" && raw.defaultCalendarId.length <= 1024 ? raw.defaultCalendarId : ""
   };
 }
 function calendarSettings(saved, legacy) {
   const own = !!saved && typeof saved === "object", raw = own ? saved : legacy && typeof legacy === "object" ? legacy : {};
   const folders = validateFolders(typeof raw.cardFolder === "string" ? raw.cardFolder : defaultFilingSettings.cardFolder, typeof raw.journalFolder === "string" ? raw.journalFolder : defaultFilingSettings.journalFolder);
-  return { ...folders, showLunar: raw.showLunar !== false, showFestivals: raw.showFestivals !== false, showSolarTerms: raw.showSolarTerms !== false, showHolidays: raw.showHolidays !== false, calendarDensity: raw.calendarDensity === "compact" ? "compact" : "comfortable", surfaceStyle: raw.surfaceStyle === "paper" ? "paper" : "soft", accent: ["forest", "blue", "amber", "rose"].includes(String(raw.accent)) ? raw.accent : "forest", glassEffects: raw.glassEffects !== false, linkCreatedNotes: raw.linkCreatedNotes !== false, appleCalendar: appleCalendarSettings(own ? raw.appleCalendar : void 0), ...!own && legacy ? { migratedFrom: "thoughtspace" } : typeof raw.migratedFrom === "string" ? { migratedFrom: raw.migratedFrom } : {} };
+  return { ...folders, showLunar: raw.showLunar !== false, showFestivals: raw.showFestivals !== false, showSolarTerms: raw.showSolarTerms !== false, showHolidays: raw.showHolidays !== false, calendarDensity: raw.calendarDensity === "compact" ? "compact" : "comfortable", surfaceStyle: raw.surfaceStyle === "paper" ? "paper" : "soft", accent: ["forest", "blue", "amber", "rose"].includes(String(raw.accent)) ? raw.accent : "forest", glassEffects: raw.glassEffects !== false, linkCreatedNotes: raw.linkCreatedNotes !== false, appleCalendar: appleCalendarSettings(own ? raw.appleCalendar : void 0), pomodoro: normalizePomodoroConfig(raw.pomodoro), ...!own && legacy ? { migratedFrom: "thoughtspace" } : typeof raw.migratedFrom === "string" ? { migratedFrom: raw.migratedFrom } : {} };
 }
 
 // src/view-opening.ts
@@ -18403,10 +19865,10 @@ var NativeCalendarTransport = class {
 };
 
 // src/large-calendar-view.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian12 = require("obsidian");
 
 // src/calendar-modals.ts
-var import_obsidian8 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 function label(parent, title) {
   const el = parent.createEl("label", { cls: "tsc-event-field" });
   el.createSpan({ text: title });
@@ -18414,11 +19876,11 @@ function label(parent, title) {
 }
 function iconButton(parent, icon, title, callback) {
   const button = parent.createEl("button", { cls: "tsc-icon-button", attr: { "aria-label": title, "title": title, "type": "button" } });
-  (0, import_obsidian8.setIcon)(button, icon);
+  (0, import_obsidian10.setIcon)(button, icon);
   button.onclick = callback;
   return button;
 }
-var AppleCalendarConnectionModal = class extends import_obsidian8.Modal {
+var AppleCalendarConnectionModal = class extends import_obsidian10.Modal {
   constructor(host) {
     super(host.app);
     this.host = host;
@@ -18466,7 +19928,7 @@ var AppleCalendarConnectionModal = class extends import_obsidian8.Modal {
       if (result.authorization !== "authorized") throw new Error("\u6CA1\u6709\u83B7\u5F97\u5B8C\u6574\u65E5\u5386\u6743\u9650\uFF0C\u8BF7\u5728\u7CFB\u7EDF\u8BBE\u7F6E\u4E2D\u5141\u8BB8\u8BBF\u95EE");
       const data = await this.host.apple.calendars();
       const old = this.host.appleSettings();
-      const selected = old.selectedCalendarIds.filter((id) => data.calendars.some((c) => c.id === id));
+      const selected = old.selectedCalendarIds.filter((id2) => data.calendars.some((c) => c.id === id2));
       if (!selected.length && data.defaultCalendarId) selected.push(data.defaultCalendarId);
       await this.host.saveAppleSettings({
         ...old,
@@ -18494,11 +19956,11 @@ var AppleCalendarConnectionModal = class extends import_obsidian8.Modal {
       const check = row.createEl("input", { type: "checkbox" });
       check.checked = settings.selectedCalendarIds.includes(calendar.id);
       row.createSpan({ cls: "tsc-calendar-dot" }).style.backgroundColor = calendar.color;
-      const text = row.createDiv();
-      text.createSpan({ text: calendar.title });
-      text.createEl("small", { text: `${calendar.source}${calendar.editable ? "" : " \xB7 \u53EA\u8BFB"}` });
+      const text3 = row.createDiv();
+      text3.createSpan({ text: calendar.title });
+      text3.createEl("small", { text: `${calendar.source}${calendar.editable ? "" : " \xB7 \u53EA\u8BFB"}` });
       check.onchange = () => {
-        settings.selectedCalendarIds = settings.selectedCalendarIds.filter((id) => id !== calendar.id);
+        settings.selectedCalendarIds = settings.selectedCalendarIds.filter((id2) => id2 !== calendar.id);
         if (check.checked) settings.selectedCalendarIds.push(calendar.id);
       };
     }
@@ -18534,12 +19996,13 @@ var AppleCalendarConnectionModal = class extends import_obsidian8.Modal {
     this.contentEl.createEl("button", { text: "\u91CD\u8BD5" }).onclick = () => void this.load();
   }
 };
-var CalendarEventModal = class extends import_obsidian8.Modal {
-  constructor(host, date, event) {
+var CalendarEventModal = class extends import_obsidian10.Modal {
+  constructor(host, date, event, endDate) {
     super(host.app);
     this.host = host;
     this.date = date;
     this.event = event;
+    this.endDate = endDate;
   }
   closed = false;
   pending = false;
@@ -18576,11 +20039,11 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
       const allDay = toggle.createEl("input", { type: "checkbox" });
       toggle.createSpan({ text: "\u5168\u5929" });
       allDay.checked = original?.allDay ?? false;
-      const dates = form.createDiv({ cls: "tsc-event-dates" });
-      const start = label(dates, "\u5F00\u59CB").createEl("input");
-      const end = label(dates, "\u7ED3\u675F").createEl("input");
+      const dates2 = form.createDiv({ cls: "tsc-event-dates" });
+      const start = label(dates2, "\u5F00\u59CB").createEl("input");
+      const end = label(dates2, "\u7ED3\u675F").createEl("input");
       let initialStart = original ? new Date(original.start) : new Date(this.date);
-      let initialEnd = original ? new Date(original.end) : new Date(initialStart.getTime() + 36e5);
+      let initialEnd = original ? new Date(original.end) : this.endDate && Number.isFinite(+this.endDate) && this.endDate > initialStart ? new Date(this.endDate) : new Date(initialStart.getTime() + 36e5);
       const fillDates = () => {
         start.type = end.type = allDay.checked ? "date" : "datetime-local";
         start.value = allDay.checked ? dayKey(initialStart) : toDateInput(initialStart);
@@ -18593,7 +20056,7 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
         try {
           if (allDay.checked) {
             initialStart = parseDateInput(previousStart, false);
-            initialEnd = addDays(parseDateInput(previousEnd, false), 1);
+            initialEnd = addDays(new Date(+parseDateInput(previousEnd, false) - 1), 1);
           } else if (priorAllDay) {
             initialStart = parseDateInput(previousStart, true);
             initialStart.setHours(9);
@@ -18646,10 +20109,10 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
             await this.host.eventMoved(original, saved);
           } catch (linkError) {
             linkFailed = true;
-            new import_obsidian8.Notice(`\u82F9\u679C\u65E5\u7A0B\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u7B14\u8BB0\u5173\u8054\u66F4\u65B0\u5931\u8D25\uFF1A${linkError instanceof Error ? linkError.message : "\u8BF7\u91CD\u65B0\u5173\u8054\u7B14\u8BB0"}`, 1e4);
+            new import_obsidian10.Notice(`\u82F9\u679C\u65E5\u7A0B\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u7B14\u8BB0\u5173\u8054\u66F4\u65B0\u5931\u8D25\uFF1A${linkError instanceof Error ? linkError.message : "\u8BF7\u91CD\u65B0\u5173\u8054\u7B14\u8BB0"}`, 1e4);
           }
           this.host.changed();
-          if (!linkFailed) new import_obsidian8.Notice(original ? "\u82F9\u679C\u65E5\u7A0B\u5DF2\u66F4\u65B0" : "\u5DF2\u521B\u5EFA\u82F9\u679C\u65E5\u7A0B");
+          if (!linkFailed) new import_obsidian10.Notice(original ? "\u82F9\u679C\u65E5\u7A0B\u5DF2\u66F4\u65B0" : "\u5DF2\u521B\u5EFA\u82F9\u679C\u65E5\u7A0B");
           this.close();
         } catch (err) {
           if (!this.closed) error.textContent = err instanceof Error ? err.message : "\u4FDD\u5B58\u5931\u8D25";
@@ -18676,8 +20139,8 @@ var CalendarEventModal = class extends import_obsidian8.Modal {
 };
 
 // src/calendar-task-modal.ts
-var import_obsidian9 = require("obsidian");
-var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
+var import_obsidian11 = require("obsidian");
+var CalendarTaskScheduleModal = class extends import_obsidian11.Modal {
   constructor(host, task, date) {
     super(host.app);
     this.host = host;
@@ -18686,6 +20149,7 @@ var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
   }
   pending = false;
   closed = false;
+  timeRange;
   onOpen() {
     this.modalEl.addClass("tsc-dialog", "ts-calendar-plugin");
     this.setTitle("\u5B89\u6392\u4EFB\u52A1");
@@ -18703,6 +20167,7 @@ var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
     start.step = end.step = "60";
     start.value = this.task.startMinute === void 0 ? "" : clockLabel(this.task.startMinute);
     end.value = this.task.endMinute === void 0 ? "" : clockLabel(this.task.endMinute);
+    this.timeRange = mountTimeRangePicker(form, start, end, timeRangeEscape(this.app, this.scope));
     form.createEl("small", { text: "\u4FDD\u5B58\u56DE\u539F\u7B14\u8BB0\uFF0C\u4FDD\u7559\u622A\u6B62\u65E5\u671F\u4E0E\u5757\u5F15\u7528\u3002", cls: "tsc-muted" });
     const error = form.createDiv({ cls: "tsc-error", attr: { role: "alert" } });
     const actions = form.createDiv({ cls: "tsc-dialog-actions" });
@@ -18711,7 +20176,8 @@ var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
     const save = actions.createEl("button", { text: "\u4FDD\u5B58\u5B89\u6392", cls: "mod-cta", attr: { type: "submit" } });
     form.onsubmit = async (e) => {
       e.preventDefault();
-      if (this.pending || !this.host.scheduleTask) return;
+      if (this.closed || this.pending || !this.host.scheduleTask) return;
+      const focused = this.contentEl.ownerDocument.activeElement;
       try {
         parseDay(date.value);
         if (end.value && !start.value) throw Error("\u8BF7\u5148\u586B\u5199\u5F00\u59CB\u65F6\u95F4");
@@ -18722,6 +20188,7 @@ var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
         if (start.value && end.value && minute(end.value) <= minute(start.value)) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4");
         this.pending = true;
         [date, start, end, cancel, save].forEach((el) => el.disabled = true);
+        this.timeRange?.refresh();
         await this.host.scheduleTask(this.task, date.value, start.value ? minute(start.value) : void 0, end.value ? minute(end.value) : void 0, !start.value && this.task.startMinute !== void 0);
         this.host.changed();
         this.close();
@@ -18729,90 +20196,86 @@ var CalendarTaskScheduleModal = class extends import_obsidian9.Modal {
         if (!this.closed) error.textContent = e2 instanceof Error ? e2.message : String(e2);
       } finally {
         this.pending = false;
-        if (!this.closed) [date, start, end, cancel, save].forEach((el) => el.disabled = false);
+        if (!this.closed) {
+          [date, start, end, cancel, save].forEach((el) => el.disabled = false);
+          this.timeRange?.refresh();
+          if (focused && form.contains(focused)) focused.focus();
+        }
       }
     };
     date.focus();
   }
   onClose() {
     this.closed = true;
+    this.timeRange?.destroy();
+    this.timeRange = void 0;
     this.contentEl.empty();
   }
 };
 
-// src/calendar-scheduling.ts
-var stale = () => new Error("\u4EFB\u52A1\u539F\u6587\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u518D\u64CD\u4F5C");
-function resolveCalendarTask(tasks, displayed) {
-  if (!Number.isInteger(displayed.line) || (displayed.line ?? -1) < 0 || typeof displayed.sourceSnapshot !== "string") throw stale();
-  const current = tasks.find((task) => task.path === displayed.source && task.line === displayed.line);
-  if (!current || current.source !== displayed.sourceSnapshot || current.checked !== displayed.completed) throw stale();
-  if (current.recurring && current.indexRevision !== displayed.indexRevision) throw stale();
-  const role = displayed.dateRole;
-  const expected = role === "scheduled" ? current.scheduled : role === "due" ? current.due : role === "day" ? !current.scheduled && !current.due ? current.day : void 0 : role === "unscheduled" && !current.scheduled && !current.due && !current.day ? "" : void 0;
-  if (expected === void 0 || expected !== displayed.date || current.scheduled !== displayed.scheduledDate) throw stale();
-  return current;
-}
-function calendarTaskCanSchedule(task) {
-  return !task.completed && typeof task.sourceSnapshot === "string" && Number.isInteger(task.line) && (task.line ?? -1) >= 0 && !!task.dateRole && !(task.dateRole === "due" && !!task.scheduledDate);
-}
-function snapCalendarMinute(value) {
-  if (!Number.isFinite(value)) throw Error("\u65F6\u95F4\u65E0\u6548");
-  return Math.min(1440, Math.max(0, Math.round(value / 15) * 15));
-}
-function taskSchedulingChange(task, date, startMinute, endMinute) {
-  parseDay(date);
-  if (!calendarTaskCanSchedule(task)) throw Error(task.completed ? "\u5DF2\u5B8C\u6210\u4EFB\u52A1\u4E0D\u80FD\u91CD\u65B0\u5B89\u6392" : task.dateRole === "due" && task.scheduledDate ? "\u8FD9\u662F\u622A\u6B62\u65E5\u671F\uFF0C\u8BF7\u62D6\u52A8\u4EFB\u52A1\u7684\u5B89\u6392\u65E5\u671F" : "\u8BF7\u5237\u65B0\u4EFB\u52A1\u540E\u518D\u5B89\u6392");
-  if (startMinute === void 0) {
-    if (endMinute !== void 0) throw Error("\u8BF7\u5148\u8BBE\u7F6E\u5F00\u59CB\u65F6\u95F4");
-    return { scheduled: date };
-  }
-  if (!Number.isInteger(startMinute) || startMinute < 0 || startMinute > 1438) throw Error("\u5F00\u59CB\u65F6\u95F4\u987B\u5728 00:00 \u81F3 23:58 \u4E4B\u95F4");
-  const start = startMinute;
-  if (endMinute !== void 0 && (!Number.isInteger(endMinute) || endMinute <= start || endMinute > 1440)) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u4E14\u4E0D\u8D85\u8FC7\u5F53\u5929");
-  const duration = task.endMinute !== void 0 && task.startMinute !== void 0 && task.endMinute > task.startMinute ? task.endMinute - task.startMinute : 30;
-  const finish = endMinute === void 0 ? start + duration : endMinute;
-  const end = Math.min(1439, finish);
-  return { scheduled: date, time: { start: clockLabel(start), end: clockLabel(end) } };
-}
-function assertEvent(event) {
-  if (!event.editable) throw Error("\u8FD9\u4E2A\u65E5\u7A0B\u53EA\u8BFB\uFF0C\u65E0\u6CD5\u8C03\u6574");
-  const start = new Date(event.start), end = new Date(event.end);
-  if (!Number.isFinite(+start) || !Number.isFinite(+end) || end <= start) throw Error("\u65E5\u7A0B\u65F6\u95F4\u65E0\u6548");
-  if (!event.id || !event.calendarId || !event.revision) throw Error("\u8BF7\u5237\u65B0\u65E5\u7A0B\u540E\u518D\u8C03\u6574");
+// src/calendar-range-selection.ts
+function calendarTimeRange(anchor, current) {
+  const from = snapCalendarMinute(anchor), to = snapCalendarMinute(current);
+  const start = Math.min(1425, Math.min(from, to));
+  const end = Math.min(1439, Math.max(start + 15, from, to));
   return { start, end };
 }
-function draft(event, start, end) {
-  if (end <= start || +end - +start > 366 * 864e5) throw Error("\u7ED3\u675F\u65F6\u95F4\u987B\u665A\u4E8E\u5F00\u59CB\u65F6\u95F4\uFF0C\u6700\u957F\u4E00\u5E74");
-  parseDay(dayKey(start));
-  parseDay(dayKey(end));
-  return { title: event.title, start: start.toISOString(), end: end.toISOString(), allDay: event.allDay, calendarId: event.calendarId, location: event.location, notes: event.notes, eventId: event.id, originalStart: event.start, revision: event.revision };
-}
-function localMinute(date, minute) {
-  if (minute === 1440) return addDays(parseDay(date), 1);
-  return parseDateInput(`${date}T${clockLabel(minute)}`, false);
-}
-var civilDayNumber = (date) => Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 864e5;
-function eventMoveDraft(event, date, startMinute) {
-  const original = assertEvent(event), day = parseDay(date);
-  if (startMinute === void 0 && dayKey(original.start) === date) return draft(event, original.start, original.end);
-  if (event.allDay) {
-    if (startMinute !== void 0) throw Error("\u5168\u5929\u65E5\u7A0B\u8BF7\u62D6\u5230\u65E5\u671F\u6216\u5168\u5929\u533A\u57DF");
-    const days = civilDayNumber(original.end) - civilDayNumber(original.start);
-    if (days < 1 || !Number.isInteger(days)) throw Error("\u5168\u5929\u65E5\u7A0B\u65F6\u95F4\u65E0\u6548");
-    return draft(event, day, addDays(day, days));
+
+// src/timer-calendar-model.ts
+var MAX_RECORDS2 = 200;
+var MAX_SEGMENTS = 500;
+var MAX_TIMESTAMP = 864e13;
+var timestamp2 = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0 && value < MAX_TIMESTAMP;
+var positive = (value) => typeof value === "number" && Number.isFinite(value) && value > 0;
+function activeSegments(record) {
+  if (!positive(record.durationMs) || !timestamp2(record.startedAt) || !timestamp2(record.completedAt) || record.completedAt <= record.startedAt) return { segments: [], estimated: false };
+  const hasSegments = Array.isArray(record.segments), estimated = !hasSegments || record.segmentsEstimated === true;
+  const raw = hasSegments ? record.segments.slice(-MAX_SEGMENTS) : [{ start: record.startedAt, end: Math.min(record.completedAt, record.startedAt + record.durationMs) }];
+  const sorted = raw.filter((segment) => segment && timestamp2(segment.start) && timestamp2(segment.end) && segment.end > segment.start).map((segment) => ({ start: Math.max(record.startedAt, segment.start), end: Math.min(record.completedAt, segment.end) })).filter((segment) => segment.end > segment.start).sort((a, b) => a.start - b.start || a.end - b.end);
+  const merged = [];
+  for (const segment of sorted) {
+    const previous = merged.at(-1);
+    if (previous && segment.start <= previous.end) previous.end = Math.max(previous.end, segment.end);
+    else merged.push({ ...segment });
   }
-  const minute = startMinute === void 0 ? original.start.getHours() * 60 + original.start.getMinutes() : Math.min(1425, snapCalendarMinute(startMinute));
-  const start = localMinute(date, minute);
-  if (startMinute === void 0) start.setSeconds(original.start.getSeconds(), original.start.getMilliseconds());
-  return draft(event, start, new Date(+start + (+original.end - +original.start)));
+  let remaining = record.durationMs;
+  const segments = [];
+  for (const segment of merged) {
+    if (remaining <= 0) break;
+    const duration2 = Math.min(remaining, segment.end - segment.start);
+    segments.push({ start: segment.start, end: segment.start + duration2 });
+    remaining -= duration2;
+  }
+  return { segments, estimated };
 }
-function eventResizeDraft(event, date, endMinute) {
-  const { start, end } = assertEvent(event);
-  parseDay(date);
-  if (event.allDay) throw Error("\u5168\u5929\u65E5\u7A0B\u8BF7\u6253\u5F00\u7F16\u8F91\u7A97\u53E3\u8C03\u6574\u65E5\u671F");
-  const snapped = snapCalendarMinute(endMinute);
-  if (dayKey(end) === date && end.getHours() * 60 + end.getMinutes() === snapped) return draft(event, start, end);
-  return draft(event, start, localMinute(date, snapped));
+function timerRecordsOnDay(records, date) {
+  if (!Number.isFinite(+date)) return [];
+  const start = +new Date(date.getFullYear(), date.getMonth(), date.getDate()), end = +new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+  const result = [], seen = /* @__PURE__ */ new Set();
+  for (const record of records.slice(-MAX_RECORDS2).reverse()) {
+    if (!record || typeof record.id !== "string" || seen.has(record.id)) continue;
+    seen.add(record.id);
+    const mode2 = record.mode === "stopwatch" || record.mode === "countdown" ? record.mode : "pomodoro";
+    if (mode2 === "pomodoro" && (record.phase === "short-break" || record.phase === "long-break")) continue;
+    const normalized = activeSegments(record), segments = normalized.segments.filter((segment) => segment.start < end && segment.end > start).map((segment) => ({ start: Math.max(start, segment.start), end: Math.min(end, segment.end) }));
+    if (!segments.length) continue;
+    const durationMs = segments.reduce((sum, segment) => sum + segment.end - segment.start, 0), totalDurationMs = normalized.segments.reduce((sum, segment) => sum + segment.end - segment.start, 0);
+    const target2 = record.target, planned = target2?.plannedDurationMs;
+    const plannedDurationMs = positive(planned) ? planned : timestamp2(target2?.plannedStart) && timestamp2(target2?.plannedEnd) && target2.plannedEnd > target2.plannedStart ? target2.plannedEnd - target2.plannedStart : void 0;
+    result.push({ id: record.id, title: target2?.title || "\u81EA\u7531\u8BA1\u65F6", mode: mode2, ...target2 ? { target: target2 } : {}, segments, durationMs, totalDurationMs, ...plannedDurationMs ? { plannedDurationMs } : {}, estimated: normalized.estimated, record });
+  }
+  return result.sort((a, b) => a.segments[0].start - b.segments[0].start || a.id.localeCompare(b.id));
+}
+function timerActualMsOnDay(records, date) {
+  return timerRecordsOnDay(records, date).reduce((sum, item) => sum + item.durationMs, 0);
+}
+function timerMinuteLabel(durationMs) {
+  if (!positive(durationMs)) return "0";
+  if (durationMs < 6e4) return "<1";
+  return String(Math.round(durationMs / 6e3) / 10);
+}
+function timerModeLabel(mode2) {
+  return mode2 === "stopwatch" ? "\u6B63\u8BA1\u65F6" : mode2 === "countdown" ? "\u5012\u8BA1\u65F6" : "\u756A\u8304\u4E13\u6CE8";
 }
 
 // src/large-calendar-view.ts
@@ -18824,7 +20287,7 @@ var datedTime = (iso, day) => {
 };
 var resumeState = Symbol.for("thoughtspace-calendar.large-calendar-resume");
 var dragType = "application/x-thoughtspace-calendar-item";
-var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemView {
+var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemView {
   constructor(leaf, host) {
     super(leaf);
     this.host = host;
@@ -18841,9 +20304,15 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
   backlog = [];
   drag;
   resizing;
+  selecting;
   saving = false;
   deferredRefresh = false;
   deferredForce = false;
+  deferredTimerRefresh = false;
+  timerState;
+  timerPill;
+  timerPillLabel;
+  agendaTimerPill;
   externalDragging = false;
   externalDragTimer;
   suppressClickUntil = 0;
@@ -18908,21 +20377,27 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     };
     this.iconButton(navigation, "chevron-right", "\u4E0B\u4E00\u4E2A\u5468\u671F", () => this.navigate(1));
     const modes2 = header.createDiv({ cls: "tsc-view-modes", attr: { role: "group", "aria-label": "\u65E5\u5386\u89C6\u56FE" } });
-    for (const [mode, title] of [["month", "\u6708"], ["week", "\u5468"]]) {
+    for (const [mode2, title] of [["month", "\u6708"], ["week", "\u5468"]]) {
       const button = modes2.createEl("button", { text: title });
-      this.modeButtons.set(mode, button);
+      this.modeButtons.set(mode2, button);
       button.onclick = () => {
-        this.mode = mode;
+        this.mode = mode2;
         this.anchor = new Date(this.selected);
         this.saveLayout();
         void this.refresh();
       };
     }
     const actions = header.createDiv({ cls: "tsc-large-actions" });
+    if (this.host.timerSnapshot && this.host.openTimer) {
+      this.timerPill = actions.createEl("button", { cls: "tsc-active-timer-pill", attr: { "aria-label": "\u6253\u5F00\u8BA1\u65F6\u5668", title: "\u6253\u5F00\u8BA1\u65F6\u5668" } });
+      (0, import_obsidian12.setIcon)(this.timerPill.createSpan(), "timer");
+      this.timerPillLabel = this.timerPill.createSpan();
+      this.timerPill.onclick = () => this.run(() => this.host.openTimer());
+    }
     this.iconButton(actions, "refresh-cw", "\u5237\u65B0\u65E5\u7A0B\u548C\u4EFB\u52A1", () => void this.refresh(true));
     this.iconButton(actions, "calendar-cog", "\u82F9\u679C\u65E5\u5386\u8FDE\u63A5\u4E0E\u9009\u62E9", () => new AppleCalendarConnectionModal(this.host).open());
     const create = actions.createEl("button", { cls: "mod-cta tsc-add-event" });
-    (0, import_obsidian10.setIcon)(create.createSpan(), "plus");
+    (0, import_obsidian12.setIcon)(create.createSpan(), "plus");
     create.createSpan({ text: "\u65B0\u65E5\u7A0B" });
     create.onclick = () => this.openEvent();
     const body = this.contentEl.createDiv({ cls: "tsc-large-body" });
@@ -18931,6 +20406,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     this.status = this.contentEl.createDiv({ cls: "tsc-large-status", attr: { role: "status", "aria-live": "polite" } });
     this.registerDomEvent(this.win, "keydown", (e) => {
       if (e.key === "Escape") {
+        this.selecting?.();
         this.resizing?.();
         this.endDrag();
       }
@@ -18948,11 +20424,17 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
       if (this.visible() && this.host.appleSettings().enabled) void this.refresh();
     }, 6e4);
     this.register(() => this.win.clearInterval(this.timer));
+    this.register(() => {
+      this.closed = true;
+      this.selecting?.();
+      this.resizing?.();
+    });
     await this.refresh();
   }
   async onClose() {
     this.leaf[resumeState] = this.getState();
     this.closed = true;
+    this.selecting?.();
     this.resizing?.();
     this.drag = void 0;
     this.revision++;
@@ -18971,8 +20453,46 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     void this.refresh();
   }
   async refresh(force = false) {
+    await this.loadCalendar(force);
+  }
+  /** Clock updates touch only two text labels; no calendar rows or transport calls. */
+  refreshTimerClock(snapshot) {
     if (this.closed) return;
-    if (this.drag || this.externalDragging || this.resizing || this.saving) {
+    this.timerState = snapshot;
+    const session = snapshot.state.session;
+    const active2 = session.status === "running" || session.status === "paused", mode2 = session.mode || "pomodoro";
+    const ms = mode2 === "stopwatch" ? snapshot.elapsedMs : snapshot.remainingMs, seconds = Math.max(0, mode2 === "stopwatch" ? Math.floor(ms / 1e3) : Math.ceil(ms / 1e3));
+    const minutes2 = seconds >= 3600 ? Math.floor(seconds / 60) % 60 : Math.floor(seconds / 60);
+    const clock3 = `${seconds >= 3600 ? String(Math.floor(seconds / 3600)).padStart(2, "0") + ":" : ""}${String(minutes2).padStart(2, "0")}:${String(seconds % 60).padStart(2, "0")}`;
+    const modeLabel = mode2 === "pomodoro" && session.phase !== "focus" ? "\u4F11\u606F" : timerModeLabel(mode2);
+    const label2 = active2 ? `${modeLabel} ${clock3}${session.status === "paused" ? " \xB7 \u6682\u505C" : ""}` : "\u8BA1\u65F6\u5668";
+    if (this.timerPillLabel && this.timerPillLabel.textContent !== label2) this.timerPillLabel.textContent = label2;
+    if (this.timerPill) {
+      this.timerPill.dataset.active = String(active2);
+      this.timerPill.title = session.target?.title || "\u6253\u5F00\u8BA1\u65F6\u5668";
+    }
+    if (this.agendaTimerPill) {
+      this.agendaTimerPill.hidden = !active2 || dayKey(this.selected) !== dayKey(/* @__PURE__ */ new Date());
+      const text3 = `${label2} \xB7 ${session.target?.title || "\u81EA\u7531\u8BA1\u65F6"}`;
+      if (this.agendaTimerPill.textContent !== text3) this.agendaTimerPill.textContent = text3;
+    }
+  }
+  /** Reconcile local timer transitions without loading Apple events again. */
+  refreshTimer() {
+    if (this.closed || !this.main) return;
+    const snapshot = this.host.timerSnapshot?.();
+    if (snapshot) this.refreshTimerClock(snapshot);
+    if (this.drag || this.externalDragging || this.resizing || this.selecting || this.saving) {
+      this.deferredTimerRefresh = true;
+      return;
+    }
+    this.deferredTimerRefresh = false;
+    this.renderCalendar(visibleDays(this.anchor, this.mode));
+    this.renderAgenda();
+  }
+  async loadCalendar(force = false, afterSave = false) {
+    if (this.closed) return;
+    if (this.drag || this.externalDragging || this.resizing || this.selecting || this.saving && !afterSave) {
       this.deferredRefresh = true;
       this.deferredForce ||= force;
       return;
@@ -18980,11 +20500,11 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     const revision = ++this.revision;
     const days = visibleDays(this.anchor, this.mode), end = addDays(days.at(-1), 1);
     this.title.textContent = this.mode === "month" ? `${this.anchor.getFullYear()} \u5E74 ${this.anchor.getMonth() + 1} \u6708` : `${days[0].getMonth() + 1} \u6708 ${days[0].getDate()} \u65E5 \u2014 ${days[6].getMonth() + 1} \u6708 ${days[6].getDate()} \u65E5`;
-    for (const [mode, button] of this.modeButtons) button.setAttribute("aria-pressed", String(mode === this.mode));
+    for (const [mode2, button] of this.modeButtons) button.setAttribute("aria-pressed", String(mode2 === this.mode));
     this.status.textContent = "\u6B63\u5728\u52A0\u8F7D\u2026";
     const results = await Promise.allSettled([this.host.apple.events(days[0], end, force), this.host.tasks(days[0], end), this.host.unscheduledTasks?.() ?? Promise.resolve([])]);
     if (this.closed || revision !== this.revision) return;
-    if (this.drag || this.externalDragging || this.resizing || this.saving) {
+    if (this.drag || this.externalDragging || this.resizing || this.selecting || this.saving && !afterSave) {
       this.deferredRefresh = true;
       this.deferredForce ||= force;
       return;
@@ -18993,6 +20513,9 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     this.events = apple.status === "fulfilled" ? apple.value.events : [];
     this.tasks = tasks.status === "fulfilled" ? tasks.value : [];
     this.backlog = backlog.status === "fulfilled" ? backlog.value : [];
+    const snapshot = this.host.timerSnapshot?.();
+    if (snapshot) this.refreshTimerClock(snapshot);
+    this.deferredTimerRefresh = false;
     this.renderCalendar(days);
     this.renderAgenda();
     if (apple.status === "rejected") this.status.textContent = apple.reason instanceof Error ? apple.reason.message : "\u82F9\u679C\u65E5\u7A0B\u52A0\u8F7D\u5931\u8D25";
@@ -19038,9 +20561,10 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
         this.openEvent(void 0, at);
       }).addClass("tsc-day-add");
       const events = eventsOnDay(this.events, day);
-      for (const event of events.slice(0, 3)) this.eventChip(cell, event, day);
       const tasks = this.tasks.filter((task) => task.date === key && !task.completed);
-      for (const task of tasks.slice(0, 2)) {
+      const eventLimit = tasks.length ? 2 : 3, visibleEvents = events.slice(0, eventLimit);
+      for (const event of visibleEvents) this.eventChip(cell, event, day);
+      for (const task of tasks.slice(0, Math.min(2, 3 - visibleEvents.length))) {
         const chip = cell.createEl("button", { cls: "tsc-event-chip tsc-task-chip", text: task.text });
         chip.style.setProperty("--event-accent", "var(--tsc-accent)");
         chip.title = task.text;
@@ -19057,9 +20581,14 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
         const badge = cell.createEl("button", { cls: "tsc-cell-tasks", text: `${tasks.length} \u9879\u5F85\u529E` });
         badge.onclick = () => this.select(day);
       }
-      if (events.length > 3) {
-        const more = cell.createEl("button", { text: `+${events.length - 3} \u9879\u65E5\u7A0B`, cls: "tsc-cell-more" });
+      if (events.length > visibleEvents.length) {
+        const more = cell.createEl("button", { text: `+${events.length - visibleEvents.length} \u9879\u65E5\u7A0B`, cls: "tsc-cell-more" });
         more.onclick = () => this.select(day);
+      }
+      const actual = timerActualMsOnDay(this.timerState?.state.records || [], day);
+      if (actual > 0) {
+        const minutes2 = timerMinuteLabel(actual), badge = cell.createEl("button", { cls: "tsc-cell-actual", text: `\u5B9E ${minutes2} \u5206`, attr: { "data-minutes": minutes2, "aria-label": `${key} \u5B9E\u9645\u8BA1\u65F6 ${minutes2} \u5206\u949F`, title: "\u67E5\u770B\u672C\u65E5\u5B9E\u9645\u8BA1\u65F6\u8BB0\u5F55" } });
+        badge.onclick = () => this.select(day);
       }
       cell.onclick = (e) => {
         if (e.target === cell) this.select(day);
@@ -19075,7 +20604,8 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
   renderWeek(days) {
     const scroll = this.main.createDiv({ cls: "tsc-week-scroll" });
     const header = scroll.createDiv({ cls: "tsc-week-header" });
-    header.createSpan();
+    const hasActual = days.some((day) => timerActualMsOnDay(this.timerState?.state.records || [], day) > 0);
+    header.createSpan({ cls: "tsc-week-rail-key", text: hasActual ? "\u8BA1\u5212 / \u5B9E\u9645" : "", attr: { title: "\u5DE6\u4FA7\u8BA1\u5212\uFF0C\u53F3\u4FA7\u5B9E\u9645\u6295\u5165\uFF08\u6696\u8272\u865A\u7EBF\uFF09" } });
     days.forEach((date, i) => {
       const button = header.createEl("button", { cls: "tsc-week-heading", attr: { "data-date": dayKey(date) } });
       button.createSpan({ text: `\u5468${weekday[i]}` });
@@ -19101,7 +20631,10 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     for (const day of days) {
       const column = body.createDiv({ cls: "tsc-week-column", attr: { "data-date": dayKey(day) } });
       this.dropTarget(column, day, true);
+      this.selectTimeRange(column, day);
       const taskEvents = /* @__PURE__ */ new Map();
+      const actual = timerRecordsOnDay(this.timerState?.state.records || [], day), hasActual2 = actual.length > 0;
+      column.dataset.hasActual = String(hasActual2);
       for (const task of this.tasks.filter((t) => t.date === dayKey(day) && !t.completed && t.startMinute !== void 0)) {
         const startMinute = task.startMinute;
         if (startMinute < 0 || startMinute >= 1440) continue;
@@ -19140,12 +20673,37 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
         chip.addClass("tsc-week-event");
         chip.style.top = `${segment.start / 1440 * 100}%`;
         chip.style.height = `max(28px, ${Math.max(15, segment.end - segment.start) / 1440 * 100}%)`;
-        chip.style.left = `calc(${segment.lane / segment.lanes * 100}% + 3px)`;
-        chip.style.width = `calc(${100 / segment.lanes}% - 6px)`;
+        const plannedWidth = hasActual2 ? 65 : 100;
+        chip.style.left = `calc(${segment.lane / segment.lanes * plannedWidth}% + 3px)`;
+        chip.style.width = `calc(${plannedWidth / segment.lanes}% - 6px)`;
         this.resizeHandle(chip, column, day, task ? { kind: "task", task } : { kind: "event", event: segment.event });
       }
       if (segments.length > 60) {
         const more = column.createEl("button", { text: `\u53E6\u6709 ${segments.length - 60} \u9879`, cls: "tsc-week-overflow" });
+        more.onclick = (e) => {
+          e.stopPropagation();
+          this.select(day);
+        };
+      }
+      let actualCount = 0;
+      for (const item of actual) for (const interval of item.segments) {
+        if (actualCount++ >= 60) continue;
+        const minute = (at) => {
+          const date = new Date(at);
+          return date.getHours() * 60 + date.getMinutes() + date.getSeconds() / 60;
+        }, start = interval.start <= +day ? 0 : minute(interval.start), end = interval.end >= +addDays(day, 1) ? 1440 : minute(interval.end);
+        const chip = column.createEl("button", { cls: "tsc-week-actual", attr: { "data-record-id": item.id, "aria-label": `\u5B9E\u9645\u8BA1\u65F6\uFF1A${item.title}\uFF0C${timerMinuteLabel(interval.end - interval.start)} \u5206\u949F`, title: `\u5B9E\u9645 ${this.intervalLabel(interval.start, interval.end)} \xB7 ${item.title}${item.estimated ? " \xB7 \u65E7\u8BB0\u5F55\u5206\u6BB5\u4F30\u8BA1" : ""}` } });
+        chip.createEl("small", { text: `\u5B9E ${timerMinuteLabel(interval.end - interval.start)} \u5206` });
+        chip.createSpan({ text: item.title });
+        chip.style.top = `${start / 1440 * 100}%`;
+        chip.style.height = `max(18px,${Math.max(1, end - start) / 1440 * 100}%)`;
+        chip.onclick = (e) => {
+          e.stopPropagation();
+          if (Date.now() > this.suppressClickUntil) this.run(() => this.openActual(item));
+        };
+      }
+      if (actualCount > 60) {
+        const more = column.createEl("button", { cls: "tsc-week-actual-overflow", text: `\u5B9E\u9645 +${actualCount - 60}` });
         more.onclick = (e) => {
           e.stopPropagation();
           this.select(day);
@@ -19183,6 +20741,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     const scroll = this.agenda.scrollTop;
     const openSections = new Set([...this.agenda.querySelectorAll("details[open]")].map((el) => el.className));
     this.agenda.empty();
+    this.agendaTimerPill = void 0;
     const head = this.agenda.createDiv({ cls: "tsc-agenda-heading" });
     head.createSpan({ text: this.selected.toLocaleDateString("zh-CN", { weekday: "long" }), cls: "tsc-eyebrow" });
     head.createEl("h3", { text: `${this.selected.getMonth() + 1} \u6708 ${this.selected.getDate()} \u65E5` });
@@ -19196,6 +20755,12 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
       this.agenda.createEl("h4", { text: title });
       return this.agenda.createDiv({ cls: "tsc-agenda-list" });
     };
+    const session = this.timerState?.state.session;
+    if (this.host.openTimer && session && (session.status === "running" || session.status === "paused") && dayKey(this.selected) === dayKey(/* @__PURE__ */ new Date())) {
+      this.agendaTimerPill = this.agenda.createEl("button", { cls: "tsc-agenda-active-timer", attr: { "aria-label": "\u67E5\u770B\u5F53\u524D\u8BA1\u65F6" } });
+      this.agendaTimerPill.onclick = () => this.run(() => this.host.openTimer());
+      this.refreshTimerClock(this.timerState);
+    }
     const allDay = events.filter((e) => e.allDay);
     if (allDay.length) this.paged(section(`\u5168\u5929 \xB7 ${allDay.length}`), allDay, (list, event) => this.agendaEvent(list, event));
     const timed = events.filter((e) => !e.allDay).map((event) => ({ minute: dayKey(new Date(event.start)) < dayKey(this.selected) ? 0 : new Date(event.start).getHours() * 60 + new Date(event.start).getMinutes(), event }));
@@ -19218,6 +20783,12 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
       details.createEl("summary", { text: `\u5F85\u5B89\u6392 \xB7 ${this.backlog.length}` });
       details.createEl("p", { text: "\u62D6\u5230\u65E5\u671F\u6216\u5468\u89C6\u56FE\uFF0C\u4E5F\u53EF\u70B9\u51FB\u65F6\u949F\u5B89\u6392\u3002", cls: "tsc-muted" });
       this.paged(details, this.backlog, (list, task) => this.agendaTask(list, task));
+    }
+    const actual = timerRecordsOnDay(this.timerState?.state.records || [], this.selected), actualMs = actual.reduce((sum, item) => sum + item.durationMs, 0);
+    if (actual.length) {
+      const list = section(`\u5B9E\u9645\u6295\u5165 \xB7 ${timerMinuteLabel(actualMs)} \u5206\u949F`);
+      list.addClass("tsc-actual-list");
+      this.paged(list, actual, (parent, item) => this.agendaActual(parent, item));
     }
     this.agenda.querySelectorAll("details").forEach((el) => {
       el.open = openSections.has(el.className);
@@ -19248,13 +20819,16 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
       if (Date.now() > this.suppressClickUntil) this.openEvent(event);
     };
     this.makeDraggable(row, { kind: "event", event }, this.selected);
-    if (this.host.openEventNote) {
+    if (this.host.openEventNote || this.host.startTimer) {
       const actions = card.createDiv({ cls: "tsc-entry-actions" }), notes = this.host.eventNotes?.(event) ?? [];
-      const open = actions.createEl("button", { cls: "tsc-note-link", attr: { title: notes.map((n) => n.path).join("\n") } });
-      (0, import_obsidian10.setIcon)(open.createSpan(), notes.length ? "file-text" : "file-plus-2");
-      open.createSpan({ text: notes.length ? notes[0].name : "\u65B0\u5EFA\u5173\u8054\u7B14\u8BB0" });
-      open.onclick = () => this.run(() => this.host.openEventNote(event));
-      if (this.host.linkEventNote) this.iconButton(actions, "link", "\u5173\u8054\u5DF2\u6709\u7B14\u8BB0", () => this.host.linkEventNote(event));
+      if (this.host.openEventNote) {
+        const open = actions.createEl("button", { cls: "tsc-note-link", attr: { title: notes.map((n) => n.path).join("\n") } });
+        (0, import_obsidian12.setIcon)(open.createSpan(), notes.length ? "file-text" : "file-plus-2");
+        open.createSpan({ text: notes.length ? notes[0].name : "\u65B0\u5EFA\u5173\u8054\u7B14\u8BB0" });
+        open.onclick = () => this.run(() => this.host.openEventNote(event));
+        if (this.host.linkEventNote) this.iconButton(actions, "link", "\u5173\u8054\u5DF2\u6709\u7B14\u8BB0", () => this.host.linkEventNote(event));
+      }
+      if (this.host.startTimer) this.iconButton(actions, "timer", "\u5F00\u59CB\u65E5\u7A0B\u8BA1\u65F6", () => this.run(() => this.startEventTimer(event)));
     }
   }
   agendaTask(parent, task) {
@@ -19274,9 +20848,52 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     const foot = card.createDiv({ cls: "tsc-entry-actions" });
     foot.createSpan({ text: task.source.split("/").at(-1)?.replace(/\.md$/i, "") || "\u7B14\u8BB0", cls: "tsc-task-source", attr: { title: task.source } });
     if (this.host.scheduleTask && calendarTaskCanSchedule(task)) this.iconButton(foot, "clock", "\u5B89\u6392\u4EFB\u52A1\u65F6\u95F4", () => this.schedule(task));
+    if (!task.completed && this.host.startPomodoro) this.iconButton(foot, "timer", "\u5F00\u59CB\u4EFB\u52A1\u8BA1\u65F6", () => this.run(() => this.host.startPomodoro(task)));
     if (task.dateRole === "due") foot.createSpan({ text: "\u622A\u6B62", cls: "tsc-task-deadline" });
   }
+  startEventTimer(event) {
+    const start = Date.parse(event.start), end = Date.parse(event.end), duration2 = end - start;
+    const target2 = { title: event.title, eventId: event.id, calendarId: event.calendarId, ...Number.isFinite(start) && Number.isFinite(end) && duration2 > 0 ? { plannedStart: start, plannedEnd: end, plannedDurationMs: duration2 } : {} };
+    const minutes2 = duration2 / 6e4, countdown = !event.allDay && Number.isFinite(minutes2) && minutes2 > 0 && minutes2 <= 1440;
+    return this.host.startTimer(target2, countdown ? "countdown" : "stopwatch", countdown ? Math.max(1, Math.ceil(minutes2)) : void 0);
+  }
+  intervalLabel(start, end) {
+    const label2 = (value) => new Date(value).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+    return `${label2(start)}\u2013${end === +new Date(new Date(start).getFullYear(), new Date(start).getMonth(), new Date(start).getDate() + 1) ? "24:00" : label2(end)}`;
+  }
+  agendaActual(parent, item) {
+    const card = parent.createDiv({ cls: "tsc-agenda-entry tsc-actual-entry", attr: { "data-record-id": item.id } }), title = card.createEl("button", { cls: "tsc-actual-title", attr: { "aria-label": "\u67E5\u770B\u5B9E\u9645\u8BA1\u65F6\u6765\u6E90\uFF1A" + item.title } });
+    title.createEl("small", { text: item.segments.slice(0, 3).map((segment) => this.intervalLabel(segment.start, segment.end)).join(" \xB7 ") + (item.segments.length > 3 ? ` \xB7 \u53E6\u6709 ${item.segments.length - 3} \u6BB5` : "") });
+    title.createEl("strong", { text: item.title });
+    title.onclick = () => this.run(() => this.openActual(item));
+    const meta = card.createDiv("tsc-actual-meta");
+    meta.createSpan({ text: `\u5B9E\u9645 ${timerMinuteLabel(item.durationMs)} \u5206\u949F` });
+    if (item.plannedDurationMs) meta.createSpan({ text: `\u8BA1\u5212 ${timerMinuteLabel(item.plannedDurationMs)} \u5206\u949F` });
+    meta.createSpan({ text: timerModeLabel(item.mode) });
+    if (item.durationMs !== item.totalDurationMs) meta.createSpan({ text: `\u672C\u6B21\u5171 ${timerMinuteLabel(item.totalDurationMs)} \u5206\u949F` });
+    if (item.estimated) meta.createSpan({ text: "\u65E7\u8BB0\u5F55 \xB7 \u5206\u6BB5\u4F30\u8BA1" });
+    const actions = card.createDiv("tsc-entry-actions");
+    if (item.target?.path) this.iconButton(actions, "file-text", "\u6253\u5F00\u5B9E\u9645\u8BA1\u65F6\u6765\u6E90", () => this.run(() => this.openActual(item)));
+    else if (item.target?.eventId) this.iconButton(actions, "calendar-range", "\u67E5\u770B\u8BA1\u5212\u65E5\u7A0B", () => this.run(() => this.openActual(item)));
+    else if (this.host.openTimer) this.iconButton(actions, "timer", "\u6253\u5F00\u8BA1\u65F6\u5668\u8BB0\u5F55", () => this.run(() => this.host.openTimer()));
+  }
+  async openActual(item) {
+    const target2 = item.target;
+    if (target2?.path) {
+      await this.host.openTask({ id: `${target2.path}:${target2.line || 0}`, text: item.title, completed: false, date: dayKey(this.selected), source: target2.path, line: target2.line || 0, ...target2.source ? { sourceSnapshot: target2.source } : {} });
+      return;
+    }
+    if (target2?.eventId) {
+      if (Number.isFinite(target2.plannedStart)) await this.showDay(new Date(target2.plannedStart));
+      const event = this.events.find((event2) => event2.id === target2.eventId && event2.calendarId === target2.calendarId && (!target2.plannedStart || Date.parse(event2.start) === target2.plannedStart));
+      if (event) this.openEvent(event);
+      else if (!Number.isFinite(target2.plannedStart)) throw Error("\u539F\u8BA1\u5212\u65E5\u7A0B\u4E0D\u5728\u5F53\u524D\u65E5\u671F\u8303\u56F4");
+      return;
+    }
+    await this.host.openTimer?.();
+  }
   schedule(task) {
+    if (this.closed || this.saving) return;
     if (this.host.scheduleTask && calendarTaskCanSchedule(task)) new CalendarTaskScheduleModal(this.host, task, new Date(this.selected)).open();
     else this.run(() => this.host.openTask(task));
   }
@@ -19285,7 +20902,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     void Promise.resolve().then(action).catch((e) => {
       const message = e instanceof Error ? e.message : String(e);
       if (!this.closed) this.status.textContent = message;
-      new import_obsidian10.Notice(message);
+      new import_obsidian12.Notice(message);
     });
   }
   async perform(action) {
@@ -19300,17 +20917,21 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     } catch (e) {
       error = e;
     } finally {
-      this.saving = false;
       this.deferredRefresh = false;
       this.deferredForce = false;
-      this.contentEl.classList.remove("is-saving");
-      if (!this.closed) {
-        await this.refresh(true);
-        if (error) {
-          const message = error instanceof Error ? error.message : String(error);
-          this.status.textContent = message;
-          new import_obsidian10.Notice(message);
+      try {
+        if (!this.closed) {
+          await this.loadCalendar(true, true);
+          if (error) {
+            const message = error instanceof Error ? error.message : String(error);
+            this.status.textContent = message;
+            new import_obsidian12.Notice(message);
+          }
         }
+      } finally {
+        this.saving = false;
+        this.contentEl.classList.remove("is-saving");
+        this.flushDeferred();
       }
     }
   }
@@ -19321,7 +20942,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     if (!this.canDrag(item) || item.kind === "event" && sourceDay && dayKey(new Date(item.event.start)) !== dayKey(sourceDay)) return;
     el.draggable = true;
     el.ondragstart = (e) => {
-      if (this.saving || this.resizing || !e.dataTransfer) {
+      if (this.saving || this.resizing || this.selecting || !e.dataTransfer) {
         e.preventDefault();
         return;
       }
@@ -19342,12 +20963,13 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     this.flushDeferred();
   }
   flushDeferred() {
-    if (this.deferredRefresh && !this.externalDragging && !this.resizing && !this.saving && !this.closed) {
+    if (this.drag || this.externalDragging || this.resizing || this.selecting || this.saving || this.closed) return;
+    if (this.deferredRefresh) {
       const force = this.deferredForce;
       this.deferredRefresh = false;
       this.deferredForce = false;
       void this.refresh(force);
-    }
+    } else if (this.deferredTimerRefresh) this.refreshTimer();
   }
   clearDropPreview() {
     this.contentEl.querySelectorAll(".is-drop-target").forEach((el) => el.classList.remove("is-drop-target"));
@@ -19419,40 +21041,61 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
     if (!this.canDrag(item) || item.kind === "event" && (item.event.allDay || Date.parse(item.event.end) > +addDays(day, 1) || Date.parse(item.event.end) <= +day)) return;
     const handle = chip.createSpan({ cls: "tsc-resize-handle", attr: { title: "\u62D6\u52A8\u8C03\u6574\u7ED3\u675F\u65F6\u95F4\uFF1B\u7CBE\u786E\u65F6\u95F4\u53EF\u6253\u5F00\u7F16\u8F91" } });
     handle.onpointerdown = (e) => {
-      if (e.button !== 0 || this.saving || this.resizing) return;
+      if (e.button !== 0 || e.isPrimary === false || this.closed || this.saving || this.drag || this.externalDragging || this.resizing || this.selecting) return;
+      const rect = column.getBoundingClientRect();
+      if (rect.height <= 0 || rect.width <= 0 || column.clientWidth <= 0) return;
       e.preventDefault();
       e.stopPropagation();
-      const original = chip.style.height, rect = column.getBoundingClientRect(), pointer = e.pointerId;
+      const original = chip.style.height, originalTitle = handle.title, pointer = e.pointerId, initialY = e.clientY;
       const start = item.kind === "task" ? item.task.startMinute : Date.parse(item.event.start) < +day ? 0 : new Date(item.event.start).getHours() * 60 + new Date(item.event.start).getMinutes();
       const oldEnd = item.kind === "task" ? item.task.endMinute ?? start + 30 : dayKey(new Date(item.event.end)) > dayKey(day) ? 1440 : new Date(item.event.end).getHours() * 60 + new Date(item.event.end).getMinutes();
-      let end = oldEnd, moved = false;
+      let end = oldEnd, moved = false, active2 = true;
       const wasDraggable = chip.draggable;
       chip.draggable = false;
       chip.addClass("is-resizing");
       const move = (event) => {
-        if (event.pointerId !== pointer) return;
-        end = Math.max(start + 15, Math.min(1440, snapCalendarMinute((event.clientY - rect.top) / rect.height * 1440)));
+        if (!active2 || event.pointerId !== pointer) return;
+        const current = column.getBoundingClientRect();
+        if (!column.isConnected || current.height <= 0 || current.width <= 0 || column.clientWidth <= 0) {
+          cancel();
+          return;
+        }
+        if (!moved && Math.abs(event.clientY - initialY) < 4) return;
         moved = true;
+        end = Math.min(item.kind === "task" ? 1439 : 1440, Math.max(start + 15, snapCalendarMinute((event.clientY - current.top) / current.height * 1440)));
         chip.style.height = `max(28px,${(end - start) / 1440 * 100}%)`;
         handle.title = `\u7ED3\u675F ${clockLabel(Math.min(1439, end))}`;
+        chip.dataset.rangeLabel = `${clockLabel(start)}\u2013${end === 1440 ? "24:00" : clockLabel(end)} \xB7 ${end - start} \u5206\u949F`;
       };
       const cleanup = () => {
+        if (!active2) return;
+        active2 = false;
         this.win.removeEventListener("pointermove", move);
         this.win.removeEventListener("pointerup", up);
-        this.win.removeEventListener("pointercancel", cancel);
+        this.win.removeEventListener("pointercancel", cancelPointer);
         this.win.removeEventListener("blur", cancel);
+        handle.removeEventListener("lostpointercapture", cancelPointer);
         this.resizing = void 0;
         chip.style.height = original;
         chip.draggable = wasDraggable;
         chip.classList.remove("is-resizing");
+        delete chip.dataset.rangeLabel;
+        handle.title = originalTitle;
+        if (handle.hasPointerCapture?.(pointer)) handle.releasePointerCapture(pointer);
       };
       const cancel = () => {
+        if (!active2) return;
         cleanup();
         this.suppressClickUntil = Date.now() + 300;
         this.flushDeferred();
       };
+      const cancelPointer = (event) => {
+        if (event.pointerId === pointer) cancel();
+      };
       const up = (event) => {
-        if (event.pointerId !== pointer) return;
+        if (!active2 || event.pointerId !== pointer) return;
+        move(event);
+        if (!active2) return;
         cleanup();
         this.suppressClickUntil = Date.now() + 300;
         if (!moved || end === oldEnd) {
@@ -19473,29 +21116,120 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian10.ItemV
       this.resizing = cancel;
       this.win.addEventListener("pointermove", move);
       this.win.addEventListener("pointerup", up);
-      this.win.addEventListener("pointercancel", cancel);
+      this.win.addEventListener("pointercancel", cancelPointer);
       this.win.addEventListener("blur", cancel);
+      handle.addEventListener("lostpointercapture", cancelPointer);
+      try {
+        handle.setPointerCapture?.(pointer);
+      } catch {
+      }
     };
   }
-  openEvent(event, date) {
+  selectTimeRange(column, day) {
+    column.onpointerdown = (e) => {
+      if (e.target !== column || e.button !== 0 || e.isPrimary === false || this.closed || this.saving || this.drag || this.externalDragging || this.resizing || this.selecting) return;
+      const rect = column.getBoundingClientRect();
+      if (rect.height <= 0 || rect.width <= 0 || column.clientWidth <= 0) return;
+      e.preventDefault();
+      const pointer = e.pointerId, anchor = (e.clientY - rect.top) / rect.height * 1440, initialY = e.clientY;
+      let range = calendarTimeRange(anchor, anchor), preview, previewLabel, previewTime, previewDuration, moved = false, active2 = true;
+      const move = (event) => {
+        if (!active2 || event.pointerId !== pointer) return;
+        if (!moved && Math.abs(event.clientY - initialY) < 4) return;
+        moved = true;
+        const current = column.getBoundingClientRect();
+        if (!column.isConnected || current.height <= 0 || current.width <= 0 || column.clientWidth <= 0) {
+          cancel();
+          return;
+        }
+        range = calendarTimeRange(anchor, (event.clientY - current.top) / current.height * 1440);
+        if (!preview) {
+          preview = column.createDiv({ cls: "tsc-range-preview", attr: { role: "status", "aria-live": "polite" } });
+          previewLabel = preview.createDiv({ cls: "tsc-week-selection-preview" });
+          previewTime = previewLabel.createSpan({ cls: "tsc-preview-time" });
+          previewDuration = previewLabel.createSpan({ cls: "tsc-preview-duration" });
+        }
+        preview.dataset.start = String(range.start);
+        preview.dataset.end = String(range.end);
+        preview.dataset.placement = range.start < 60 ? "below" : "above";
+        preview.style.top = `${range.start / 1440 * 100}%`;
+        preview.style.height = `${(range.end - range.start) / 1440 * 100}%`;
+        previewTime.textContent = `${clockLabel(range.start)}\u2013${clockLabel(range.end)}`;
+        previewDuration.textContent = `${range.end - range.start} \u5206\u949F`;
+        const visibleTop = Math.max(this.main.getBoundingClientRect().top, this.main.querySelector(".tsc-week-header")?.getBoundingClientRect().bottom ?? 0);
+        if (preview.getBoundingClientRect().top - previewLabel.getBoundingClientRect().height - 4 < visibleTop + 4) preview.dataset.placement = "below";
+        column.addClass("is-selecting-range");
+      };
+      const cleanup = () => {
+        if (!active2) return;
+        active2 = false;
+        this.win.removeEventListener("pointermove", move);
+        this.win.removeEventListener("pointerup", up);
+        this.win.removeEventListener("pointercancel", cancelPointer);
+        this.win.removeEventListener("blur", cancel);
+        column.removeEventListener("lostpointercapture", cancelPointer);
+        preview?.remove();
+        column.classList.remove("is-selecting-range");
+        this.selecting = void 0;
+        if (column.hasPointerCapture?.(pointer)) column.releasePointerCapture(pointer);
+      };
+      const cancel = () => {
+        cleanup();
+        this.suppressClickUntil = Date.now() + 300;
+        this.flushDeferred();
+      };
+      const cancelPointer = (event) => {
+        if (event.pointerId === pointer) cancel();
+      };
+      const up = (event) => {
+        if (!active2 || event.pointerId !== pointer) return;
+        move(event);
+        if (!active2) return;
+        cleanup();
+        if (!moved) {
+          this.flushDeferred();
+          return;
+        }
+        this.suppressClickUntil = Date.now() + 300;
+        const start = new Date(day), end = new Date(day);
+        start.setHours(0, range.start, 0, 0);
+        end.setHours(0, range.end, 0, 0);
+        this.select(day);
+        this.openEvent(void 0, start, end);
+        this.flushDeferred();
+      };
+      this.selecting = cancel;
+      this.win.addEventListener("pointermove", move);
+      this.win.addEventListener("pointerup", up);
+      this.win.addEventListener("pointercancel", cancelPointer);
+      this.win.addEventListener("blur", cancel);
+      column.addEventListener("lostpointercapture", cancelPointer);
+      try {
+        column.setPointerCapture?.(pointer);
+      } catch {
+      }
+    };
+  }
+  openEvent(event, date, endDate) {
+    if (this.closed || this.saving) return;
     if (!this.host.appleSettings().enabled) {
       new AppleCalendarConnectionModal(this.host).open();
       return;
     }
     const selected = new Date(date ?? this.selected);
     if (!date) selected.setHours(9, 0, 0, 0);
-    new CalendarEventModal(this.host, selected, event).open();
+    new CalendarEventModal(this.host, selected, event, endDate).open();
   }
   iconButton(parent, icon, title, callback) {
     const button = parent.createEl("button", { cls: "tsc-icon-button", attr: { "aria-label": title, title } });
-    (0, import_obsidian10.setIcon)(button, icon);
+    (0, import_obsidian12.setIcon)(button, icon);
     button.onclick = callback;
     return button;
   }
 };
 
 // src/register-large-calendar.ts
-var import_obsidian11 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 function registerLargeCalendar(plugin, host) {
   plugin.registerView(LargeCalendarView.type, (leaf) => new LargeCalendarView(leaf, host));
   let opening;
@@ -19515,7 +21249,7 @@ function registerLargeCalendar(plugin, host) {
     })().finally(() => opening = void 0);
     return opening;
   };
-  const reveal = () => void open().catch((error) => new import_obsidian11.Notice(String(error)));
+  const reveal = () => void open().catch((error) => new import_obsidian13.Notice(String(error)));
   plugin.addCommand({ id: "open-large-calendar", name: "\u6253\u5F00\u5927\u65E5\u5386", callback: reveal });
   plugin.addCommand({ id: "connect-apple-calendar", name: "\u82F9\u679C\u65E5\u5386\u8FDE\u63A5\u4E0E\u9009\u62E9", callback: () => new AppleCalendarConnectionModal(host).open() });
   plugin.addRibbonIcon("calendar-range", "\u6253\u5F00\u5927\u65E5\u5386", reveal);
@@ -19526,8 +21260,8 @@ function registerLargeCalendar(plugin, host) {
   return open;
 }
 function renderAppleCalendarSetting(container, host, open) {
-  new import_obsidian11.Setting(container).setName("\u5927\u65E5\u5386").setDesc("\u5728\u4E3B\u5DE5\u4F5C\u533A\u6253\u5F00\u6708\u89C6\u56FE\u548C\u5468\u65F6\u95F4\u683C\uFF0C\u67E5\u770B\u65E5\u7A0B\u3001\u5F85\u529E\u548C\u65E5\u8BB0\u3002").addButton((button) => button.setButtonText("\u6253\u5F00").onClick(() => void open()));
-  new import_obsidian11.Setting(container).setName("\u82F9\u679C\u65E5\u5386\u53CC\u5411\u8054\u52A8").setDesc("macOS 14 \u53CA\u4EE5\u4E0A\u3002\u5728\u9009\u62E9\u7684\u65E5\u5386\u4E2D\u67E5\u770B\u3001\u65B0\u5EFA\u548C\u4FEE\u6539\u65E5\u7A0B\u3002").addButton((button) => button.setButtonText(host.appleSettings().enabled ? "\u7BA1\u7406\u8FDE\u63A5" : "\u8FDE\u63A5\u82F9\u679C\u65E5\u5386").onClick(() => new AppleCalendarConnectionModal(host).open()));
+  new import_obsidian13.Setting(container).setName("\u5927\u65E5\u5386").setDesc("\u5728\u4E3B\u5DE5\u4F5C\u533A\u6253\u5F00\u6708\u89C6\u56FE\u548C\u5468\u65F6\u95F4\u683C\uFF0C\u67E5\u770B\u65E5\u7A0B\u3001\u5F85\u529E\u548C\u65E5\u8BB0\u3002").addButton((button) => button.setButtonText("\u6253\u5F00").onClick(() => void open()));
+  new import_obsidian13.Setting(container).setName("\u82F9\u679C\u65E5\u5386\u53CC\u5411\u8054\u52A8").setDesc("macOS 14 \u53CA\u4EE5\u4E0A\u3002\u5728\u9009\u62E9\u7684\u65E5\u5386\u4E2D\u67E5\u770B\u3001\u65B0\u5EFA\u548C\u4FEE\u6539\u65E5\u7A0B\u3002").addButton((button) => button.setButtonText(host.appleSettings().enabled ? "\u7BA1\u7406\u8FDE\u63A5" : "\u8FDE\u63A5\u82F9\u679C\u65E5\u5386").onClick(() => new AppleCalendarConnectionModal(host).open()));
 }
 
 // src/calendar-note-links.ts
@@ -19698,8 +21432,8 @@ function isMarkdown(file) {
 }
 
 // src/calendar-note-picker.ts
-var import_obsidian12 = require("obsidian");
-var CalendarNotePicker = class extends import_obsidian12.FuzzySuggestModal {
+var import_obsidian14 = require("obsidian");
+var CalendarNotePicker = class extends import_obsidian14.FuzzySuggestModal {
   constructor(app, onPick, eventTitle) {
     super(app);
     this.onPick = onPick;
@@ -19712,19 +21446,771 @@ var CalendarNotePicker = class extends import_obsidian12.FuzzySuggestModal {
     return file.path.replace(/\.md$/i, "");
   }
   onChooseItem(file) {
-    void this.onPick(file).catch((error) => new import_obsidian12.Notice(error instanceof Error ? error.message : "\u5173\u8054\u7B14\u8BB0\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5"));
+    void this.onPick(file).catch((error) => new import_obsidian14.Notice(error instanceof Error ? error.message : "\u5173\u8054\u7B14\u8BB0\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5"));
   }
 };
 
-// src/main.ts
-var run = (fn) => {
-  try {
-    void Promise.resolve(fn()).catch((e) => new import_obsidian13.Notice(String(e)));
-  } catch (e) {
-    new import_obsidian13.Notice(String(e));
+// src/pomodoro.ts
+var PomodoroController = class {
+  constructor(store, getConfig, options = {}) {
+    this.store = store;
+    this.getConfig = getConfig;
+    this.options = options;
+    this.now = options.now || Date.now;
+    this.state = createPomodoroState(this.config, this.now());
+  }
+  state;
+  listeners = /* @__PURE__ */ new Set();
+  clock;
+  now;
+  active = true;
+  loaded = false;
+  pending;
+  error;
+  retryAfter = 0;
+  get config() {
+    return normalizePomodoroConfig(this.getConfig());
+  }
+  snapshot() {
+    const now = this.now();
+    return { state: this.state, remainingMs: pomodoroRemaining(this.state, now), elapsedMs: pomodoroElapsed(this.state, now), error: this.error, busy: !!this.pending || !this.loaded };
+  }
+  subscribe(listener) {
+    this.listeners.add(listener);
+    listener(this.snapshot());
+    return () => this.listeners.delete(listener);
+  }
+  emit() {
+    if (this.active) {
+      const snapshot = this.snapshot();
+      for (const listener of [...this.listeners]) {
+        try {
+          listener(snapshot);
+        } catch (error) {
+          console.error("ThoughtSpace Pomodoro UI:", error);
+        }
+      }
+    }
+  }
+  async initialize() {
+    if (this.loaded || !this.active) return;
+    try {
+      const raw = await this.store.load();
+      if (!this.active) return;
+      const normalized = normalizePomodoroState(raw, this.config, this.now());
+      if (raw != null && JSON.stringify(raw) !== JSON.stringify(normalized)) await this.store.save(normalized);
+      if (!this.active) return;
+      this.state = normalized;
+      this.loaded = true;
+      this.error = void 0;
+      if (this.options.interval !== false) this.clock = setInterval(() => this.tick(), 1e3);
+    } catch (error) {
+      this.error = "\u756A\u8304\u949F\u8BB0\u5F55\u6682\u65F6\u65E0\u6CD5\u8BFB\u53D6\uFF1A" + String(error);
+      throw error;
+    } finally {
+      this.emit();
+    }
+  }
+  perform(action) {
+    if (!this.active) return Promise.reject(Error("\u756A\u8304\u949F\u5DF2\u5173\u95ED"));
+    if (!this.loaded) return Promise.reject(Error(this.error || "\u756A\u8304\u949F\u6B63\u5728\u52A0\u8F7D"));
+    if (this.pending) return Promise.reject(Error("\u756A\u8304\u949F\u6B63\u5728\u4FDD\u5B58\uFF0C\u8BF7\u7A0D\u540E\u518D\u8BD5"));
+    const work = Promise.resolve().then(async () => {
+      if (!this.active) throw Error("\u756A\u8304\u949F\u5DF2\u5173\u95ED");
+      const now = this.now(), advanced = advancePomodoro(this.state, now);
+      const next = action ? transitionPomodoro(advanced, action, this.config, now) : advanced;
+      const completion = advanced.session.status === "finished" && this.state.session.status === "running" ? advanced : next.session.status === "finished" && this.state.session.status !== "finished" && next.records.some((record) => record.id === this.state.session.id && record.outcome === "completed") ? next : void 0;
+      if (next !== this.state) {
+        await this.store.save(next);
+        this.state = next;
+      }
+      this.error = void 0;
+      this.retryAfter = 0;
+      if (completion && this.active) this.options.onFinished?.(completion);
+    }).catch((error) => {
+      this.error = String(error);
+      throw error;
+    }).finally(() => {
+      this.pending = void 0;
+      this.emit();
+    });
+    this.pending = work;
+    this.emit();
+    return work;
+  }
+  tick() {
+    if (!this.active || !this.loaded) return;
+    if (this.state.session.status === "running" && this.state.session.mode !== "stopwatch" && pomodoroRemaining(this.state, this.now()) === 0 && !this.pending && this.now() >= this.retryAfter) {
+      void this.perform().catch(() => {
+        this.retryAfter = this.now() + 3e4;
+      });
+    } else this.emit();
+  }
+  start(target2) {
+    return this.perform({ type: "start", ...target2 ? { target: target2 } : {} });
+  }
+  startFocus(target2) {
+    return this.perform({ type: "focus", ...target2 ? { target: target2 } : {} });
+  }
+  startTimer(target2, mode2, durationMinutes) {
+    return this.perform({ type: "timer", ...target2 ? { target: target2 } : {}, ...mode2 ? { mode: mode2 } : {}, ...durationMinutes !== void 0 ? { durationMinutes } : {} });
+  }
+  selectMode(mode2, durationMinutes) {
+    return this.perform({ type: "select-mode", mode: mode2, ...durationMinutes !== void 0 ? { durationMinutes } : {} });
+  }
+  setDuration(minutes2) {
+    return this.perform({ type: "duration", minutes: minutes2 });
+  }
+  stop() {
+    return this.perform({ type: "stop" });
+  }
+  adjust(minutes2) {
+    return this.perform({ type: "adjust", minutes: minutes2 });
+  }
+  pause() {
+    return this.perform({ type: "pause" });
+  }
+  resume() {
+    return this.perform({ type: "resume" });
+  }
+  reset() {
+    return this.perform({ type: "reset" });
+  }
+  next() {
+    return this.perform({ type: "next" });
+  }
+  async configure() {
+    await this.settled();
+    if (this.active && this.loaded && this.state.session.status === "idle" && this.state.session.mode === "pomodoro") await this.reset();
+    else this.emit();
+  }
+  async settled() {
+    await this.pending?.catch(() => {
+    });
+  }
+  dispose() {
+    this.active = false;
+    if (this.clock) clearInterval(this.clock);
+    this.clock = void 0;
+    this.listeners.clear();
   }
 };
-var ThoughtSpaceCalendar = class extends import_obsidian13.Plugin {
+
+// src/pomodoro-view.ts
+var import_obsidian15 = require("obsidian");
+var POMODORO_VIEW = "thoughtspace-pomodoro";
+var MODES = {
+  stopwatch: { label: "\u6B63\u8BA1\u65F6", icon: "timer" },
+  countdown: { label: "\u5012\u8BA1\u65F6", icon: "hourglass" },
+  pomodoro: { label: "\u756A\u8304\u949F", icon: "circle-dot" }
+};
+var PHASES = {
+  focus: { label: "\u4E13\u6CE8", icon: "timer" },
+  "short-break": { label: "\u77ED\u4F11\u606F", icon: "coffee" },
+  "long-break": { label: "\u957F\u4F11\u606F", icon: "armchair" }
+};
+function clockText2(ms, roundUp = false) {
+  const seconds = Math.max(0, roundUp ? Math.ceil(ms / 1e3) : Math.floor(ms / 1e3));
+  const minutes2 = Math.floor(seconds / 60);
+  const tail = String(seconds % 60).padStart(2, "0");
+  return seconds >= 3600 ? `${String(Math.floor(seconds / 3600)).padStart(2, "0")}:${String(minutes2 % 60).padStart(2, "0")}:${tail}` : `${String(minutes2).padStart(2, "0")}:${tail}`;
+}
+function localDate(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+function timeText(value) {
+  return new Date(value).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+}
+function durationText(ms) {
+  const seconds = Math.max(0, Math.round(ms / 1e3));
+  if (seconds < 60) return `${seconds} \u79D2`;
+  const minutes2 = Math.floor(seconds / 60), tail = seconds % 60;
+  return `${minutes2} \u5206${tail ? ` ${tail} \u79D2` : "\u949F"}`;
+}
+function planText(target2) {
+  if (!target2) return "";
+  const range = target2.plannedStart !== void 0 && target2.plannedEnd !== void 0 ? `${timeText(target2.plannedStart)}\u2013${timeText(target2.plannedEnd)}` : "";
+  const duration2 = target2.plannedDurationMs !== void 0 ? durationText(target2.plannedDurationMs) : "";
+  return range || duration2 ? `\u8BA1\u5212 ${[range, duration2].filter(Boolean).join(" \xB7 ")}` : "";
+}
+function setText(el, text3) {
+  if (el.textContent !== text3) el.setText(text3);
+}
+var PomodoroPanel = class extends import_obsidian15.Component {
+  constructor(el, controller, onOpenTarget, onShowCalendar) {
+    super();
+    this.el = el;
+    this.controller = controller;
+    this.onOpenTarget = onOpenTarget;
+    this.onShowCalendar = onShowCalendar;
+  }
+  active = false;
+  pendingAction = false;
+  openingTarget = false;
+  openingCalendar = false;
+  actionError = "";
+  titleDirty = false;
+  durationDirty = false;
+  inputSession;
+  inputTargetKey;
+  latest;
+  announcementKey;
+  sessionKey;
+  targetKey;
+  recordsReference;
+  recordsDay;
+  modeButtons = /* @__PURE__ */ new Map();
+  phaseChips = /* @__PURE__ */ new Map();
+  phaseMinutes = /* @__PURE__ */ new Map();
+  cadence;
+  modeHint;
+  stages;
+  durationControls;
+  durationInput;
+  presetButtons = /* @__PURE__ */ new Map();
+  adjustment;
+  adjustmentButtons = [];
+  phaseLabel;
+  phaseIcon;
+  clock;
+  timerStatus;
+  progress;
+  progressCircle;
+  progressLabel;
+  targetTitle;
+  titleInput;
+  targetSource;
+  targetPlan;
+  targetActual;
+  targetOpen;
+  calendarOpen;
+  primary;
+  primaryIcon;
+  primaryText;
+  stopButton;
+  resetButton;
+  nextButton;
+  error;
+  announcement;
+  todayCount;
+  todayMinutes;
+  recentEmpty;
+  recentRecords = [];
+  recentRows = [];
+  onload() {
+    this.active = true;
+    this.el.addClass("ts-calendar-plugin", "ts-calendar-pomodoro");
+    this.el.setAttribute("aria-label", "\u8BA1\u65F6\u5668");
+    this.build();
+    this.register(this.controller.subscribe((snapshot) => this.update(snapshot)));
+  }
+  build() {
+    const head = this.el.createDiv("ts-calendar-pomodoro-head");
+    const heading = head.createDiv("ts-calendar-pomodoro-heading");
+    (0, import_obsidian15.setIcon)(heading.createSpan({ cls: "ts-calendar-pomodoro-heading-icon", attr: { "aria-hidden": "true" } }), "clock-3");
+    heading.createEl("h3", { text: "\u8BA1\u65F6\u5668" });
+    this.cadence = head.createSpan("ts-calendar-pomodoro-cadence");
+    const modes2 = this.el.createDiv({ cls: "ts-calendar-pomodoro-modes", attr: { role: "group", "aria-label": "\u8BA1\u65F6\u6A21\u5F0F" } });
+    for (const mode2 of ["stopwatch", "countdown", "pomodoro"]) {
+      const button = modes2.createEl("button", { attr: { type: "button", "aria-label": MODES[mode2].label, title: MODES[mode2].label } });
+      (0, import_obsidian15.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), MODES[mode2].icon);
+      button.createSpan({ text: MODES[mode2].label });
+      button.onclick = () => void this.run(() => this.controller.selectMode(mode2));
+      this.modeButtons.set(mode2, button);
+    }
+    this.modeHint = this.el.createDiv({ cls: "ts-calendar-pomodoro-mode-hint", text: "\u7ED3\u675F\u5F53\u524D\u8BA1\u65F6\u540E\u53EF\u5207\u6362\u6A21\u5F0F" });
+    this.stages = this.el.createDiv({ cls: "ts-calendar-pomodoro-stages", attr: { role: "list", "aria-label": "\u756A\u8304\u949F\u9636\u6BB5" } });
+    for (const phase2 of ["focus", "short-break", "long-break"]) {
+      const chip = this.stages.createDiv({ cls: "ts-calendar-pomodoro-stage", attr: { role: "listitem" } });
+      chip.createSpan({ text: PHASES[phase2].label });
+      this.phaseMinutes.set(phase2, chip.createSpan("ts-calendar-pomodoro-stage-minutes"));
+      this.phaseChips.set(phase2, chip);
+    }
+    this.durationControls = this.el.createDiv("ts-calendar-pomodoro-duration-controls");
+    const presets = this.durationControls.createDiv({ cls: "ts-calendar-pomodoro-presets", attr: { role: "group", "aria-label": "\u5012\u8BA1\u65F6\u65F6\u957F\u9884\u8BBE" } });
+    for (const minutes3 of [15, 25, 45, 60]) {
+      const button = presets.createEl("button", { text: `${minutes3}`, attr: { type: "button", "aria-label": `\u5012\u8BA1\u65F6 ${minutes3} \u5206\u949F` } });
+      button.onclick = () => {
+        this.durationInput.value = String(minutes3);
+        this.durationDirty = true;
+        if (this.latest?.state.session.status === "idle") void this.run(() => this.controller.setDuration(minutes3));
+        else this.updatePresets();
+      };
+      this.presetButtons.set(minutes3, button);
+    }
+    const durationField = this.durationControls.createEl("label", { cls: "ts-calendar-pomodoro-duration-field" });
+    durationField.createSpan({ text: "\u81EA\u5B9A" });
+    this.durationInput = durationField.createEl("input", { type: "number", attr: { min: "1", max: "1440", step: "1", "aria-label": "\u5012\u8BA1\u65F6\u5206\u949F\u6570", inputmode: "numeric" } });
+    durationField.createSpan({ text: "\u5206" });
+    this.durationInput.oninput = () => {
+      this.durationDirty = true;
+      this.updatePresets();
+    };
+    this.durationInput.onkeydown = (event) => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        void this.primaryAction();
+      }
+    };
+    const timer = this.el.createDiv("ts-calendar-pomodoro-timer");
+    const face = timer.createDiv("ts-calendar-pomodoro-face");
+    this.progress = timer.createDiv({ cls: "ts-calendar-pomodoro-dial", attr: { "aria-live": "off" } });
+    const doc = this.el.ownerDocument, svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 220 220");
+    svg.setAttribute("class", "ts-calendar-pomodoro-ring");
+    svg.setAttribute("aria-hidden", "true");
+    for (const kind of ["track", "remaining"]) {
+      const circle = doc.createElementNS("http://www.w3.org/2000/svg", "circle");
+      for (const [name, value] of Object.entries({ cx: "110", cy: "110", r: "101", fill: "none", class: `ts-calendar-pomodoro-ring-${kind}`, pathLength: "100" })) circle.setAttribute(name, value);
+      svg.appendChild(circle);
+      if (kind === "remaining") this.progressCircle = circle;
+    }
+    this.progress.appendChild(svg);
+    this.progressLabel = this.progress.createSpan({ cls: "ts-calendar-pomodoro-progress-label", attr: { "aria-hidden": "true" } });
+    const phase = face.createDiv("ts-calendar-pomodoro-phase");
+    this.phaseIcon = phase.createSpan({ attr: { "aria-hidden": "true" } });
+    this.phaseLabel = phase.createSpan();
+    this.clock = face.createDiv({ cls: "ts-calendar-pomodoro-clock", attr: { role: "timer", "aria-live": "off", "aria-atomic": "true" } });
+    this.timerStatus = face.createDiv("ts-calendar-pomodoro-status");
+    this.adjustment = this.el.createDiv({ cls: "ts-calendar-pomodoro-adjustment", attr: { role: "group", "aria-label": "\u8C03\u6574\u5269\u4F59\u65F6\u95F4" } });
+    for (const minutes3 of [-5, 5]) this.adjustmentButtons.push(this.actionButton(this.adjustment, `${minutes3 < 0 ? "\u2212" : "+"}5 \u5206\u949F`, minutes3 < 0 ? "minus" : "plus", () => this.controller.adjust(minutes3)));
+    const target2 = this.el.createDiv("ts-calendar-pomodoro-target"), targetHead = target2.createDiv("ts-calendar-pomodoro-target-head");
+    targetHead.createSpan({ cls: "ts-calendar-pomodoro-caption", text: "\u5F53\u524D\u4E8B\u9879" });
+    const links = targetHead.createDiv("ts-calendar-pomodoro-target-links");
+    this.calendarOpen = this.iconButton(links, "\u5728\u65E5\u5386\u67E5\u770B\u5F53\u524D\u4E8B\u9879", "calendar-days", () => this.showCalendar(this.currentCalendarDay()));
+    this.targetOpen = this.iconButton(links, "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90", "arrow-up-right", () => this.openTarget());
+    this.targetTitle = target2.createDiv("ts-calendar-pomodoro-target-title");
+    this.titleInput = target2.createEl("input", { cls: "ts-calendar-pomodoro-title-input", type: "text", attr: { placeholder: "\u8FD9\u6B21\u51C6\u5907\u505A\u4EC0\u4E48\uFF1F", "aria-label": "\u672C\u6B21\u8BA1\u65F6\u4E8B\u9879", maxlength: "500" } });
+    this.titleInput.oninput = () => {
+      this.titleDirty = true;
+    };
+    this.titleInput.onkeydown = (event) => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        void this.primaryAction();
+      }
+    };
+    this.targetSource = target2.createDiv("ts-calendar-pomodoro-target-source");
+    this.targetPlan = target2.createDiv("ts-calendar-pomodoro-target-plan");
+    this.targetActual = target2.createDiv("ts-calendar-pomodoro-target-actual");
+    const actions = this.el.createDiv("ts-calendar-pomodoro-actions");
+    this.primary = actions.createEl("button", { cls: "ts-calendar-pomodoro-primary", attr: { type: "button" } });
+    this.primaryIcon = this.primary.createSpan({ attr: { "aria-hidden": "true" } });
+    this.primaryText = this.primary.createSpan();
+    this.primary.onclick = () => void this.primaryAction();
+    this.stopButton = this.actionButton(actions, "\u7ED3\u675F\u5E76\u8BB0\u5F55", "square", () => this.controller.stop());
+    this.stopButton.addClass("ts-calendar-pomodoro-stop");
+    this.stopButton.title = "\u7ED3\u675F\u672C\u6B21\u8BA1\u65F6\uFF0C\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6";
+    const secondary = actions.createDiv("ts-calendar-pomodoro-secondary");
+    this.resetButton = this.actionButton(secondary, "\u91CD\u7F6E", "rotate-ccw", () => this.controller.reset());
+    this.resetButton.setAttribute("aria-label", "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6");
+    this.resetButton.title = "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6";
+    this.nextButton = this.actionButton(secondary, "\u8DF3\u8FC7", "skip-forward", () => this.controller.next());
+    this.nextButton.setAttribute("aria-label", "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5");
+    this.nextButton.title = "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5";
+    this.error = this.el.createDiv({ cls: "ts-calendar-pomodoro-error", attr: { role: "alert" } });
+    this.error.hidden = true;
+    const summary = this.el.createDiv("ts-calendar-pomodoro-summary"), summaryHead = summary.createDiv("ts-calendar-pomodoro-summary-head");
+    summaryHead.createSpan({ cls: "ts-calendar-pomodoro-caption", text: "\u4ECA\u5929" });
+    summaryHead.createSpan({ cls: "ts-calendar-pomodoro-summary-hint", text: "\u5B9E\u9645\u8BB0\u5F55\u7684\u7528\u65F6" });
+    const stats = summary.createDiv("ts-calendar-pomodoro-stats"), count = stats.createDiv("ts-calendar-pomodoro-stat");
+    this.todayCount = count.createEl("strong");
+    count.createSpan({ text: "\u6B21\u8BB0\u5F55" });
+    const minutes2 = stats.createDiv("ts-calendar-pomodoro-stat");
+    this.todayMinutes = minutes2.createEl("strong");
+    minutes2.createSpan({ text: "\u5206\u949F" });
+    summary.createDiv({ cls: "ts-calendar-pomodoro-recent-head", text: "\u6700\u8FD1\u8BB0\u5F55" });
+    const list = summary.createEl("ul", { cls: "ts-calendar-pomodoro-recent", attr: { "aria-label": "\u6700\u8FD1\u8BA1\u65F6\u8BB0\u5F55" } });
+    for (let index = 0; index < 3; index++) {
+      const row = list.createEl("li", { cls: "ts-calendar-pomodoro-record" }), mark = row.createSpan({ cls: "ts-calendar-pomodoro-record-mark", attr: { "aria-hidden": "true" } });
+      (0, import_obsidian15.setIcon)(mark, "check");
+      const content = row.createDiv("ts-calendar-pomodoro-record-content");
+      const title = content.createDiv("ts-calendar-pomodoro-record-title"), meta = content.createDiv("ts-calendar-pomodoro-record-meta"), plan = content.createDiv("ts-calendar-pomodoro-record-plan");
+      const calendar = this.iconButton(row, "\u5728\u65E5\u5386\u67E5\u770B\u8FD9\u6B21\u8BA1\u65F6", "calendar-days", () => {
+        const record = this.recentRecords[index];
+        return record ? this.showCalendar(localDate(record.startedAt)) : Promise.resolve();
+      });
+      calendar.addClass("ts-calendar-pomodoro-record-calendar");
+      this.recentRows.push({ row, title, meta, plan, calendar });
+    }
+    this.recentEmpty = summary.createDiv({ cls: "ts-calendar-pomodoro-empty", text: "\u7ED3\u675F\u8BA1\u65F6\u540E\uFF0C\u5B9E\u9645\u7528\u65F6\u4F1A\u8BB0\u5F55\u5728\u8FD9\u91CC\u3002" });
+    this.announcement = this.el.createDiv({ cls: "ts-calendar-pomodoro-announcement", attr: { role: "status", "aria-live": "polite", "aria-atomic": "true" } });
+  }
+  iconButton(parent, label2, icon, action) {
+    const button = parent.createEl("button", { cls: "ts-calendar-pomodoro-target-open", attr: { type: "button", "aria-label": label2, title: label2 } });
+    (0, import_obsidian15.setIcon)(button, icon);
+    button.onclick = () => void action();
+    return button;
+  }
+  actionButton(parent, label2, icon, action) {
+    const button = parent.createEl("button", { attr: { type: "button", "aria-label": label2 } });
+    (0, import_obsidian15.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+    button.createSpan({ text: label2 });
+    button.onclick = () => void this.run(action);
+    return button;
+  }
+  statusText(status, mode2, phase) {
+    if (status === "running") return mode2 === "pomodoro" ? phase === "focus" ? "\u4E13\u6CE8\u8FDB\u884C\u4E2D" : "\u4F11\u606F\u8FDB\u884C\u4E2D" : "\u6B63\u5728\u8BA1\u65F6";
+    if (status === "paused") return "\u5DF2\u6682\u505C";
+    if (status === "finished") return mode2 === "pomodoro" ? "\u672C\u9636\u6BB5\u5DF2\u7ED3\u675F" : "\u672C\u6B21\u8BA1\u65F6\u5DF2\u7ED3\u675F";
+    return mode2 === "stopwatch" ? "\u4ECE 00:00 \u5F00\u59CB" : "\u51C6\u5907\u5F00\u59CB";
+  }
+  update(snapshot) {
+    if (!this.active) return;
+    this.latest = snapshot;
+    const { session } = snapshot.state, { phase, status, mode: mode2 } = session, config = this.controller.config;
+    const active2 = status === "running" || status === "paused";
+    const key = `${session.id}:${mode2}:${phase}:${status}:${session.durationMs}:${config.focusMinutes}:${config.shortBreakMinutes}:${config.longBreakMinutes}:${config.longBreakEvery}`;
+    if (this.sessionKey !== key) {
+      this.sessionKey = key;
+      this.el.dataset.phase = phase;
+      this.el.dataset.status = status;
+      this.el.dataset.mode = mode2;
+      setText(this.cadence, mode2 === "pomodoro" ? `\u6BCF ${config.longBreakEvery} \u8F6E\u957F\u4F11\u606F` : mode2 === "stopwatch" ? "\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6" : "\u6309\u76EE\u6807\u65F6\u957F\u8BA1\u65F6");
+      for (const [value, button] of this.modeButtons) button.setAttribute("aria-pressed", String(value === mode2));
+      this.modeHint.hidden = !active2;
+      this.stages.hidden = mode2 !== "pomodoro";
+      this.durationControls.hidden = mode2 !== "countdown" || active2;
+      this.adjustment.hidden = mode2 !== "countdown" || !active2;
+      const durations = { focus: config.focusMinutes, "short-break": config.shortBreakMinutes, "long-break": config.longBreakMinutes };
+      for (const [value, chip] of this.phaseChips) {
+        chip.toggleClass("ts-calendar-pomodoro-stage-active", value === phase);
+        if (value === phase) chip.setAttribute("aria-current", "step");
+        else chip.removeAttribute("aria-current");
+        setText(this.phaseMinutes.get(value), `${value === phase && mode2 === "pomodoro" ? session.durationMs / 6e4 : durations[value]} \u5206`);
+      }
+      const label2 = mode2 === "pomodoro" ? PHASES[phase] : MODES[mode2];
+      setText(this.phaseLabel, label2.label);
+      (0, import_obsidian15.setIcon)(this.phaseIcon, label2.icon);
+      setText(this.timerStatus, this.statusText(status, mode2, phase));
+      const announcementKey = `${mode2}:${phase}:${status}`;
+      if (this.announcementKey !== announcementKey) {
+        if (this.announcementKey !== void 0) setText(this.announcement, `${label2.label}\uFF0C${this.statusText(status, mode2, phase)}`);
+        this.announcementKey = announcementKey;
+      }
+      const primaryLabel = status === "running" ? "\u6682\u505C" : status === "paused" ? "\u7EE7\u7EED" : mode2 === "pomodoro" ? status === "finished" ? phase === "focus" ? "\u5F00\u59CB\u4F11\u606F" : "\u5F00\u59CB\u4E13\u6CE8" : phase === "focus" ? "\u5F00\u59CB\u4E13\u6CE8" : "\u5F00\u59CB\u4F11\u606F" : status === "finished" ? "\u518D\u5F00\u59CB\u4E00\u6B21" : "\u5F00\u59CB\u8BA1\u65F6";
+      setText(this.primaryText, primaryLabel);
+      (0, import_obsidian15.setIcon)(this.primaryIcon, status === "running" ? "pause" : "play");
+      this.primary.setAttribute("aria-label", primaryLabel);
+      this.primary.title = primaryLabel;
+      this.stopButton.hidden = !active2;
+      this.resetButton.hidden = active2;
+      this.nextButton.hidden = mode2 !== "pomodoro" || active2;
+      this.titleInput.hidden = active2;
+      this.targetTitle.hidden = !active2;
+      if (mode2 === "stopwatch") {
+        this.progress.setAttribute("role", "group");
+        this.progress.setAttribute("aria-label", "\u5DF2\u8BB0\u5F55\u7684\u5B9E\u9645\u7528\u65F6");
+        for (const name of ["aria-valuemin", "aria-valuemax", "aria-valuenow", "aria-valuetext"]) this.progress.removeAttribute(name);
+      } else {
+        this.progress.setAttribute("role", "progressbar");
+        this.progress.setAttribute("aria-label", "\u5F53\u524D\u9636\u6BB5\u5269\u4F59\u65F6\u95F4");
+        this.progress.setAttribute("aria-valuemin", "0");
+        this.progress.setAttribute("aria-valuemax", "100");
+      }
+    }
+    if (this.inputSession !== session.id) {
+      this.inputSession = session.id;
+      this.durationDirty = false;
+    }
+    const inputTargetKey = JSON.stringify(session.target || null);
+    if (this.inputTargetKey !== inputTargetKey) {
+      this.inputTargetKey = inputTargetKey;
+      this.titleDirty = false;
+    }
+    if (!this.titleDirty && this.titleInput.value !== (session.target?.title || "")) this.titleInput.value = session.target?.title || "";
+    const durationValue = String(Math.max(1, Math.round(session.durationMs / 6e4)));
+    if (!this.durationDirty && this.durationInput.value !== durationValue) this.durationInput.value = durationValue;
+    const displayedMs = mode2 === "stopwatch" ? snapshot.elapsedMs : snapshot.remainingMs;
+    const displayClock = clockText2(displayedMs, mode2 !== "stopwatch");
+    setText(this.clock, displayClock);
+    this.clock.dataset.hours = String(displayedMs >= 36e5);
+    const fraction = mode2 === "stopwatch" ? 1 : Math.max(0, Math.min(1, session.durationMs > 0 ? snapshot.remainingMs / session.durationMs : 0));
+    this.progressCircle.setAttribute("stroke-dashoffset", String(100 * (1 - fraction)));
+    setText(this.progressLabel, mode2 === "stopwatch" ? "\u2191" : `${Math.round(fraction * 100)}%`);
+    if (mode2 !== "stopwatch") {
+      this.progress.setAttribute("aria-valuenow", String(Math.round(fraction * 100)));
+      this.progress.setAttribute("aria-valuetext", `\u5269\u4F59 ${durationText(snapshot.remainingMs)}`);
+    }
+    this.updateTarget(session.target, phase, mode2);
+    setText(this.targetActual, `\u5B9E\u9645\u5DF2\u7528 ${durationText(snapshot.elapsedMs)}`);
+    this.targetActual.hidden = !active2 && status !== "finished";
+    this.updatePresets();
+    this.updateRecords(snapshot.state.records);
+    this.updatePending();
+    this.updateError();
+  }
+  updatePresets() {
+    const minutes2 = Number(this.durationInput.value);
+    for (const [value, button] of this.presetButtons) button.setAttribute("aria-pressed", String(value === minutes2));
+  }
+  updateTarget(target2, phase, mode2) {
+    const key = JSON.stringify([target2, phase, mode2]);
+    if (key === this.targetKey) return;
+    this.targetKey = key;
+    const title = target2?.title || (mode2 === "pomodoro" && phase !== "focus" ? "\u4F11\u606F\u7247\u523B" : "\u81EA\u7531\u8BA1\u65F6");
+    setText(this.targetTitle, title);
+    this.targetTitle.title = title;
+    const source = target2?.path?.split("/").pop()?.replace(/\.md$/i, "");
+    setText(this.targetSource, source || (target2?.eventId ? "\u5DF2\u5173\u8054\u65E5\u5386\u65E5\u7A0B" : "\u53EF\u586B\u5199\u4E8B\u9879\uFF0C\u4E5F\u53EF\u76F4\u63A5\u5F00\u59CB"));
+    this.targetSource.title = target2?.path || "";
+    setText(this.targetPlan, planText(target2));
+    this.targetPlan.hidden = !planText(target2);
+    this.targetOpen.hidden = !target2?.path || !this.onOpenTarget;
+    this.targetOpen.setAttribute("aria-label", target2 ? `\u6253\u5F00\u6765\u6E90\uFF1A${target2.title}` : "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90");
+    this.calendarOpen.hidden = !this.onShowCalendar || !target2;
+  }
+  updateRecords(records) {
+    const today = localDate(/* @__PURE__ */ new Date());
+    if (records === this.recordsReference && today === this.recordsDay) return;
+    this.recordsReference = records;
+    this.recordsDay = today;
+    const todayRecords = timerRecordsOnDay(records, /* @__PURE__ */ new Date());
+    setText(this.todayCount, String(todayRecords.length));
+    setText(this.todayMinutes, timerMinuteLabel(todayRecords.reduce((sum, record) => sum + record.durationMs, 0)));
+    this.recentRecords = records.filter((record) => record.durationMs > 0 && !((record.mode || "pomodoro") === "pomodoro" && record.phase && record.phase !== "focus")).sort((a, b) => b.completedAt - a.completedAt).slice(0, 3);
+    for (const [index, item] of this.recentRows.entries()) {
+      const record = this.recentRecords[index];
+      item.row.hidden = !record;
+      if (!record) continue;
+      const title = record.target?.title || "\u81EA\u7531\u8BA1\u65F6", mode2 = record.mode || "pomodoro";
+      setText(item.title, title);
+      item.title.title = title;
+      const date = new Date(record.completedAt), dateLabel = localDate(date) === today ? "\u4ECA\u5929" : `${date.getMonth() + 1}/${date.getDate()}`;
+      const modeLabel = mode2 === "pomodoro" && record.phase && record.phase !== "focus" ? PHASES[record.phase].label : MODES[mode2].label;
+      setText(item.meta, `${dateLabel} ${timeText(record.completedAt)} \xB7 ${modeLabel} \xB7 ${durationText(record.durationMs)}`);
+      const planned = record.target?.plannedDurationMs;
+      setText(item.plan, planned !== void 0 ? `\u8BA1\u5212 ${durationText(planned)} / \u5B9E\u9645 ${durationText(record.durationMs)}` : record.outcome === "stopped" ? "\u4E3B\u52A8\u7ED3\u675F\uFF0C\u5DF2\u8BB0\u5F55" : "\u5DF2\u5B8C\u6210");
+      item.calendar.hidden = !this.onShowCalendar;
+      item.calendar.setAttribute("aria-label", `\u5728\u65E5\u5386\u67E5\u770B\u8BB0\u5F55\uFF1A${title}`);
+    }
+    this.recentEmpty.hidden = this.recentRecords.length > 0;
+  }
+  updatePending() {
+    const busy = this.pendingAction || !!this.latest?.busy, status = this.latest?.state.session.status, active2 = status === "running" || status === "paused";
+    for (const button of [this.primary, this.stopButton, this.resetButton, this.nextButton, ...this.adjustmentButtons, ...this.presetButtons.values()]) if (button.disabled !== busy) button.disabled = busy;
+    for (const button of this.modeButtons.values()) button.disabled = busy || active2;
+    this.durationInput.disabled = busy;
+    this.titleInput.disabled = busy;
+    this.targetOpen.disabled = this.openingTarget;
+    this.calendarOpen.disabled = this.openingCalendar;
+    for (const item of this.recentRows) item.calendar.disabled = this.openingCalendar;
+    if (this.el.getAttribute("aria-busy") !== String(busy)) this.el.setAttribute("aria-busy", String(busy));
+  }
+  updateError() {
+    const message = this.actionError || this.latest?.error || "";
+    setText(this.error, message);
+    this.error.hidden = !message;
+  }
+  async run(action) {
+    if (!this.active || this.pendingAction || this.latest?.busy) return;
+    this.pendingAction = true;
+    this.actionError = "";
+    this.updatePending();
+    this.updateError();
+    try {
+      await action();
+    } catch (error) {
+      this.actionError = this.controller.snapshot().error ? "" : error instanceof Error ? error.message : String(error);
+    } finally {
+      this.pendingAction = false;
+      if (this.active) this.update(this.controller.snapshot());
+    }
+  }
+  async primaryAction() {
+    const session = this.latest?.state.session;
+    if (!session) return;
+    if (session.status === "running") return this.run(() => this.controller.pause());
+    if (session.status === "paused") return this.run(() => this.controller.resume());
+    const title = this.titleInput.value.trim(), assigned = title ? { ...session.target, title } : session.target;
+    const minutes2 = Number(this.durationInput.value);
+    if (session.mode === "countdown" && (!Number.isInteger(minutes2) || minutes2 < 1 || minutes2 > 1440)) {
+      this.actionError = "\u8BF7\u8F93\u5165 1\u20131440 \u4E4B\u95F4\u7684\u6574\u6570\u5206\u949F\u6570\u3002";
+      this.updateError();
+      this.durationInput.focus();
+      return;
+    }
+    await this.run(() => session.mode === "pomodoro" ? this.controller.start(assigned) : this.controller.startTimer(assigned, session.mode, session.mode === "countdown" ? minutes2 : void 0));
+  }
+  currentCalendarDay() {
+    const session = this.latest?.state.session;
+    return localDate(session?.target?.plannedStart ?? session?.startedAt ?? Date.now());
+  }
+  async showCalendar(day) {
+    if (!this.active || !this.onShowCalendar || this.openingCalendar) return;
+    this.openingCalendar = true;
+    this.actionError = "";
+    this.updatePending();
+    this.updateError();
+    try {
+      await this.onShowCalendar(day);
+    } catch (error) {
+      this.actionError = error instanceof Error ? error.message : String(error);
+    } finally {
+      this.openingCalendar = false;
+      if (this.active) {
+        this.updatePending();
+        this.updateError();
+      }
+    }
+  }
+  async openTarget() {
+    const target2 = this.latest?.state.session.target;
+    if (!this.active || !target2 || !this.onOpenTarget || this.openingTarget) return;
+    this.openingTarget = true;
+    this.actionError = "";
+    this.updatePending();
+    this.updateError();
+    try {
+      await this.onOpenTarget(target2);
+    } catch (error) {
+      this.actionError = error instanceof Error ? error.message : String(error);
+    } finally {
+      this.openingTarget = false;
+      if (this.active) {
+        this.updatePending();
+        this.updateError();
+      }
+    }
+  }
+  onunload() {
+    this.active = false;
+    this.el.empty();
+  }
+};
+var PomodoroView = class extends import_obsidian15.ItemView {
+  constructor(leaf, controller, onOpenTarget, onShowCalendar) {
+    super(leaf);
+    this.controller = controller;
+    this.onOpenTarget = onOpenTarget;
+    this.onShowCalendar = onShowCalendar;
+  }
+  panel;
+  getViewType() {
+    return POMODORO_VIEW;
+  }
+  getDisplayText() {
+    return "\u8BA1\u65F6\u5668";
+  }
+  getIcon() {
+    return "clock-3";
+  }
+  async onOpen() {
+    if (this.panel) this.removeChild(this.panel);
+    this.contentEl.empty();
+    this.contentEl.addClass("ts-calendar-pomodoro-view");
+    themeSurface(this.contentEl);
+    this.panel = new PomodoroPanel(this.contentEl.createDiv("ts-calendar-pomodoro-host"), this.controller, this.onOpenTarget, this.onShowCalendar);
+    this.addChild(this.panel);
+  }
+  async onClose() {
+    if (this.panel) this.removeChild(this.panel);
+    this.panel = void 0;
+    this.contentEl.empty();
+  }
+};
+
+// src/task-timer-target.ts
+function resolveTimerTask(tasks, displayed) {
+  const current = tasks.find((task) => task.path === displayed.path && task.line === displayed.line && task.source === displayed.source);
+  if (!current || displayed.indexRevision !== void 0 && current.indexRevision !== displayed.indexRevision) throw Error("\u4EFB\u52A1\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u65B0\u5F00\u59CB\u8BA1\u65F6");
+  if (current.checked) throw Error("\u5DF2\u5B8C\u6210\u4EFB\u52A1\u65E0\u9700\u5F00\u59CB\u8BA1\u65F6");
+  return current;
+}
+function taskTimerTarget(task) {
+  const slot = timeSlot(task.title), day = task.scheduled || task.due || task.day, display = taskPresentation(task).title;
+  const result = { title: timeSlot(display)?.title || display || "\u4EFB\u52A1\u8BA1\u65F6", path: task.path, line: task.line, source: task.source };
+  if (slot?.end !== void 0) result.plannedDurationMs = (slot.end - slot.start) * 6e4;
+  if (slot && day) {
+    const start = parseDay(day);
+    start.setMinutes(slot.start);
+    result.plannedStart = start.getTime();
+    if (slot.end !== void 0) {
+      const end = parseDay(day);
+      end.setMinutes(slot.end);
+      result.plannedEnd = end.getTime();
+    }
+  }
+  return result;
+}
+
+// src/pomodoro-store.ts
+var registryKey = Symbol.for("thoughtspace-calendar.pomodoro-store-queues");
+function createPomodoroStore(adapter, path, replace) {
+  const carrier = adapter;
+  let registry = carrier[registryKey];
+  if (!registry) {
+    registry = /* @__PURE__ */ new Map();
+    carrier[registryKey] = registry;
+  }
+  let queue = registry.get(path);
+  if (!queue) {
+    queue = { tail: Promise.resolve(), sequence: 0 };
+    registry.set(path, queue);
+  }
+  const shared = queue, lease = { active: true };
+  if (shared.owner) shared.owner.active = false;
+  shared.owner = lease;
+  const assertActive = () => {
+    if (!lease.active || shared.owner !== lease) throw Error("\u756A\u8304\u949F\u5B58\u50A8\u5DF2\u5173\u95ED\uFF0C\u8BF7\u91CD\u65B0\u52A0\u8F7D\u63D2\u4EF6");
+  };
+  const enqueue = (work) => {
+    const result = shared.tail.then(work);
+    shared.tail = result.then(() => {
+    }, () => {
+    });
+    return result;
+  };
+  return {
+    load: async () => {
+      assertActive();
+      return enqueue(async () => {
+        assertActive();
+        const exists = await adapter.exists(path);
+        assertActive();
+        if (!exists) return null;
+        const text3 = await adapter.read(path);
+        assertActive();
+        return JSON.parse(text3);
+      });
+    },
+    save: async (state) => {
+      assertActive();
+      return enqueue(async () => {
+        assertActive();
+        const temp = `${path}.tmp-${Date.now().toString(36)}-${(++shared.sequence).toString(36)}-${Math.random().toString(36).slice(2)}`;
+        try {
+          await adapter.write(temp, JSON.stringify(state, null, 2));
+          assertActive();
+          if (replace) await replace(temp, path);
+          else await adapter.rename(temp, path);
+          assertActive();
+        } catch (error) {
+          await adapter.remove(temp).catch(() => {
+          });
+          throw error;
+        }
+      });
+    },
+    dispose: () => {
+      lease.active = false;
+      if (shared.owner === lease) shared.owner = void 0;
+    }
+  };
+}
+
+// src/main.ts
+var import_promises = require("node:fs/promises");
+var import_node_path = require("node:path");
+var run = (fn) => {
+  try {
+    void Promise.resolve(fn()).catch((e) => new import_obsidian16.Notice(String(e)));
+  } catch (e) {
+    new import_obsidian16.Notice(String(e));
+  }
+};
+var ThoughtSpaceCalendar = class extends import_obsidian16.Plugin {
   calendarApiVersion = 1;
   ready = false;
   taskPlanner;
@@ -19740,6 +22226,8 @@ var ThoughtSpaceCalendar = class extends import_obsidian13.Plugin {
   chinese = new ChineseCalendar();
   eventNoteLinks;
   settingsWrites = Promise.resolve();
+  pomodoro;
+  pomodoroActions;
   boardPlugin() {
     return this.app.plugins?.getPlugin("thoughtspace");
   }
@@ -19753,13 +22241,13 @@ var ThoughtSpaceCalendar = class extends import_obsidian13.Plugin {
   async onload() {
     const board = this.boardPlugin();
     if (board && Number(board.manifest.version.split(".")[0]) === 0 && Number(board.manifest.version.split(".")[1]) < 94) {
-      new import_obsidian13.Notice("\u8BF7\u5148\u91CD\u65B0\u52A0\u8F7D 0.94.0 \u6216\u66F4\u65B0\u7684\u601D\u7EF4\u767D\u677F\uFF0C\u518D\u542F\u7528\u72EC\u7ACB\u65E5\u5386\u3002");
+      new import_obsidian16.Notice("\u8BF7\u5148\u91CD\u65B0\u52A0\u8F7D 0.94.0 \u6216\u66F4\u65B0\u7684\u601D\u7EF4\u767D\u677F\uFF0C\u518D\u542F\u7528\u72EC\u7ACB\u65E5\u5386\u3002");
       throw Error("\u65E7\u7248\u601D\u7EF4\u767D\u677F\u4ECD\u5360\u7528\u65E5\u5386\u89C6\u56FE\uFF0C\u8BF7\u91CD\u542F Obsidian");
     }
     const saved = await this.loadData();
     let legacy;
     if (saved == null) {
-      const path = (0, import_obsidian13.normalizePath)(`${this.app.vault.configDir}/plugins/thoughtspace/data.json`);
+      const path = (0, import_obsidian16.normalizePath)(`${this.app.vault.configDir}/plugins/thoughtspace/data.json`);
       if (await this.app.vault.adapter.exists(path)) legacy = JSON.parse(await this.app.vault.adapter.read(path));
     }
     this.settings = calendarSettings(saved, legacy);
@@ -19767,7 +22255,40 @@ var ThoughtSpaceCalendar = class extends import_obsidian13.Plugin {
     const tokens = designTokens(document);
     this.register(() => tokens.remove());
     this.taskPlanner = this.addChild(new TaskPlanner(this.app, () => this.settings.journalFolder));
-    const base = this.app.vault.adapter.getBasePath?.();
+    const adapter = this.app.vault.adapter, base = adapter.getBasePath?.(), focusPath = (0, import_obsidian16.normalizePath)(`${this.app.vault.configDir}/plugins/${this.manifest.id}/pomodoro-state.json`);
+    const focusStore = createPomodoroStore(adapter, focusPath, base ? (from, to) => (0, import_promises.rename)((0, import_node_path.join)(base, from), (0, import_node_path.join)(base, to)) : void 0);
+    this.pomodoro = new PomodoroController(focusStore, () => this.settings.pomodoro, { onFinished: (state) => new import_obsidian16.Notice(state.session.mode === "countdown" ? "\u5012\u8BA1\u65F6\u7ED3\u675F\uFF0C\u5B9E\u9645\u7528\u65F6\u5DF2\u8BB0\u5F55\u3002" : state.session.mode === "stopwatch" ? "\u8BA1\u65F6\u5DF2\u7ED3\u675F\uFF0C\u5B9E\u9645\u7528\u65F6\u5DF2\u8BB0\u5F55\u3002" : state.session.phase === "focus" ? "\u672C\u8F6E\u4E13\u6CE8\u5B8C\u6210\uFF0C\u4F11\u606F\u4E00\u4E0B\u3002" : "\u4F11\u606F\u7ED3\u675F\uFF0C\u53EF\u4EE5\u5F00\u59CB\u4E0B\u4E00\u8F6E\u4E13\u6CE8\u3002", 7e3) });
+    this.register(() => {
+      focusStore.dispose();
+      this.pomodoro.dispose();
+    });
+    await this.pomodoro.initialize().catch((error) => new import_obsidian16.Notice("\u8BA1\u65F6\u5668\u52A0\u8F7D\u5931\u8D25\uFF1A" + String(error)));
+    this.pomodoroActions = { open: () => this.openPomodoro(), startTask: async (task) => {
+      if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+      await this.calendarTaskIndex();
+      await this.taskPlanner.flush();
+      const current = resolveTimerTask(this.taskPlanner.all(), task), target2 = taskTimerTarget(current);
+      await this.startLinkedTimer(target2, target2.plannedDurationMs ? "countdown" : "stopwatch", target2.plannedDurationMs ? target2.plannedDurationMs / 6e4 : void 0);
+    } };
+    this.registerView(POMODORO_VIEW, (leaf) => new PomodoroView(leaf, this.pomodoro, (target2) => this.openPomodoroTarget(target2), (day) => this.openLargeCalendar(day)));
+    const status = this.addStatusBarItem();
+    status.addClass("ts-calendar-plugin", "ts-calendar-focus-status");
+    status.setAttribute("role", "button");
+    status.tabIndex = 0;
+    this.registerDomEvent(status, "click", () => run(() => this.openPomodoro()));
+    this.registerDomEvent(status, "keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        run(() => this.openPomodoro());
+      }
+    });
+    this.register(this.pomodoro.subscribe(({ state, remainingMs, elapsedMs, error }) => {
+      const session = state.session, seconds = Math.floor((session.mode === "stopwatch" ? elapsedMs : Math.ceil(remainingMs / 1e3) * 1e3) / 1e3), time2 = (seconds >= 3600 ? String(Math.floor(seconds / 3600)).padStart(2, "0") + ":" : "") + String(Math.floor(seconds / 60) % 60).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0"), label2 = session.mode === "stopwatch" ? "\u8BA1\u65F6" : session.mode === "countdown" ? "\u5012\u8BA1\u65F6" : session.phase === "focus" ? "\u4E13\u6CE8" : "\u4F11\u606F";
+      status.setText(session.status === "idle" ? "\u25F7 \u8BA1\u65F6\u5668" : `${label2} ${time2}${session.status === "paused" ? " \xB7 \u5DF2\u6682\u505C" : session.status === "finished" ? " \xB7 \u5B8C\u6210" : ""}`);
+      status.title = error || `${session.target?.title || "\u8BA1\u65F6\u5668"} \xB7 \u70B9\u51FB\u6253\u5F00`;
+      status.setAttribute("aria-label", status.title);
+      status.dataset.status = session.status;
+    }));
     this.appleCalendar = new AppleCalendarClient(new NativeCalendarTransport(base ? `${base}/${this.app.vault.configDir}/plugins/${this.manifest.id}/native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge` : ""), () => this.settings.appleCalendar);
     this.eventNoteLinks = new CalendarNoteLinks(this.app, {
       createNote: async (event) => {
@@ -19822,6 +22343,13 @@ calendar-end: ${JSON.stringify(event.end)}
           return false;
         }
       },
+      startPomodoro: async (task) => {
+        const current = resolveCalendarTask(await this.calendarTaskIndex(), task);
+        await this.pomodoroActions.startTask(current);
+      },
+      timerSnapshot: () => this.pomodoro.snapshot(),
+      openTimer: () => this.openPomodoro(),
+      startTimer: (target2, mode2, duration2) => this.startLinkedTimer(target2, mode2, duration2),
       openJournal: async (date) => {
         const day = dayKey(date);
         await this.getJournalFile(day);
@@ -19843,6 +22371,15 @@ calendar-end: ${JSON.stringify(event.end)}
       lunar: (date) => chineseDayPresentation(this.chinese.get(dayKey(date)), this.settings).label
     };
     this.openLargePane = registerLargeCalendar(this, this.largeCalendarHost);
+    let timerDigest = "";
+    this.register(this.pomodoro.subscribe((snapshot) => {
+      const { session, records } = snapshot.state, digest = JSON.stringify([session.id, session.status, session.durationMs, session.target, records.map((record) => [record.id, record.completedAt, record.durationMs])]);
+      for (const leaf of this.app.workspace.getLeavesOfType(LargeCalendarView.type)) if (leaf.view instanceof LargeCalendarView) {
+        if (digest !== timerDigest) leaf.view.refreshTimer();
+        leaf.view.refreshTimerClock(snapshot);
+      }
+      timerDigest = digest;
+    }));
     this.register(this.taskPlanner.subscribe(() => {
       window.clearTimeout(this.largeRefreshTimer);
       this.largeRefreshTimer = window.setTimeout(() => this.refreshLargeCalendars(), 100);
@@ -19856,13 +22393,22 @@ calendar-end: ${JSON.stringify(event.end)}
     this.registerMarkdownCodeBlockProcessor("thoughtspace-tasks", (source, el, ctx) => {
       try {
         themeSurface(el, this.settings);
-        ctx.addChild(new TaskPanel(this.app, el, this.taskPlanner, source.trim()));
+        ctx.addChild(new TaskPanel(this.app, el, this.taskPlanner, source.trim(), {}, false, void 0, void 0, this.pomodoroActions));
       } catch (e) {
         el.setText("\u4EFB\u52A1\u65E5\u671F\u65E0\u6548\uFF1A" + String(e));
       }
     });
     this.addRibbonIcon("calendar-range", "ThoughtSpace \u65E5\u5386", () => run(() => this.ensureCalendar(true)));
     this.addRibbonIcon("notebook-pen", "ThoughtSpace \u4ECA\u65E5\u65E5\u8BB0", () => run(() => this.journal()));
+    this.addRibbonIcon("timer", "ThoughtSpace \u8BA1\u65F6\u5668", () => run(() => this.openPomodoro()));
+    this.addCommand({ id: "show-pomodoro", name: "\u6253\u5F00\u8BA1\u65F6\u5668", callback: () => run(() => this.openPomodoro()) });
+    this.addCommand({ id: "start-pomodoro", name: "\u5F00\u59CB\u6216\u7EE7\u7EED\u756A\u8304\u4E13\u6CE8", callback: () => run(async () => {
+      await this.pomodoro.startFocus();
+      await this.openPomodoro();
+    }) });
+    this.addCommand({ id: "pause-pomodoro", name: "\u6682\u505C\u8BA1\u65F6\u5668", callback: () => run(() => this.pomodoro.pause()) });
+    this.addCommand({ id: "start-stopwatch", name: "\u5F00\u59CB\u6B63\u8BA1\u65F6", callback: () => run(() => this.startLinkedTimer(void 0, "stopwatch")) });
+    this.addCommand({ id: "stop-timer", name: "\u7ED3\u675F\u8BA1\u65F6\u5E76\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6", callback: () => run(() => this.pomodoro.stop()) });
     this.addCommand({ id: "show-calendar", name: "\u6253\u5F00\u65E5\u5386\u4E0E\u4EFB\u52A1", callback: () => run(() => this.ensureCalendar(true)) });
     this.addCommand({ id: "show-journal", name: "\u6253\u5F00\u65E5\u8BB0\u4E0E\u6E05\u5355", callback: () => run(() => this.ensureJournal(true)) });
     this.addCommand({ id: "open-today", name: "\u6253\u5F00\u4ECA\u65E5\u65E5\u8BB0", callback: () => run(() => this.journal()) });
@@ -19915,6 +22461,7 @@ calendar-end: ${JSON.stringify(event.end)}
     this.appleCalendar.invalidate();
     this.configureLinks();
     if (previous.journalFolder !== this.settings.journalFolder && this.initialTaskRead) await this.taskPlanner.ready();
+    await this.pomodoro.configure();
     await this.refreshViews();
     this.refreshLargeCalendars(true);
   }
@@ -19941,7 +22488,7 @@ calendar-end: ${JSON.stringify(event.end)}
   async openCalendarTask(task) {
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
     const file = this.app.vault.getAbstractFileByPath(task.source);
-    if (!(file instanceof import_obsidian13.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+    if (!(file instanceof import_obsidian16.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
     const old = this.app.workspace.getLeavesOfType("markdown").find((l) => l.view.file === file), leaf = old || this.app.workspace.getLeaf("tab");
     await leaf.openFile(file, { eState: { line: task.line ?? 0 } });
     await this.app.workspace.revealLeaf(leaf);
@@ -19951,27 +22498,27 @@ calendar-end: ${JSON.stringify(event.end)}
   }
   async folder(path) {
     let cursor = "";
-    for (const part of (0, import_obsidian13.normalizePath)(path).split("/")) {
+    for (const part of (0, import_obsidian16.normalizePath)(path).split("/")) {
       if (!part) continue;
       cursor = cursor ? `${cursor}/${part}` : part;
       const old = this.app.vault.getAbstractFileByPath(cursor);
-      if (old && !(old instanceof import_obsidian13.TFolder)) throw Error("\u76EE\u5F55\u4F4D\u7F6E\u5B58\u5728\u540C\u540D\u6587\u4EF6\uFF1A" + cursor);
+      if (old && !(old instanceof import_obsidian16.TFolder)) throw Error("\u76EE\u5F55\u4F4D\u7F6E\u5B58\u5728\u540C\u540D\u6587\u4EF6\uFF1A" + cursor);
       if (!old) {
         try {
           await this.app.vault.createFolder(cursor);
         } catch (e) {
-          if (!(this.app.vault.getAbstractFileByPath(cursor) instanceof import_obsidian13.TFolder)) throw e;
+          if (!(this.app.vault.getAbstractFileByPath(cursor) instanceof import_obsidian16.TFolder)) throw e;
         }
       }
     }
   }
-  async createUnique(folder, title, ext, text) {
+  async createUnique(folder, title, ext, text3) {
     await this.folder(folder);
     for (let i = 0; i < 1e4; i++) {
-      const path = (0, import_obsidian13.normalizePath)(`${folder}/${safeName(title)}${i ? " " + (i + 1) : ""}.${ext}`);
+      const path = (0, import_obsidian16.normalizePath)(`${folder}/${safeName(title)}${i ? " " + (i + 1) : ""}.${ext}`);
       if (this.app.vault.getAbstractFileByPath(path)) continue;
       try {
-        return await this.app.vault.create(path, text);
+        return await this.app.vault.create(path, text3);
       } catch (e) {
         if (!this.app.vault.getAbstractFileByPath(path)) throw e;
       }
@@ -19988,9 +22535,9 @@ calendar-end: ${JSON.stringify(event.end)}
     const root = this.settings.journalFolder, folder = journalFolder(day, root);
     return this.serialize(async () => {
       const path = `${folder}/${day}.md`, current = this.app.vault.getAbstractFileByPath(path), legacy = this.app.vault.getAbstractFileByPath(`${root}/${day}.md`);
-      if (current && legacy) new import_obsidian13.Notice("\u65B0\u65E7\u76EE\u5F55\u5404\u6709\u65E5\u8BB0\uFF0C\u5DF2\u6253\u5F00\u5E74\u6708\u76EE\u5F55\u7248\u672C\uFF1B\u65E7\u65E5\u8BB0\u4FDD\u7559\u3002");
+      if (current && legacy) new import_obsidian16.Notice("\u65B0\u65E7\u76EE\u5F55\u5404\u6709\u65E5\u8BB0\uFF0C\u5DF2\u6253\u5F00\u5E74\u6708\u76EE\u5F55\u7248\u672C\uFF1B\u65E7\u65E5\u8BB0\u4FDD\u7559\u3002");
       let file = current || legacy;
-      if (file && !(file instanceof import_obsidian13.TFile)) throw Error("\u65E5\u8BB0\u8DEF\u5F84\u88AB\u6587\u4EF6\u5939\u5360\u7528");
+      if (file && !(file instanceof import_obsidian16.TFile)) throw Error("\u65E5\u8BB0\u8DEF\u5F84\u88AB\u6587\u4EF6\u5939\u5360\u7528");
       if (!file) {
         await this.folder(folder);
         try {
@@ -20005,12 +22552,12 @@ calendar-end: ${JSON.stringify(event.end)}
 `);
         } catch (error) {
           file = this.app.vault.getAbstractFileByPath(path);
-          if (!(file instanceof import_obsidian13.TFile)) throw error;
+          if (!(file instanceof import_obsidian16.TFile)) throw error;
         }
       }
-      if (!(file instanceof import_obsidian13.TFile)) throw Error("\u65E5\u8BB0\u65E0\u6CD5\u521B\u5EFA");
-      const text = await this.app.vault.cachedRead(file);
-      if (journalTaskBlock(text, day) !== text) await this.app.vault.process(file, (text2) => journalTaskBlock(text2, day));
+      if (!(file instanceof import_obsidian16.TFile)) throw Error("\u65E5\u8BB0\u65E0\u6CD5\u521B\u5EFA");
+      const text3 = await this.app.vault.cachedRead(file);
+      if (journalTaskBlock(text3, day) !== text3) await this.app.vault.process(file, (text4) => journalTaskBlock(text4, day));
       return file;
     });
   }
@@ -20026,8 +22573,8 @@ calendar-end: ${JSON.stringify(event.end)}
       const skipped = [], failed = [];
       for (const file of this.app.vault.getMarkdownFiles().filter((f) => f.parent?.path === root && /^\d{4}-\d{2}-\d{2}$/.test(f.basename))) {
         try {
-          const folder = journalFolder(file.basename, root), target = `${folder}/${file.name}`;
-          if (this.app.vault.getAbstractFileByPath(target)) {
+          const folder = journalFolder(file.basename, root), target2 = `${folder}/${file.name}`;
+          if (this.app.vault.getAbstractFileByPath(target2)) {
             skipped.push(file.path);
             continue;
           }
@@ -20036,13 +22583,13 @@ calendar-end: ${JSON.stringify(event.end)}
           if (!await this.app.vault.adapter.exists(backupFolder)) await this.app.vault.adapter.mkdir(backupFolder);
           await this.app.vault.adapter.write(backup, await this.app.vault.read(file));
           await this.folder(folder);
-          await this.app.fileManager.renameFile(file, target);
+          await this.app.fileManager.renameFile(file, target2);
           moved++;
         } catch (error) {
           failed.push(file.path + "\uFF1A" + String(error));
         }
       }
-      new import_obsidian13.Notice(`\u5DF2\u6574\u7406 ${moved} \u7BC7\uFF0C\u540C\u540D\u4FDD\u7559 ${skipped.length} \u7BC7\uFF0C\u5931\u8D25 ${failed.length} \u7BC7`, 8e3);
+      new import_obsidian16.Notice(`\u5DF2\u6574\u7406 ${moved} \u7BC7\uFF0C\u540C\u540D\u4FDD\u7559 ${skipped.length} \u7BC7\uFF0C\u5931\u8D25 ${failed.length} \u7BC7`, 8e3);
       return { moved, skipped, failed };
     });
   }
@@ -20051,6 +22598,23 @@ calendar-end: ${JSON.stringify(event.end)}
   }
   ensureJournal(show = false) {
     return this.ensurePane(JOURNAL, show);
+  }
+  async openPomodoro() {
+    await this.ensurePane(POMODORO_VIEW, true);
+  }
+  async startLinkedTimer(target2, mode2 = "stopwatch", durationMinutes) {
+    if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+    await this.pomodoro.startTimer(target2, mode2, durationMinutes);
+    await this.openPomodoro();
+  }
+  async openPomodoroTarget(target2) {
+    if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
+    if (!target2.path) return;
+    const file = this.app.vault.getAbstractFileByPath(target2.path);
+    if (!(file instanceof import_obsidian16.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u5DF2\u79FB\u52A8\u6216\u5220\u9664");
+    const leaf = this.app.workspace.getLeaf("tab");
+    await leaf.openFile(file, { eState: { line: target2.line || 0 } });
+    await this.app.workspace.revealLeaf(leaf);
   }
   async ensurePane(type, show) {
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
@@ -20097,8 +22661,8 @@ calendar-end: ${JSON.stringify(event.end)}
     });
   }
   quickCapture() {
-    new TextModal(this.app, "\u6536\u96C6\u7B14\u8BB0", "", async (text) => {
-      const title = text.trim().split("\n")[0].replace(/^#+\s*/, "").slice(0, 80) || "\u968F\u624B\u8BB0", file = await this.createUnique(this.settings.cardFolder, title, "md", text);
+    new TextModal(this.app, "\u6536\u96C6\u7B14\u8BB0", "", async (text3) => {
+      const title = text3.trim().split("\n")[0].replace(/^#+\s*/, "").slice(0, 80) || "\u968F\u624B\u8BB0", file = await this.createUnique(this.settings.cardFolder, title, "md", text3);
       this.editJournal(file);
     }).open();
   }
@@ -20107,7 +22671,7 @@ calendar-end: ${JSON.stringify(event.end)}
     this.selection++;
   }
 };
-var CalendarSettingsTab = class extends import_obsidian13.PluginSettingTab {
+var CalendarSettingsTab = class extends import_obsidian16.PluginSettingTab {
   constructor(app, calendar) {
     super(app, calendar);
     this.calendar = calendar;
@@ -20118,22 +22682,37 @@ var CalendarSettingsTab = class extends import_obsidian13.PluginSettingTab {
     el.addClass("ts-calendar-plugin");
     el.createEl("h2", { text: "ThoughtSpace \u65E5\u5386\u4E0E\u65E5\u8BB0" });
     el.createEl("p", { text: "\u72EC\u7ACB\u8FD0\u884C\u65E5\u5386\u3001\u4EFB\u52A1\u548C\u5468\u671F\u7B14\u8BB0\uFF1B\u5DF2\u6709 Markdown \u6587\u4EF6\u7EE7\u7EED\u4F7F\u7528\u3002" });
-    let draft2 = { ...this.calendar.settings };
-    new import_obsidian13.Setting(el).setName("\u65E5\u8BB0\u76EE\u5F55").setDesc("\u65B0\u65E5\u8BB0\u4FDD\u5B58\u4E3A \u5E74/\u6708/YYYY-MM-DD.md\uFF1B\u4FEE\u6539\u8BBE\u7F6E\u4E0D\u4F1A\u642C\u52A8\u65E7\u6587\u4EF6\u3002").addText((t) => t.setValue(draft2.journalFolder).onChange((v) => draft2.journalFolder = v));
-    new import_obsidian13.Setting(el).setName("\u6536\u96C6\u7B14\u8BB0\u76EE\u5F55").addText((t) => t.setValue(draft2.cardFolder).onChange((v) => draft2.cardFolder = v));
-    new import_obsidian13.Setting(el).setName("\u5173\u8054\u5F53\u5929\u65B0\u5EFA\u7B14\u8BB0").setDesc("\u5C06\u5F53\u5929\u65B0\u5EFA\u7684\u7B14\u8BB0\u94FE\u63A5\u5230\u65E5\u8BB0\uFF1B\u4E0D\u590D\u5236\u7B14\u8BB0\u6B63\u6587\u3002").addToggle((t) => t.setValue(draft2.linkCreatedNotes).onChange((v) => draft2.linkCreatedNotes = v));
+    let draft2 = { ...this.calendar.settings, pomodoro: { ...this.calendar.settings.pomodoro } };
+    new import_obsidian16.Setting(el).setName("\u65E5\u8BB0\u76EE\u5F55").setDesc("\u65B0\u65E5\u8BB0\u4FDD\u5B58\u4E3A \u5E74/\u6708/YYYY-MM-DD.md\uFF1B\u4FEE\u6539\u8BBE\u7F6E\u4E0D\u4F1A\u642C\u52A8\u65E7\u6587\u4EF6\u3002").addText((t) => t.setValue(draft2.journalFolder).onChange((v) => draft2.journalFolder = v));
+    new import_obsidian16.Setting(el).setName("\u6536\u96C6\u7B14\u8BB0\u76EE\u5F55").addText((t) => t.setValue(draft2.cardFolder).onChange((v) => draft2.cardFolder = v));
+    new import_obsidian16.Setting(el).setName("\u5173\u8054\u5F53\u5929\u65B0\u5EFA\u7B14\u8BB0").setDesc("\u5C06\u5F53\u5929\u65B0\u5EFA\u7684\u7B14\u8BB0\u94FE\u63A5\u5230\u65E5\u8BB0\uFF1B\u4E0D\u590D\u5236\u7B14\u8BB0\u6B63\u6587\u3002").addToggle((t) => t.setValue(draft2.linkCreatedNotes).onChange((v) => draft2.linkCreatedNotes = v));
     el.createEl("h3", { text: "\u4E2D\u56FD\u519C\u5386" });
-    for (const [key, title, desc] of [["showLunar", "\u663E\u793A\u519C\u5386", "\u65E5\u671F\u4E0B\u65B9\u663E\u793A\u519C\u5386\uFF0C\u6708\u521D\u663E\u793A\u6708\u4EFD\u3002"], ["showFestivals", "\u663E\u793A\u8282\u65E5", "\u8282\u65E5\u4F18\u5148\u663E\u793A\uFF1B\u5B8C\u6574\u540D\u79F0\u53EF\u60AC\u505C\u67E5\u770B\u3002"], ["showSolarTerms", "\u663E\u793A\u8282\u6C14", "\u663E\u793A\u4E8C\u5341\u56DB\u8282\u6C14\u3002"], ["showHolidays", "\u663E\u793A\u4F11\u73ED\u6807\u8BB0", "\u4F7F\u7528\u5185\u7F6E\u4E2D\u56FD\u5927\u9646\u8282\u5047\u65E5\u6570\u636E\uFF1B\u672A\u6536\u5F55\u5E74\u4EFD\u4E0D\u63A8\u6D4B\u8C03\u4F11\u3002"]]) new import_obsidian13.Setting(el).setName(title).setDesc(desc).addToggle((t) => t.setValue(draft2[key] !== false).onChange((v) => draft2[key] = v));
-    new import_obsidian13.Setting(el).setName("\u65E5\u5386\u5BC6\u5EA6").addDropdown((d) => d.addOptions({ comfortable: "\u8212\u9002", compact: "\u7D27\u51D1" }).setValue(draft2.calendarDensity || "comfortable").onChange((v) => draft2.calendarDensity = v));
-    new import_obsidian13.Setting(el).setName("\u754C\u9762\u98CE\u683C").addDropdown((d) => d.addOptions({ soft: "\u67D4\u548C", paper: "\u7EB8\u5F20" }).setValue(draft2.surfaceStyle).onChange((v) => draft2.surfaceStyle = v));
-    new import_obsidian13.Setting(el).setName("\u4E3B\u9898\u8272").addDropdown((d) => d.addOptions({ forest: "\u68EE\u6797\u7EFF", blue: "\u84DD\u8272", amber: "\u7425\u73C0", rose: "\u73AB\u7470" }).setValue(draft2.accent).onChange((v) => draft2.accent = v));
-    new import_obsidian13.Setting(el).setName("\u73BB\u7483\u6548\u679C").addToggle((t) => t.setValue(draft2.glassEffects).onChange((v) => draft2.glassEffects = v));
+    for (const [key, title, desc] of [["showLunar", "\u663E\u793A\u519C\u5386", "\u65E5\u671F\u4E0B\u65B9\u663E\u793A\u519C\u5386\uFF0C\u6708\u521D\u663E\u793A\u6708\u4EFD\u3002"], ["showFestivals", "\u663E\u793A\u8282\u65E5", "\u8282\u65E5\u4F18\u5148\u663E\u793A\uFF1B\u5B8C\u6574\u540D\u79F0\u53EF\u60AC\u505C\u67E5\u770B\u3002"], ["showSolarTerms", "\u663E\u793A\u8282\u6C14", "\u663E\u793A\u4E8C\u5341\u56DB\u8282\u6C14\u3002"], ["showHolidays", "\u663E\u793A\u4F11\u73ED\u6807\u8BB0", "\u4F7F\u7528\u5185\u7F6E\u4E2D\u56FD\u5927\u9646\u8282\u5047\u65E5\u6570\u636E\uFF1B\u672A\u6536\u5F55\u5E74\u4EFD\u4E0D\u63A8\u6D4B\u8C03\u4F11\u3002"]]) new import_obsidian16.Setting(el).setName(title).setDesc(desc).addToggle((t) => t.setValue(draft2[key] !== false).onChange((v) => draft2[key] = v));
+    new import_obsidian16.Setting(el).setName("\u65E5\u5386\u5BC6\u5EA6").addDropdown((d) => d.addOptions({ comfortable: "\u8212\u9002", compact: "\u7D27\u51D1" }).setValue(draft2.calendarDensity || "comfortable").onChange((v) => draft2.calendarDensity = v));
+    new import_obsidian16.Setting(el).setName("\u754C\u9762\u98CE\u683C").addDropdown((d) => d.addOptions({ soft: "\u67D4\u548C", paper: "\u7EB8\u5F20" }).setValue(draft2.surfaceStyle).onChange((v) => draft2.surfaceStyle = v));
+    new import_obsidian16.Setting(el).setName("\u4E3B\u9898\u8272").addDropdown((d) => d.addOptions({ forest: "\u68EE\u6797\u7EFF", blue: "\u84DD\u8272", amber: "\u7425\u73C0", rose: "\u73AB\u7470" }).setValue(draft2.accent).onChange((v) => draft2.accent = v));
+    new import_obsidian16.Setting(el).setName("\u73BB\u7483\u6548\u679C").addToggle((t) => t.setValue(draft2.glassEffects).onChange((v) => draft2.glassEffects = v));
+    el.createEl("h3", { text: "\u756A\u8304\u949F" });
+    const durationInputs = [];
+    for (const [key, label2, min, max] of [["focusMinutes", "\u4E13\u6CE8\u65F6\u957F\uFF08\u5206\u949F\uFF09", 1, 180], ["shortBreakMinutes", "\u77ED\u4F11\u606F\uFF08\u5206\u949F\uFF09", 1, 60], ["longBreakMinutes", "\u957F\u4F11\u606F\uFF08\u5206\u949F\uFF09", 1, 60], ["longBreakEvery", "\u957F\u4F11\u606F\u95F4\u9694\uFF08\u8F6E\uFF09", 2, 12]]) new import_obsidian16.Setting(el).setName(label2).setDesc(`${min}\u2013${max}\uFF1B\u8FDB\u884C\u4E2D\u7684\u8BA1\u65F6\u4F7F\u7528\u672C\u8F6E\u539F\u65F6\u957F\uFF0C\u4E0B\u4E00\u8F6E\u5E94\u7528\u65B0\u8BBE\u7F6E\u3002`).addText((t) => {
+      durationInputs.push(t.inputEl);
+      t.inputEl.type = "number";
+      t.inputEl.required = true;
+      t.inputEl.min = String(min);
+      t.inputEl.max = String(max);
+      t.inputEl.step = "1";
+      t.setValue(String(draft2.pomodoro[key])).onChange((value) => {
+        const n = Number(value);
+        if (Number.isInteger(n) && n >= min && n <= max) draft2.pomodoro[key] = n;
+      });
+    });
     el.createEl("h3", { text: "\u5927\u65E5\u5386\u4E0E\u82F9\u679C\u65E5\u5386" });
     this.calendar.renderCalendarIntegrationSettings(el);
-    new import_obsidian13.Setting(el).setName("\u4FDD\u5B58\u8BBE\u7F6E").addButton((b) => b.setButtonText("\u4FDD\u5B58").setCta().onClick(() => run(async () => {
+    new import_obsidian16.Setting(el).setName("\u4FDD\u5B58\u8BBE\u7F6E").addButton((b) => b.setButtonText("\u4FDD\u5B58").setCta().onClick(() => run(async () => {
+      if (durationInputs.some((input) => !input.checkValidity())) throw Error("\u8BF7\u586B\u5199\u8303\u56F4\u5185\u7684\u6574\u5206\u949F\u65F6\u957F\u548C\u8F6E\u6570");
       await this.calendar.updateSettings(draft2, true);
-      new import_obsidian13.Notice("\u65E5\u5386\u8BBE\u7F6E\u5DF2\u4FDD\u5B58");
+      new import_obsidian16.Notice("\u65E5\u5386\u8BBE\u7F6E\u5DF2\u4FDD\u5B58");
     })));
-    new import_obsidian13.Setting(el).setName("\u6574\u7406\u65E7\u65E5\u8BB0").setDesc("\u4EC5\u79FB\u52A8\u6839\u76EE\u5F55\u7684\u65E5\u671F\u7B14\u8BB0\uFF0C\u5148\u5907\u4EFD\uFF1B\u76EE\u6807\u540C\u540D\u65F6\u8DF3\u8FC7\u3002").addButton((b) => b.setButtonText("\u6574\u7406\u4E3A\u5E74\u6708\u76EE\u5F55").onClick(() => run(() => this.calendar.fileOldJournals())));
+    new import_obsidian16.Setting(el).setName("\u6574\u7406\u65E7\u65E5\u8BB0").setDesc("\u4EC5\u79FB\u52A8\u6839\u76EE\u5F55\u7684\u65E5\u671F\u7B14\u8BB0\uFF0C\u5148\u5907\u4EFD\uFF1B\u76EE\u6807\u540C\u540D\u65F6\u8DF3\u8FC7\u3002").addButton((b) => b.setButtonText("\u6574\u7406\u4E3A\u5E74\u6708\u76EE\u5F55").onClick(() => run(() => this.calendar.fileOldJournals())));
   }
 };

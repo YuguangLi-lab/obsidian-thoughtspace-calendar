@@ -10,3 +10,9 @@ qa/large-calendar-output/
 qa/native-workspace*.json
 data.json
 .obsidian/
+
+# Generated UI/native fixtures can contain local workspace metadata.
+qa/*-output/
+__pycache__/
+*.pyc
+pomodoro-state.json

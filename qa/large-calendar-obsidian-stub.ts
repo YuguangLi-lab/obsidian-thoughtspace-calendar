@@ -1,4 +1,5 @@
 function create(parent:HTMLElement,tag:string,options:any={}) {
+  if(typeof options==='string')options={cls:options};
   const el=document.createElement(tag);
   if(options.cls) el.className=options.cls;
   if(options.text) el.textContent=options.text;
@@ -18,6 +19,8 @@ Object.assign(HTMLElement.prototype,{
 });
 export class App {}
 export class WorkspaceLeaf {}
+// Browser gestures use DOM keys; Obsidian Scope ordering is tested natively.
+export class Scope {constructor(public parent?:Scope){}register(){}}
 export class ItemView {
   contentEl=document.getElementById('root')!;
   cleanups:(()=>void)[]=[];
@@ -41,6 +44,7 @@ const previewIcons:Record<string,string>={
  'circle':'<circle cx="12" cy="12" r="8"/>',
  'circle-check':'<circle cx="12" cy="12" r="8"/><path d="m8 12 3 3 5-6"/>',
  'clock':'<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>',
+ 'timer':'<circle cx="12" cy="14" r="7"/><path d="M9 3h6M12 3v4m5 1 2-2M12 10v4"/>',
  'link':'<path d="m9 15 6-6M8 13l-2 2a3 3 0 0 0 4 4l3-3M16 11l2-2a3 3 0 0 0-4-4l-3 3"/>',
  'file-text':'<path d="M6 3h8l4 4v14H6zM14 3v5h4M9 12h6M9 16h6"/>',
  'file-plus-2':'<path d="M6 3h8l4 4v14H6zM14 3v5h4M9 15h6M12 12v6"/>',

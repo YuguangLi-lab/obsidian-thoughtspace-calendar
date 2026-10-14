@@ -3,11 +3,16 @@ import {TaskPlanner} from './task-planner';
 import {PlannedTask,isToday} from './task-planner-model';
 import {clockLabel,scheduleText,timeSlot} from './task-time';
 import {themeSurface} from './ui-tokens';
+import {mountTimeRangePicker,type TimeRangeControl} from './time-range-selection';
+import {timeRangeEscape} from './time-range-keymap';
 
 /** One explicit-save editor shared by list, quadrants and timeline. */
 export class TaskScheduleModal extends Modal {
+ private timeRange?:TimeRangeControl;
+ private pending=false;private closed=false;
  constructor(app:App,private planner:TaskPlanner,private task:PlannedTask,private day:string){super(app);}
  onOpen(){
+  this.closed=false;
   themeSurface(this.modalEl);this.modalEl.addClass('ts-task-schedule-modal');
   this.titleEl.setText('安排任务');
   const task=this.task,slot=timeSlot(task.text),display=timeSlot(task.title);
@@ -25,6 +30,7 @@ export class TaskScheduleModal extends Modal {
   const times=section.createDiv('ts-schedule-fields');
   const start=field(times,'开始时间','time',slot?clockLabel(slot.start):'');
   const end=field(times,'结束时间（可选）','time',slot?.endInput||'');
+  this.timeRange=mountTimeRangePicker(section,start,end,timeRangeEscape(this.app,this.scope));
   const presets=section.createDiv({cls:'ts-schedule-presets',attr:{role:'group','aria-label':'快捷时长'}});
   const durationButtons:{button:HTMLButtonElement;duration:number}[]=[];
   for(const duration of [15,30,60,90]){const b=presets.createEl('button',{type:'button',text:duration+' 分钟',attr:{'aria-label':'时长 '+duration+' 分钟'}});b.type='button';durationButtons.push({button:b,duration});b.onclick=()=>{const value=timeSlot(start.value);if(value&&value.start+duration<1440){end.value=clockLabel(value.start+duration);refresh();}};}
@@ -38,6 +44,7 @@ export class TaskScheduleModal extends Modal {
   const save=footer.createEl('button',{type:'submit',cls:'mod-cta',text:'保存安排'});
   save.type='submit';
   const refresh=()=>{
+   this.timeRange?.refresh();
    error.empty();const first=timeSlot(start.value),last=timeSlot(end.value),length=first&&last?last.start-first.start:0;
    clear.disabled=!start.value&&!end.value;
    for(const {button,duration}of durationButtons){button.disabled=!first||first.start+duration>=1440;button.setAttribute('aria-pressed',String(length===duration));}
@@ -48,18 +55,19 @@ export class TaskScheduleModal extends Modal {
   };
   clear.onclick=()=>{start.value='';end.value='';refresh();start.focus();};
   for(const input of [scheduled,due,start,end])input.oninput=refresh;
-  form.onsubmit=e=>{e.preventDefault();if(save.disabled)return;
+  form.onsubmit=e=>{e.preventDefault();if(this.closed||this.pending||save.disabled)return;const focused=this.contentEl.ownerDocument.activeElement as HTMLElement|null;
    void (async()=>{try{
     if(end.value&&!start.value)throw Error('请先填写开始时间');
     if(start.value)scheduleText(slot?.title||task.text,start.value,end.value);
-    save.disabled=true;
+    this.pending=true;form.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('input,button,select').forEach(el=>el.disabled=true);this.timeRange?.refresh();
     // Keep all metadata on the original line; one process call also gives one undo receipt.
     await this.planner.update(task,{scheduled:scheduled.value||(!due.value&&!task.day&&start.value?this.day:''),due:due.value,priority:Number(priority.value),time:start.value?{start:start.value,end:end.value}:null});
-    this.close();
-   }catch(reason){error.setText(reason instanceof Error?reason.message:String(reason));save.disabled=false;}})();
+    if(!this.closed)this.close();
+   }catch(reason){if(!this.closed){form.querySelectorAll<HTMLInputElement|HTMLButtonElement|HTMLSelectElement>('input,button,select').forEach(el=>el.disabled=false);refresh();error.setText(reason instanceof Error?reason.message:String(reason));if(focused&&form.contains(focused))focused.focus();}}finally{this.pending=false;}})();
   };
   // Enter inside native date/time controls should never submit while composing text.
   form.addEventListener('keydown',e=>{if(e.key==='Enter'&&e.isComposing)e.preventDefault();});
   refresh();start.focus();
  }
+ onClose(){this.closed=true;this.timeRange?.destroy();this.timeRange=undefined;this.contentEl.empty();}
 }

@@ -1,3 +1,75 @@
+# 1.5.2 发布验证
+
+451 项单元测试、243 项浏览器检查（54 布局、78 共享计时、46 独立计时、65 大日历）、84 项原生检查和 29 项官方 Tasks API 契约检查通过。101 篇原有测试笔记 SHA256 未变。原生测试使用临时合成笔记，恢复计时、设置和工作区；若检测到活动会话则不开始测试。最终无关联事项文案由浏览器覆盖，原生重复测试为保留用户活动会话而退出。
+
+可运行 `npm ci`、`npm run build`、`npm test`，安装 Playwright Chromium 后运行 `npm run test:browser`、`node qa/pomodoro-browser.mjs` 和 `node qa/pomodoro-strip-browser.mjs`。原生脚本及布局夹具复现步骤见下文历史节，须使用专用测试库。
+
+[本版完整记录](../qa/RELEASE-VERIFY-1.5.2.json)。GitHub Actions 仅运行独立测试，不读取个人日历或笔记。
+
+# 1.5.1 紧凑侧栏与共享专注验证
+
+451 项单元测试、214 项浏览器检查、82 项原生计时/侧栏检查及 29 项官方 Tasks API 检查通过，101 篇原笔记 SHA256 一致。验证日历/计时互切不重建待办、年月导航、年历、周数与农历、保留的更多筛选、任务范围与空态、日记 Markdown 标题和日期视觉顺序，以及多个页面共享同一计时器。布局使用真实 Obsidian 渲染的合成日记，检查浅深色、230/280/420 像素及紧凑日格；正常计时不重建日历或正文，卸载清理订阅。
+
+```sh
+node --import tsx --test tests/*.test.ts
+node_modules/.bin/tsc --noEmit
+python3 qa/compact-sidebar-native.py --vault 测试
+node qa/compact-sidebar-layout.mjs
+node qa/pomodoro-strip-browser.mjs
+```
+
+浏览器可通过 `QA_DEPENDENCIES` 指定已安装 Playwright 的项目目录；只有原生脚本产生合成 fixture 后才运行布局检查。原生脚本保留活动会话、恢复设置／计时／工作区，并清理唯一临时文件。本轮精确结果见 [1.5.1 验证记录](../qa/RELEASE-VERIFY-1.5.1.json)。
+
+# 1.5.0 计时器与大日历验证
+
+2026-10-14：447 项单元测试、46 项计时 UI 浏览器检查、65 项大日历浏览器检查、42 项原生计时联动及 29 项官方 Tasks API 检查通过，101 篇原笔记 SHA256 一致。验证三种计时模式、计划任务启动、暂停排除、主动结束、连续增减时长、重载恢复，以及大日历实际活动段。浏览器同时检查浅色/深色和 230 / 280 / 360 像素布局；原生检查使用测试库的 Tasks 8.5.0 和独立临时任务，结束后恢复计时记录、设置与工作区。
+
+```sh
+node --import tsx --test tests/*.test.ts
+node_modules/.bin/tsc --noEmit
+node qa/pomodoro-browser.mjs
+node qa/large-calendar-browser.mjs
+python3 qa/linked-timer-native.py --vault 测试
+```
+
+浏览器检查使用合成数据，原生检查不写入苹果日程。旧会话没有精确活动段时保留估计标记；回归包括跨午夜、夏令时日期、未完成专注后的休息阶段、过期任务身份与持久化失败。精确计数和证据范围见 [1.5.0 验证记录](../qa/RELEASE-VERIFY-1.5.0.json)。
+
+# 1.4.6 番茄钟验证
+
+412 项单元测试（新增番茄相关 47 项）、30 项原生番茄钟检查、17 项番茄钟浏览器检查、48 项大日历浏览器回归以及 29 项官方 Tasks API 契约检查通过。原生实测使用 Obsidian 1.14.4 与 Tasks 8.5.0，101 篇原笔记 SHA256 一致，计时数据、设置、临时文件与工作区已恢复。
+
+复现：`node --import tsx --test tests/*.test.ts`、`node qa/pomodoro-browser.mjs`、`python3 qa/pomodoro-native.py --vault 测试`。浏览器工具需可运行的 Chrome；原生脚本只操作唯一临时任务，测试后恢复专注记录。详见 [本轮验证记录](../qa/RELEASE-VERIFY-1.4.6.json)。
+
+# 1.4.5 验证范围
+
+365 项单元测试、133 项真实 Tasks 联动、41 项原生工作流、48 项大日历浏览器交互、31 项周网格拖动专项及 115 项时间条交互、12 组任务布局与 16 组侧栏布局及 29 项官方 Tasks API 契约检查通过。101 篇原笔记 SHA256 一致，Tasks 配置与工作区恢复。
+
+新增检查覆盖同任务属性连改、写入过程中晚到操作、旧轮次属性保护、完成→撤销→独立任务、同文外部轮次的撤销保护、普通任务新增重复规则、象限标记与嵌套列表、同文同日期焦点碰撞、时间线搜索/标签、删除最后标签的唯一重绘及各象限滚动位置。真实 Tasks 发布文件 SHA256 与官方 GitHub 资产 digest 一致。
+
+本轮先在 1.4.4 原生运行文件上复现，再针对中间候选版的 review 问题补失败检查；完整报告保留前后各项测试名称。前后总检查数量不同，不将失败断言数当作 bug 数。参见 [1.4.5 验证记录](../qa/RELEASE-VERIFY-1.4.5.json)。
+
+新增官方契约可复现为 `TASKS_PLUGIN_MAIN=/path/to/official/tasks/main.js node qa/tasks-quadrant-upstream-check.mjs`，结果为 10 项；原有 `qa/tasks-upstream-check.mjs` 的 19 项仍通过。脚本仅运行隔离 API，不读取苹果日历或真实仓库内容。
+
+本轮 UI 检查导出唯一临时目录中的合成日记与任务，不导出原有笔记内容。`--visuals` 结束后恢复日记目录和任务索引方法；`node qa/sidebar-ui-layout.mjs` 验证月历、年视图、日记、月清单 × 280/420 像素 × 浅/深色。任务正文和日记正文另用自定义字体变量检查继承。大日历新增密集单日内容不跨格、预览收起后仍可访问完整侧栏的检查。
+
+`CHROME_EXECUTABLE=/path/to/Chrome node qa/time-range-browser.mjs` 可复现时间条的真实鼠标与键盘检查，测试合成表单并使用实际生成的 CSS。
+
+拖选新增正向、逆向、最小范围、日末、第二指针、Escape／失焦／取消／失去捕获及关闭清理检查。周视图使用 Playwright 真实鼠标；原生测试使用实际 Obsidian DOM 与合成 PointerEvent/DataTransfer，确认时间线跨视图拖动、时长保留、重复规则／块引用与撤销。排期窗口还确认手柄延长、Shift 方向键精确到分钟，以及非拖选时 Escape 继续关闭。
+
+Obsidian 的原生 Keymap 先于 DOM capture 执行；活动时间拖选使用临时子 Scope，取消后恢复 Modal 的 Escape。原生工作区恢复核对实际 getLayout 的完整内容，避免其他已安装视图的 changeLayout 完成 Promise 未结束导致验证挂起。若恢复内容不一致，测试失败。
+
+10 月 12 日追加周视图专项可运行：
+
+```sh
+CHROME_EXECUTABLE=/path/to/Chrome node qa/week-drag-audit.mjs
+```
+
+先在旧运行文件复现保存期间重复重绘和错误提示丢失，再验证新构建；模拟拖动与索引刷新重叠的原生用例中，时间线正文重绘由 4 次降为 1 次，重复 drop 仍只写入一次。周视图专项覆盖滚动后坐标、释放位置、外来触点、轻微抖动、零尺寸、卸载、保存后的异步索引重载、旧控件锁、午夜转全天与 23:50 结束边界。视觉几何检查包含 15 分钟、日末及滚动首行，核对选区实际高度和标签的可见范围。
+
+跨窗口专项使用真实 Chrome DOM 与同源 iframe：分别验证迁移后的新手势，以及在捕获生效前迁移中的取消、临时 Scope 释放和首次重试。这不能代替 Obsidian 原生弹出窗口在全部平台上的实测。相应失败证据和最终结果汇总在 `dragAudit` 中，原有 1.4.5 审计证据继续保留。
+
+下列记录保留为历史基线。
+
 # 1.4.4 验证范围
 
 280 项单元测试、57 项真实 Tasks 联动、36 项原生工作流、30 项浏览器交互、12 组布局和 19 项官方 Tasks API 契约检查通过。测试库 101 篇原笔记 SHA256 一致。

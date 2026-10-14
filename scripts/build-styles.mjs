@@ -1,7 +1,7 @@
 import postcss from 'postcss';
 import selectorParser from 'postcss-selector-parser';
 import {readFile,writeFile} from 'node:fs/promises';
-const root=postcss.parse(await readFile('src/calendar-styles-source.css','utf8')+'\n'+await readFile('src/calendar-design.css','utf8')+'\n'+await readFile('src/planner-design.css','utf8')+'\n'+await readFile('src/large-calendar.css','utf8'));
+const root=postcss.parse(await readFile('src/calendar-styles-source.css','utf8')+'\n'+await readFile('src/calendar-design.css','utf8')+'\n'+await readFile('src/journal-design.css','utf8')+'\n'+await readFile('src/planner-design.css','utf8')+'\n'+await readFile('src/large-calendar.css','utf8')+'\n'+await readFile('src/pomodoro.css','utf8')+'\n'+await readFile('src/pomodoro-strip.css','utf8'));
 const keptClass=/^tsc-|^ts-(?:journal|calendar|task|timeline|day-timeline|schedule)(?:-|$)|^ts-(?:ui-modal|muted|text-modal|editor|settings)$/;
 root.walkComments(comment=>comment.remove());
 root.walkAtRules(rule=>{if(/keyframes$/i.test(rule.name))rule.remove();});

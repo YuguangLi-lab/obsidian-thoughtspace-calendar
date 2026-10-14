@@ -1,5 +1,5 @@
-import {inlineLiteralRanges} from './markdown-literals';
-import {maskInlineCode,outsideInlineCode} from './markdown-literals';
+import {inlineLiteralRanges,maskInlineLiterals} from './markdown-literals';
+import {dataviewTaskFields} from './task-dataview';
 import type {PlannedTask} from './task-planner-model';
 export type TaskQuadrant='q1'|'q2'|'q3'|'q4';
 export const TASK_QUADRANTS:{id:TaskQuadrant;label:string;hint:string}[]=[
@@ -17,12 +17,19 @@ export function taskQuadrant(task:PlannedTask,day:string):TaskQuadrant{
  const important=task.priority<=1,urgent=!!task.due&&task.due<=day;
  return important?(urgent?'q1':'q2'):(urgent?'q3':'q4');
 }
-/** Manual classification preserves dates, priorities, tags and recurrence rules. */
+/** Keep our hidden marker in the description, before Tasks' metadata suffix. */
 export function setTaskQuadrant(text:string,target:TaskQuadrant|'auto'){
  if(target!=='auto'&&!TASK_QUADRANTS.some(q=>q.id===target))throw Error('任务象限无效');
  const id=text.match(/\s+\^[A-Za-z0-9-]+\s*$/)?.[0]||'',body=id?text.slice(0,-id.length):text;
- const clean=stripQuadrant(body).trimEnd();if(target==='auto')return clean+id;
- const last=inlineLiteralRanges(clean).at(-1),raw=last?clean.slice(last.from):'',open=last?.comment&&(raw.startsWith('<!--')?!raw.endsWith('-->'):raw.length<4||!raw.endsWith('%%'));
+ const clean=stripQuadrant(body).trim();if(target==='auto')return clean+id;
  const marker=`<!-- thoughtspace:quadrant=${target} -->`;
- return (open?clean.slice(0,last!.from).trimEnd()+' '+marker+' '+raw:clean+' '+marker)+id;
+ const metadata=/(?:^|\s)(?:[🔁📅⏳✅🔺⏫🔼🔽⏬🛫➕❌🏁🆔⛔])/u.exec(maskInlineLiterals(clean));
+ const emojiAt=metadata?metadata.index+(/^\s/.test(metadata[0])?1:0):undefined;
+ const last=inlineLiteralRanges(clean).at(-1),raw=last?clean.slice(last.from):'';
+ const open=last?.comment&&last.to===clean.length&&(raw.startsWith('<!--')?!raw.endsWith('-->'):raw.length<4||!raw.endsWith('%%'));
+ const positions=[emojiAt,dataviewTaskFields(clean)[0]?.from,open?last!.from:undefined].filter((at):at is number=>at!==undefined);
+ const at=positions.length?Math.min(...positions):clean.length;
+ // The description precedes the marker so the shared Markdown parser retains it.
+ const before=clean.slice(0,at).trimEnd(),after=clean.slice(at).trimStart();
+ return (before?before+' ':'')+marker+(after?' '+after:'')+id;
 }

@@ -1,0 +1,138 @@
+/* Diary and period lists only. The calendar and task planner own their surfaces. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] {
+ --journal-accent:var(--ts-accent,var(--interactive-accent));
+ --journal-ink:var(--text-normal);
+ --journal-muted:var(--text-muted);
+ --journal-line:color-mix(in srgb,var(--text-muted) 16%,transparent);
+ --journal-wash:color-mix(in srgb,var(--journal-accent) 5%,var(--background-primary));
+ --journal-hover:color-mix(in srgb,var(--journal-accent) 9%,var(--background-primary));
+ padding:12px 12px 20px!important;background:var(--background-primary)!important;
+ color:var(--journal-ink);container-type:inline-size;scrollbar-gutter:stable;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-layout,.ts-journal-detail-pane,.ts-journal-content) {min-width:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-detail-pane {width:100%;max-width:680px;margin-inline:auto;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-content {padding:0!important;}
+
+/* A quiet navigation line stays available while reading a long entry. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs {
+ position:sticky;top:-12px;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;
+ margin:0 0 12px!important;padding:0 0 6px!important;border:0!important;
+ border-bottom:1px solid var(--journal-line)!important;border-radius:0!important;
+ background:var(--background-primary)!important;box-shadow:none!important;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs button {
+ display:flex;align-items:center;justify-content:center;gap:5px;position:relative;min-width:0;
+ height:32px;min-height:32px;padding:0 4px;margin:0;border:0;border-radius:7px;
+ background:transparent!important;color:var(--journal-muted);box-shadow:none!important;
+ font:500 12px/1.4 var(--font-interface);white-space:nowrap;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs button.is-active {
+ color:var(--journal-accent)!important;background:var(--journal-wash)!important;font-weight:600;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs button::after {display:none!important;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs button>span:first-child {display:flex;align-items:center;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs svg {width:14px;height:14px;}
+
+/* Date, history, and editing actions form one compact entry header. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-header {
+ display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start;gap:4px 8px;
+ margin:0 0 14px;padding:0 0 12px!important;border:0!important;border-bottom:1px solid var(--journal-line)!important;border-radius:0!important;
+ background:transparent!important;box-shadow:none!important;backdrop-filter:none!important;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-heading {grid-column:1;grid-row:1 / span 2;min-width:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-heading h2 {
+ display:flex;flex-direction:row;align-items:baseline;justify-content:flex-start;gap:3px;
+ margin:0 0 4px!important;padding:0;border:0;font-family:var(--font-interface);font-size:22px;font-weight:600;line-height:1.25;letter-spacing:0;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-month-label,.ts-journal-day-number,.ts-journal-date-unit) {order:0;font-size:inherit;font-weight:inherit;color:var(--journal-ink);letter-spacing:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-day-number {
+ font-size:inherit;font-weight:inherit;line-height:inherit;letter-spacing:0;
+ font-variant-numeric:tabular-nums;color:var(--journal-ink);
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-month-label,.ts-journal-day-number,.ts-journal-date-unit)::after {content:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-date,.ts-journal-lunar-date) {font:400 12px/1.5 var(--font-interface);color:var(--journal-muted);letter-spacing:0;overflow-wrap:anywhere;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-lunar-date {margin-top:2px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-history {grid-column:2;grid-row:1;justify-self:end;display:flex;gap:2px;margin:0;padding:0;border:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-actions {grid-column:2;grid-row:2;justify-self:end;display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:2px;margin:0;padding:0;border:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-history,.ts-journal-actions) button {
+ display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;
+ width:28px!important;height:28px;min-width:28px;min-height:28px;padding:0!important;margin:0!important;
+ border:0;border-radius:7px;background:transparent;color:var(--journal-muted);box-shadow:none;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-history,.ts-journal-actions) button svg {display:block;width:16px;height:16px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-actions button:first-child {background:var(--journal-wash);color:var(--journal-accent);border:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-actions button>span:nth-child(2) {display:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-tabs,.ts-journal-history,.ts-journal-actions) button:hover:not(:disabled) {background:var(--journal-hover)!important;color:var(--journal-accent);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(button,input,select,summary):focus-visible {outline:2px solid var(--journal-accent);outline-offset:2px;}
+
+/* Markdown remains the reading surface; no extra cards around ordinary prose. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body {
+ padding:0;min-width:0;color:var(--journal-ink);overflow-wrap:anywhere;
+ font-family:var(--font-text,var(--font-interface));font-size:var(--font-text-size,16px);line-height:1.7;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body :is(h1,h2,h3,h4,h5,h6) {font-family:inherit;color:var(--journal-ink);font-weight:600;letter-spacing:0;line-height:1.4;padding:0;border:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body h1 {font-size:1.35em;margin:20px 0 10px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body h2 {display:block;font-size:1.18em;margin:18px 0 8px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body h2::after {content:none;display:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body h3 {font-size:1.08em;margin:16px 0 8px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body :is(h4,h5,h6) {font-size:1em;margin:16px 0 8px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body>:first-child {margin-top:0;padding-top:0;border-top:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body :is(p,ul,ol) {margin:0 0 12px;color:inherit;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body :is(ul,ol) {padding-inline-start:23px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body li {padding:2px 0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body .task-list-item {list-style:none;position:relative;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body .task-list-item-checkbox {width:16px;height:16px;margin:0 7px 0 -23px;vertical-align:-2px;accent-color:var(--journal-accent);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body blockquote {margin:14px 0 18px;padding:8px 12px;border-left:2px solid color-mix(in srgb,var(--journal-accent) 38%,transparent);border-radius:0 7px 7px 0;background:var(--journal-wash);color:var(--journal-muted);font:inherit;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body blockquote p:last-child {margin-bottom:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body a {color:var(--journal-accent);text-decoration:none;text-underline-offset:3px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body a:hover {text-decoration:underline;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-body :is(pre,table) {max-width:100%;overflow:auto;}
+
+/* Keep the existing created-note index compact, discoverable, and optional. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-notes {margin:24px 0 0;padding:0 12px;border:1px solid var(--journal-line);border-radius:9px;background:var(--journal-wash);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-notes summary {display:flex;align-items:center;gap:7px;padding:12px 0;color:var(--journal-muted);font:500 12px/1.5 var(--font-interface);list-style:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-notes summary::before {content:'';width:6px;height:6px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(-45deg);margin-right:3px;flex:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-notes[open] summary::before {transform:rotate(45deg);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-count {margin-left:auto;min-width:22px;padding:1px 5px;border-radius:5px;color:var(--journal-accent);background:var(--background-primary);font-size:12px;text-align:center;font-variant-numeric:tabular-nums;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-list {padding:2px 0 8px;font:400 14px/1.7 var(--font-text,var(--font-interface));}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-list ul {margin:0;padding-inline-start:18px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-linked-list li {padding:4px 0;}
+
+/* Period lists read as a dated notebook, with controls separated from excerpts. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-week-range {display:flex;align-items:center;gap:6px;margin:0 0 16px;padding:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-week-range>span {min-width:0;flex:1;text-align:center;overflow-wrap:anywhere;color:var(--journal-muted);font:500 12px/1.6 var(--font-interface);font-variant-numeric:tabular-nums;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-week-range button {width:28px;height:28px;min-height:28px;flex:0 0 28px;padding:0;border:0;border-radius:7px;background:transparent;color:var(--journal-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-search {width:100%;height:34px;min-width:0;padding:0 10px;border:1px solid var(--journal-line);border-radius:8px;background:var(--journal-wash);color:var(--journal-ink);font:400 13px/1.5 var(--font-interface);box-shadow:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-search::placeholder {color:var(--journal-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-filter-row {gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 16px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-filter-row :is(button,select) {min-height:28px;height:28px;padding:0 7px;border:0;border-radius:6px;background:transparent;box-shadow:none;color:var(--journal-muted);font:400 12px/1.5 var(--font-interface);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-filter-row button[aria-pressed=true] {background:var(--journal-hover);color:var(--journal-accent);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda>.ts-journal-count {margin:0 0 8px;padding:0;color:var(--journal-muted);font:400 12px/1.5 var(--font-interface);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-row {display:grid;grid-template-columns:42px minmax(0,1fr);gap:12px;margin:0;padding:18px 0;border:0;border-bottom:1px solid var(--journal-line);border-radius:0;background:transparent;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-row:last-child {border-bottom:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-row::before {display:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-agenda-date-stamp {display:flex;flex-direction:column;align-items:center;gap:4px;align-self:start;padding:8px 4px;border:0;border-radius:8px;background:var(--journal-wash);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-agenda-date-stamp strong {font:600 25px/1.1 var(--font-interface);font-variant-numeric:tabular-nums;letter-spacing:-.04em;color:var(--journal-ink);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-agenda-date-stamp span {font:400 11px/1.4 var(--font-interface);color:var(--journal-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-agenda-entry {min-width:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-head {display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin:0 0 7px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-head button {height:28px;min-height:28px;padding:0;border:0;background:transparent;color:var(--journal-ink);box-shadow:none;font:500 12px/1.5 var(--font-interface);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-head button:nth-child(2) {width:28px;flex:0 0 28px;margin-left:auto;color:var(--journal-muted);border-radius:7px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-tasks {font:400 11px/1.5 var(--font-interface);color:var(--journal-muted);white-space:nowrap;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-excerpt {margin:0;font:400 var(--font-text-size,16px)/1.75 var(--font-text,var(--font-interface));color:var(--journal-muted);overflow-wrap:anywhere;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-empty {min-height:0;margin:16px 0;padding:14px 12px;border:1px solid var(--journal-line);border-radius:8px;background:var(--journal-wash);color:var(--journal-muted);font:400 14px/1.75 var(--font-text,var(--font-interface));text-align:left;}
+
+@container (max-width:340px) {
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-heading {grid-row:1;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-actions {grid-column:1 / -1;grid-row:2;justify-self:start;justify-content:flex-start;}
+}
+@container (max-width:290px) {
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs button {font-size:11px;gap:4px;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-tabs button>span:first-child {display:none;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-journal-heading h2 {font-size:20px;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-row {grid-template-columns:36px minmax(0,1fr);gap:10px;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] .ts-calendar-agenda-tasks {flex-basis:100%;}
+}
+@media (prefers-reduced-motion:no-preference) {
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=entries] :is(.ts-journal-tabs,.ts-journal-history,.ts-journal-actions,.ts-journal-week-range,.ts-calendar-filter-row,.ts-calendar-agenda-head) button {transition:background-color .12s ease,color .12s ease;}
+}

@@ -1,0 +1,96 @@
+{
+  "version": "1.4.6",
+  "generatedAt": "2026-10-13T23:31:59.052903+08:00",
+  "typescript": "passed",
+  "unitTests": {
+    "passed": 412,
+    "failed": 0,
+    "newPomodoroTests": 47
+  },
+  "pomodoroBrowser": {
+    "checks": 17,
+    "passed": [
+      "default 25/5/15 min initial panel",
+      "ticks preserve timer DOM focus and do not save",
+      "pause freezes exact remaining duration",
+      "finish records focus once and waits for a break click",
+      "panel starts short break",
+      "task action always starts focus even during rest",
+      "closing/reopening panel preserves plugin clock",
+      "failed save keeps running state and releases controls",
+      "external successful retry clears stale UI errors",
+      "explicit reset restores current duration without adding a record",
+      "light 230px sidebar keeps controls within bounds without dialog shadow",
+      "light 280px sidebar keeps controls within bounds without dialog shadow",
+      "light 360px sidebar keeps controls within bounds without dialog shadow",
+      "dark 230px sidebar keeps controls within bounds without dialog shadow",
+      "dark 280px sidebar keeps controls within bounds without dialog shadow",
+      "dark 360px sidebar keeps controls within bounds without dialog shadow",
+      "no browser runtime errors"
+    ],
+    "errors": []
+  },
+  "pomodoroNative": {
+    "checks": 30,
+    "passed": [
+      "installed native 1.4.6 and Tasks 8.5.0 are ready",
+      "real vault indexes two unique fixture tasks",
+      "native task start: focus",
+      "native task start: target",
+      "native task start: view",
+      "native task start: body",
+      "native task start: status",
+      "native task start: visible",
+      "native task start: unchanged",
+      "continuous pause/resume: remaining",
+      "continuous pause/resume: paused",
+      "continuous pause/resume: conflict",
+      "continuous pause/resume: targetPreserved",
+      "continuous pause/resume: source",
+      "finish and stage actions: records",
+      "finish and stage actions: finished",
+      "finish and stage actions: shortBreak",
+      "finish and stage actions: newTaskFocus",
+      "finish and stage actions: source",
+      "real plugin reload: version",
+      "real plugin reload: paused",
+      "real plugin reload: target",
+      "real plugin reload: remaining",
+      "real plugin reload: onePane",
+      "real plugin reload: records",
+      "cleanup: state",
+      "cleanup: data",
+      "cleanup: fixtureRemoved",
+      "cleanup: layout",
+      "native developer errors unchanged"
+    ],
+    "errors": []
+  },
+  "largeCalendarBrowser": {
+    "passed": 48
+  },
+  "officialTasksAPI": {
+    "passed": 29,
+    "release": "8.5.0",
+    "report": "UPSTREAM-TASKS-1.4.6.json"
+  },
+  "originalNotes": {
+    "count": 101,
+    "sha256Unchanged": true
+  },
+  "fixes": [
+    "Task focus actions could start a break; separate focus action now always enters focus.",
+    "A delayed pre-reload save could overwrite a new owner; shared queue and lease checks serialize loads and commits.",
+    "Obsidian VaultAdapter.rename refuses existing destinations; desktop filesystem atomic replacement now supports repeated saves.",
+    "Impossible persisted deadlines could fabricate completion; invalid sessions now resume as paused without invented credits.",
+    "Controller errors could remain cached in the UI after recovery; controller snapshots now clear them.",
+    "Sidebar inherited dialog border/shadow and poor dark primary contrast; view-only scoped styles corrected."
+  ],
+  "limits": [
+    "Obsidian must be running for notifications. Closed-app elapsed time is recovered on next load without starting multiple new rounds.",
+    "Focus does not automatically complete tasks, reschedule them, or create recurring tasks.",
+    "Keeps at most 200 completed rounds.",
+    "No new real Apple Calendar read/write was performed.",
+    "This is a local version, not published to GitHub."
+  ]
+}

@@ -3,6 +3,8 @@ import {localDay} from './filing';
 import {isWorkspaceFile} from './workspace';
 import {changeTask,planTasks,PlannedTask} from './task-planner-model';
 import {replaceTaskSpan,tasksToggleApi,tasksToggleLines,TASKS_REQUIRED} from './tasks-integration';
+type QueuedUpdate={task:PlannedTask};
+type QueuedFollower={before:PlannedTask;line:number;source:string};
 /** Bounded concurrent initial read; thereafter only changed files are read. Store tasks, not note bodies. */
 export class TaskPlanner extends Component {
  private entries=new Map<TFile,{root:string;key:string;tasks:PlannedTask[]}>();private listeners=new Set<()=>void>();private pending=new Set<TFile>();private timer?:number;private running?:Promise<void>;private stopped=false;private initialized=false;private scan?:Promise<void>;
@@ -10,9 +12,12 @@ export class TaskPlanner extends Component {
  private notificationPending=false;private mutationDepth=0;
  private invalidate(file:TFile){this.revisions.set(file,(this.revisions.get(file)||0)+1);this.dirty.add(file);}
  readonly failures=new Set<string>();
- private undo?:{file:TFile;line:number;before:string[];after:string[]};
+ private undo?:{file:TFile;line:number;before:string[];after:string[];occurrences?:{line:number;source:string}[]};
  private writes:Promise<void>=Promise.resolve();
- private queuedUpdates=new Set<{task:PlannedTask}>();
+ private queuedUpdates=new Set<QueuedUpdate>();
+ private focusIds=new WeakMap<PlannedTask,string>();private focusSequence=0;
+ /** UI identity only: it never authorizes a write to an old occurrence. */
+ focusKey(task:PlannedTask){let key=this.focusIds.get(task);if(!key){key=String(++this.focusSequence);this.focusIds.set(task,key);}return key;}
  constructor(private app:App,private root:()=>string){super();}
  onload(){this.stopped=false;const changed=(f:unknown)=>{if(f instanceof TFile&&f.extension==='md'){this.invalidate(f);this.pending.add(f);this.schedule();}};this.registerEvent(this.app.vault.on('modify',changed));this.registerEvent(this.app.vault.on('create',changed));this.registerEvent(this.app.vault.on('delete',()=>{this.pruneDeleted();this.emit();}));this.registerEvent(this.app.vault.on('rename',f=>{if(f instanceof TFile)changed(f);else for(const file of this.app.vault.getMarkdownFiles())if(file.path.startsWith(f.path+'/'))changed(file);}));}
  subscribe(fn:()=>void){this.listeners.add(fn);return()=>{this.listeners.delete(fn);};}
@@ -48,6 +53,33 @@ export class TaskPlanner extends Component {
   const next=this.writes.then(async()=>{if(this.stopped)throw Error('插件已重载，请重新打开任务面板');this.mutationDepth++;try{await run();}finally{this.mutationDepth--;this.emit();}});
   this.writes=next.catch(()=>{});return next;
  }
+ private queuedFollowers(file:TFile,text:string,line:number,removed:number,after:readonly string[],sameOccurrence=false):QueuedFollower[]{
+  if(this.dirty.has(file))return [];
+  const followers:QueuedFollower[]=[],lines=text.split('\n');
+  // Capture all validated indexed rows, so clicks enqueued while process is
+  // still completing can use the same mapping after its exact result is read.
+  for(const row of this.entries.get(file)?.tasks||[]){
+   if(row.path!==file.path)continue;
+   const replaced=row.line>=line&&row.line<line+removed;
+   if(replaced&&(!sameOccurrence||row.line!==line))continue;
+   if(lines[row.line]!==row.source)continue;
+   followers.push({before:row,line:row.line+(row.line>=line+removed?after.length-removed:0),source:replaced?after[0]:row.source});
+  }
+  return followers;
+ }
+ private rebaseFollowers(file:TFile,followers:QueuedFollower[],expected:string|undefined,indexedText:string|undefined){
+  // A concurrent external edit or superseded read invalidates this mapping.
+  if(expected===undefined||indexedText!==expected||this.dirty.has(file))return;
+  const previousRows=new Map(followers.map(follower=>[follower.before.line,follower])),indexedRows=new Map(this.entries.get(file)?.tasks.map(row=>[row.line,row]));
+  // Transfer focus only through the validated transaction's exact follower map.
+  // Generated occurrences get fresh identities even when source strings collide.
+  for(const follower of followers){const current=indexedRows.get(follower.line),key=this.focusIds.get(follower.before);if(key&&current?.source===follower.source)this.focusIds.set(current,key);}
+  for(const intent of this.queuedUpdates){
+   const row=intent.task;if(row.path!==file.path)continue;const follower=previousRows.get(row.line);
+   if(!follower||row.indexRevision!==follower.before.indexRevision||row.source!==follower.before.source)continue;
+   const current=indexedRows.get(follower.line);if(current?.source===follower.source)intent.task=current;
+  }
+ }
  update(original:PlannedTask,change:Parameters<typeof changeTask>[2]){
   const intent={task:original};this.queuedUpdates.add(intent);
   return this.mutate(async()=>{
@@ -60,55 +92,60 @@ export class TaskPlanner extends Component {
   if(!repeatingToggle&&update.completedOn===undefined&&update.checked!==undefined&&update.checked!==task.checked)update.completedOn=update.checked?localDay():'';
   if(task.recurring&&!repeatingToggle)delete update.checked;
   let receipt:typeof this.undo,expected:string|undefined;
-  let followers:{intent:{task:PlannedTask};line:number}[]=[];
+  let followers:QueuedFollower[]=[];
   await this.app.vault.process(file,text=>{
    if(this.stopped)throw Error('插件已重载，请重新打开任务面板');
    if(file.path!==task.path||this.app.vault.getAbstractFileByPath(task.path)!==file)throw Error('任务来源笔记已移动或删除，请刷新');
    let next:string,after:string[];
-   if(repeatingToggle){
+   if(task.recurring){
     // An external Tasks completion may leave an identical undated next row.
     // Until its modify event has been indexed, source/revision checks alone
     // cannot distinguish that new occurrence from the old checkbox.
     if(this.dirty.has(file))throw Error('任务原文正在刷新，请稍后重试');
-    // Validate before invoking the API so stale double-clicks cannot produce an occurrence.
+    // Attribute edits also require occurrence identity: an identical undated
+    // next row must never receive an old occurrence's schedule or priority.
     const lines=text.split('\n');if(lines[task.line]!==task.source)throw Error('任务原文已变化，请刷新后再操作');
     // Undated recurrences may generate an identical next row at the same line.
     // Source equality alone cannot distinguish the two occurrences.
     const current=this.entries.get(file)?.tasks.find(row=>row.line===task.line);
     if(current?.indexRevision!==task.indexRevision)throw Error('任务版本已变化，请刷新后再操作');
-    const currentApi=tasksToggleApi(this.app);if(!currentApi)throw Error(TASKS_REQUIRED);
+   }
+   if(repeatingToggle){
+    const lines=text.split('\n'),currentApi=tasksToggleApi(this.app);if(!currentApi)throw Error(TASKS_REQUIRED);
     after=tasksToggleLines(currentApi,task,text.includes('\r\n')?'\r\n':'\n');
     lines.splice(task.line,1,...after);next=lines.join('\n');
    }else{next=changeTask(text,task,update);after=[next.split('\n')[task.line]];}
    if(next!==text){
     receipt={file,line:task.line,before:[task.source],after};expected=next;
-    // Only carry forward already queued, distinct rows from this exact index.
-    // Never rebase the replaced occurrence (an undated next occurrence may look identical).
-    const lines=text.split('\n'),indexedRows=new Map(this.entries.get(file)?.tasks.map(row=>[row.line,row]));
-    if(!this.dirty.has(file))for(const queued of this.queuedUpdates){
-     const row=queued.task;if(row.path!==task.path||row.line===task.line)continue;
-     const indexed=indexedRows.get(row.line);
-     if(indexed?.indexRevision!==row.indexRevision||indexed?.source!==row.source||lines[row.line]!==row.source)continue;
-     followers.push({intent:queued,line:row.line+(row.line>task.line?after.length-1:0)});
-    }
+    // Content edits can introduce a recurrence on a formerly ordinary task.
+    // Its identical next occurrence needs the same undo guard as an existing rule.
+    if(task.recurring||update.content!==undefined){const rows=planTasks(next,file.path,this.root());if(task.recurring||rows.some(row=>row.line===task.line&&row.recurring))receipt.occurrences=rows.map(({line,source})=>({line,source}));}
+    // Carry forward already queued rows from this exact index. Attribute edits
+    // preserve the same occurrence, but a Tasks toggle replaces it: never
+    // rebase that occurrence onto an identical undated next occurrence.
+    followers=this.queuedFollowers(file,text,task.line,1,after,!repeatingToggle);
    }return next;
   });
   if(this.stopped)return;
   if(receipt){this.undo=receipt;this.notificationPending=true;}this.invalidate(file);
   const indexedText=await this.read(file,true);
-  // A concurrent external edit or superseded read invalidates this mapping.
-  if(expected!==undefined&&indexedText===expected&&!this.dirty.has(file))for(const follower of followers){
-   const current=this.entries.get(file)?.tasks.find(row=>row.line===follower.line);
-   if(current?.source===follower.intent.task.source)follower.intent.task=current;
-  }
+  this.rebaseFollowers(file,followers,expected,indexedText);
   await this.flush();
  }).finally(()=>this.queuedUpdates.delete(intent));}
 
  canUndo(){return !!this.undo;}
  undoLast(){return this.mutate(async()=>{
   const record=this.undo;if(!record)return;if(this.app.vault.getAbstractFileByPath(record.file.path)!==record.file)throw Error('任务来源文件已删除');
-  await this.app.vault.process(record.file,text=>{if(this.stopped)throw Error('插件已重载，请重新打开任务面板');if(this.app.vault.getAbstractFileByPath(record.file.path)!==record.file)throw Error('任务来源文件已删除');return replaceTaskSpan(text,record.line,record.after,record.before);});
-  if(this.undo===record){this.undo=undefined;this.notificationPending=true;}this.invalidate(record.file);await this.read(record.file,true);await this.flush();
+  let expected:string|undefined,followers:QueuedFollower[]=[];
+  await this.app.vault.process(record.file,text=>{
+   if(this.stopped)throw Error('插件已重载，请重新打开任务面板');if(this.app.vault.getAbstractFileByPath(record.file.path)!==record.file)throw Error('任务来源文件已删除');
+   // An undated Tasks occurrence can recreate exactly the same two-line span.
+   // Compare the task index of the actual transaction body, while permitting
+   // independent prose edits that leave task rows and their positions intact.
+   if(record.occurrences){const rows=planTasks(text,record.file.path,this.root());if(rows.length!==record.occurrences.length||rows.some((row,index)=>row.line!==record.occurrences![index].line||row.source!==record.occurrences![index].source))throw Error('任务原文已变化，无法安全撤销，请打开原文检查');}
+   const next=replaceTaskSpan(text,record.line,record.after,record.before);if(next!==text){expected=next;followers=this.queuedFollowers(record.file,text,record.line,record.after.length,record.before);}return next;
+  });
+  if(this.undo===record){this.undo=undefined;this.notificationPending=true;}this.invalidate(record.file);const indexedText=await this.read(record.file,true);this.rebaseFollowers(record.file,followers,expected,indexedText);await this.flush();
  });}
  async rescan(){await this.ready();this.pruneDeleted();const files=this.app.vault.getMarkdownFiles().filter(isWorkspaceFile);let cursor=0;await Promise.all(Array.from({length:4},async()=>{while(cursor<files.length&&!this.stopped)await this.read(files[cursor++],true);}));await this.flush();}
 

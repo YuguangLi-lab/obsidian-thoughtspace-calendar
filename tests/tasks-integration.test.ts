@@ -28,6 +28,49 @@ test('Tasks output keeps recurrence order, block references and API binding',()=
  assert.deepEqual(tasksToggleLines(api,task()),[next,done]);
  assert.deepEqual(tasksToggleLines({executeToggleTaskDoneCommand:()=>done+'\n'+next},task()),[done,next]);
 });
+test('Legacy trailing quadrant markers are moved before the Tasks metadata before completion',()=>{
+ const source=recurring.replace(' ^reading',' <!-- thoughtspace:quadrant=q2 --> ^reading');
+ const normalized=recurring.replace(' 🔁',' <!-- thoughtspace:quadrant=q2 --> 🔁');
+ const expected=[next.replace(' 🔁',' <!-- thoughtspace:quadrant=q2 --> 🔁'),done.replace(' 🔁',' <!-- thoughtspace:quadrant=q2 --> 🔁')];
+ assert.deepEqual(tasksToggleLines({executeToggleTaskDoneCommand(line){assert.equal(line,normalized);return expected.join('\n');}},task(source)),expected);
+});
+test('Legacy completed quadrant tasks reopen without keeping a hidden completion date',()=>{
+ const source=done.replace(' ^reading',' <!-- thoughtspace:quadrant=q2 --> ^reading');
+ const normalized=done.replace(' 🔁',' <!-- thoughtspace:quadrant=q2 --> 🔁');
+ const output=recurring.replace(' 🔁',' <!-- thoughtspace:quadrant=q2 --> 🔁');
+ assert.deepEqual(tasksToggleLines({executeToggleTaskDoneCommand(line){assert.equal(line,normalized);return output;}},task(source)),[output]);
+ assert.equal(planTasks(output,'Tasks.md','Journal')[0].completedOn,undefined);
+});
+test('Only the plugin quadrant marker is relocated; quoted code and user comments remain literal',()=>{
+ const source='> - [ ] Read `<!-- thoughtspace:quadrant=q3 -->` %% user %% <!-- thoughtspace:quadrant=q2 --> 🔁 every day 📅 2026-10-11 ^reading';
+ const normalized='> - [ ] Read `<!-- thoughtspace:quadrant=q3 -->` %% user %% <!-- thoughtspace:quadrant=q2 --> 🔁 every day 📅 2026-10-11 ^reading';
+ const next=normalized.replace('2026-10-11','2026-10-12').replace(' ^reading',''),done=normalized.replace('[ ]','[x]').replace(' ^reading',' ✅ 2026-10-11 ^reading');
+ assert.deepEqual(tasksToggleLines({executeToggleTaskDoneCommand(line){assert.equal(line,normalized);return next+'\n'+done;}},task(source)),[next,done]);
+});
+test('Dataview legacy quadrant completion keeps mixed brackets, quotes, dates and the original undo row',async()=>{
+ const source='> 2. [ ] 09:15 Read (repeat:: every day) [scheduled:: 2026-10-11] (due:: 2026-10-12) <!-- thoughtspace:quadrant=q1 --> ^reading\r';
+ const normalized='> 2. [ ] 09:15 Read <!-- thoughtspace:quadrant=q1 --> (repeat:: every day) [scheduled:: 2026-10-11] (due:: 2026-10-12) ^reading';
+ const next=normalized.replace('2026-10-12','2026-10-13').replace('2026-10-11','2026-10-12').replace(' ^reading',''),done=normalized.replace('[ ]','[x]').replace(' ^reading',' [completion:: 2026-10-11] ^reading');
+ const h=host('Before\r\n'+source+'\nAfter',{executeToggleTaskDoneCommand(line:string){assert.equal(line,normalized);return next+'\n'+done;}});await h.planner.ready();
+ await h.planner.update(h.planner.all()[0],{checked:true});assert.equal(h.read(),'Before\r\n'+next+'\r\n'+done+'\r\nAfter');
+ await h.planner.undoLast();assert.equal(h.read(),'Before\r\n'+source+'\nAfter');
+});
+test('Nested recurring tasks are validated in their list context and retain indentation on write and undo',async()=>{
+ for(const {indent,prefix} of [{indent:'    ',prefix:'- [ ] Parent\n'},{indent:'\t',prefix:'- [ ] Parent\n'},{indent:'      ',prefix:'- [ ] Parent\n  - [ ] Nested parent\n'}]){
+  const original=prefix+indent+recurring+'\nTrailing prose';
+  const output=[indent+next,indent+done];
+  const initial=planTasks(original,'Tasks.md','Journal'),nested=initial.at(-1)!;assert.equal(nested.recurring,true);
+  assert.deepEqual(tasksToggleLines({executeToggleTaskDoneCommand:()=>output.join('\n')},nested),output);
+  const h=host(original,{executeToggleTaskDoneCommand:()=>output.join('\n')});await h.planner.ready();await h.planner.update(h.planner.all().at(-1),{checked:true});
+  assert.equal(h.read(),prefix+output.join('\n')+'\nTrailing prose');assert.equal(h.planner.all().length,initial.length+1);
+  await h.planner.undoLast();assert.equal(h.read(),original);
+ }
+});
+test('Nested recurring rows in quoted lists preserve their quote and list indentation',()=>{
+ const original='> - [ ] Parent\n>     '+recurring;
+ const nested=planTasks(original,'Tasks.md','Journal')[1],output=['>     '+next,'>     '+done];
+ assert.deepEqual(tasksToggleLines({executeToggleTaskDoneCommand:()=>output.join('\n')},nested),output);
+});
 test('plain-checkbox fallback and invalid recurrence cannot silently finish a recurring task',async()=>{
  for(const output of [recurring.replace('[ ]','[x]'),done,recurring,done+'\n'+next.replace('🔁 every day ','')]){
   const h=host(recurring,{executeToggleTaskDoneCommand:()=>output});await h.planner.ready();

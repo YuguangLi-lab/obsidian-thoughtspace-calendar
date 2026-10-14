@@ -98,7 +98,7 @@ export class AppleCalendarConnectionModal extends Modal {
 export class CalendarEventModal extends Modal {
   private closed=false;
   private pending=false;
-  constructor(private host:CalendarHost,private date:Date,private event?:CalendarEvent) { super(host.app); }
+  constructor(private host:CalendarHost,private date:Date,private event?:CalendarEvent,private endDate?:Date) { super(host.app); }
   onOpen():void { this.modalEl.addClass('tsc-dialog','tsc-event-dialog','ts-calendar-plugin'); this.setTitle(this.event?(this.event.editable?'编辑日程':'日程详情'):'新建日程'); void this.render(); }
   onClose():void { this.closed=true; this.contentEl.empty(); }
   private async render():Promise<void> {
@@ -120,7 +120,7 @@ export class CalendarEventModal extends Modal {
       const dates=form.createDiv({cls:'tsc-event-dates'});
       const start=label(dates,'开始').createEl('input'); const end=label(dates,'结束').createEl('input');
       let initialStart=original?new Date(original.start):new Date(this.date);
-      let initialEnd=original?new Date(original.end):new Date(initialStart.getTime()+3600000);
+      let initialEnd=original?new Date(original.end):this.endDate&&Number.isFinite(+this.endDate)&&this.endDate>initialStart?new Date(this.endDate):new Date(initialStart.getTime()+3600000);
       const fillDates=()=> {
         start.type=end.type=allDay.checked?'date':'datetime-local';
         start.value=allDay.checked?dayKey(initialStart):toDateInput(initialStart);
@@ -132,7 +132,10 @@ export class CalendarEventModal extends Modal {
         const previousStart=start.value, previousEnd=end.value;
         try {
           if(allDay.checked) {
-            initialStart=parseDateInput(previousStart,false); initialEnd=addDays(parseDateInput(previousEnd,false),1);
+            initialStart=parseDateInput(previousStart,false);
+            // The timed end is exclusive: an event ending at 00:00 occupies no part
+            // of that next date. Convert the last occupied instant to an inclusive day.
+            initialEnd=addDays(new Date(+parseDateInput(previousEnd,false)-1),1);
           } else if(priorAllDay) {
             initialStart=parseDateInput(previousStart,true); initialStart.setHours(9);
             initialEnd=parseDateInput(previousEnd,true); initialEnd.setHours(10);

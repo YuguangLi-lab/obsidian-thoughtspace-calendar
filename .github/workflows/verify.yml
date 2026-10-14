@@ -21,6 +21,8 @@ jobs:
       - run: npm test
       - run: npx playwright install chromium
       - run: npm run test:browser
+      - run: node qa/pomodoro-browser.mjs
+      - run: node qa/pomodoro-strip-browser.mjs
       - run: npm run package
       - uses: actions/upload-artifact@v4
         if: always()
@@ -29,5 +31,9 @@ jobs:
           path: |
             qa/large-calendar-output/VERIFY.json
             qa/large-calendar-output/*.png
+            qa/pomodoro-output/result.json
+            qa/pomodoro-output/*.png
+            qa/pomodoro-strip-output/result.json
+            qa/pomodoro-strip-output/*.png
             release/*
           if-no-files-found: ignore

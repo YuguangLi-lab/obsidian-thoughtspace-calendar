@@ -133,7 +133,7 @@ return JSON.stringify(result);
     record(native("""
 const task=(await q.list()).find(t=>t.dateRole==='scheduled'&&t.text.includes('Prepare evidence'));await q.host.scheduleTask(task,'2026-10-21',493,581);
 await q.p.openLargeCalendar('2026-10-21');const leaves=app.workspace.getLeavesOfType('thoughtspace-large-calendar'),v=leaves[0].view;q.view=v;q.viewHost=v.host;
-v.host={...q.host,apple:{events:async()=>({events:[q.event],truncated:false}),detail:async()=>{throw Error('Native QA blocks Apple detail');},save:async()=>{throw Error('Native QA blocks Apple writes');}},tasks:async(start,end)=>(await q.host.tasks(start,end)).filter(t=>t.source===q.file.path),unscheduledTasks:async()=>(await q.host.unscheduledTasks()).filter(t=>t.source===q.file.path)};
+v.host={...q.host,appleSettings:()=>({...q.host.appleSettings(),enabled:true,defaultCalendarId:'native-workflow-calendar'}),apple:{calendars:async()=>({calendars:[{id:'native-workflow-calendar',title:'QA only',source:'Synthetic',editable:true,color:'#54867a'}]}),events:async()=>({events:[q.event],truncated:false}),detail:async()=>{throw Error('Native QA blocks Apple detail');},save:async()=>{throw Error('Native QA blocks Apple writes');}},tasks:async(start,end)=>(await q.host.tasks(start,end)).filter(t=>t.source===q.file.path),unscheduledTasks:async()=>(await q.host.unscheduledTasks()).filter(t=>t.source===q.file.path)};
 await v.setState({mode:'week',day:'2026-10-21',anchor:'2026-10-21'});await v.refresh();
 const timeline=v.contentEl.querySelector('.tsc-linked-timeline'),items=[...timeline.querySelectorAll('.tsc-agenda-entry')];
 const result={nativeWeekSevenColumns:v.contentEl.querySelectorAll('.tsc-week-column').length===7,nativeMergedTimeline:items.length===2&&items[0].textContent.includes('Prepare evidence')&&items[1].textContent.includes('Native linked event'),nativeLinkedNoteAction:!!v.contentEl.querySelector('.tsc-note-link')};
@@ -143,6 +143,19 @@ form.querySelector('input[type=date]').value='2026-10-21';const times=form.query
 await q.wait(()=>!form.isConnected);await q.p.taskPlanner.flush();result.nativeModalWritesExactMinutes=(await app.vault.read(q.file)).includes('11:13 - 12:31 Capture inbox ⏳ 2026-10-21 ^native-inbox');
 await v.refresh();const main=v.contentEl.querySelector('.tsc-large-main');main.scrollTop=400;await v.refresh();result.nativeRefreshKeepsScroll=main.scrollTop===400;
 const oldWidth=v.contentEl.style.width;v.contentEl.style.width='620px';await q.frame();result.nativeNarrowStack=getComputedStyle(v.contentEl.querySelector('.tsc-large-body')).display==='block';v.contentEl.style.width=oldWidth;
+return JSON.stringify(result);
+"""))
+    record(native("""
+const v=q.view,win=v.contentEl.ownerDocument.defaultView;
+const column=()=>v.contentEl.querySelector('.tsc-week-column[data-date="2026-10-21"]');
+const range=(from,to,cancel='')=>{const cell=column(),rect=cell.getBoundingClientRect(),set=cell.setPointerCapture,has=cell.hasPointerCapture;cell.setPointerCapture=()=>{};cell.hasPointerCapture=()=>false;
+const point=minute=>({pointerId:219,isPrimary:true,button:0,clientX:rect.left+rect.width/2,clientY:rect.top+minute/1440*rect.height,bubbles:true,cancelable:true});
+try{cell.dispatchEvent(new PointerEvent('pointerdown',point(from)));win.dispatchEvent(new PointerEvent('pointermove',point(to)));if(cancel==='Escape')cell.dispatchEvent(new KeyboardEvent('keydown',{key:'Escape',bubbles:true,cancelable:true}));else win.dispatchEvent(new PointerEvent(cancel||'pointerup',point(to)));}finally{cell.setPointerCapture=set;cell.hasPointerCapture=has;}};
+range(840,930);await q.wait(()=>!!document.querySelector('.tsc-event-dialog input[type=datetime-local]'));
+const modal=document.querySelector('.tsc-event-dialog'),times=modal.querySelectorAll('input[type=datetime-local]');
+const result={nativeWeekDragPrefillsRange:times[0].value==='2026-10-21T14:00'&&times[1].value==='2026-10-21T15:30',nativeRangePreviewRemoved:!v.contentEl.querySelector('.tsc-range-preview')};[...modal.querySelectorAll('button')].find(b=>b.textContent==='取消').click();
+range(840,960,'Escape');await q.frame();result.nativeWeekEscapeDoesNotOpenEditor=!document.querySelector('.tsc-event-dialog')&&!v.contentEl.querySelector('.tsc-range-preview');
+range(840,960,'pointercancel');await q.frame();result.nativeWeekPointerCancelDoesNotOpenEditor=!document.querySelector('.tsc-event-dialog')&&!v.contentEl.querySelector('.tsc-range-preview');
 return JSON.stringify(result);
 """))
     # Let pending metadata events settle; sample within one eval so CLI focus changes
@@ -174,7 +187,9 @@ return JSON.stringify({cleaned:clean});
         if initialized:
             check('native fixture files cleaned', result['cleaned'])
     finally:
-        evaluate('(async()=>{await app.workspace.changeLayout(' + json.dumps(snapshot['layout']) + ');return JSON.stringify(true);})()')
+        layout = json.dumps(snapshot['layout'])
+        restored = evaluate('(async()=>{const expected=' + layout + ';Promise.resolve(app.workspace.changeLayout(expected)).catch(()=>{});const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==="object"?Object.fromEntries(Object.keys(v).sort().map(k=>[k,canonical(v[k])])):v;for(let i=0;i<100;i++){if(JSON.stringify(canonical(app.workspace.getLayout()))===JSON.stringify(canonical(expected)))return JSON.stringify(true);await new Promise(r=>setTimeout(r,50));}return JSON.stringify(false);})()')
+        check('native workspace restored exactly', restored)
 
 report = {'passed': len(checks), 'checks': checks,
           'scope': 'Native vault, metadata and DOM. Apple events are synthetic; no permission request or real calendar read/write.',

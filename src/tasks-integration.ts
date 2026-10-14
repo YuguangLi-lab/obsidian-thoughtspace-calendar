@@ -1,5 +1,7 @@
 import type {App} from 'obsidian';
 import {planTasks,type PlannedTask} from './task-planner-model';
+import {taskCheckbox} from './model';
+import {quadrantOverride,setTaskQuadrant} from './task-quadrants';
 
 /** Optional API documented by obsidian-tasks-group; never retain a disabled plugin. */
 export interface TasksToggleApi {
@@ -16,9 +18,19 @@ export const TASKS_REPEAT_NOT_GENERATED='Tasks 未生成下一次任务，未修
 const taskLine=/^(?:(?: {0,3}>[\t ]?)+)?[\t ]*(?:[-*+]|\d+[.)])[\t ]+\[([ xX])\][\t ]+\S/;
 const blockId=(line:string)=>line.match(/\s+(\^[A-Za-z0-9-]+)\s*$/)?.[1];
 
+/** Legacy markers after recurrence/date fields prevent Tasks parsing its suffix.
+ * Relocate only our closed marker; leave user comments and code spans intact.
+ */
+function tasksSource(task:PlannedTask,source:string):string {
+ const quadrant=quadrantOverride(source);if(!quadrant)return source;
+ const at=taskCheckbox(task);if(at<0||!/^\[[ xX]\]/.test(source.slice(at)))return source;
+ const end=at+3+(source.slice(at+3).match(/^[\t ]*/)?.[0].length||0);
+ return source.slice(0,end)+setTaskQuadrant(source.slice(end),quadrant);
+}
+
 /** Keep the API's recurrence order and metadata; normalize only the existing line ending. */
 export function tasksToggleLines(api:TasksToggleApi,task:PlannedTask,newline:'\n'|'\r\n'=task.source.endsWith('\r')?'\r\n':'\n'):string[] {
- const source=task.source.replace(/\r$/,''),result=api.executeToggleTaskDoneCommand(source,task.path);
+ const source=task.source.replace(/\r$/,''),result=api.executeToggleTaskDoneCommand(tasksSource(task,source),task.path);
  if(typeof result!=='string'||!result.trim())throw Error('Tasks 返回了删除操作或空内容，请在原文完成此任务');
  if(result.length>1_000_000)throw Error('Tasks 返回的内容过长，请在原文完成此任务');
  const lines=result.replace(/\r\n/g,'\n').split('\n');
@@ -32,7 +44,12 @@ export function tasksToggleLines(api:TasksToggleApi,task:PlannedTask,newline:'\n
  // Tasks deliberately falls back to a plain checkbox toggle when its global
  // filter does not match. A finite recurrence can also return a single row;
  // the public API cannot disambiguate it, so leave that case to the source.
- const updated=planTasks(lines.join('\n'),task.path,'');
+ // The original row may be a valid deeply nested list item. Parsing its API
+ // result without the parent list would mistake indentation for a code block.
+ // Validate the already checked task syntax without that outer context only;
+ // keep the returned quote/list indentation exactly unchanged for persistence.
+ const validation=lines.map(line=>line.replace(/^(?:(?: {0,3}>[\t ]?)+)?[\t ]*/,''));
+ const updated=planTasks(validation.join('\n'),task.path,'');
  if(!task.checked){
   if(updated.length!==2||updated.filter(row=>row.checked).length!==1||updated.filter(row=>!row.checked&&row.recurring).length!==1)
    throw Error(TASKS_REPEAT_NOT_GENERATED);

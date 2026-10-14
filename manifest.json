@@ -1,9 +1,9 @@
 {
   "id": "thoughtspace-calendar",
   "name": "ThoughtSpace 日历与日记",
-  "version": "1.4.4",
+  "version": "1.5.2",
   "minAppVersion": "1.6.0",
-  "description": "Large month/week calendar, two-way Apple Calendar integration, daily and periodic notes, tasks, quadrants and timeline.",
+  "description": "Large month/week calendar, Markdown tasks and journals, stopwatch/countdown/Pomodoro with actual time tracking, and Apple Calendar integration.",
   "author": "ThoughtSpace",
   "isDesktopOnly": true
 }

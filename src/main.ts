@@ -20,6 +20,13 @@ import {resolveCalendarTask,taskSchedulingChange} from './calendar-scheduling';
 import {CalendarNoteLinks} from './calendar-note-links';
 import {CalendarNotePicker} from './calendar-note-picker';
 import {ChineseCalendar,chineseDayPresentation} from './chinese-calendar';
+import {PomodoroController,type PomodoroActions} from './pomodoro';
+import {POMODORO_VIEW,PomodoroView} from './pomodoro-view';
+import {type PomodoroTarget,type TimerMode} from './pomodoro-model';
+import {resolveTimerTask,taskTimerTarget} from './task-timer-target';
+import {createPomodoroStore} from './pomodoro-store';
+import {rename as replaceFile} from 'node:fs/promises';
+import {join as diskPath} from 'node:path';
 type BoardPlugin={manifest:{version:string};currentBoard?:{file:TFile|null};ensureDock(show?:boolean):Promise<WorkspaceLeaf>};
 const run=(fn:()=>unknown)=>{try{void Promise.resolve(fn()).catch(e=>new Notice(String(e)));}catch(e){new Notice(String(e));}};
 export default class ThoughtSpaceCalendar extends Plugin{
@@ -29,6 +36,7 @@ export default class ThoughtSpaceCalendar extends Plugin{
  private initialTaskRead?:Promise<void>;private largeRefreshTimer?:number;private chinese=new ChineseCalendar();
  private eventNoteLinks!:CalendarNoteLinks;
  private settingsWrites:Promise<unknown>=Promise.resolve();
+ pomodoro!:PomodoroController;pomodoroActions!:PomodoroActions;
  private boardPlugin():BoardPlugin|undefined{return (this.app as unknown as {plugins:{getPlugin(id:string):BoardPlugin|undefined}}).plugins?.getPlugin('thoughtspace');}
  get currentBoard(){return this.boardPlugin()?.currentBoard;}
  get ensureDock(){const board=this.boardPlugin();return board?()=>board.ensureDock(true):undefined;}
@@ -39,7 +47,18 @@ export default class ThoughtSpaceCalendar extends Plugin{
   this.settings=calendarSettings(saved,legacy);if(saved==null)await this.saveData(this.settings);
   const tokens=designTokens(document);this.register(()=>tokens.remove());
   this.taskPlanner=this.addChild(new TaskPlanner(this.app,()=>this.settings.journalFolder));
-  const base=(this.app.vault.adapter as unknown as {getBasePath?:()=>string}).getBasePath?.();
+  const adapter=this.app.vault.adapter,base=(adapter as unknown as {getBasePath?:()=>string}).getBasePath?.(),focusPath=normalizePath(`${this.app.vault.configDir}/plugins/${this.manifest.id}/pomodoro-state.json`);
+  // VaultAdapter.rename refuses an existing destination. Desktop filesystem rename
+  // replaces our private state atomically without a delete-before-save gap.
+  const focusStore=createPomodoroStore(adapter,focusPath,base?(from,to)=>replaceFile(diskPath(base,from),diskPath(base,to)):undefined);
+  this.pomodoro=new PomodoroController(focusStore,()=>this.settings.pomodoro,{onFinished:state=>new Notice(state.session.mode==='countdown'?'倒计时结束，实际用时已记录。':state.session.mode==='stopwatch'?'计时已结束，实际用时已记录。':state.session.phase==='focus'?'本轮专注完成，休息一下。':'休息结束，可以开始下一轮专注。',7000)});
+  this.register(()=>{focusStore.dispose();this.pomodoro.dispose();});
+  await this.pomodoro.initialize().catch(error=>new Notice('计时器加载失败：'+String(error)));
+  this.pomodoroActions={open:()=>this.openPomodoro(),startTask:async task=>{if(!this.ready)throw Error('日历插件已关闭');await this.calendarTaskIndex();await this.taskPlanner.flush();const current=resolveTimerTask(this.taskPlanner.all(),task),target=taskTimerTarget(current);await this.startLinkedTimer(target,target.plannedDurationMs?'countdown':'stopwatch',target.plannedDurationMs?target.plannedDurationMs/60_000:undefined);}};
+  this.registerView(POMODORO_VIEW,leaf=>new PomodoroView(leaf,this.pomodoro,target=>this.openPomodoroTarget(target),day=>this.openLargeCalendar(day)));
+  const status=this.addStatusBarItem();status.addClass('ts-calendar-plugin','ts-calendar-focus-status');status.setAttribute('role','button');status.tabIndex=0;
+  this.registerDomEvent(status,'click',()=>run(()=>this.openPomodoro()));this.registerDomEvent(status,'keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();run(()=>this.openPomodoro());}});
+  this.register(this.pomodoro.subscribe(({state,remainingMs,elapsedMs,error})=>{const session=state.session,seconds=Math.floor((session.mode==='stopwatch'?elapsedMs:Math.ceil(remainingMs/1000)*1000)/1000),time=(seconds>=3600?String(Math.floor(seconds/3600)).padStart(2,'0')+':':'')+String(Math.floor(seconds/60)%60).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0'),label=session.mode==='stopwatch'?'计时':session.mode==='countdown'?'倒计时':session.phase==='focus'?'专注':'休息';status.setText(session.status==='idle'?'◷ 计时器':`${label} ${time}${session.status==='paused'?' · 已暂停':session.status==='finished'?' · 完成':''}`);status.title=error||`${session.target?.title||'计时器'} · 点击打开`;status.setAttribute('aria-label',status.title);status.dataset.status=session.status;}));
   this.appleCalendar=new AppleCalendarClient(new NativeCalendarTransport(base?`${base}/${this.app.vault.configDir}/plugins/${this.manifest.id}/native/ThoughtSpaceCalendarBridge.app/Contents/MacOS/calendar-bridge`:''),()=>this.settings.appleCalendar);
   this.eventNoteLinks=new CalendarNoteLinks(this.app,{
    createNote:async event=>{if(!this.ready)throw Error('日历插件已关闭');const date=dayKey(new Date(event.start));return this.createUnique(`${this.settings.cardFolder}/日程`,`${date} ${event.title}`,'md',`---\ntype: calendar-event\ndate: ${date}\ncalendar-start: ${JSON.stringify(event.start)}\ncalendar-end: ${JSON.stringify(event.end)}\n---\n\n# ${event.title.replace(/[\r\n]+/g,' ')}\n\n## 记录\n\n## 后续行动\n\n`);},
@@ -53,6 +72,8 @@ export default class ThoughtSpaceCalendar extends Plugin{
    scheduleTask:async(task,date,start,end,clearTime)=>{const current=resolveCalendarTask(await this.calendarTaskIndex(),task);if(!this.ready)throw Error('日历插件已关闭');const change=taskSchedulingChange(task,date,start,end);if(clearTime){if(start!==undefined||end!==undefined)throw Error('清除时间不能同时设置时间');change.time=null;}await this.taskPlanner.update(current,change);},
    toggleTask:async task=>{const current=resolveCalendarTask(await this.calendarTaskIndex(),task);if(!this.ready)throw Error('日历插件已关闭');await this.taskPlanner.update(current,{checked:!current.checked});},
    canToggleTask:task=>{try{return this.ready&&this.taskPlanner.canToggle(resolveCalendarTask(this.taskPlanner.all(),task));}catch{return false;}},
+   startPomodoro:async task=>{const current=resolveCalendarTask(await this.calendarTaskIndex(),task);await this.pomodoroActions.startTask(current);},
+   timerSnapshot:()=>this.pomodoro.snapshot(),openTimer:()=>this.openPomodoro(),startTimer:(target,mode,duration)=>this.startLinkedTimer(target,mode,duration),
    openJournal:async date=>{const day=dayKey(date);await this.getJournalFile(day);await this.selectJournalDay(day);},
    openTask:async task=>this.openCalendarTask(task),
    eventNotes:event=>this.eventNoteLinks.linkedNotes(event).map(file=>({path:file.path,name:file.basename})),
@@ -61,12 +82,20 @@ export default class ThoughtSpaceCalendar extends Plugin{
    eventMoved:async(before,after)=>this.eventNoteLinks.rekey(before,after),
    lunar:date=>chineseDayPresentation(this.chinese.get(dayKey(date)),this.settings).label};
   this.openLargePane=registerLargeCalendar(this,this.largeCalendarHost);
+  // Clock text changes in place; only durable state changes redraw local actual-time blocks.
+  let timerDigest='';this.register(this.pomodoro.subscribe(snapshot=>{const {session,records}=snapshot.state,digest=JSON.stringify([session.id,session.status,session.durationMs,session.target,records.map(record=>[record.id,record.completedAt,record.durationMs])]);for(const leaf of this.app.workspace.getLeavesOfType(LargeCalendarView.type))if(leaf.view instanceof LargeCalendarView){if(digest!==timerDigest)leaf.view.refreshTimer();leaf.view.refreshTimerClock(snapshot);}timerDigest=digest;}));
   this.register(this.taskPlanner.subscribe(()=>{window.clearTimeout(this.largeRefreshTimer);this.largeRefreshTimer=window.setTimeout(()=>this.refreshLargeCalendars(),100);}));
   this.register(()=>{window.clearTimeout(this.largeRefreshTimer);this.chinese.clear();});
   this.registerView(CALENDAR,leaf=>new JournalView(leaf,this,'calendar'));this.registerView(JOURNAL,leaf=>new JournalView(leaf,this,'entries'));
-  this.registerMarkdownCodeBlockProcessor('thoughtspace-tasks',(source,el,ctx)=>{try{themeSurface(el,this.settings);ctx.addChild(new TaskPanel(this.app,el,this.taskPlanner,source.trim()));}catch(e){el.setText('任务日期无效：'+String(e));}});
+  this.registerMarkdownCodeBlockProcessor('thoughtspace-tasks',(source,el,ctx)=>{try{themeSurface(el,this.settings);ctx.addChild(new TaskPanel(this.app,el,this.taskPlanner,source.trim(),{},false,undefined,undefined,this.pomodoroActions));}catch(e){el.setText('任务日期无效：'+String(e));}});
   this.addRibbonIcon('calendar-range','ThoughtSpace 日历',()=>run(()=>this.ensureCalendar(true)));
   this.addRibbonIcon('notebook-pen','ThoughtSpace 今日日记',()=>run(()=>this.journal()));
+  this.addRibbonIcon('timer','ThoughtSpace 计时器',()=>run(()=>this.openPomodoro()));
+  this.addCommand({id:'show-pomodoro',name:'打开计时器',callback:()=>run(()=>this.openPomodoro())});
+  this.addCommand({id:'start-pomodoro',name:'开始或继续番茄专注',callback:()=>run(async()=>{await this.pomodoro.startFocus();await this.openPomodoro();})});
+  this.addCommand({id:'pause-pomodoro',name:'暂停计时器',callback:()=>run(()=>this.pomodoro.pause())});
+  this.addCommand({id:'start-stopwatch',name:'开始正计时',callback:()=>run(()=>this.startLinkedTimer(undefined,'stopwatch'))});
+  this.addCommand({id:'stop-timer',name:'结束计时并记录实际用时',callback:()=>run(()=>this.pomodoro.stop())});
   this.addCommand({id:'show-calendar',name:'打开日历与任务',callback:()=>run(()=>this.ensureCalendar(true))});
   this.addCommand({id:'show-journal',name:'打开日记与清单',callback:()=>run(()=>this.ensureJournal(true))});
   this.addCommand({id:'open-today',name:'打开今日日记',callback:()=>run(()=>this.journal())});
@@ -79,7 +108,7 @@ export default class ThoughtSpaceCalendar extends Plugin{
  private async calendarTaskIndex(){if(!this.ready)return [];if(!this.initialTaskRead)this.initialTaskRead=this.taskPlanner.ready().catch(error=>{this.initialTaskRead=undefined;throw error;});await this.initialTaskRead;return this.ready?this.taskPlanner.all():[];}
  private async openCalendarNote(file:TFile){if(!this.ready)throw Error('日历插件已关闭');if(this.app.vault.getAbstractFileByPath(file.path)!==file)throw Error('关联笔记已移动或删除，请刷新');const existing=this.app.workspace.getLeavesOfType('markdown').find(leaf=>(leaf.view as {file?:TFile}).file===file),leaf=existing||this.app.workspace.getLeaf('tab');if(!existing)await leaf.openFile(file);await this.app.workspace.revealLeaf(leaf);this.app.workspace.setActiveLeaf(leaf,{focus:true});}
  private persistSettings(patch:(current:CalendarSettings)=>CalendarSettings){const work=this.settingsWrites.catch(()=>{}).then(async()=>{if(!this.ready)throw Error('日历插件已关闭');const previous=this.settings,settings=patch(previous);await this.saveData(settings);this.settings=settings;return previous;});this.settingsWrites=work;return work;}
- async updateSettings(value:unknown,preserveApple=false){const previous=await this.persistSettings(current=>calendarSettings({...value as CalendarSettings,...(preserveApple?{appleCalendar:current.appleCalendar}:{})}));this.appleCalendar.invalidate();this.configureLinks();if(previous.journalFolder!==this.settings.journalFolder&&this.initialTaskRead)await this.taskPlanner.ready();await this.refreshViews();this.refreshLargeCalendars(true);}
+ async updateSettings(value:unknown,preserveApple=false){const previous=await this.persistSettings(current=>calendarSettings({...value as CalendarSettings,...(preserveApple?{appleCalendar:current.appleCalendar}:{})}));this.appleCalendar.invalidate();this.configureLinks();if(previous.journalFolder!==this.settings.journalFolder&&this.initialTaskRead)await this.taskPlanner.ready();await this.pomodoro.configure();await this.refreshViews();this.refreshLargeCalendars(true);}
  private async saveAppleCalendarSettings(appleCalendar:AppleCalendarSettings){await this.persistSettings(current=>calendarSettings({...current,appleCalendar}));}
  renderCalendarIntegrationSettings(el:HTMLElement){renderAppleCalendarSetting(el,this.largeCalendarHost,()=>this.openLargeCalendar());}
  private refreshLargeCalendars(force=false){if(!this.ready)return;for(const leaf of this.app.workspace.getLeavesOfType(LargeCalendarView.type)){const view=leaf.view;if(view instanceof LargeCalendarView)run(()=>view.refresh(force));}}
@@ -103,6 +132,9 @@ export default class ThoughtSpaceCalendar extends Plugin{
  async fileOldJournals(){const root=this.settings.journalFolder;return this.serialize(async()=>{let moved=0;const skipped:string[]=[],failed:string[]=[];for(const file of this.app.vault.getMarkdownFiles().filter(f=>f.parent?.path===root&&/^\d{4}-\d{2}-\d{2}$/.test(f.basename))){try{const folder=journalFolder(file.basename,root),target=`${folder}/${file.name}`;if(this.app.vault.getAbstractFileByPath(target)){skipped.push(file.path);continue;}const backup=`${this.app.vault.configDir}/plugins/${this.manifest.id}/filing-backups/${Date.now()}-${safeName(file.basename)}.md`;const backupFolder=backup.slice(0,backup.lastIndexOf('/'));if(!await this.app.vault.adapter.exists(backupFolder))await this.app.vault.adapter.mkdir(backupFolder);await this.app.vault.adapter.write(backup,await this.app.vault.read(file));await this.folder(folder);await this.app.fileManager.renameFile(file,target);moved++;}catch(error){failed.push(file.path+'：'+String(error));}}new Notice(`已整理 ${moved} 篇，同名保留 ${skipped.length} 篇，失败 ${failed.length} 篇`,8000);return{moved,skipped,failed};});}
  ensureCalendar(show=false){return this.ensurePane(CALENDAR,show);}
  ensureJournal(show=false){return this.ensurePane(JOURNAL,show);}
+ async openPomodoro(){await this.ensurePane(POMODORO_VIEW,true);}
+ private async startLinkedTimer(target?:PomodoroTarget,mode:TimerMode='stopwatch',durationMinutes?:number){if(!this.ready)throw Error('日历插件已关闭');await this.pomodoro.startTimer(target,mode,durationMinutes);await this.openPomodoro();}
+ private async openPomodoroTarget(target:PomodoroTarget){if(!this.ready)throw Error('日历插件已关闭');if(!target.path)return;const file=this.app.vault.getAbstractFileByPath(target.path);if(!(file instanceof TFile))throw Error('任务来源已移动或删除');const leaf=this.app.workspace.getLeaf('tab');await leaf.openFile(file,{eState:{line:target.line||0}});await this.app.workspace.revealLeaf(leaf);}
  private async ensurePane(type:string,show:boolean):Promise<WorkspaceLeaf>{
   if(!this.ready)throw Error('日历插件已关闭');
   const leaf=await this.openings.run(type,async()=>{let leaf=this.app.workspace.getLeavesOfType(type)[0];if(!leaf){leaf=this.app.workspace.getRightLeaf(false)!;if(!leaf)throw Error('无法创建日历侧栏');await leaf.setViewState({type,active:false});}await leaf.loadIfDeferred();return leaf;});
@@ -117,7 +149,7 @@ export default class ThoughtSpaceCalendar extends Plugin{
 }
 class CalendarSettingsTab extends PluginSettingTab{
  constructor(app:ThoughtSpaceCalendar['app'],private calendar:ThoughtSpaceCalendar){super(app,calendar);}
- display(){const el=this.containerEl;el.empty();el.addClass('ts-calendar-plugin');el.createEl('h2',{text:'ThoughtSpace 日历与日记'});el.createEl('p',{text:'独立运行日历、任务和周期笔记；已有 Markdown 文件继续使用。'});let draft={...this.calendar.settings};
+ display(){const el=this.containerEl;el.empty();el.addClass('ts-calendar-plugin');el.createEl('h2',{text:'ThoughtSpace 日历与日记'});el.createEl('p',{text:'独立运行日历、任务和周期笔记；已有 Markdown 文件继续使用。'});let draft={...this.calendar.settings,pomodoro:{...this.calendar.settings.pomodoro}};
   new Setting(el).setName('日记目录').setDesc('新日记保存为 年/月/YYYY-MM-DD.md；修改设置不会搬动旧文件。').addText(t=>t.setValue(draft.journalFolder).onChange(v=>draft.journalFolder=v));
   new Setting(el).setName('收集笔记目录').addText(t=>t.setValue(draft.cardFolder).onChange(v=>draft.cardFolder=v));
   new Setting(el).setName('关联当天新建笔记').setDesc('将当天新建的笔记链接到日记；不复制笔记正文。').addToggle(t=>t.setValue(draft.linkCreatedNotes).onChange(v=>draft.linkCreatedNotes=v));
@@ -127,8 +159,10 @@ class CalendarSettingsTab extends PluginSettingTab{
   new Setting(el).setName('界面风格').addDropdown(d=>d.addOptions({soft:'柔和',paper:'纸张'}).setValue(draft.surfaceStyle).onChange(v=>draft.surfaceStyle=v as CalendarSettings['surfaceStyle']));
   new Setting(el).setName('主题色').addDropdown(d=>d.addOptions({forest:'森林绿',blue:'蓝色',amber:'琥珀',rose:'玫瑰'}).setValue(draft.accent).onChange(v=>draft.accent=v as CalendarSettings['accent']));
   new Setting(el).setName('玻璃效果').addToggle(t=>t.setValue(draft.glassEffects).onChange(v=>draft.glassEffects=v));
+  el.createEl('h3',{text:'番茄钟'});const durationInputs:HTMLInputElement[]=[];
+  for(const[key,label,min,max]of [['focusMinutes','专注时长（分钟）',1,180],['shortBreakMinutes','短休息（分钟）',1,60],['longBreakMinutes','长休息（分钟）',1,60],['longBreakEvery','长休息间隔（轮）',2,12]] as const)new Setting(el).setName(label).setDesc(`${min}–${max}；进行中的计时使用本轮原时长，下一轮应用新设置。`).addText(t=>{durationInputs.push(t.inputEl);t.inputEl.type='number';t.inputEl.required=true;t.inputEl.min=String(min);t.inputEl.max=String(max);t.inputEl.step='1';t.setValue(String(draft.pomodoro[key])).onChange(value=>{const n=Number(value);if(Number.isInteger(n)&&n>=min&&n<=max)draft.pomodoro[key]=n;});});
   el.createEl('h3',{text:'大日历与苹果日历'});this.calendar.renderCalendarIntegrationSettings(el);
-  new Setting(el).setName('保存设置').addButton(b=>b.setButtonText('保存').setCta().onClick(()=>run(async()=>{await this.calendar.updateSettings(draft,true);new Notice('日历设置已保存');})));
+  new Setting(el).setName('保存设置').addButton(b=>b.setButtonText('保存').setCta().onClick(()=>run(async()=>{if(durationInputs.some(input=>!input.checkValidity()))throw Error('请填写范围内的整分钟时长和轮数');await this.calendar.updateSettings(draft,true);new Notice('日历设置已保存');})));
   new Setting(el).setName('整理旧日记').setDesc('仅移动根目录的日期笔记，先备份；目标同名时跳过。').addButton(b=>b.setButtonText('整理为年月目录').onClick(()=>run(()=>this.calendar.fileOldJournals())));
  }
 }

@@ -19,13 +19,19 @@ export function preserveTaskRowFocus(root:HTMLElement,rowSelector='.ts-task-row'
  const row=active?.closest<HTMLElement>(rowSelector);
  if(!active||!row||!root.contains(row))return ()=>{};
  const rows=Array.from(root.querySelectorAll<HTMLElement>(rowSelector));
- const index=rows.indexOf(row),path=row.dataset.path,line=row.dataset.line;
+ const index=rows.indexOf(row),path=row.dataset.path,line=row.dataset.line,source=row.dataset.source,key=row.dataset.focusKey;
+ const sourceRows=source===undefined?[]:rows.filter(el=>el.dataset.path===path&&el.dataset.source===source),occurrence=sourceRows.indexOf(row);
  const label=active.getAttribute('aria-label'),checkbox=active.matches('input[type=checkbox]');
  return ()=>{
   // Never steal focus from an editor or another control the user has chosen.
   if(active.isConnected||doc.activeElement!==doc.body)return;
   const current=Array.from(root.querySelectorAll<HTMLElement>(rowSelector));
-  const nextRow=current.find(el=>el.dataset.path===path&&el.dataset.line===line)||current[Math.min(index,current.length-1)];
+  // An earlier recurrence may insert a row at this task's former line. Prefer
+  // the complete source before using position; same titles can have different dates.
+  const sameSource=source===undefined?[]:current.filter(el=>el.dataset.path===path&&el.dataset.source===source);
+  const occurrenceRow=sameSource.length===sourceRows.length?sameSource[occurrence]:undefined;
+  sameSource.sort((a,b)=>Math.abs(Number(a.dataset.line)-Number(line))-Math.abs(Number(b.dataset.line)-Number(line)));
+  const nextRow=(key?current.find(el=>el.dataset.focusKey===key):occurrenceRow||sameSource[0]||current.find(el=>el.dataset.path===path&&el.dataset.line===line))||current[Math.min(index,current.length-1)];
   let next:HTMLElement|undefined;
   if(checkbox)next=nextRow?.querySelector<HTMLInputElement>('input[type=checkbox]:not(:disabled)')||undefined;
   else if(label)next=Array.from(nextRow?.querySelectorAll<HTMLElement>('[aria-label]')||[]).find(el=>el.getAttribute('aria-label')===label&&!el.matches(':disabled'));

@@ -4,25 +4,56 @@ A standalone Obsidian desktop plugin connecting daily and periodic notes, Markdo
 
 [中文详细介绍](README.md) · [Download](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) · [Issues](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/issues)
 
-Source version: **1.4.4**. Available downloads are listed on [Releases](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases).
+Current release: **[1.5.2](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.2)**. Use the complete ZIP for the bundled native Apple Calendar helper.
 
-Version 1.4.4 fixes queued completions of distinct recurring tasks in the same note. Minute ticks update timeline markers without rebuilding cards or interrupting focus. Click a time label to edit the schedule; source names and compact task metadata stay readable at narrow widths. See [release notes](docs/RELEASE-1.4.4.md).
+## Focus panel in 1.5.2
 
-## What changed in 1.4.4
+The timer tab now provides a larger clock, progress ring, phase and current activity, with a clear start/pause/resume action. The calendar still uses an exclusive tab, tasks stay below, and journal strips remain compact. All surfaces subscribe to the same timer, preserving active sessions and native theme fonts.
 
-- Complete several distinct recurring tasks in one note without later queued actions failing after line insertions. Duplicate clicks and external conflicts remain protected.
-- Minute ticks retain timeline card DOM, keyboard focus, and expanded sections; only time markers and active states update.
-- Click a timeline time label to edit dates, exact start/end minutes, and priority. Source names remain visible below the title.
-- Refined task typography, duration labels, spacing, and narrow light/dark layouts; quadrants remain 2×2.
+[Release notes](docs/RELEASE-1.5.2.md) · [Verification](qa/RELEASE-VERIFY-1.5.2.json)
 
-[Download the complete 1.4.4 ZIP](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/download/v1.4.4/thoughtspace-calendar-1.4.4.zip). Preserve your existing `data.json` when upgrading. No task or journal migration is required.
+## Compact sidebar and shared focus in 1.5.1
+
+Month/year navigation is combined, with less frequent calendar actions in the menu. Calendar and timer share an exclusive tab area, leaving more room for tasks. Journal and period lists control the same focus session. Task scopes, empty states and diary headings are more compact; native Markdown rendering and body fonts remain in use.
+
+[Release notes](docs/RELEASE-1.5.1.md) · [Layout references](docs/SIDEBAR-DESIGN.md) · [Verification](qa/RELEASE-VERIFY-1.5.1.json)
+
+## Timer and calendar in 1.5.0
+
+Use stopwatch, countdown or Pomodoro modes. Start a planned task/event with its duration, or track an untimed activity. Pause/resume excludes inactive time; stop saves the actual session. Month cells show daily tracked time, week columns show separate active segments, and the selected-day history compares planned and actual duration. A live timer entry opens the same sidebar. Clock ticks update text without rebuilding the grid or querying Apple Calendar. Tracking does not modify task completion, recurrence or Apple events.
+
+[Release notes](docs/RELEASE-1.5.0.md) · [Reference projects](docs/TIMER-REFERENCES.md)
+
+![Compact timer, synthetic example](docs/images/timer.png)
+
+<details>
+<summary>Dark sidebar and planned/actual calendar</summary>
+
+![Dark timer](docs/images/timer-dark.png)
+
+![Planned and actual time](docs/images/actual-calendar.png)
+
+</details>
+
+## What changed in 1.4.5
+
+- Queue schedule, priority and completion edits on one task while retaining verified previous changes.
+- Protect new recurring occurrences from stale attribute actions and undo, including tasks that just gained a repeat rule.
+- Complete recurring items after quadrant changes; retain nested list indentation and block references.
+- Keep focus on the existing task when an identical next occurrence appears, and retain each quadrant's scroll position.
+- Unify calendar, journal and task surfaces; separate tags/repeat rules from task titles without changing the source. Busy month cells condense previews while retaining full agenda access.
+- Select a time range on the empty week grid, or in task scheduling dialogs; extend duration with the end handle. Typed minutes remain exact. Drag timeline tasks to time targets or the large calendar. Escape cancels only an active selection.
+- Apply timeline search and tags while calculating conflicts against the complete day. Refine the compact rail, source labels and visible actions.
+
+See [local release notes](docs/RELEASE-1.4.5.md) and the [verification report](qa/RELEASE-VERIFY-1.4.5.json). Preserve `data.json` and notes when upgrading.
 
 ## Features
 
 - Large calendar with a six-week month grid and a seven-day hourly week view.
 - All-day events, overlapping lanes, and a selected-day agenda combining timed Markdown tasks with Apple events.
 - Drag unfinished tasks from lists, quadrants, or the unscheduled tray into the calendar. Move tasks/events and resize their end in the week view, with 15-minute pointer snapping.
-- A task scheduling dialog accepts exact minute values without snapping typed input.
+- Task scheduling dialogs offer a drag-select time rail and boundary handles, while retaining exact typed minutes. An empty week-grid drag opens a pre-filled event draft without saving early.
+- Resizing uses live week-grid coordinates after scrolling or pane changes. A floating label keeps short ranges readable; editing stays locked until saved data reaches the grid, and failed saves can be retried in place. Timeline drop refreshes are coalesced.
 - Create a linked event note or choose an existing Markdown note through native Obsidian search.
 - Separate sidebar calendar and journal views; daily, weekly, monthly, quarterly, and yearly notes.
 - Offline Chinese lunar dates, festivals, solar terms, and built-in mainland holiday/workday data through 2026.
@@ -99,7 +130,7 @@ npm run test:browser
 npm run package           # macOS
 ```
 
-Node.js 22+ is recommended. Version 1.4.4 passes 280 unit tests, 57 native Tasks checks, 36 native workflow checks, 30 browser interaction checks, 12 layout cases and 19 upstream Tasks API checks. The 101 original test-vault notes retain identical hashes. See the [verification report](qa/RELEASE-VERIFY-1.4.4.json) and [test methodology](docs/TESTING.md). Real Apple Calendar access was not exercised; short runs do not establish long-term memory stability.
+Node.js 22+ is recommended. Version 1.4.5 passes 365 unit tests, 133 native Tasks checks, 41 native workflow checks, 48 large-calendar browser checks, 31 week-grid drag checks, 115 time-range interaction checks, 28 layout cases and 29 upstream Tasks API checks. The 101 original test-vault notes retain identical hashes. See the [verification report](qa/RELEASE-VERIFY-1.4.5.json) and [test methodology](docs/TESTING.md). Real Apple Calendar access was not exercised; short runs do not establish long-term memory stability.
 
 More detailed Chinese guides: [Usage](docs/USAGE.md), [Apple Calendar](docs/APPLE-CALENDAR.md), [Development](docs/DEVELOPMENT.md).
 
