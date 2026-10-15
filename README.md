@@ -10,7 +10,24 @@
 
 [下载安装包](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) · [使用指南](docs/USAGE.md) · [苹果日历设置](docs/APPLE-CALENDAR.md) · [English](README.en.md) · [反馈问题](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/issues)
 
-当前版本 **[1.5.3](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.3)**。完整计时器统一放进日历顶部的「计时」页，支持正计时、倒计时和番茄钟，并与大日历的任务、日程和实际用时联动。推荐下载完整 ZIP，内含苹果日历原生组件。
+当前版本 **[1.5.4](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.4)**。完整计时器放在日历顶部的「计时」页，支持正计时、倒计时和番茄钟。本版重新整理计时布局并缩小农历字号，为下方待办留出空间。推荐下载完整 ZIP，内含苹果日历原生组件。
+
+## 1.5.4 · 更清楚的计时与紧凑农历
+
+计时数字与小进度环分开排列，去掉多层外框；当前事项、主按钮和辅助操作收紧。农历、节气、节日缩到 9px，窄栏与紧凑模式为 8px，普通日期格从 44px 收紧至 40px，为下方待办留出空间。继续沿用 Obsidian 字体和主题，保留原计时状态与记录。
+
+[版本说明与升级方法](docs/RELEASE-1.5.4.md) · [验证记录](qa/RELEASE-VERIFY-1.5.4.json)
+
+![新版计时页，合成示例](docs/images/calendar-timer-1.5.4.png)
+
+<details>
+<summary>紧凑农历与深色计时页</summary>
+
+![紧凑农历与任务，合成示例](docs/images/calendar-compact-1.5.4.png)
+
+![深色计时页，合成示例](docs/images/calendar-timer-dark-1.5.4.png)
+
+</details>
 
 ## 1.5.3 · 日历与计时共用一个位置
 

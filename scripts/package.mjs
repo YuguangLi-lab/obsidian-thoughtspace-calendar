@@ -11,12 +11,21 @@ const version=JSON.parse(await readFile(path.join(root,'manifest.json'),'utf8'))
 async function files(directory,prefix=''){const result=[];for(const entry of await readdir(directory,{withFileTypes:true})){if(entry.isDirectory())result.push(...await files(path.join(directory,entry.name),prefix+entry.name+'/'));else if(entry.isFile())result.push(prefix+entry.name);else throw Error('发布文件不应包含符号链接');}return result;}
 const native='native/ThoughtSpaceCalendarBridge.app';
 const documentsBase=['main.js','styles.css','manifest.json','README.md','LICENSE','THIRD_PARTY_NOTICES.md',`FEATURES-${version}.md`,`docs/RELEASE-${version}.md`,`qa/RELEASE-VERIFY-${version}.json`,`qa/UPSTREAM-TASKS-${version}.json`,'README.en.md','docs/USAGE.md','docs/APPLE-CALENDAR.md','docs/DEVELOPMENT.md','docs/TESTING.md','docs/images/month.png','docs/images/week.png','docs/images/narrow.png','docs/images/tasks.png','docs/images/quadrants.png','docs/images/timeline.png','docs/images/sidebar-calendar.png','docs/images/sidebar-timer.png','docs/images/journal.png','docs/images/time-range.png','docs/images/week-selection.png','docs/images/pomodoro.png','docs/images/pomodoro-dark.png','docs/TIMER-REFERENCES.md','docs/SIDEBAR-DESIGN.md','docs/images/timer.png','docs/images/timer-dark.png','docs/images/actual-calendar.png','docs/images/calendar-timer.png','docs/images/calendar-timer-dark.png'];
+documentsBase.push('docs/images/calendar-timer-1.5.4.png','docs/images/calendar-timer-dark-1.5.4.png','docs/images/calendar-compact-1.5.4.png');
 const history=[...(await readdir(root)).filter(name=>{const match=/^FEATURES-(\d+)\.(\d+)\.\d+\.md$/.exec(name);return match&&(Number(match[1])>1||Number(match[2])>=3);}),...(await readdir(path.join(root,'docs'))).filter(name=>/^RELEASE-.*\.md$/.test(name)).map(name=>'docs/'+name),...(await readdir(path.join(root,'qa'))).filter(name=>/^(?:RELEASE-VERIFY|UPSTREAM-TASKS)-.*\.json$/.test(name)).map(name=>'qa/'+name)];
 const documents=[...new Set([...documentsBase,...history])];
 const names=[...documents,...(await files(path.join(root,native))).map(name=>native+'/'+name)];
 const stage=await mkdtemp(path.join(os.tmpdir(),'thoughtspace-calendar-release-'));
 try{
- for(const name of documents){await mkdir(path.dirname(path.join(stage,name)),{recursive:true});await copyFile(path.join(root,name),path.join(stage,name));}
+ for(const name of documents){
+  const destination=path.join(stage,name);await mkdir(path.dirname(destination),{recursive:true});
+  if(/^qa\/(?:RELEASE-VERIFY|UPSTREAM-TASKS)-.*\.json$/.test(name)){
+   // Release copies omit machine-specific paths; retain original audit evidence in the checkout.
+   const report=JSON.parse(await readFile(path.join(root,name),'utf8'));
+   const portable=JSON.stringify(report,(_key,value)=>typeof value==='string'&&value.startsWith('/Users/')?(value.endsWith('/.obsidian/plugins/obsidian-tasks-plugin/main.js')?'.obsidian/plugins/obsidian-tasks-plugin/main.js':'[local path omitted]'):value,2)+'\n';
+   await writeFile(destination,portable);
+  }else await copyFile(path.join(root,name),destination);
+ }
  await mkdir(path.join(stage,'native'));await cp(path.join(root,native),path.join(stage,native),{recursive:true});
  cleanNativeBundle(path.join(stage,native));verifyNativeBundle(path.join(stage,native));
  const hashes={};for(const name of names){const bytes=await readFile(path.join(stage,name));hashes[name]={sha256:createHash('sha256').update(bytes).digest('hex'),bytes:bytes.length};}

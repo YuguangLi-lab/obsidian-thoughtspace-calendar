@@ -4,6 +4,7 @@ import {mkdirSync,readFileSync,writeFileSync} from 'node:fs';
 import {createServer} from 'node:http';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import {timerLayoutMetrics} from './timer-layout-metrics.mjs';
 const {chromium}=createRequire(path.resolve(process.env.QA_DEPENDENCIES||'.','package.json'))('@playwright/test');
 const out='qa/pomodoro-output';mkdirSync(out,{recursive:true});
 await build({entryPoints:['qa/pomodoro-preview.ts'],bundle:true,format:'esm',outfile:out+'/preview.js',alias:{obsidian:path.resolve('qa/pomodoro-obsidian-stub.ts')},platform:'browser'});
@@ -16,7 +17,7 @@ ${css}</style></head><body class="theme-light"><div id="root"></div><script type
 writeFileSync(out+'/index.html',html);
 const server=createServer((req,res)=>{res.setHeader('Content-Type',req.url==='/preview.js'?'application/javascript':'text/html');res.end(req.url==='/preview.js'?readFileSync(out+'/preview.js'):html);});await new Promise(r=>server.listen(0,'127.0.0.1',r));
 const browser=await chromium.launch({...(process.env.CHROME_EXECUTABLE?{executablePath:process.env.CHROME_EXECUTABLE}:{}),headless:true});
-const page=await browser.newPage({viewport:{width:400,height:1000},timezoneId:'Asia/Shanghai'});const errors=[],checks=[];page.on('pageerror',e=>errors.push(e.message));
+const page=await browser.newPage({viewport:{width:520,height:1000},timezoneId:'Asia/Shanghai'});const errors=[],checks=[],layouts=[];page.on('pageerror',e=>errors.push(e.message));
 const state=()=>page.evaluate(()=>window.qaPomodoro.state());
 const advance=ms=>page.evaluate(ms=>window.qaPomodoro.advance(ms),ms);
 const check=(label)=>checks.push(label);
@@ -76,16 +77,19 @@ try{
   const layout=await page.evaluate(()=>{const root=document.getElementById('root'),r=root.getBoundingClientRect();return{overflow:root.scrollWidth>r.width+1,radius:getComputedStyle(root).borderRadius,shadow:getComputedStyle(root).boxShadow,buttons:[...root.querySelectorAll('button,input')].filter(el=>el.getBoundingClientRect().width>0).every(el=>{const b=el.getBoundingClientRect();return b.left>=r.left&&b.right<=r.right+1;})};});assert.equal(layout.overflow,false);assert.equal(layout.radius,'0px');assert.equal(layout.shadow,'none');assert.equal(layout.buttons,true);check(`${theme} ${width}px ${selectedMode} controls fit sidebar without dialogshadow`);
   if(width===280)await page.screenshot({path:out+'/'+theme+'-'+selectedMode+'.png'});
   if(width===230||width===360)await page.screenshot({path:out+'/'+theme+'-'+selectedMode+'-'+width+'.png'});
-  const compact=await page.evaluate(()=>({hero:document.querySelector('.ts-calendar-pomodoro-timer').getBoundingClientRect().height,lastRecord:[...document.querySelectorAll('.ts-calendar-pomodoro-record')].filter(el=>el.getBoundingClientRect().height>0).at(-1).getBoundingClientRect().bottom}));assert(compact.hero<=126);assert(compact.lastRecord<=780);
+  const compact=await page.evaluate(()=>({hero:document.querySelector('.ts-calendar-pomodoro-timer').getBoundingClientRect().height,clock:document.querySelector('.ts-calendar-pomodoro-clock').getBoundingClientRect().height,lastRecord:[...document.querySelectorAll('.ts-calendar-pomodoro-record')].filter(el=>el.getBoundingClientRect().height>0).at(-1).getBoundingClientRect().bottom}));
+  // The redesigned clock grows from 42 to 60px; retain the old 80px allowance for its phase/status/padding.
+  assert(compact.hero<=compact.clock+80,JSON.stringify({theme,width,selectedMode,compact}));assert(compact.hero<=150);assert(compact.lastRecord<=780);
+  const geometry=await page.locator('.ts-calendar-pomodoro').evaluate(timerLayoutMetrics);layouts.push({theme,width,mode:selectedMode,...geometry});assert.equal(geometry.clockClearOfRing,true,JSON.stringify({theme,width,selectedMode,geometry}));assert.equal(geometry.clockFits,true);assert(geometry.font>=38);assert(geometry.nestedFrames<=1);
  }
- check('all modes use compact120pxhero and show three recentrecords above780px');
+ check('all modes allow a larger clock without growing surrounding hero space and still show three recent records above780px');
  await page.evaluate(async()=>{await window.qaPomodoro.controller.selectMode('stopwatch');await window.qaPomodoro.controller.startTimer(undefined,'stopwatch');});await advance(3_672_000);
  for(const theme of ['light','dark']){
   await page.evaluate(theme=>{document.body.className='theme-'+theme;document.getElementById('root').style.width='230px';},theme);
-  const geometry=await page.evaluate(()=>{const clock=document.querySelector('.ts-calendar-pomodoro-clock').getBoundingClientRect(),ring=document.querySelector('.ts-calendar-pomodoro-dial').getBoundingClientRect(),primary=document.querySelector('.ts-calendar-pomodoro-primary').getBoundingClientRect(),stop=document.querySelector('.ts-calendar-pomodoro-stop').getBoundingClientRect();return{clock:clock.right,ring:ring.left,primary:primary.top,stop:stop.top,overflow:document.getElementById('root').scrollWidth>230};});
-  assert(geometry.clock+4<=geometry.ring);assert.equal(geometry.primary,geometry.stop);assert.equal(geometry.overflow,false);assert.equal(await page.locator('.ts-calendar-pomodoro-clock').textContent(),'01:01:12');check(`${theme}230px HH:MM:SS stays clear ofring and activeactions share balancedrow`);
+  const geometry=await page.locator('.ts-calendar-pomodoro').evaluate(timerLayoutMetrics),actions=await page.evaluate(()=>({primary:document.querySelector('.ts-calendar-pomodoro-primary').getBoundingClientRect().top,stop:document.querySelector('.ts-calendar-pomodoro-stop').getBoundingClientRect().top}));layouts.push({theme,width:230,hours:true,...geometry});
+  assert.equal(geometry.clockClearOfRing,true,JSON.stringify({theme,geometry}));assert.equal(geometry.clockFits,true);assert.equal(actions.primary,actions.stop);assert.equal(geometry.overflow,false);assert.equal(await page.locator('.ts-calendar-pomodoro-clock').textContent(),'01:01:12');check(`${theme}230px HH:MM:SS stays clear ofring and activeactions share balancedrow`);
   await page.screenshot({path:out+'/'+theme+'-active-230.png'});
  }
  assert.deepEqual(errors,[]);check('no browser runtime errors');
- writeFileSync(out+'/result.json',JSON.stringify({checks:checks.length,passed:checks,errors},null,2)+'\n');console.log(JSON.stringify({checks:checks.length,errors}));
+ writeFileSync(out+'/result.json',JSON.stringify({checks:checks.length,passed:checks,errors,layouts},null,2)+'\n');console.log(JSON.stringify({checks:checks.length,errors}));
 }finally{await browser.close();await new Promise(r=>server.close(r));}

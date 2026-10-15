@@ -38,7 +38,7 @@
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar button:hover {background:color-mix(in srgb,var(--cal-accent) 8%,transparent);}
 
 /* Month/year links and previous/today/next share a baseline. Utility icons wrap. */
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-top {display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 8px;min-width:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-top {display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 6px;min-width:0;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-nav {flex:1 1 auto;min-width:0;padding:0;margin:0;border:0;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-primary-nav {display:flex;align-items:center;justify-content:space-between;gap:6px;min-width:0;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-period-label {display:flex;align-items:center;gap:3px;min-width:0;white-space:nowrap;}
@@ -59,14 +59,14 @@
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-view-toggle[aria-pressed=true] {color:var(--cal-accent);background:color-mix(in srgb,var(--cal-accent) 10%,transparent);}
 
 /* Solar dates lead; lunar dates and holiday markers retain their own quiet line. */
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-grid {display:grid;grid-template-columns:18px repeat(7,minmax(0,1fr));column-gap:2px;row-gap:3px;padding:0;margin:0;align-items:center;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-weekday,.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-week-heading {display:block;height:22px;line-height:22px;text-align:center;font-size:10px;font-weight:500;color:var(--cal-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-grid {display:grid;grid-template-columns:18px repeat(7,minmax(0,1fr));column-gap:2px;row-gap:2px;padding:0;margin:0;align-items:center;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-weekday,.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-week-heading {display:block;height:20px;line-height:20px;text-align:center;font-size:10px;font-weight:500;color:var(--cal-muted);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-week-heading {border-right:1px solid var(--cal-line);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-week {padding:0;width:100%;height:36px;font-size:9px;line-height:1;min-width:0;font-weight:400;background:transparent;color:var(--cal-muted);border-right:1px solid var(--cal-line);border-radius:0;font-variant-numeric:tabular-nums;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-week:hover {color:var(--cal-accent);}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part] .ts-calendar-grid .ts-calendar-day {display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;gap:3px;min-width:0;max-width:none;width:100%;height:44px;min-height:44px;padding:4px 0 6px;margin:0;border:0;border-radius:6px!important;background:transparent;color:var(--cal-ink);box-shadow:none!important;line-height:1.1;overflow:visible;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-solar-number {font-size:15px;font-weight:550;font-variant-numeric:tabular-nums;line-height:1;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-lunar-label {display:block;font-size:10px;font-weight:400;line-height:1.15;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--cal-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part] .ts-calendar-grid .ts-calendar-day {display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;gap:2px;min-width:0;max-width:none;width:100%;height:40px;min-height:40px;padding:7px 0 5px;margin:0;border:0;border-radius:6px!important;background:transparent;color:var(--cal-ink);box-shadow:none!important;line-height:1.1;overflow:visible;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-solar-number {flex:none;font-size:16px;font-weight:550;font-variant-numeric:tabular-nums;line-height:1;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-lunar-label {display:block;flex:none;font-size:9px;font-weight:400;line-height:1.05;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--cal-muted);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-day.is-outside {opacity:.38;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-day.is-weekend:not(.is-selected) .ts-calendar-solar-number {color:var(--cal-muted);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-grid .ts-calendar-day.is-weekend:not(.is-selected):not(:hover) {background:color-mix(in srgb,var(--cal-accent) 3%,transparent);}
@@ -76,7 +76,7 @@
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-grid .ts-calendar-day.is-selected {background:var(--cal-accent);color:var(--ts-selected-ink,var(--text-on-accent,#fff));}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-day.is-selected :is(.ts-calendar-lunar-label,.ts-calendar-solar-number,.ts-calendar-holiday-badge) {color:inherit;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-day:is([data-chinese-kind=festival],[data-chinese-kind=term]):not(.is-selected) .ts-calendar-lunar-label {color:var(--cal-accent);}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-holiday-badge {position:absolute;right:1px;top:1px;font-size:8px;line-height:1;font-weight:400;color:var(--cal-muted);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-holiday-badge {position:absolute;right:1px;top:0;font-size:7px;line-height:1;font-weight:400;color:var(--cal-muted);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-day[data-holiday=rest]:not(.is-selected) .ts-calendar-holiday-badge {color:var(--text-error,#b95959);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-day.has-entry::before {content:'';position:absolute;width:3px;height:3px;bottom:2px;left:calc(50% - 1.5px);background:currentColor;border-radius:50%;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-todo-count {position:absolute;bottom:0;right:0;min-width:11px;height:11px;padding:0 1px;border-radius:3px;background:var(--background-primary);color:var(--cal-accent);font-size:8px;line-height:11px;}
@@ -99,9 +99,11 @@
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-grid[hidden] {display:none!important;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar.is-collapsed :is(.ts-calendar-grid,.ts-calendar-lunar-summary,.ts-calendar-year-grid,.ts-calendar-year-quarters,.ts-calendar-data-note) {display:none;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar.is-collapsed .ts-calendar-top {margin-bottom:0;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact][data-journal-part] .ts-calendar-grid .ts-calendar-day {height:36px;min-height:36px;gap:2px;padding:3px 0 5px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact] .ts-calendar-solar-number {font-size:14px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact] .ts-calendar-grid {row-gap:2px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact][data-journal-part] .ts-calendar-grid .ts-calendar-day {height:36px;min-height:36px;gap:1px;padding:7px 0 3px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact] .ts-calendar-solar-number {font-size:16px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact] .ts-calendar-lunar-label {font-size:8px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact] .ts-calendar-grid {row-gap:1px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-calendar-density=compact] .ts-calendar-day.has-entry::before {width:2px;height:2px;bottom:1px;left:calc(50% - 1px);}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-task-area {padding-top:20px;margin-top:20px;border-top:0;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-task-label {margin-bottom:14px;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-task-label>span:first-child {font-size:15px;font-weight:600;}
@@ -114,8 +116,8 @@
 }
 @container(max-width:270px) {
  .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-grid {column-gap:1px;grid-template-columns:15px repeat(7,minmax(0,1fr));}
- .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-solar-number {font-size:14px;}
- .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-lunar-label {font-size:9px;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-solar-number {font-size:16px;}
+ .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-lunar-label {font-size:8px;}
  .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar .ts-calendar-month-name {font-size:15px!important;}
  .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-primary-nav {gap:4px;}
  .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-mini-header {font-size:10px;}
@@ -125,20 +127,6 @@
 /* The complete timer lives in the calendar's top surface; no second leaf or expansion is needed. */
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-panel {min-width:0;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host {
- padding:12px!important;border:1px solid color-mix(in srgb,var(--text-muted) 14%,transparent);
- border-radius:10px;background:var(--background-primary);min-width:0;
+ padding:2px 0 0!important;border:0;border-radius:0;background:transparent;min-width:0;
 }
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-head {display:none;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-clock {font-size:clamp(38px,20cqi,58px);}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-clock[data-hours=true] {font-size:clamp(26px,12.5cqi,38px);}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-timer {min-height:128px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-primary {height:36px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-summary {margin-top:12px;padding-top:10px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-recent-head {margin-top:11px;}
-/* Center the full timer hero so a narrow dock still has room for HH:MM:SS. */
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-timer {position:relative;grid-template-columns:minmax(0,1fr);min-height:172px;padding:18px 10px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-face {position:relative;z-index:1;align-items:center;gap:9px;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-dial {position:absolute;inset:0;margin:auto;width:min(150px,calc(100% - 16px));height:auto;aspect-ratio:1;pointer-events:none;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-ring-track {stroke-width:3;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-ring-remaining {stroke-width:3;}
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-progress-label {display:none;}

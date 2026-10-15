@@ -1,0 +1,276 @@
+{
+  "version": "1.5.4",
+  "generatedAt": "2026-10-15T15:16:30.833773+08:00",
+  "referenceRelease": "8.5.0",
+  "passed": 29,
+  "toggleAPI": {
+    "referenceRelease": "8.5.0",
+    "referenceUrl": "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/tag/8.5.0",
+    "bundlePath": ".obsidian/plugins/obsidian-tasks-plugin/main.js",
+    "bundleSha256": "f901cc5537518787cd07db251d8b0db43491a127440d1b415f9cae950fbb587b",
+    "clock": "2026-10-11T12:00:00+08:00",
+    "tests": 19,
+    "passed": 19,
+    "bridgeVerified": true,
+    "limitations": [
+      "Only the real toggle API is exercised; UI, plugin startup, vault persistence, and custom statuses are not tested.",
+      "One-line output after recurrence end and with setDoneDate disabled is indistinguishable from a plain-checkbox fallback using this public API alone."
+    ],
+    "results": [
+      {
+        "name": "daily-repeat-and-block-id",
+        "passed": true,
+        "settings": {},
+        "source": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "undated-repeat-next-line-is-identical-to-source",
+        "passed": true,
+        "settings": {},
+        "source": "- [ ] Read \ud83d\udd01 every day",
+        "actual": "- [ ] Read \ud83d\udd01 every day\n- [x] Read \ud83d\udd01 every day \u2705 2026-10-11",
+        "bridge": "accepted-unchanged",
+        "nextEqualsSource": true,
+        "note": "Exact source-line checks alone cannot reject a duplicate completion of this unchanged next occurrence."
+      },
+      {
+        "name": "weekday-friday-to-monday",
+        "passed": true,
+        "settings": {},
+        "source": "- [ ] Work \ud83d\udd01 every weekday \ud83d\udcc5 2026-10-09",
+        "actual": "- [ ] Work \ud83d\udd01 every weekday \ud83d\udcc5 2026-10-12\n- [x] Work \ud83d\udd01 every weekday \ud83d\udcc5 2026-10-09 \u2705 2026-10-11",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "repeat-relative-to-completion",
+        "passed": true,
+        "settings": {},
+        "source": "- [ ] Read \ud83d\udd01 every day when done \ud83d\udcc5 2026-10-01 ^read",
+        "actual": "- [ ] Read \ud83d\udd01 every day when done \ud83d\udcc5 2026-10-12\n- [x] Read \ud83d\udd01 every day when done \ud83d\udcc5 2026-10-01 \u2705 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "global-filter-missing-falls-back-to-checkbox-only",
+        "passed": true,
+        "settings": {
+          "globalFilter": "#task"
+        },
+        "source": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "bridge": "safely-rejected-before-write"
+      },
+      {
+        "name": "global-filter-matching-generates-next",
+        "passed": true,
+        "settings": {
+          "globalFilter": "#task"
+        },
+        "source": "- [ ] Read #task \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [ ] Read #task \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n- [x] Read #task \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "done-date-disabled-still-repeats",
+        "passed": true,
+        "settings": {
+          "setDoneDate": false
+        },
+        "source": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "recurrence-order-setting",
+        "passed": true,
+        "settings": {
+          "recurrenceOnNextLine": true
+        },
+        "source": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read\n- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "invalid-recurrence-is-removed-by-upstream",
+        "passed": true,
+        "settings": {},
+        "source": "- [ ] Read \ud83d\udd01 glorp \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [x] Read \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "safely-rejected-before-write"
+      },
+      {
+        "name": "ended-recurrence-legitimately-returns-one-line",
+        "passed": true,
+        "settings": {},
+        "source": "- [ ] Read \ud83d\udd01 every day until 2026-10-11 \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [x] Read \ud83d\udd01 every day until 2026-10-11 \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "safely-rejected-before-write"
+      },
+      {
+        "name": "ended-recurrence-without-done-date-is-ambiguous",
+        "passed": true,
+        "settings": {
+          "setDoneDate": false
+        },
+        "source": "- [ ] Read \ud83d\udd01 every day until 2026-10-11 \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [x] Read \ud83d\udd01 every day until 2026-10-11 \ud83d\udcc5 2026-10-11 ^read",
+        "bridge": "safely-rejected-before-write"
+      },
+      {
+        "name": "missing-filter-with-ended-rule-produces-identical-output",
+        "passed": true,
+        "settings": {
+          "globalFilter": "#task",
+          "setDoneDate": false
+        },
+        "source": "- [ ] Read \ud83d\udd01 every day until 2026-10-11 \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "- [x] Read \ud83d\udd01 every day until 2026-10-11 \ud83d\udcc5 2026-10-11 ^read",
+        "bridge": "safely-rejected-before-write"
+      },
+      {
+        "name": "reopen-done-task-does-not-generate-next",
+        "passed": true,
+        "settings": {},
+        "source": "- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "actual": "- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "callout-prefix-preserved",
+        "passed": true,
+        "settings": {},
+        "source": "> - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "> - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n> - [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "nested-callout-prefix-preserved",
+        "passed": true,
+        "settings": {},
+        "source": "> > - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "> > - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n> > - [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "ordered-list-prefix-preserved",
+        "passed": true,
+        "settings": {},
+        "source": "1. [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "actual": "1. [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n1. [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "dataview-format-and-block-id",
+        "passed": true,
+        "settings": {
+          "taskFormat": "dataview"
+        },
+        "source": "- [ ] Read [repeat:: every day] [due:: 2026-10-11] ^read",
+        "actual": "- [ ] Read  [repeat:: every day]  [due:: 2026-10-12]\n- [x] Read  [repeat:: every day]  [due:: 2026-10-11]  [completion:: 2026-10-11] ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "dataview-reopen-removes-completion",
+        "passed": true,
+        "settings": {
+          "taskFormat": "dataview"
+        },
+        "source": "- [x] Read [repeat:: every day] [due:: 2026-10-11] [completion:: 2026-10-11] ^read",
+        "actual": "- [ ] Read  [repeat:: every day]  [due:: 2026-10-11] ^read",
+        "bridge": "accepted-unchanged"
+      },
+      {
+        "name": "dataview-round-brackets",
+        "passed": true,
+        "settings": {
+          "taskFormat": "dataview"
+        },
+        "source": "- [ ] Read (repeat:: every day) (due:: 2026-10-11) ^read",
+        "actual": "- [ ] Read  [repeat:: every day]  [due:: 2026-10-12]\n- [x] Read  [repeat:: every day]  [due:: 2026-10-11]  [completion:: 2026-10-11] ^read",
+        "bridge": "accepted-unchanged"
+      }
+    ]
+  },
+  "quadrantAPI": {
+    "reference": "Tasks 8.5.0 official API",
+    "referenceUrl": "https://github.com/obsidian-tasks-group/obsidian-tasks/releases/tag/8.5.0",
+    "clock": "2026-10-11T12:00:00+08:00",
+    "bundleSha256": "f901cc5537518787cd07db251d8b0db43491a127440d1b415f9cae950fbb587b",
+    "tests": 10,
+    "passed": 10,
+    "results": [
+      {
+        "name": "nested-four-space-repeat",
+        "passed": true,
+        "source": "    - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "rawOutput": "    - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n    - [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "correctedOutput": "    - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n    - [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read"
+      },
+      {
+        "name": "nested-tab-repeat",
+        "passed": true,
+        "source": "\t- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "rawOutput": "\t- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n\t- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "correctedOutput": "\t- [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n\t- [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read"
+      },
+      {
+        "name": "nested-quoted-repeat",
+        "passed": true,
+        "source": ">     - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "rawOutput": ">     - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n>     - [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "correctedOutput": ">     - [ ] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n>     - [x] Read \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read"
+      },
+      {
+        "name": "legacy-quadrant-with-dual-dates",
+        "passed": true,
+        "source": "- [ ] 09:00 Read \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 <!-- thoughtspace:quadrant=q2 --> ^read",
+        "rawOutput": "- [x] 09:00 Read \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 <!-- thoughtspace:quadrant=q2 --> \u2705 2026-10-11 ^read",
+        "correctedOutput": "- [ ] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-11 \ud83d\udcc5 2026-10-12\n- [x] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read"
+      },
+      {
+        "name": "new-quadrant-between-description-and-metadata",
+        "passed": true,
+        "source": "- [ ] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 ^read",
+        "rawOutput": "- [ ] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-11 \ud83d\udcc5 2026-10-12\n- [x] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "correctedOutput": "- [ ] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-11 \ud83d\udcc5 2026-10-12\n- [x] 09:00 Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read"
+      },
+      {
+        "name": "legacy-quadrant-reopen-removes-completion",
+        "passed": true,
+        "source": "- [x] Read \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 <!-- thoughtspace:quadrant=q2 --> ^read",
+        "rawOutput": "- [ ] Read \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 <!-- thoughtspace:quadrant=q2 --> ^read",
+        "correctedOutput": "- [ ] Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u23f3 2026-10-10 \ud83d\udcc5 2026-10-11 ^read"
+      },
+      {
+        "name": "dataview-quadrant-and-block-reference",
+        "passed": true,
+        "source": "> 2. [ ] 09:15 Read (repeat:: every day) [scheduled:: 2026-10-11] (due:: 2026-10-12) <!-- thoughtspace:quadrant=q1 --> ^read",
+        "rawOutput": "> 2. [x] 09:15 Read (repeat:: every day) [scheduled:: 2026-10-11] (due:: 2026-10-12) <!-- thoughtspace:quadrant=q1 -->  [completion:: 2026-10-11] ^read",
+        "correctedOutput": "> 2. [ ] 09:15 Read <!-- thoughtspace:quadrant=q1 -->  [repeat:: every day]  [scheduled:: 2026-10-12]  [due:: 2026-10-13]\n> 2. [x] 09:15 Read <!-- thoughtspace:quadrant=q1 -->  [repeat:: every day]  [scheduled:: 2026-10-11]  [due:: 2026-10-12]  [completion:: 2026-10-11] ^read"
+      },
+      {
+        "name": "dataview-quadrant-reopen-removes-completion",
+        "passed": true,
+        "source": "- [x] Read [repeat:: every day] [due:: 2026-10-11] [completion:: 2026-10-11] <!-- thoughtspace:quadrant=q2 --> ^read",
+        "rawOutput": "- [ ] Read [repeat:: every day] [due:: 2026-10-11] [completion:: 2026-10-11] <!-- thoughtspace:quadrant=q2 --> ^read",
+        "correctedOutput": "- [ ] Read <!-- thoughtspace:quadrant=q2 -->  [repeat:: every day]  [due:: 2026-10-11] ^read"
+      },
+      {
+        "name": "literal-marker-in-code-not-relocated",
+        "passed": true,
+        "source": "- [ ] Read `<!-- thoughtspace:quadrant=q3 -->` \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 ^read",
+        "rawOutput": "- [ ] Read `<!-- thoughtspace:quadrant=q3 -->` \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n- [x] Read `<!-- thoughtspace:quadrant=q3 -->` \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read",
+        "correctedOutput": "- [ ] Read `<!-- thoughtspace:quadrant=q3 -->` \ud83d\udd01 every day \ud83d\udcc5 2026-10-12\n- [x] Read `<!-- thoughtspace:quadrant=q3 -->` \ud83d\udd01 every day \ud83d\udcc5 2026-10-11 \u2705 2026-10-11 ^read"
+      },
+      {
+        "name": "undated-repeat-retains-quadrant",
+        "passed": true,
+        "source": "- [ ] Read \ud83d\udd01 every day <!-- thoughtspace:quadrant=q2 --> ^read",
+        "rawOutput": "- [x] Read \ud83d\udd01 every day <!-- thoughtspace:quadrant=q2 --> \u2705 2026-10-11 ^read",
+        "correctedOutput": "- [ ] Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day\n- [x] Read <!-- thoughtspace:quadrant=q2 --> \ud83d\udd01 every day \u2705 2026-10-11 ^read"
+      }
+    ]
+  },
+  "scope": "Official installed Tasks public API with synthetic strings; no original notes or Apple events changed."
+}

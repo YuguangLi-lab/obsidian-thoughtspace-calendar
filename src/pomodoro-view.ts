@@ -187,7 +187,7 @@ export class PomodoroPanel extends Component {
     this.calendarOpen = this.iconButton(links, '在日历查看当前事项', 'calendar-days', () => this.showCalendar(this.currentCalendarDay()));
     this.targetOpen = this.iconButton(links, '打开当前事项的来源', 'arrow-up-right', () => this.openTarget());
     this.targetTitle = target.createDiv('ts-calendar-pomodoro-target-title');
-    this.titleInput = target.createEl('input', {cls: 'ts-calendar-pomodoro-title-input', type: 'text', attr: {placeholder: '这次准备做什么？', 'aria-label': '本次计时事项', maxlength: '500'}});
+    this.titleInput = target.createEl('input', {cls: 'ts-calendar-pomodoro-title-input', type: 'text', attr: {placeholder: '准备专注什么？', 'aria-label': '本次计时事项', maxlength: '500'}});
     this.titleInput.oninput = () => { this.titleDirty = true; };
     this.titleInput.onkeydown = event => { if (event.key === 'Enter' && !event.isComposing) { event.preventDefault(); void this.primaryAction(); } };
     this.targetSource = target.createDiv('ts-calendar-pomodoro-target-source');
@@ -202,8 +202,10 @@ export class PomodoroPanel extends Component {
     this.stopButton.addClass('ts-calendar-pomodoro-stop'); this.stopButton.title = '结束本次计时，记录实际用时';
     const secondary = actions.createDiv('ts-calendar-pomodoro-secondary');
     this.resetButton = this.actionButton(secondary, '重置', 'rotate-ccw', () => this.controller.reset());
+    this.resetButton.addClass('ts-calendar-pomodoro-icon-action');
     this.resetButton.setAttribute('aria-label', '重置当前阶段的计时'); this.resetButton.title = '重置当前阶段的计时';
     this.nextButton = this.actionButton(secondary, '跳过', 'skip-forward', () => this.controller.next());
+    this.nextButton.addClass('ts-calendar-pomodoro-icon-action');
     this.nextButton.setAttribute('aria-label', '跳过当前阶段，准备下一阶段'); this.nextButton.title = '跳过当前阶段，准备下一阶段';
     this.error = this.el.createDiv({cls: 'ts-calendar-pomodoro-error', attr: {role: 'alert'}}); this.error.hidden = true;
 
@@ -314,7 +316,8 @@ export class PomodoroPanel extends Component {
     const title = target?.title || (mode === 'pomodoro' && phase !== 'focus' ? '休息片刻' : '自由计时');
     setText(this.targetTitle, title); this.targetTitle.title = title;
     const source = target?.path?.split('/').pop()?.replace(/\.md$/i, '');
-    setText(this.targetSource, source || (target?.eventId ? '已关联日历日程' : '可填写事项，也可直接开始'));
+    const sourceLabel = source || (target?.eventId ? '已关联日历日程' : '');
+    setText(this.targetSource, sourceLabel); this.targetSource.hidden = !sourceLabel;
     this.targetSource.title = target?.path || ''; setText(this.targetPlan, planText(target)); this.targetPlan.hidden = !planText(target);
     this.targetOpen.hidden = !target?.path || !this.onOpenTarget;
     this.targetOpen.setAttribute('aria-label', target ? `打开来源：${target.title}` : '打开当前事项的来源');

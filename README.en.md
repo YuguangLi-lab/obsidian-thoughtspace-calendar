@@ -4,7 +4,11 @@ A standalone Obsidian desktop plugin connecting daily and periodic notes, Markdo
 
 [中文详细介绍](README.md) · [Download](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) · [Issues](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/issues)
 
-Current release: **[1.5.3](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.3)**. Use the complete ZIP for the bundled native Apple Calendar helper.
+Current release: **[1.5.4](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.4)**. Use the complete ZIP for the bundled native Apple Calendar helper.
+
+## Clearer timer and compact lunar labels in 1.5.4
+
+The timer uses a large clock beside a small progress ring, fewer frames, and compact native controls. Lunar labels use 9px, or 8px in narrow/compact layouts; regular date cells shrink from 44px to 40px. Existing sessions, records, notes and Obsidian theme fonts are preserved. [Release notes](docs/RELEASE-1.5.4.md) · [Verification](qa/RELEASE-VERIFY-1.5.4.json).
 
 ## One calendar and timer surface in 1.5.3
 

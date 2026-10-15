@@ -18196,7 +18196,7 @@ var PomodoroPanel = class extends import_obsidian7.Component {
     this.calendarOpen = this.iconButton(links, "\u5728\u65E5\u5386\u67E5\u770B\u5F53\u524D\u4E8B\u9879", "calendar-days", () => this.showCalendar(this.currentCalendarDay()));
     this.targetOpen = this.iconButton(links, "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90", "arrow-up-right", () => this.openTarget());
     this.targetTitle = target2.createDiv("ts-calendar-pomodoro-target-title");
-    this.titleInput = target2.createEl("input", { cls: "ts-calendar-pomodoro-title-input", type: "text", attr: { placeholder: "\u8FD9\u6B21\u51C6\u5907\u505A\u4EC0\u4E48\uFF1F", "aria-label": "\u672C\u6B21\u8BA1\u65F6\u4E8B\u9879", maxlength: "500" } });
+    this.titleInput = target2.createEl("input", { cls: "ts-calendar-pomodoro-title-input", type: "text", attr: { placeholder: "\u51C6\u5907\u4E13\u6CE8\u4EC0\u4E48\uFF1F", "aria-label": "\u672C\u6B21\u8BA1\u65F6\u4E8B\u9879", maxlength: "500" } });
     this.titleInput.oninput = () => {
       this.titleDirty = true;
     };
@@ -18219,9 +18219,11 @@ var PomodoroPanel = class extends import_obsidian7.Component {
     this.stopButton.title = "\u7ED3\u675F\u672C\u6B21\u8BA1\u65F6\uFF0C\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6";
     const secondary = actions.createDiv("ts-calendar-pomodoro-secondary");
     this.resetButton = this.actionButton(secondary, "\u91CD\u7F6E", "rotate-ccw", () => this.controller.reset());
+    this.resetButton.addClass("ts-calendar-pomodoro-icon-action");
     this.resetButton.setAttribute("aria-label", "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6");
     this.resetButton.title = "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6";
     this.nextButton = this.actionButton(secondary, "\u8DF3\u8FC7", "skip-forward", () => this.controller.next());
+    this.nextButton.addClass("ts-calendar-pomodoro-icon-action");
     this.nextButton.setAttribute("aria-label", "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5");
     this.nextButton.title = "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5";
     this.error = this.el.createDiv({ cls: "ts-calendar-pomodoro-error", attr: { role: "alert" } });
@@ -18368,7 +18370,9 @@ var PomodoroPanel = class extends import_obsidian7.Component {
     setText(this.targetTitle, title);
     this.targetTitle.title = title;
     const source = target2?.path?.split("/").pop()?.replace(/\.md$/i, "");
-    setText(this.targetSource, source || (target2?.eventId ? "\u5DF2\u5173\u8054\u65E5\u5386\u65E5\u7A0B" : "\u53EF\u586B\u5199\u4E8B\u9879\uFF0C\u4E5F\u53EF\u76F4\u63A5\u5F00\u59CB"));
+    const sourceLabel = source || (target2?.eventId ? "\u5DF2\u5173\u8054\u65E5\u5386\u65E5\u7A0B" : "");
+    setText(this.targetSource, sourceLabel);
+    this.targetSource.hidden = !sourceLabel;
     this.targetSource.title = target2?.path || "";
     setText(this.targetPlan, planText(target2));
     this.targetPlan.hidden = !planText(target2);
