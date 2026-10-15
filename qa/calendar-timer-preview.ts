@@ -1,0 +1,17 @@
+import {JournalView} from '../src/journal-view';
+import {PomodoroController} from '../src/pomodoro';
+import {defaultPomodoroConfig,type PomodoroState} from '../src/pomodoro-model';
+import {planTasks} from '../src/task-planner-model';
+let now=new Date().setHours(9,0,0,0),saved:PomodoroState|undefined,writes=0,subscriptions=0,opened=0,layoutWrites=0,journalOpens=0;
+const largeCalendarDays:string[]=[];
+const day=()=>{const d=new Date(now);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const controller=new PomodoroController({load:async()=>saved||null,save:async state=>{writes++;saved=structuredClone(state);}},()=>defaultPomodoroConfig,{now:()=>now,interval:false});
+await controller.initialize();
+const baseSubscribe=controller.subscribe.bind(controller);
+controller.subscribe=listener=>{subscriptions++;const off=baseSubscribe(listener);let live=true;return()=>{if(live){live=false;subscriptions--;off();}};};
+const app:any={vault:{getAbstractFileByPath:()=>undefined,getMarkdownFiles:()=>[],cachedRead:async()=>'',process:async()=>{throw Error('计时界面不能改写笔记');}},workspace:{requestSaveLayout(){layoutWrites++;},getLeavesOfType:()=>[],getLeaf(){throw Error('禁止创建额外侧栏');}}};
+const taskText=`- [ ] 09:00 - 09:30 整理阅读笔记 ⏳ ${day()} ^reading`,tasks=planTasks(taskText,'QA.md','日记');
+const planner:any={all:()=>tasks,ready:async()=>{},rescan:async()=>{},subscribe:()=>()=>{},failures:new Map(),canUndo:()=>false,focusKey:(task:any)=>`${task.path}:${task.line}`,canToggle:()=>true};
+const host:any={settings:{journalFolder:'日记',showHolidays:false,glassEffects:false,accent:'forest'},pomodoro:controller,taskPlanner:planner,openTimerTarget:async()=>{opened++;},selectJournalDay:async()=>{journalOpens++;},pomodoroActions:{open:async()=>view.selectCalendarSurface('timer'),startTask:async(task:any)=>{await controller.startTimer({kind:'task',title:task.title,path:task.path,line:task.line,source:task.source},'stopwatch');view.selectCalendarSurface('timer');}}};
+const leaf:any={contentEl:document.getElementById('root')!,app};const view=new JournalView(leaf,host,'calendar');leaf.contentEl.className='ts-journal ts-calendar-plugin';await view.refresh();
+(window as any).qaCalendarTimer={controller,state:()=>controller.snapshot(),advance:async(ms:number)=>{now+=ms;controller.tick();await controller.settled();},writes:()=>writes,subscriptions:()=>subscriptions,opened:()=>opened,journalOpens:()=>journalOpens,largeCalendarDays:()=>largeCalendarDays,enableLargeCalendar:(enabled:boolean)=>{host.openLargeCalendar=enabled?async(day:string)=>{largeCalendarDays.push(day);}:undefined;},layoutWrites:()=>layoutWrites,refresh:()=>view.refresh(),select:(mode:'calendar'|'timer')=>view.selectCalendarSurface(mode),close:()=>view.onClose(),saved:()=>saved};

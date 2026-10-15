@@ -4,7 +4,19 @@ A standalone Obsidian desktop plugin connecting daily and periodic notes, Markdo
 
 [中文详细介绍](README.md) · [Download](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/latest) · [Issues](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/issues)
 
-Current release: **[1.5.2](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.2)**. Use the complete ZIP for the bundled native Apple Calendar helper.
+Current release: **[1.5.3](https://github.com/YuguangLi-lab/obsidian-thoughtspace-calendar/releases/tag/v1.5.3)**. Use the complete ZIP for the bundled native Apple Calendar helper.
+
+## One calendar and timer surface in 1.5.3
+
+The Calendar / Timer tabs now contain the complete stopwatch, countdown and Pomodoro controls, presets, custom duration, activity title and history. Tasks remain below. The standalone timer sidebar and ribbon entry are removed; task, timeline, large calendar, status bar and existing command shortcuts open this same calendar timer.
+
+Saved timer panes automatically merge into the calendar, including deferred workspace views. Migration preserves calendar navigation and does not steal focus when you return to a note. Switching tabs and refreshing tasks retain timer form drafts and focus. Record actions open the large calendar on the corresponding day to show actual work. Existing sessions, records and settings are retained.
+
+Verified with 467 unit tests, 21 integrated-timer browser checks, 65 large-calendar browser checks, 18 native navigation/data checks and 29 official Tasks API contract checks. The 101 existing test notes and paused timer state were preserved; native checks did not start or stop that session or write Apple events.
+
+[Release notes and upgrade](docs/RELEASE-1.5.3.md) · [Verification](qa/RELEASE-VERIFY-1.5.3.json)
+
+![Complete timer inside the calendar, synthetic example](docs/images/calendar-timer.png)
 
 ## Focus panel in 1.5.2
 

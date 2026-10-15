@@ -5,13 +5,31 @@ class TFolder{constructor(public path:string){}}
 class TFile{properties:Record<string,unknown>={};stat={size:1,mtime:1,ctime:1};extension='md';constructor(public path:string){}get name(){return this.path.split('/').pop()!}get basename(){return this.name.replace(/\.md$/,'')}get parent(){return{path:this.path.slice(0,this.path.lastIndexOf('/'))}}}
 const loadedPlugins=new Set<any>();
 test.afterEach(()=>{for(const plugin of loadedPlugins)plugin.unload();loadedPlugins.clear();});
-class Plugin extends Component{app:any;manifest={id:'thoughtspace-calendar',version:'1.0.0'};saved:any=null;written:any;views=new Map();processors=new Map();commands:any[]=[];layoutCallbacks:any[]=[];loadData=async()=>this.saved;saveData=async(v:any)=>{this.written=v};registerView(id:string,f:any){this.views.set(id,f)}registerMarkdownCodeBlockProcessor(id:string,f:any){this.processors.set(id,f)}registerDomEvent(){}addStatusBarItem(){return{dataset:{},addClass(){},setAttribute(){},setText(){}}}addRibbonIcon(){}addCommand(c:any){this.commands.push(c)}addSettingTab(){}}
-const stub={Component,MarkdownRenderChild:Component,Plugin,PluginSettingTab:class{constructor(..._:any[]){}},Modal:class{},ItemView:class{},FuzzySuggestModal:class{},Notice:class{},TFile,TFolder,normalizePath:(s:string)=>s,Setting:class{}};
+class Plugin extends Component{app:any;manifest={id:'thoughtspace-calendar',version:'1.0.0'};saved:any=null;written:any;views=new Map();processors=new Map();commands:any[]=[];ribbons:any[]=[];domEvents:any[]=[];layoutCallbacks:any[]=[];loadData=async()=>this.saved;saveData=async(v:any)=>{this.written=v};registerView(id:string,f:any){this.views.set(id,f)}registerMarkdownCodeBlockProcessor(id:string,f:any){this.processors.set(id,f)}registerDomEvent(el:any,event:string,callback:any){this.domEvents.push({el,event,callback});}addStatusBarItem(){return{dataset:{},addClass(){},setAttribute(){},setText(){}}}addRibbonIcon(icon:string,title:string,callback:any){this.ribbons.push({icon,title,callback});}addCommand(c:any){this.commands.push(c)}addSettingTab(){}}
+class ViewElement{isConnected=false;scrollTop=0;textContent='';children:any[]=[];addClass(){}empty(){this.children=[];this.textContent='';}setText(value:string){this.textContent=value;}createDiv(options:any={}){return this.createEl('div',options);}createEl(tag:string,options:any={}){const element:any={tag,textContent:options.text||'',disabled:false,onclick:undefined};this.children.push(element);return element;}}
+class ItemView extends Component{app:any;leaf:any;contentEl=new ViewElement();constructor(leaf:any){super();this.leaf=leaf;this.app=leaf.app;}}
+const stub={Component,MarkdownRenderChild:Component,Plugin,PluginSettingTab:class{constructor(..._:any[]){}},Modal:class{},ItemView,FuzzySuggestModal:class{},Notice:class{},TFile,TFolder,normalizePath:(s:string)=>s,Setting:class{}};
 const mod={exports:{} as any};new Function('require','module','exports',bundle)(()=>stub,mod,mod.exports);const Calendar=mod.exports.default;
 (globalThis as any).window={clearTimeout,setTimeout};
 (globalThis as any).document={createElement:()=>({dataset:{},remove(){}}),head:{appendChild(){}}};
-function fixture(legacy?:unknown){const files=new Map<string,TFile|TFolder>(),text=new Map<string,string>(),plugin=new Calendar(),layouts:any[]=[],leaves:any[]=[];let created=0;loadedPlugins.add(plugin);const legacyPath='.obsidian/plugins/thoughtspace/data.json';if(legacy)text.set(legacyPath,JSON.stringify(legacy));
- plugin.app={plugins:{getPlugin:()=>undefined},vault:{configDir:'.obsidian',adapter:{exists:async(p:string)=>text.has(p)||files.has(p),read:async(p:string)=>text.get(p),write:async(p:string,t:string)=>{text.set(p,t)},rename:async(from:string,to:string)=>{const value=text.get(from);if(value===undefined)throw Error('missing');text.set(to,value);text.delete(from);},remove:async(p:string)=>{text.delete(p);},mkdir:async(p:string)=>{files.set(p,new TFolder(p))}},getAbstractFileByPath:(p:string)=>files.get(p),getMarkdownFiles:()=>[...files.values()].filter(f=>f instanceof TFile),read:async(f:TFile)=>text.get(f.path),cachedRead:async(f:TFile)=>text.get(f.path)||'',process:async(f:TFile,fn:(s:string)=>string)=>{text.set(f.path,fn(text.get(f.path)||''))},createFolder:async(p:string)=>{files.set(p,new TFolder(p))},create:async(p:string,t:string)=>{if(files.has(p))throw Error('exists');const f=new TFile(p);created++;files.set(p,f);text.set(p,t);return f},on:()=>({}),offref(){}},metadataCache:{on:()=>({}),offref(){},getFileCache:(file:TFile)=>({frontmatter:file.properties})},fileManager:{processFrontMatter:async(file:TFile,fn:(properties:Record<string,unknown>)=>void)=>{const next=structuredClone(file.properties);fn(next);file.properties=next;},renameFile:async(f:TFile,p:string)=>{const t=text.get(f.path)!;files.delete(f.path);text.delete(f.path);f.path=p;files.set(p,f);text.set(p,t)}},workspace:{onLayoutReady:(fn:any)=>layouts.push(fn),getLeavesOfType:(type:string)=>leaves.filter(l=>l.type===type),getRightLeaf:()=>{const l={type:'',setViewState:async(s:any)=>{l.type=s.type},loadIfDeferred:async()=>{}};leaves.push(l);return l},getLeaf:()=>{const l={type:'markdown',view:{file:undefined as TFile|undefined},openFile:async(file:TFile)=>{l.view.file=file;}};leaves.push(l);return l;},setActiveLeaf(){},rightSplit:{expand(){}},revealLeaf:async()=>{}}};return{plugin,files,text,layouts,leaves,created:()=>created};}
+function fixture(legacy?:unknown){const files=new Map<string,TFile|TFolder>(),text=new Map<string,string>(),plugin=new Calendar(),layouts:any[]=[],leaves:any[]=[],revealed:any[]=[];let created=0,layoutSaves=0;loadedPlugins.add(plugin);const legacyPath='.obsidian/plugins/thoughtspace/data.json';if(legacy)text.set(legacyPath,JSON.stringify(legacy));
+ plugin.app={plugins:{getPlugin:()=>undefined},vault:{configDir:'.obsidian',adapter:{exists:async(p:string)=>text.has(p)||files.has(p),read:async(p:string)=>text.get(p),write:async(p:string,t:string)=>{text.set(p,t)},rename:async(from:string,to:string)=>{const value=text.get(from);if(value===undefined)throw Error('missing');text.set(to,value);text.delete(from);},remove:async(p:string)=>{text.delete(p);},mkdir:async(p:string)=>{files.set(p,new TFolder(p))}},getAbstractFileByPath:(p:string)=>files.get(p),getMarkdownFiles:()=>[...files.values()].filter(f=>f instanceof TFile),read:async(f:TFile)=>text.get(f.path),cachedRead:async(f:TFile)=>text.get(f.path)||'',process:async(f:TFile,fn:(s:string)=>string)=>{text.set(f.path,fn(text.get(f.path)||''))},createFolder:async(p:string)=>{files.set(p,new TFolder(p))},create:async(p:string,t:string)=>{if(files.has(p))throw Error('exists');const f=new TFile(p);created++;files.set(p,f);text.set(p,t);return f},on:()=>({}),offref(){}},metadataCache:{on:()=>({}),offref(){},getFileCache:(file:TFile)=>({frontmatter:file.properties})},fileManager:{processFrontMatter:async(file:TFile,fn:(properties:Record<string,unknown>)=>void)=>{const next=structuredClone(file.properties);fn(next);file.properties=next;},renameFile:async(f:TFile,p:string)=>{const t=text.get(f.path)!;files.delete(f.path);text.delete(f.path);f.path=p;files.set(p,f);text.set(p,t)}},workspace:{onLayoutReady:(fn:any)=>layouts.push(fn),getLeavesOfType:(type:string)=>leaves.filter(l=>l.type===type),iterateAllLeaves:(fn:(leaf:any)=>void)=>{for(const leaf of [...leaves])fn(leaf);},getRightLeaf:()=>newLeaf(),getLeaf:()=>{const l={type:'markdown',view:{file:undefined as TFile|undefined},getViewState(){return{type:'markdown',state:{}};},openFile:async(file:TFile)=>{l.view.file=file;}};leaves.push(l);return l;},activeLeaf:undefined as any,setActiveLeaf(leaf:any){plugin.app.workspace.activeLeaf=leaf;},requestSaveLayout(){layoutSaves++;},rightSplit:{expand(){}},revealLeaf:async(leaf:any)=>{revealed.push(leaf);plugin.app.workspace.activeLeaf=leaf;}}};
+ function newLeaf(type='',state:Record<string,unknown>={}){
+  const leaf:any={app:plugin.app,type,view:undefined,stateChanges:[] as any[],loads:0,detached:false,
+   getViewState(){return{type:this.type,state:this.view?.getState?.()||{}};},
+   async setViewState(next:any){this.stateChanges.push(next);await this.view?.onClose?.();this.type=next.type;const factory=plugin.views.get(next.type);this.view=factory?factory(this):undefined;if(next.state&&this.view?.setState)await this.view.setState(next.state);},
+   async loadIfDeferred(){this.loads++;},detach(){this.detached=true;void this.view?.onClose?.();const index=leaves.indexOf(this);if(index>=0)leaves.splice(index,1);}};
+  if(type){const factory=plugin.views.get(type);leaf.view=factory?factory(leaf):undefined;if(leaf.view&&Object.keys(state).length)void leaf.view.setState?.(state);}
+  leaves.push(leaf);return leaf;
+ }
+ function newDeferredLeaf(type:string,state:Record<string,unknown>={}){
+  const leaf=newLeaf(),saved={type,state:structuredClone(state)};leaf.type='deferred';leaf.view={getViewType:()=> 'deferred'};
+  leaf.getViewState=()=>leaf.type==='deferred'?saved:{type:leaf.type,state:leaf.view?.getState?.()||{}};
+  leaf.loadIfDeferred=async()=>{leaf.loads++;if(leaf.type!=='deferred')return;const factory=plugin.views.get(saved.type);leaf.type=saved.type;leaf.view=factory?factory(leaf):undefined;if(leaf.view?.setState)await leaf.view.setState(saved.state);};
+  return leaf;
+ }
+ return{plugin,files,text,layouts,leaves,revealed,newLeaf,newDeferredLeaf,created:()=>created,layoutSaves:()=>layoutSaves};}
+
 test('calendar loads without ThoughtSpace and owns its calendar, journal, large calendar and task renderer',async()=>{const f=fixture();await f.plugin.onload();assert.deepEqual([...f.plugin.views.keys()].sort(),['thoughtspace-calendar','thoughtspace-journal','thoughtspace-large-calendar','thoughtspace-pomodoro']);assert.deepEqual([...f.plugin.processors.keys()],['thoughtspace-tasks']);assert.equal(f.plugin.ensureDock,undefined);assert(f.plugin.ready);f.plugin.unload();assert.equal(f.plugin.ready,false);});
 test('large calendar shares the task index and initializes it only once',async()=>{const f=fixture();await f.plugin.onload();let reads=0;f.plugin.taskPlanner.ready=async()=>{reads++;};f.plugin.taskPlanner.all=()=>[];await f.plugin.largeCalendarHost.tasks(new Date(2026,9,1),new Date(2026,10,1));await f.plugin.largeCalendarHost.tasks(new Date(2026,9,1),new Date(2026,10,1));assert.equal(reads,1);f.plugin.unload();});
 test('settings save preserves the latest Apple selection even with an older settings draft',async()=>{const f=fixture();await f.plugin.onload();const draft={...f.plugin.settings,accent:'rose'};await Promise.all([f.plugin.saveAppleCalendarSettings({enabled:true,selectedCalendarIds:['c'],defaultCalendarId:'c'}),f.plugin.updateSettings(draft,true)]);assert.equal(f.plugin.settings.accent,'rose');assert.equal(f.plugin.settings.appleCalendar.enabled,true);assert.deepEqual(f.plugin.settings.appleCalendar.selectedCalendarIds,['c']);f.plugin.unload();});
@@ -23,6 +41,97 @@ test('concurrent daily-note creation creates one Markdown file and one live task
 test('existing legacy diary is reused without moving its file or losing prose',async()=>{const f=fixture();await f.plugin.onload();const path='ThoughtSpace/日记/2026-09-15.md',note=new TFile(path);f.files.set(path,note);f.text.set(path,'# 日记\n\n保留原文\n');assert.equal(await f.plugin.ensureJournalFile('2026-09-15'),note);assert.equal(note.path,path);assert(f.text.get(path)!.includes('保留原文'));assert.equal(f.created(),0);});
 test('existing target folder blocks note creation rather than overwriting it',async()=>{const f=fixture();await f.plugin.onload();const path='ThoughtSpace/日记/2026/09/2026-09-15.md';f.files.set(path,new TFolder(path));await assert.rejects(f.plugin.ensureJournalFile('2026-09-15'),/文件夹/);assert.equal(f.created(),0);});
 test('repeated pane requests reuse a single leaf and disabled plugin refuses new panes',async()=>{const f=fixture();await f.plugin.onload();const [a,b]=await Promise.all([f.plugin.ensureCalendar(false),f.plugin.ensureCalendar(true)]);assert.equal(a,b);assert.equal(f.leaves.length,1);f.plugin.onunload();await assert.rejects(f.plugin.ensureCalendar(),/关闭/);});
+
+const calendarType='thoughtspace-calendar',legacyTimerType='thoughtspace-pomodoro',uiTick=()=>new Promise(resolve=>setTimeout(resolve,0));
+test('calendar and timer requests share one pane during rapid repeated opens',async()=>{
+ const f=fixture();await f.plugin.onload();
+ const [calendar]=await Promise.all([f.plugin.ensureCalendar(false),f.plugin.openPomodoro(),f.plugin.openPomodoro(),f.plugin.pomodoroActions.open(),f.plugin.largeCalendarHost.openTimer()]);
+ assert.equal(f.leaves.length,1);assert.equal(f.leaves[0],calendar);assert.equal(calendar.type,calendarType);assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.leaves.filter(leaf=>leaf.type===legacyTimerType).length,0);
+ assert.equal(calendar.stateChanges.length,1);assert(f.revealed.every(leaf=>leaf===calendar));
+});
+test('opening the calendar timer retains diary date and task layout without changing a running clock',async()=>{
+ const f=fixture();await f.plugin.onload();const calendar=await f.plugin.ensureCalendar();
+ await calendar.view.setState({day:'2026-10-11',month:'2026-10',taskView:'quadrants',calendarCollapsed:true});
+ f.plugin.pomodoro.now=()=>Date.UTC(2026,9,14,1);await f.plugin.pomodoro.startTimer({title:'保护进行中的任务'},'stopwatch');
+ const before=f.plugin.pomodoro.snapshot().state;await f.plugin.openPomodoro();await f.plugin.openPomodoro();
+ const state=calendar.view.getState();assert.equal(state.topPane,'timer');assert.equal(state.day,'2026-10-11');assert.equal(state.month,'2026-10');assert.equal(state.taskView,'quadrants');assert.equal(state.calendarCollapsed,true);
+ assert.strictEqual(f.plugin.pomodoro.snapshot().state,before);assert.equal(f.leaves.length,1);assert.equal(calendar.stateChanges.length,1);
+});
+test('status-bar and retained timer command route to the calendar without a separate ribbon',async()=>{
+ const f=fixture();await f.plugin.onload();assert.equal(f.plugin.ribbons.some((ribbon:any)=>ribbon.icon==='timer'),false);assert.equal(f.plugin.ribbons.some((ribbon:any)=>ribbon.title==='ThoughtSpace 日历'),true);
+ f.plugin.commands.find((command:any)=>command.id==='show-pomodoro').callback();await uiTick();const calendar=f.leaves[0];assert.equal(calendar.type,calendarType);assert.equal(calendar.view.getState().topPane,'timer');
+ calendar.view.selectCalendarSurface('calendar');f.plugin.domEvents.find((event:any)=>event.event==='click').callback();await uiTick();assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.leaves.length,1);
+ let prevented=false;calendar.view.selectCalendarSurface('calendar');f.plugin.domEvents.find((event:any)=>event.event==='keydown').callback({key:'Enter',preventDefault(){prevented=true;}});await uiTick();assert(prevented);assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.leaves[0],calendar);
+});
+test('restored legacy timer migrates in place and keeps a paused session and saved records',async()=>{
+ const f=fixture();await f.plugin.onload();let now=Date.UTC(2026,9,14,1);f.plugin.pomodoro.now=()=>now;
+ await f.plugin.pomodoro.startTimer({title:'早一轮'},'stopwatch');now+=60_000;await f.plugin.pomodoro.stop();await f.plugin.pomodoro.startTimer({title:'继续当前轮'},'countdown',25);await f.plugin.pomodoro.pause();
+ const before=f.plugin.pomodoro.snapshot().state,legacy=f.newLeaf(legacyTimerType);f.plugin.app.workspace.activeLeaf=legacy;
+ await f.plugin.migrateTimerViews();assert.equal(f.leaves.length,1);assert.equal(f.leaves[0],legacy);assert.equal(legacy.type,calendarType);assert.equal(legacy.view.getState().topPane,'timer');assert.equal(legacy.detached,false);
+ assert.strictEqual(f.plugin.pomodoro.snapshot().state,before);assert.equal(before.session.status,'paused');assert.equal(before.records.length,1);
+ await f.plugin.migrateTimerViews();assert.equal(legacy.stateChanges.length,1);assert.equal(f.leaves.length,1);
+});
+test('layout restore removes duplicate legacy timer tabs while retaining the existing calendar selection',async()=>{
+ const f=fixture();await f.plugin.onload();const calendar=await f.plugin.ensureCalendar();await calendar.view.setState({day:'2026-10-12',month:'2026-10',taskView:'timeline',topPane:'calendar'});
+ const legacy=f.newLeaf(legacyTimerType),extra=f.newLeaf(legacyTimerType);f.plugin.app.workspace.activeLeaf=extra;
+ for(const ready of f.layouts)ready();await uiTick();await f.plugin.migrateTimerViews();
+ assert.deepEqual(f.leaves,[calendar]);assert.equal(legacy.detached,true);assert.equal(extra.detached,true);assert.equal(calendar.stateChanges.length,1);assert.equal(calendar.view.getState().day,'2026-10-12');assert.equal(calendar.view.getState().taskView,'timeline');assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.plugin.app.workspace.activeLeaf,calendar);
+});
+test('background layout migration does not steal the active native note',async()=>{
+ const f=fixture();await f.plugin.onload();const calendar=await f.plugin.ensureCalendar(),legacy=f.newLeaf(legacyTimerType),note=f.plugin.app.workspace.getLeaf();f.plugin.app.workspace.activeLeaf=note;const reveals=f.revealed.length;
+ await f.plugin.migrateTimerViews();assert.equal(legacy.detached,true);assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.plugin.app.workspace.activeLeaf,note);assert.equal(f.revealed.length,reveals);
+});
+test('restoring a deferred calendar reuses its pending leaf before migrating a legacy timer',async()=>{
+ const f=fixture();await f.plugin.onload();const pending=f.newDeferredLeaf(calendarType,{day:'2026-09-14',month:'2026-09',taskView:'timeline',topPane:'calendar'}),legacy=f.newLeaf(legacyTimerType);f.plugin.app.workspace.activeLeaf=legacy;
+ assert.equal(f.plugin.app.workspace.getLeavesOfType(calendarType).length,0);assert.equal(pending.getViewState().type,calendarType);
+ await f.plugin.migrateTimerViews();assert.equal(f.leaves.length,1);assert.equal(f.leaves[0],pending);assert.equal(legacy.detached,true);assert.equal(pending.type,calendarType);assert.equal(pending.stateChanges.length,0);assert.equal(pending.view.getState().day,'2026-09-14');assert.equal(pending.view.getState().month,'2026-09');assert.equal(pending.view.getState().taskView,'timeline');assert.equal(pending.view.getState().topPane,'timer');assert.equal(f.plugin.app.workspace.activeLeaf,pending);
+});
+test('migration does not steal focus when the user opens a native note during deferred loading',{timeout:2000},async()=>{
+ const f=fixture();await f.plugin.onload();const pending=f.newDeferredLeaf(calendarType,{day:'2026-09-14',taskView:'timeline'}),legacy=f.newLeaf(legacyTimerType),note=f.plugin.app.workspace.getLeaf();f.plugin.app.workspace.activeLeaf=legacy;
+ let release!:()=>void,started!:()=>void;const gate=new Promise<void>(resolve=>{release=resolve;}),loading=new Promise<void>(resolve=>{started=resolve;}),restore=pending.loadIfDeferred.bind(pending);
+ pending.loadIfDeferred=async()=>{started();await gate;await restore();};
+ const migration=f.plugin.migrateTimerViews();await loading;f.plugin.app.workspace.activeLeaf=note;release();await migration;
+ assert.equal(legacy.detached,true);assert.equal(pending.type,calendarType);assert.equal(pending.view.getState().topPane,'timer');assert.equal(f.plugin.app.workspace.activeLeaf,note);assert.equal(f.revealed.length,0);
+});
+test('concurrent deferred restore, migration and timer entry keep a single calendar leaf',async()=>{
+ const f=fixture();await f.plugin.onload();const pending=f.newDeferredLeaf(calendarType,{day:'2026-09-14',month:'2026-09',taskView:'timeline',topPane:'calendar'}),legacy=f.newLeaf(legacyTimerType);
+ await Promise.all([f.plugin.openPomodoro(),f.plugin.migrateTimerViews(),f.plugin.ensureCalendar(false),f.plugin.openPomodoro()]);
+ assert.equal(f.leaves.length,1);assert.equal(f.leaves[0],pending);assert.equal(pending.loads,1);assert.equal(legacy.detached,true);assert.equal(pending.stateChanges.length,0);assert.equal(pending.view.getState().day,'2026-09-14');assert.equal(pending.view.getState().taskView,'timeline');assert.equal(pending.view.getState().topPane,'timer');
+});
+test('concurrent legacy migration and timer entry reuse the same restored leaf',async()=>{
+ const f=fixture();await f.plugin.onload();const legacy=f.newLeaf(legacyTimerType);
+ await Promise.all([f.plugin.migrateTimerViews(),f.plugin.openPomodoro(),f.plugin.ensureCalendar(true),f.plugin.openPomodoro()]);
+ assert.deepEqual(f.leaves,[legacy]);assert.equal(legacy.type,calendarType);assert.equal(legacy.stateChanges.length,1);assert.equal(legacy.view.getState().topPane,'timer');assert.equal(legacy.detached,false);
+});
+test('a late-restored legacy view registers migration and exposes no separate timer controls',async()=>{
+ const f=fixture();await f.plugin.onload();for(const ready of f.layouts)ready();await uiTick();
+ const legacy=f.newLeaf(legacyTimerType),placeholder=legacy.view;await placeholder.onOpen();const content=placeholder.contentEl;
+ assert.equal(content.children.length,2);assert.equal(content.children[0].textContent,'计时功能已移入日历。');assert.equal(content.children[1].textContent,'在日历中打开');assert.equal(placeholder.getIcon(),'calendar-days');
+ f.layouts.at(-1)();await uiTick();assert.deepEqual(f.leaves,[legacy]);assert.equal(legacy.type,calendarType);assert.equal(legacy.view.getState().topPane,'timer');assert.equal(content.children.length,0);
+});
+test('a closed legacy placeholder cannot reopen the calendar later',async()=>{
+ const f=fixture();await f.plugin.onload();const legacy=f.newLeaf(legacyTimerType),placeholder=legacy.view;await placeholder.onOpen();const delayed=f.layouts.at(-1);legacy.detach();
+ delayed();await uiTick();assert.equal(f.leaves.length,0);
+});
+test('a failed legacy conversion remains recoverable without creating an extra timer pane',async()=>{
+ const f=fixture();await f.plugin.onload();const legacy=f.newLeaf(legacyTimerType),convert=legacy.setViewState.bind(legacy);let attempts=0;
+ legacy.setViewState=async(state:any)=>{if(++attempts===1)throw Error('temporary layout failure');await convert(state);};
+ await assert.rejects(f.plugin.migrateTimerViews(),/temporary layout failure/);assert.deepEqual(f.leaves,[legacy]);assert.equal(legacy.detached,false);assert.equal(legacy.type,legacyTimerType);
+ await f.plugin.openPomodoro();assert.deepEqual(f.leaves,[legacy]);assert.equal(legacy.type,calendarType);assert.equal(legacy.view.getState().topPane,'timer');assert.equal(attempts,2);
+});
+test('task focus and large-calendar timer start both reveal the shared calendar timer surface',async()=>{
+ const f=fixture(),file=new TFile('日历计时入口.md'),source='- [ ] 09:00 - 09:30 整理任务 ⏳ 2026-10-14 ^timer';f.files.set(file.path,file);f.text.set(file.path,source);await f.plugin.onload();await f.plugin.taskPlanner.ready();
+ await f.plugin.pomodoroActions.startTask(f.plugin.taskPlanner.all()[0]);const calendar=f.leaves[0];assert.equal(calendar.type,calendarType);assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.plugin.pomodoro.snapshot().state.session.mode,'countdown');assert.equal(f.text.get(file.path),source);
+ await f.plugin.pomodoro.stop();calendar.view.selectCalendarSurface('calendar');await f.plugin.largeCalendarHost.startTimer({title:'大日历自由计时'},'stopwatch');assert.equal(calendar.view.getState().topPane,'timer');assert.deepEqual(f.leaves,[calendar]);assert.equal(f.plugin.pomodoro.snapshot().state.session.target.title,'大日历自由计时');assert.equal(f.text.get(file.path),source);
+});
+test('both start commands display their session in the calendar timer pane',async()=>{
+ const f=fixture();await f.plugin.onload();f.plugin.commands.find((command:any)=>command.id==='start-stopwatch').callback();await uiTick();const calendar=f.leaves[0];assert.equal(calendar.type,calendarType);assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.plugin.pomodoro.snapshot().state.session.mode,'stopwatch');
+ await f.plugin.pomodoro.stop();calendar.view.selectCalendarSurface('calendar');f.plugin.commands.find((command:any)=>command.id==='start-pomodoro').callback();await uiTick();assert.equal(calendar.view.getState().topPane,'timer');assert.equal(f.plugin.pomodoro.snapshot().state.session.mode,'pomodoro');assert.deepEqual(f.leaves,[calendar]);
+});
+test('timer routing rejects requests after unload without creating or changing a pane',async()=>{
+ const f=fixture();await f.plugin.onload();const calendar=await f.plugin.ensureCalendar();await calendar.view.setState({topPane:'calendar'});f.plugin.onunload();
+ await assert.rejects(f.plugin.openPomodoro(),/关闭/);assert.equal(calendar.view.getState().topPane,'calendar');assert.deepEqual(f.leaves,[calendar]);
+});
 test('old journal filing backs up before moving and preserves duplicate dates',async()=>{const f=fixture();await f.plugin.onload();for(const path of ['ThoughtSpace/日记/2026-09-15.md','ThoughtSpace/日记/2026-09-16.md','ThoughtSpace/日记/2026/09/2026-09-16.md']){f.files.set(path,new TFile(path));f.text.set(path,'original '+path)}const result=await f.plugin.fileOldJournals();assert.equal(result.moved,1);assert.equal(result.skipped.length,1);assert.equal(result.failed.length,0);assert(f.text.has('ThoughtSpace/日记/2026-09-16.md'));assert([...f.text].some(([path,text])=>path.includes('filing-backups')&&text==='original ThoughtSpace/日记/2026-09-15.md'));});
 
 const calendarRange=[new Date(2026,9,1),new Date(2026,10,1)] as const;

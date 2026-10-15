@@ -3824,7 +3824,7 @@ __export(main_exports, {
   default: () => ThoughtSpaceCalendar
 });
 module.exports = __toCommonJS(main_exports);
-var import_obsidian16 = require("obsidian");
+var import_obsidian17 = require("obsidian");
 
 // node_modules/lunar-typescript/dist/index.mjs
 var _SolarUtil = class {
@@ -17517,7 +17517,7 @@ var TaskPanel = class extends import_obsidian4.MarkdownRenderChild {
 };
 
 // src/journal-view.ts
-var import_obsidian7 = require("obsidian");
+var import_obsidian8 = require("obsidian");
 
 // src/content-tools.ts
 var import_obsidian5 = require("obsidian");
@@ -17952,10 +17952,553 @@ var PomodoroStrip = class extends import_obsidian6.Component {
   }
 };
 
+// src/pomodoro-view.ts
+var import_obsidian7 = require("obsidian");
+
+// src/timer-calendar-model.ts
+var MAX_RECORDS = 200;
+var MAX_SEGMENTS = 500;
+var MAX_TIMESTAMP = 864e13;
+var timestamp = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0 && value < MAX_TIMESTAMP;
+var positive = (value) => typeof value === "number" && Number.isFinite(value) && value > 0;
+function activeSegments(record) {
+  if (!positive(record.durationMs) || !timestamp(record.startedAt) || !timestamp(record.completedAt) || record.completedAt <= record.startedAt) return { segments: [], estimated: false };
+  const hasSegments = Array.isArray(record.segments), estimated = !hasSegments || record.segmentsEstimated === true;
+  const raw = hasSegments ? record.segments.slice(-MAX_SEGMENTS) : [{ start: record.startedAt, end: Math.min(record.completedAt, record.startedAt + record.durationMs) }];
+  const sorted = raw.filter((segment) => segment && timestamp(segment.start) && timestamp(segment.end) && segment.end > segment.start).map((segment) => ({ start: Math.max(record.startedAt, segment.start), end: Math.min(record.completedAt, segment.end) })).filter((segment) => segment.end > segment.start).sort((a, b) => a.start - b.start || a.end - b.end);
+  const merged = [];
+  for (const segment of sorted) {
+    const previous = merged.at(-1);
+    if (previous && segment.start <= previous.end) previous.end = Math.max(previous.end, segment.end);
+    else merged.push({ ...segment });
+  }
+  let remaining = record.durationMs;
+  const segments = [];
+  for (const segment of merged) {
+    if (remaining <= 0) break;
+    const duration2 = Math.min(remaining, segment.end - segment.start);
+    segments.push({ start: segment.start, end: segment.start + duration2 });
+    remaining -= duration2;
+  }
+  return { segments, estimated };
+}
+function timerRecordsOnDay(records, date) {
+  if (!Number.isFinite(+date)) return [];
+  const start = +new Date(date.getFullYear(), date.getMonth(), date.getDate()), end = +new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
+  const result = [], seen = /* @__PURE__ */ new Set();
+  for (const record of records.slice(-MAX_RECORDS).reverse()) {
+    if (!record || typeof record.id !== "string" || seen.has(record.id)) continue;
+    seen.add(record.id);
+    const mode2 = record.mode === "stopwatch" || record.mode === "countdown" ? record.mode : "pomodoro";
+    if (mode2 === "pomodoro" && (record.phase === "short-break" || record.phase === "long-break")) continue;
+    const normalized = activeSegments(record), segments = normalized.segments.filter((segment) => segment.start < end && segment.end > start).map((segment) => ({ start: Math.max(start, segment.start), end: Math.min(end, segment.end) }));
+    if (!segments.length) continue;
+    const durationMs = segments.reduce((sum, segment) => sum + segment.end - segment.start, 0), totalDurationMs = normalized.segments.reduce((sum, segment) => sum + segment.end - segment.start, 0);
+    const target2 = record.target, planned = target2?.plannedDurationMs;
+    const plannedDurationMs = positive(planned) ? planned : timestamp(target2?.plannedStart) && timestamp(target2?.plannedEnd) && target2.plannedEnd > target2.plannedStart ? target2.plannedEnd - target2.plannedStart : void 0;
+    result.push({ id: record.id, title: target2?.title || "\u81EA\u7531\u8BA1\u65F6", mode: mode2, ...target2 ? { target: target2 } : {}, segments, durationMs, totalDurationMs, ...plannedDurationMs ? { plannedDurationMs } : {}, estimated: normalized.estimated, record });
+  }
+  return result.sort((a, b) => a.segments[0].start - b.segments[0].start || a.id.localeCompare(b.id));
+}
+function timerActualMsOnDay(records, date) {
+  return timerRecordsOnDay(records, date).reduce((sum, item) => sum + item.durationMs, 0);
+}
+function timerMinuteLabel(durationMs) {
+  if (!positive(durationMs)) return "0";
+  if (durationMs < 6e4) return "<1";
+  return String(Math.round(durationMs / 6e3) / 10);
+}
+function timerModeLabel(mode2) {
+  return mode2 === "stopwatch" ? "\u6B63\u8BA1\u65F6" : mode2 === "countdown" ? "\u5012\u8BA1\u65F6" : "\u756A\u8304\u4E13\u6CE8";
+}
+
+// src/pomodoro-view.ts
+var POMODORO_VIEW = "thoughtspace-pomodoro";
+var MODES = {
+  stopwatch: { label: "\u6B63\u8BA1\u65F6", icon: "timer" },
+  countdown: { label: "\u5012\u8BA1\u65F6", icon: "hourglass" },
+  pomodoro: { label: "\u756A\u8304\u949F", icon: "circle-dot" }
+};
+var PHASES = {
+  focus: { label: "\u4E13\u6CE8", icon: "timer" },
+  "short-break": { label: "\u77ED\u4F11\u606F", icon: "coffee" },
+  "long-break": { label: "\u957F\u4F11\u606F", icon: "armchair" }
+};
+function clockText2(ms, roundUp = false) {
+  const seconds = Math.max(0, roundUp ? Math.ceil(ms / 1e3) : Math.floor(ms / 1e3));
+  const minutes2 = Math.floor(seconds / 60);
+  const tail = String(seconds % 60).padStart(2, "0");
+  return seconds >= 3600 ? `${String(Math.floor(seconds / 3600)).padStart(2, "0")}:${String(minutes2 % 60).padStart(2, "0")}:${tail}` : `${String(minutes2).padStart(2, "0")}:${tail}`;
+}
+function localDate(value) {
+  const date = value instanceof Date ? value : new Date(value);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+}
+function timeText(value) {
+  return new Date(value).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
+}
+function durationText(ms) {
+  const seconds = Math.max(0, Math.round(ms / 1e3));
+  if (seconds < 60) return `${seconds} \u79D2`;
+  const minutes2 = Math.floor(seconds / 60), tail = seconds % 60;
+  return `${minutes2} \u5206${tail ? ` ${tail} \u79D2` : "\u949F"}`;
+}
+function planText(target2) {
+  if (!target2) return "";
+  const range = target2.plannedStart !== void 0 && target2.plannedEnd !== void 0 ? `${timeText(target2.plannedStart)}\u2013${timeText(target2.plannedEnd)}` : "";
+  const duration2 = target2.plannedDurationMs !== void 0 ? durationText(target2.plannedDurationMs) : "";
+  return range || duration2 ? `\u8BA1\u5212 ${[range, duration2].filter(Boolean).join(" \xB7 ")}` : "";
+}
+function setText(el, text3) {
+  if (el.textContent !== text3) el.setText(text3);
+}
+var PomodoroPanel = class extends import_obsidian7.Component {
+  constructor(el, controller, onOpenTarget, onShowCalendar) {
+    super();
+    this.el = el;
+    this.controller = controller;
+    this.onOpenTarget = onOpenTarget;
+    this.onShowCalendar = onShowCalendar;
+  }
+  active = false;
+  pendingAction = false;
+  openingTarget = false;
+  openingCalendar = false;
+  actionError = "";
+  titleDirty = false;
+  durationDirty = false;
+  inputSession;
+  inputTargetKey;
+  latest;
+  announcementKey;
+  sessionKey;
+  targetKey;
+  recordsReference;
+  recordsDay;
+  modeButtons = /* @__PURE__ */ new Map();
+  phaseChips = /* @__PURE__ */ new Map();
+  phaseMinutes = /* @__PURE__ */ new Map();
+  cadence;
+  modeHint;
+  stages;
+  durationControls;
+  durationInput;
+  presetButtons = /* @__PURE__ */ new Map();
+  adjustment;
+  adjustmentButtons = [];
+  phaseLabel;
+  phaseIcon;
+  clock;
+  timerStatus;
+  progress;
+  progressCircle;
+  progressLabel;
+  targetTitle;
+  titleInput;
+  targetSource;
+  targetPlan;
+  targetActual;
+  targetOpen;
+  calendarOpen;
+  primary;
+  primaryIcon;
+  primaryText;
+  stopButton;
+  resetButton;
+  nextButton;
+  error;
+  announcement;
+  todayCount;
+  todayMinutes;
+  recentEmpty;
+  recentRecords = [];
+  recentRows = [];
+  onload() {
+    this.active = true;
+    this.el.addClass("ts-calendar-plugin", "ts-calendar-pomodoro");
+    this.el.setAttribute("aria-label", "\u8BA1\u65F6\u5668");
+    this.build();
+    this.register(this.controller.subscribe((snapshot) => this.update(snapshot)));
+  }
+  build() {
+    const head = this.el.createDiv("ts-calendar-pomodoro-head");
+    const heading = head.createDiv("ts-calendar-pomodoro-heading");
+    (0, import_obsidian7.setIcon)(heading.createSpan({ cls: "ts-calendar-pomodoro-heading-icon", attr: { "aria-hidden": "true" } }), "clock-3");
+    heading.createEl("h3", { text: "\u8BA1\u65F6\u5668" });
+    this.cadence = head.createSpan("ts-calendar-pomodoro-cadence");
+    const modes2 = this.el.createDiv({ cls: "ts-calendar-pomodoro-modes", attr: { role: "group", "aria-label": "\u8BA1\u65F6\u6A21\u5F0F" } });
+    for (const mode2 of ["stopwatch", "countdown", "pomodoro"]) {
+      const button = modes2.createEl("button", { attr: { type: "button", "aria-label": MODES[mode2].label, title: MODES[mode2].label } });
+      (0, import_obsidian7.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), MODES[mode2].icon);
+      button.createSpan({ text: MODES[mode2].label });
+      button.onclick = () => void this.run(() => this.controller.selectMode(mode2));
+      this.modeButtons.set(mode2, button);
+    }
+    this.modeHint = this.el.createDiv({ cls: "ts-calendar-pomodoro-mode-hint", text: "\u7ED3\u675F\u5F53\u524D\u8BA1\u65F6\u540E\u53EF\u5207\u6362\u6A21\u5F0F" });
+    this.stages = this.el.createDiv({ cls: "ts-calendar-pomodoro-stages", attr: { role: "list", "aria-label": "\u756A\u8304\u949F\u9636\u6BB5" } });
+    for (const phase2 of ["focus", "short-break", "long-break"]) {
+      const chip = this.stages.createDiv({ cls: "ts-calendar-pomodoro-stage", attr: { role: "listitem" } });
+      chip.createSpan({ text: PHASES[phase2].label });
+      this.phaseMinutes.set(phase2, chip.createSpan("ts-calendar-pomodoro-stage-minutes"));
+      this.phaseChips.set(phase2, chip);
+    }
+    this.durationControls = this.el.createDiv("ts-calendar-pomodoro-duration-controls");
+    const presets = this.durationControls.createDiv({ cls: "ts-calendar-pomodoro-presets", attr: { role: "group", "aria-label": "\u5012\u8BA1\u65F6\u65F6\u957F\u9884\u8BBE" } });
+    for (const minutes3 of [15, 25, 45, 60]) {
+      const button = presets.createEl("button", { text: `${minutes3}`, attr: { type: "button", "aria-label": `\u5012\u8BA1\u65F6 ${minutes3} \u5206\u949F` } });
+      button.onclick = () => {
+        this.durationInput.value = String(minutes3);
+        this.durationDirty = true;
+        if (this.latest?.state.session.status === "idle") void this.run(() => this.controller.setDuration(minutes3));
+        else this.updatePresets();
+      };
+      this.presetButtons.set(minutes3, button);
+    }
+    const durationField = this.durationControls.createEl("label", { cls: "ts-calendar-pomodoro-duration-field" });
+    durationField.createSpan({ text: "\u81EA\u5B9A" });
+    this.durationInput = durationField.createEl("input", { type: "number", attr: { min: "1", max: "1440", step: "1", "aria-label": "\u5012\u8BA1\u65F6\u5206\u949F\u6570", inputmode: "numeric" } });
+    durationField.createSpan({ text: "\u5206" });
+    this.durationInput.oninput = () => {
+      this.durationDirty = true;
+      this.updatePresets();
+    };
+    this.durationInput.onkeydown = (event) => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        void this.primaryAction();
+      }
+    };
+    const timer = this.el.createDiv("ts-calendar-pomodoro-timer");
+    const face = timer.createDiv("ts-calendar-pomodoro-face");
+    this.progress = timer.createDiv({ cls: "ts-calendar-pomodoro-dial", attr: { "aria-live": "off" } });
+    const doc = this.el.ownerDocument, svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", "0 0 220 220");
+    svg.setAttribute("class", "ts-calendar-pomodoro-ring");
+    svg.setAttribute("aria-hidden", "true");
+    for (const kind of ["track", "remaining"]) {
+      const circle = doc.createElementNS("http://www.w3.org/2000/svg", "circle");
+      for (const [name, value] of Object.entries({ cx: "110", cy: "110", r: "101", fill: "none", class: `ts-calendar-pomodoro-ring-${kind}`, pathLength: "100" })) circle.setAttribute(name, value);
+      svg.appendChild(circle);
+      if (kind === "remaining") this.progressCircle = circle;
+    }
+    this.progress.appendChild(svg);
+    this.progressLabel = this.progress.createSpan({ cls: "ts-calendar-pomodoro-progress-label", attr: { "aria-hidden": "true" } });
+    const phase = face.createDiv("ts-calendar-pomodoro-phase");
+    this.phaseIcon = phase.createSpan({ attr: { "aria-hidden": "true" } });
+    this.phaseLabel = phase.createSpan();
+    this.clock = face.createDiv({ cls: "ts-calendar-pomodoro-clock", attr: { role: "timer", "aria-live": "off", "aria-atomic": "true" } });
+    this.timerStatus = face.createDiv("ts-calendar-pomodoro-status");
+    this.adjustment = this.el.createDiv({ cls: "ts-calendar-pomodoro-adjustment", attr: { role: "group", "aria-label": "\u8C03\u6574\u5269\u4F59\u65F6\u95F4" } });
+    for (const minutes3 of [-5, 5]) this.adjustmentButtons.push(this.actionButton(this.adjustment, `${minutes3 < 0 ? "\u2212" : "+"}5 \u5206\u949F`, minutes3 < 0 ? "minus" : "plus", () => this.controller.adjust(minutes3)));
+    const target2 = this.el.createDiv("ts-calendar-pomodoro-target"), targetHead = target2.createDiv("ts-calendar-pomodoro-target-head");
+    targetHead.createSpan({ cls: "ts-calendar-pomodoro-caption", text: "\u5F53\u524D\u4E8B\u9879" });
+    const links = targetHead.createDiv("ts-calendar-pomodoro-target-links");
+    this.calendarOpen = this.iconButton(links, "\u5728\u65E5\u5386\u67E5\u770B\u5F53\u524D\u4E8B\u9879", "calendar-days", () => this.showCalendar(this.currentCalendarDay()));
+    this.targetOpen = this.iconButton(links, "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90", "arrow-up-right", () => this.openTarget());
+    this.targetTitle = target2.createDiv("ts-calendar-pomodoro-target-title");
+    this.titleInput = target2.createEl("input", { cls: "ts-calendar-pomodoro-title-input", type: "text", attr: { placeholder: "\u8FD9\u6B21\u51C6\u5907\u505A\u4EC0\u4E48\uFF1F", "aria-label": "\u672C\u6B21\u8BA1\u65F6\u4E8B\u9879", maxlength: "500" } });
+    this.titleInput.oninput = () => {
+      this.titleDirty = true;
+    };
+    this.titleInput.onkeydown = (event) => {
+      if (event.key === "Enter" && !event.isComposing) {
+        event.preventDefault();
+        void this.primaryAction();
+      }
+    };
+    this.targetSource = target2.createDiv("ts-calendar-pomodoro-target-source");
+    this.targetPlan = target2.createDiv("ts-calendar-pomodoro-target-plan");
+    this.targetActual = target2.createDiv("ts-calendar-pomodoro-target-actual");
+    const actions = this.el.createDiv("ts-calendar-pomodoro-actions");
+    this.primary = actions.createEl("button", { cls: "ts-calendar-pomodoro-primary", attr: { type: "button" } });
+    this.primaryIcon = this.primary.createSpan({ attr: { "aria-hidden": "true" } });
+    this.primaryText = this.primary.createSpan();
+    this.primary.onclick = () => void this.primaryAction();
+    this.stopButton = this.actionButton(actions, "\u7ED3\u675F\u5E76\u8BB0\u5F55", "square", () => this.controller.stop());
+    this.stopButton.addClass("ts-calendar-pomodoro-stop");
+    this.stopButton.title = "\u7ED3\u675F\u672C\u6B21\u8BA1\u65F6\uFF0C\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6";
+    const secondary = actions.createDiv("ts-calendar-pomodoro-secondary");
+    this.resetButton = this.actionButton(secondary, "\u91CD\u7F6E", "rotate-ccw", () => this.controller.reset());
+    this.resetButton.setAttribute("aria-label", "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6");
+    this.resetButton.title = "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6";
+    this.nextButton = this.actionButton(secondary, "\u8DF3\u8FC7", "skip-forward", () => this.controller.next());
+    this.nextButton.setAttribute("aria-label", "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5");
+    this.nextButton.title = "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5";
+    this.error = this.el.createDiv({ cls: "ts-calendar-pomodoro-error", attr: { role: "alert" } });
+    this.error.hidden = true;
+    const summary = this.el.createDiv("ts-calendar-pomodoro-summary"), summaryHead = summary.createDiv("ts-calendar-pomodoro-summary-head");
+    summaryHead.createSpan({ cls: "ts-calendar-pomodoro-caption", text: "\u4ECA\u5929" });
+    summaryHead.createSpan({ cls: "ts-calendar-pomodoro-summary-hint", text: "\u5B9E\u9645\u8BB0\u5F55\u7684\u7528\u65F6" });
+    const stats = summary.createDiv("ts-calendar-pomodoro-stats"), count = stats.createDiv("ts-calendar-pomodoro-stat");
+    this.todayCount = count.createEl("strong");
+    count.createSpan({ text: "\u6B21\u8BB0\u5F55" });
+    const minutes2 = stats.createDiv("ts-calendar-pomodoro-stat");
+    this.todayMinutes = minutes2.createEl("strong");
+    minutes2.createSpan({ text: "\u5206\u949F" });
+    summary.createDiv({ cls: "ts-calendar-pomodoro-recent-head", text: "\u6700\u8FD1\u8BB0\u5F55" });
+    const list = summary.createEl("ul", { cls: "ts-calendar-pomodoro-recent", attr: { "aria-label": "\u6700\u8FD1\u8BA1\u65F6\u8BB0\u5F55" } });
+    for (let index = 0; index < 3; index++) {
+      const row = list.createEl("li", { cls: "ts-calendar-pomodoro-record" }), mark = row.createSpan({ cls: "ts-calendar-pomodoro-record-mark", attr: { "aria-hidden": "true" } });
+      (0, import_obsidian7.setIcon)(mark, "check");
+      const content = row.createDiv("ts-calendar-pomodoro-record-content");
+      const title = content.createDiv("ts-calendar-pomodoro-record-title"), meta = content.createDiv("ts-calendar-pomodoro-record-meta"), plan = content.createDiv("ts-calendar-pomodoro-record-plan");
+      const calendar = this.iconButton(row, "\u5728\u65E5\u5386\u67E5\u770B\u8FD9\u6B21\u8BA1\u65F6", "calendar-days", () => {
+        const record = this.recentRecords[index];
+        return record ? this.showCalendar(localDate(record.startedAt)) : Promise.resolve();
+      });
+      calendar.addClass("ts-calendar-pomodoro-record-calendar");
+      this.recentRows.push({ row, title, meta, plan, calendar });
+    }
+    this.recentEmpty = summary.createDiv({ cls: "ts-calendar-pomodoro-empty", text: "\u7ED3\u675F\u8BA1\u65F6\u540E\uFF0C\u5B9E\u9645\u7528\u65F6\u4F1A\u8BB0\u5F55\u5728\u8FD9\u91CC\u3002" });
+    this.announcement = this.el.createDiv({ cls: "ts-calendar-pomodoro-announcement", attr: { role: "status", "aria-live": "polite", "aria-atomic": "true" } });
+  }
+  iconButton(parent, label2, icon, action) {
+    const button = parent.createEl("button", { cls: "ts-calendar-pomodoro-target-open", attr: { type: "button", "aria-label": label2, title: label2 } });
+    (0, import_obsidian7.setIcon)(button, icon);
+    button.onclick = () => void action();
+    return button;
+  }
+  actionButton(parent, label2, icon, action) {
+    const button = parent.createEl("button", { attr: { type: "button", "aria-label": label2 } });
+    (0, import_obsidian7.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+    button.createSpan({ text: label2 });
+    button.onclick = () => void this.run(action);
+    return button;
+  }
+  statusText(status, mode2, phase) {
+    if (status === "running") return mode2 === "pomodoro" ? phase === "focus" ? "\u4E13\u6CE8\u8FDB\u884C\u4E2D" : "\u4F11\u606F\u8FDB\u884C\u4E2D" : "\u6B63\u5728\u8BA1\u65F6";
+    if (status === "paused") return "\u5DF2\u6682\u505C";
+    if (status === "finished") return mode2 === "pomodoro" ? "\u672C\u9636\u6BB5\u5DF2\u7ED3\u675F" : "\u672C\u6B21\u8BA1\u65F6\u5DF2\u7ED3\u675F";
+    return mode2 === "stopwatch" ? "\u4ECE 00:00 \u5F00\u59CB" : "\u51C6\u5907\u5F00\u59CB";
+  }
+  update(snapshot) {
+    if (!this.active) return;
+    this.latest = snapshot;
+    const { session } = snapshot.state, { phase, status, mode: mode2 } = session, config = this.controller.config;
+    const active2 = status === "running" || status === "paused";
+    const key = `${session.id}:${mode2}:${phase}:${status}:${session.durationMs}:${config.focusMinutes}:${config.shortBreakMinutes}:${config.longBreakMinutes}:${config.longBreakEvery}`;
+    if (this.sessionKey !== key) {
+      this.sessionKey = key;
+      this.el.dataset.phase = phase;
+      this.el.dataset.status = status;
+      this.el.dataset.mode = mode2;
+      setText(this.cadence, mode2 === "pomodoro" ? `\u6BCF ${config.longBreakEvery} \u8F6E\u957F\u4F11\u606F` : mode2 === "stopwatch" ? "\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6" : "\u6309\u76EE\u6807\u65F6\u957F\u8BA1\u65F6");
+      for (const [value, button] of this.modeButtons) button.setAttribute("aria-pressed", String(value === mode2));
+      this.modeHint.hidden = !active2;
+      this.stages.hidden = mode2 !== "pomodoro";
+      this.durationControls.hidden = mode2 !== "countdown" || active2;
+      this.adjustment.hidden = mode2 !== "countdown" || !active2;
+      const durations = { focus: config.focusMinutes, "short-break": config.shortBreakMinutes, "long-break": config.longBreakMinutes };
+      for (const [value, chip] of this.phaseChips) {
+        chip.toggleClass("ts-calendar-pomodoro-stage-active", value === phase);
+        if (value === phase) chip.setAttribute("aria-current", "step");
+        else chip.removeAttribute("aria-current");
+        setText(this.phaseMinutes.get(value), `${value === phase && mode2 === "pomodoro" ? session.durationMs / 6e4 : durations[value]} \u5206`);
+      }
+      const label2 = mode2 === "pomodoro" ? PHASES[phase] : MODES[mode2];
+      setText(this.phaseLabel, label2.label);
+      (0, import_obsidian7.setIcon)(this.phaseIcon, label2.icon);
+      setText(this.timerStatus, this.statusText(status, mode2, phase));
+      const announcementKey = `${mode2}:${phase}:${status}`;
+      if (this.announcementKey !== announcementKey) {
+        if (this.announcementKey !== void 0) setText(this.announcement, `${label2.label}\uFF0C${this.statusText(status, mode2, phase)}`);
+        this.announcementKey = announcementKey;
+      }
+      const primaryLabel = status === "running" ? "\u6682\u505C" : status === "paused" ? "\u7EE7\u7EED" : mode2 === "pomodoro" ? status === "finished" ? phase === "focus" ? "\u5F00\u59CB\u4F11\u606F" : "\u5F00\u59CB\u4E13\u6CE8" : phase === "focus" ? "\u5F00\u59CB\u4E13\u6CE8" : "\u5F00\u59CB\u4F11\u606F" : status === "finished" ? "\u518D\u5F00\u59CB\u4E00\u6B21" : "\u5F00\u59CB\u8BA1\u65F6";
+      setText(this.primaryText, primaryLabel);
+      (0, import_obsidian7.setIcon)(this.primaryIcon, status === "running" ? "pause" : "play");
+      this.primary.setAttribute("aria-label", primaryLabel);
+      this.primary.title = primaryLabel;
+      this.stopButton.hidden = !active2;
+      this.resetButton.hidden = active2;
+      this.nextButton.hidden = mode2 !== "pomodoro" || active2;
+      this.titleInput.hidden = active2;
+      this.targetTitle.hidden = !active2;
+      if (mode2 === "stopwatch") {
+        this.progress.setAttribute("role", "group");
+        this.progress.setAttribute("aria-label", "\u5DF2\u8BB0\u5F55\u7684\u5B9E\u9645\u7528\u65F6");
+        for (const name of ["aria-valuemin", "aria-valuemax", "aria-valuenow", "aria-valuetext"]) this.progress.removeAttribute(name);
+      } else {
+        this.progress.setAttribute("role", "progressbar");
+        this.progress.setAttribute("aria-label", "\u5F53\u524D\u9636\u6BB5\u5269\u4F59\u65F6\u95F4");
+        this.progress.setAttribute("aria-valuemin", "0");
+        this.progress.setAttribute("aria-valuemax", "100");
+      }
+    }
+    if (this.inputSession !== session.id) {
+      this.inputSession = session.id;
+      this.durationDirty = false;
+    }
+    const inputTargetKey = JSON.stringify(session.target || null);
+    if (this.inputTargetKey !== inputTargetKey) {
+      this.inputTargetKey = inputTargetKey;
+      this.titleDirty = false;
+    }
+    if (!this.titleDirty && this.titleInput.value !== (session.target?.title || "")) this.titleInput.value = session.target?.title || "";
+    const durationValue = String(Math.max(1, Math.round(session.durationMs / 6e4)));
+    if (!this.durationDirty && this.durationInput.value !== durationValue) this.durationInput.value = durationValue;
+    const displayedMs = mode2 === "stopwatch" ? snapshot.elapsedMs : snapshot.remainingMs;
+    const displayClock = clockText2(displayedMs, mode2 !== "stopwatch");
+    setText(this.clock, displayClock);
+    this.clock.dataset.hours = String(displayedMs >= 36e5);
+    const fraction = mode2 === "stopwatch" ? 1 : Math.max(0, Math.min(1, session.durationMs > 0 ? snapshot.remainingMs / session.durationMs : 0));
+    this.progressCircle.setAttribute("stroke-dashoffset", String(100 * (1 - fraction)));
+    setText(this.progressLabel, mode2 === "stopwatch" ? "\u2191" : `${Math.round(fraction * 100)}%`);
+    if (mode2 !== "stopwatch") {
+      this.progress.setAttribute("aria-valuenow", String(Math.round(fraction * 100)));
+      this.progress.setAttribute("aria-valuetext", `\u5269\u4F59 ${durationText(snapshot.remainingMs)}`);
+    }
+    this.updateTarget(session.target, phase, mode2);
+    setText(this.targetActual, `\u5B9E\u9645\u5DF2\u7528 ${durationText(snapshot.elapsedMs)}`);
+    this.targetActual.hidden = !active2 && status !== "finished";
+    this.updatePresets();
+    this.updateRecords(snapshot.state.records);
+    this.updatePending();
+    this.updateError();
+  }
+  updatePresets() {
+    const minutes2 = Number(this.durationInput.value);
+    for (const [value, button] of this.presetButtons) button.setAttribute("aria-pressed", String(value === minutes2));
+  }
+  updateTarget(target2, phase, mode2) {
+    const key = JSON.stringify([target2, phase, mode2]);
+    if (key === this.targetKey) return;
+    this.targetKey = key;
+    const title = target2?.title || (mode2 === "pomodoro" && phase !== "focus" ? "\u4F11\u606F\u7247\u523B" : "\u81EA\u7531\u8BA1\u65F6");
+    setText(this.targetTitle, title);
+    this.targetTitle.title = title;
+    const source = target2?.path?.split("/").pop()?.replace(/\.md$/i, "");
+    setText(this.targetSource, source || (target2?.eventId ? "\u5DF2\u5173\u8054\u65E5\u5386\u65E5\u7A0B" : "\u53EF\u586B\u5199\u4E8B\u9879\uFF0C\u4E5F\u53EF\u76F4\u63A5\u5F00\u59CB"));
+    this.targetSource.title = target2?.path || "";
+    setText(this.targetPlan, planText(target2));
+    this.targetPlan.hidden = !planText(target2);
+    this.targetOpen.hidden = !target2?.path || !this.onOpenTarget;
+    this.targetOpen.setAttribute("aria-label", target2 ? `\u6253\u5F00\u6765\u6E90\uFF1A${target2.title}` : "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90");
+    this.calendarOpen.hidden = !this.onShowCalendar || !target2;
+  }
+  updateRecords(records) {
+    const today = localDate(/* @__PURE__ */ new Date());
+    if (records === this.recordsReference && today === this.recordsDay) return;
+    this.recordsReference = records;
+    this.recordsDay = today;
+    const todayRecords = timerRecordsOnDay(records, /* @__PURE__ */ new Date());
+    setText(this.todayCount, String(todayRecords.length));
+    setText(this.todayMinutes, timerMinuteLabel(todayRecords.reduce((sum, record) => sum + record.durationMs, 0)));
+    this.recentRecords = records.filter((record) => record.durationMs > 0 && !((record.mode || "pomodoro") === "pomodoro" && record.phase && record.phase !== "focus")).sort((a, b) => b.completedAt - a.completedAt).slice(0, 3);
+    for (const [index, item] of this.recentRows.entries()) {
+      const record = this.recentRecords[index];
+      item.row.hidden = !record;
+      if (!record) continue;
+      const title = record.target?.title || "\u81EA\u7531\u8BA1\u65F6", mode2 = record.mode || "pomodoro";
+      setText(item.title, title);
+      item.title.title = title;
+      const date = new Date(record.completedAt), dateLabel = localDate(date) === today ? "\u4ECA\u5929" : `${date.getMonth() + 1}/${date.getDate()}`;
+      const modeLabel = mode2 === "pomodoro" && record.phase && record.phase !== "focus" ? PHASES[record.phase].label : MODES[mode2].label;
+      setText(item.meta, `${dateLabel} ${timeText(record.completedAt)} \xB7 ${modeLabel} \xB7 ${durationText(record.durationMs)}`);
+      const planned = record.target?.plannedDurationMs;
+      setText(item.plan, planned !== void 0 ? `\u8BA1\u5212 ${durationText(planned)} / \u5B9E\u9645 ${durationText(record.durationMs)}` : record.outcome === "stopped" ? "\u4E3B\u52A8\u7ED3\u675F\uFF0C\u5DF2\u8BB0\u5F55" : "\u5DF2\u5B8C\u6210");
+      item.calendar.hidden = !this.onShowCalendar;
+      item.calendar.setAttribute("aria-label", `\u5728\u65E5\u5386\u67E5\u770B\u8BB0\u5F55\uFF1A${title}`);
+    }
+    this.recentEmpty.hidden = this.recentRecords.length > 0;
+  }
+  updatePending() {
+    const busy = this.pendingAction || !!this.latest?.busy, status = this.latest?.state.session.status, active2 = status === "running" || status === "paused";
+    for (const button of [this.primary, this.stopButton, this.resetButton, this.nextButton, ...this.adjustmentButtons, ...this.presetButtons.values()]) if (button.disabled !== busy) button.disabled = busy;
+    for (const button of this.modeButtons.values()) button.disabled = busy || active2;
+    this.durationInput.disabled = busy;
+    this.titleInput.disabled = busy;
+    this.targetOpen.disabled = this.openingTarget;
+    this.calendarOpen.disabled = this.openingCalendar;
+    for (const item of this.recentRows) item.calendar.disabled = this.openingCalendar;
+    if (this.el.getAttribute("aria-busy") !== String(busy)) this.el.setAttribute("aria-busy", String(busy));
+  }
+  updateError() {
+    const message = this.actionError || this.latest?.error || "";
+    setText(this.error, message);
+    this.error.hidden = !message;
+  }
+  async run(action) {
+    if (!this.active || this.pendingAction || this.latest?.busy) return;
+    this.pendingAction = true;
+    this.actionError = "";
+    this.updatePending();
+    this.updateError();
+    try {
+      await action();
+    } catch (error) {
+      this.actionError = this.controller.snapshot().error ? "" : error instanceof Error ? error.message : String(error);
+    } finally {
+      this.pendingAction = false;
+      if (this.active) this.update(this.controller.snapshot());
+    }
+  }
+  async primaryAction() {
+    const session = this.latest?.state.session;
+    if (!session) return;
+    if (session.status === "running") return this.run(() => this.controller.pause());
+    if (session.status === "paused") return this.run(() => this.controller.resume());
+    const title = this.titleInput.value.trim(), assigned = title ? { ...session.target, title } : session.target;
+    const minutes2 = Number(this.durationInput.value);
+    if (session.mode === "countdown" && (!Number.isInteger(minutes2) || minutes2 < 1 || minutes2 > 1440)) {
+      this.actionError = "\u8BF7\u8F93\u5165 1\u20131440 \u4E4B\u95F4\u7684\u6574\u6570\u5206\u949F\u6570\u3002";
+      this.updateError();
+      this.durationInput.focus();
+      return;
+    }
+    await this.run(() => session.mode === "pomodoro" ? this.controller.start(assigned) : this.controller.startTimer(assigned, session.mode, session.mode === "countdown" ? minutes2 : void 0));
+  }
+  currentCalendarDay() {
+    const session = this.latest?.state.session;
+    return localDate(session?.target?.plannedStart ?? session?.startedAt ?? Date.now());
+  }
+  async showCalendar(day) {
+    if (!this.active || !this.onShowCalendar || this.openingCalendar) return;
+    this.openingCalendar = true;
+    this.actionError = "";
+    this.updatePending();
+    this.updateError();
+    try {
+      await this.onShowCalendar(day);
+    } catch (error) {
+      this.actionError = error instanceof Error ? error.message : String(error);
+    } finally {
+      this.openingCalendar = false;
+      if (this.active) {
+        this.updatePending();
+        this.updateError();
+      }
+    }
+  }
+  async openTarget() {
+    const target2 = this.latest?.state.session.target;
+    if (!this.active || !target2 || !this.onOpenTarget || this.openingTarget) return;
+    this.openingTarget = true;
+    this.actionError = "";
+    this.updatePending();
+    this.updateError();
+    try {
+      await this.onOpenTarget(target2);
+    } catch (error) {
+      this.actionError = error instanceof Error ? error.message : String(error);
+    } finally {
+      this.openingTarget = false;
+      if (this.active) {
+        this.updatePending();
+        this.updateError();
+      }
+    }
+  }
+  onunload() {
+    this.active = false;
+    this.el.empty();
+  }
+};
+
 // src/journal-view.ts
 var JOURNAL = "thoughtspace-journal";
 var CALENDAR = "thoughtspace-calendar";
-var JournalView = class extends import_obsidian7.ItemView {
+var JournalView = class extends import_obsidian8.ItemView {
   constructor(leaf, host, part = "combined") {
     super(leaf);
     this.host = host;
@@ -17967,6 +18510,8 @@ var JournalView = class extends import_obsidian7.ItemView {
   day = localDay();
   month = this.day.slice(0, 7);
   today = localDay();
+  timerPanel;
+  timerPanelElement;
   topPane = "calendar";
   topPanels;
   topButtons;
@@ -18078,7 +18623,7 @@ var JournalView = class extends import_obsidian7.ItemView {
   find(day, root = this.host.settings.journalFolder) {
     for (const path of journalPaths(day, root)) {
       const f = this.app.vault.getAbstractFileByPath(path);
-      if (f instanceof import_obsidian7.TFile) return f;
+      if (f instanceof import_obsidian8.TFile) return f;
     }
     return void 0;
   }
@@ -18121,11 +18666,11 @@ var JournalView = class extends import_obsidian7.ItemView {
   }
   control(parent, label2, icon, fn, showText = false) {
     const b = parent.createEl("button", { attr: { "aria-label": label2, title: label2 } });
-    if (icon) (0, import_obsidian7.setIcon)(b.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+    if (icon) (0, import_obsidian8.setIcon)(b.createSpan({ attr: { "aria-hidden": "true" } }), icon);
     if (!icon || showText) b.createSpan({ text: label2 });
     b.onclick = () => {
       b.disabled = true;
-      Promise.resolve().then(fn).catch((e) => new import_obsidian7.Notice(String(e))).finally(() => b.disabled = false);
+      Promise.resolve().then(fn).catch((e) => new import_obsidian8.Notice(String(e))).finally(() => b.disabled = false);
     };
     return b;
   }
@@ -18155,7 +18700,7 @@ var JournalView = class extends import_obsidian7.ItemView {
       const folder = `${root}/\u5468\u671F/${spec.year}`, paths = [`${folder}/${spec.title}.md`, ...spec.legacyTitle ? [`${root}/\u56DE\u987E/${spec.days[0].slice(0, 4)}/${spec.legacyTitle}.md`] : []];
       for (const path of paths) {
         const existing = this.app.vault.getAbstractFileByPath(path);
-        if (existing instanceof import_obsidian7.TFile) {
+        if (existing instanceof import_obsidian8.TFile) {
           await this.openNote(existing);
           return existing;
         }
@@ -18172,7 +18717,7 @@ var JournalView = class extends import_obsidian7.ItemView {
     return work;
   }
   openDatePicker() {
-    const modal = new import_obsidian7.Modal(this.app);
+    const modal = new import_obsidian8.Modal(this.app);
     modal.modalEl.addClass("ts-calendar-plugin");
     modal.modalEl.addClass("ts-journal-jump-modal");
     modal.titleEl.setText("\u8DF3\u8F6C\u65E5\u671F");
@@ -18184,7 +18729,7 @@ var JournalView = class extends import_obsidian7.ItemView {
     input.onkeydown = (e) => {
       if (e.key === "Enter") {
         e.preventDefault();
-        void this.showDay(input.value).then(() => modal.close()).catch((e2) => new import_obsidian7.Notice(String(e2)));
+        void this.showDay(input.value).then(() => modal.close()).catch((e2) => new import_obsidian8.Notice(String(e2)));
       }
     };
     const months = modal.contentEl.createDiv("ts-journal-month-picker");
@@ -18257,7 +18802,7 @@ var JournalView = class extends import_obsidian7.ItemView {
   }
   async linkBoard() {
     const day = this.day, board = this.host.currentBoard?.file;
-    if (!(board instanceof import_obsidian7.TFile)) throw Error("\u8BF7\u5148\u6253\u5F00\u8981\u5173\u8054\u7684\u767D\u677F");
+    if (!(board instanceof import_obsidian8.TFile)) throw Error("\u8BF7\u5148\u6253\u5F00\u8981\u5173\u8054\u7684\u767D\u677F");
     const link = `[[${board.path}]]`, f = await this.host.getJournalFile(day);
     await this.app.vault.process(f, (text3) => text3.includes(link) ? text3 : `${text3.trimEnd()}
 
@@ -18267,7 +18812,7 @@ ${link}
   }
   menu(event, day) {
     event.preventDefault();
-    const menu = new import_obsidian7.Menu();
+    const menu = new import_obsidian8.Menu();
     menu.addItem((i) => i.setTitle("\u67E5\u770B\u8FD9\u4E00\u5929").setIcon("calendar-days").onClick(() => void this.showDay(day)));
     const f = this.find(day);
     menu.addItem((i) => i.setTitle(f ? "\u6253\u5F00\u65E5\u8BB0\u539F\u6587" : "\u521B\u5EFA\u8FD9\u4E00\u5929\u7684\u65E5\u8BB0").setIcon("file-plus").onClick(async () => {
@@ -18276,7 +18821,7 @@ ${link}
         await this.showDay(day);
         this.host.editJournal(file);
       } catch (e) {
-        new import_obsidian7.Notice(String(e));
+        new import_obsidian8.Notice(String(e));
       }
     }));
     menu.showAtMouseEvent(event);
@@ -18303,9 +18848,14 @@ ${link}
     this.contentEl.dataset.surface = this.host.settings.surfaceStyle || "soft";
     this.contentEl.dataset.accent = this.host.settings.accent || "forest";
     this.renderScope?.unload();
-    const scope = this.renderScope = new import_obsidian7.Component();
+    const scope = this.renderScope = new import_obsidian8.Component();
     scope.load();
+    const timerFocus = this.timerPanelElement?.contains(active2) ? active2 : void 0;
+    const timerSelection = timerFocus?.tagName === "INPUT" && timerFocus.type !== "number" ? [timerFocus.selectionStart, timerFocus.selectionEnd] : void 0;
+    this.timerPanelElement?.remove();
     this.contentEl.empty();
+    this.topPanels = void 0;
+    this.topButtons = void 0;
     this.visibleEntries.clear();
     const layout = this.contentEl.createDiv("ts-journal-layout"), calendarPane = layout.createDiv("ts-journal-calendar-pane"), detailPane = layout.createDiv("ts-journal-detail-pane");
     if (this.part === "entries") calendarPane.remove();
@@ -18411,13 +18961,20 @@ ${link}
       if (date === localDay()) b.setAttribute("aria-current", "date");
       b.oncontextmenu = (e) => this.menu(e, date);
       b.onkeydown = (e) => {
-        void this.calendarKey(e, date).catch((e2) => new import_obsidian7.Notice(String(e2)));
+        void this.calendarKey(e, date).catch((e2) => new import_obsidian8.Notice(String(e2)));
       };
       cells.set(date, b);
     }
     grid.hidden = this.calendarView === "year";
     if (this.host.settings.showHolidays !== false && selected && !this.chinese.get(`${month}-01`)?.holidaysKnown) calendar.createDiv({ cls: "ts-calendar-data-note", text: `${month.slice(0, 4)} \u5E74\u8C03\u4F11\u6570\u636E\u672A\u6536\u5F55` });
-    if (this.part !== "entries") this.renderFocusStrip(timerHost, scope, this.topPanels ? "panel" : "compact");
+    if (this.part !== "entries") {
+      if (this.topPanels) this.renderTimerPanel(timerHost);
+      else this.renderFocusStrip(timerHost, scope);
+    }
+    if (timerFocus && this.topPane === "timer") {
+      timerFocus.focus({ preventScroll: true });
+      if (timerSelection && timerSelection[0] !== null && timerSelection[1] !== null) timerFocus.setSelectionRange(...timerSelection);
+    }
     const tabs = detailPane.createDiv({ cls: "ts-journal-tabs", attr: { role: "group", "aria-label": "\u65E5\u8BB0\u663E\u793A\u65B9\u5F0F" } });
     for (const [id2, label2] of [["day", "\u65E5\u8BB0"], ["week", "\u672C\u5468\u6E05\u5355"], ["agenda", "\u672C\u6708\u6E05\u5355"]]) {
       const b = this.control(tabs, label2, id2 === "day" ? "notebook-pen" : id2 === "week" ? "calendar-range" : "list-todo", () => {
@@ -18567,7 +19124,7 @@ ${text3.trim()}
     this.visibleEntries.set(day, entry);
     const presentation = journalPresentation(entry.text);
     try {
-      await import_obsidian7.MarkdownRenderer.render(this.app, presentation.body.replace(/(?:^## 待办与未完成\r?\n\s*)?```thoughtspace-tasks[^\n]*\n[\s\S]*?```\r?\n?/gm, "").replace(new RegExp("^# " + day + "\\r?\\n"), ""), body, candidate.path, scope);
+      await import_obsidian8.MarkdownRenderer.render(this.app, presentation.body.replace(/(?:^## 待办与未完成\r?\n\s*)?```thoughtspace-tasks[^\n]*\n[\s\S]*?```\r?\n?/gm, "").replace(new RegExp("^# " + day + "\\r?\\n"), ""), body, candidate.path, scope);
       if (run2 !== this.generation) {
         scope.unload();
         return;
@@ -18579,7 +19136,7 @@ ${text3.trim()}
         summary.createSpan({ text: "\u5F53\u65E5\u65B0\u5EFA\u7B14\u8BB0" });
         const count = summary.createSpan({ cls: "ts-journal-linked-count" });
         const list = links.createDiv("ts-journal-linked-list");
-        await import_obsidian7.MarkdownRenderer.render(this.app, presentation.links, list, candidate.path, scope);
+        await import_obsidian8.MarkdownRenderer.render(this.app, presentation.links, list, candidate.path, scope);
         if (run2 !== this.generation) {
           scope.unload();
           return;
@@ -18607,7 +19164,7 @@ ${text3.trim()}
     for (const [mode2, label2, icon] of [["calendar", "\u65E5\u5386", "calendar-days"], ["timer", "\u8BA1\u65F6", "timer"]]) {
       const button = tabs.createEl("button", { attr: { id: id2 + "-" + mode2 + "-tab", type: "button", role: "tab", "aria-controls": id2 + "-" + mode2, "aria-label": label2 } });
       button.dataset.topPane = mode2;
-      (0, import_obsidian7.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), icon);
+      (0, import_obsidian8.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), icon);
       button.createSpan({ text: label2 });
       button.onclick = () => this.selectTopPane(mode2, true);
       button.onkeydown = (event) => {
@@ -18623,6 +19180,10 @@ ${text3.trim()}
     this.selectTopPane(this.topPane);
     return panels;
   }
+  selectCalendarSurface(mode2) {
+    this.selectTopPane(mode2);
+    this.app.workspace.requestSaveLayout();
+  }
   selectTopPane(mode2, focus = false) {
     this.topPane = mode2;
     if (focus) this.topButtons?.get(mode2)?.focus({ preventScroll: true });
@@ -18637,12 +19198,31 @@ ${text3.trim()}
     }
     if (focus) this.app.workspace.requestSaveLayout();
   }
+  renderTimerPanel(parent) {
+    if (!this.host.pomodoro) return;
+    if (!this.timerPanelElement) {
+      this.timerPanelElement = parent.createDiv("ts-journal-focus ts-journal-timer-host");
+      this.timerPanel = this.addChild(new PomodoroPanel(
+        this.timerPanelElement,
+        this.host.pomodoro,
+        this.host.openTimerTarget ? (target2) => this.host.openTimerTarget(target2) : void 0,
+        async (day) => {
+          if (this.host.openLargeCalendar) {
+            await this.host.openLargeCalendar(day);
+            return;
+          }
+          this.selectCalendarSurface("calendar");
+          await this.showDay(day, false);
+        }
+      ));
+    } else parent.append(this.timerPanelElement);
+  }
   renderFocusStrip(parent, scope, presentation = "compact") {
     if (this.host.pomodoro && this.host.pomodoroActions) scope.addChild(new PomodoroStrip(parent.createDiv("ts-journal-focus"), this.host.pomodoro, () => this.host.pomodoroActions.open(), presentation));
   }
   calendarTools() {
-    const menu = new import_obsidian7.Menu(), run2 = (fn) => {
-      void Promise.resolve().then(fn).catch((error) => new import_obsidian7.Notice(String(error)));
+    const menu = new import_obsidian8.Menu(), run2 = (fn) => {
+      void Promise.resolve().then(fn).catch((error) => new import_obsidian8.Notice(String(error)));
     };
     menu.addItem((item) => item.setTitle("\u8DF3\u8F6C\u65E5\u671F / \u6708\u4EFD").setIcon("calendar-search").onClick(() => this.openDatePicker()));
     menu.addItem((item) => item.setTitle(this.calendarView === "month" ? "\u5207\u6362\u5E74\u5386" : "\u5207\u6362\u6708\u5386").setIcon(this.calendarView === "month" ? "layout-grid" : "calendar-days").onClick(() => run2(() => {
@@ -18689,8 +19269,8 @@ ${text3.trim()}
       }
       cell.oncontextmenu = (event) => {
         event.preventDefault();
-        new import_obsidian7.Menu().addItem((item) => item.setTitle("\u6253\u5F00\u6708\u8BB0").setIcon("notebook-pen").onClick(() => {
-          void this.createReview("month", month + "-01").catch((e) => new import_obsidian7.Notice(String(e)));
+        new import_obsidian8.Menu().addItem((item) => item.setTitle("\u6253\u5F00\u6708\u8BB0").setIcon("notebook-pen").onClick(() => {
+          void this.createReview("month", month + "-01").catch((e) => new import_obsidian8.Notice(String(e)));
         })).showAtMouseEvent(event);
       };
     }
@@ -18760,7 +19340,7 @@ ${text3.trim()}
         setOpen(false, true);
       } else if (e.key === "Enter" && !e.isComposing) {
         e.preventDefault();
-        void submit().catch((e2) => new import_obsidian7.Notice(String(e2)));
+        void submit().catch((e2) => new import_obsidian8.Notice(String(e2)));
       }
     };
     if (this.host.taskPlanner) {
@@ -18806,7 +19386,7 @@ ${text3.trim()}
       check.onchange = () => {
         check.disabled = true;
         void this.app.vault.process(entry.file, (text3) => toggleTask(text3, task)).then(() => this.refresh()).catch((e) => {
-          new import_obsidian7.Notice(String(e));
+          new import_obsidian8.Notice(String(e));
           void this.refresh();
         });
       };
@@ -18815,6 +19395,9 @@ ${text3.trim()}
   }
   async onClose() {
     this.closed = true;
+    if (this.timerPanel) this.removeChild(this.timerPanel);
+    this.timerPanel = void 0;
+    this.timerPanelElement = void 0;
     this.generation++;
     this.renderScope?.unload();
     window.clearTimeout(this.refreshTimer);
@@ -18826,8 +19409,8 @@ ${text3.trim()}
 };
 
 // src/journal-links.ts
-var import_obsidian8 = require("obsidian");
-var JournalLinks = class extends import_obsidian8.Component {
+var import_obsidian9 = require("obsidian");
+var JournalLinks = class extends import_obsidian9.Component {
   constructor(app, host) {
     super();
     this.app = app;
@@ -18844,7 +19427,7 @@ var JournalLinks = class extends import_obsidian8.Component {
     this.stopped = false;
     this.rebuild();
     this.registerEvent(this.app.vault.on("create", (file) => {
-      if (!(file instanceof import_obsidian8.TFile)) return;
+      if (!(file instanceof import_obsidian9.TFile)) return;
       this.ensureIndex();
       const day = this.add(file);
       if (day) this.schedule(day, day === localDay());
@@ -18864,7 +19447,7 @@ var JournalLinks = class extends import_obsidian8.Component {
         this.remove(f);
         this.schedule(day, false);
       }
-      const added = file instanceof import_obsidian8.TFile ? [file] : this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(file.path + "/"));
+      const added = file instanceof import_obsidian9.TFile ? [file] : this.app.vault.getMarkdownFiles().filter((f) => f.path.startsWith(file.path + "/"));
       for (const f of added) {
         const day = this.add(f);
         if (day) this.schedule(day, false);
@@ -18904,7 +19487,7 @@ var JournalLinks = class extends import_obsidian8.Component {
     this.pending.set(day, create || this.pending.get(day) || false);
     window.clearTimeout(this.timer);
     this.timer = window.setTimeout(() => {
-      void this.flush().catch((e) => new import_obsidian8.Notice(String(e)));
+      void this.flush().catch((e) => new import_obsidian9.Notice(String(e)));
     }, 250);
   }
   async flush() {
@@ -18914,7 +19497,7 @@ var JournalLinks = class extends import_obsidian8.Component {
     this.pending.clear();
     for (const [day, create] of tasks) {
       if (this.stopped || root !== this.host.settings.journalFolder) return;
-      let file = journalPaths(day, root).map((path) => this.app.vault.getAbstractFileByPath(path)).find((f) => f instanceof import_obsidian8.TFile);
+      let file = journalPaths(day, root).map((path) => this.app.vault.getAbstractFileByPath(path)).find((f) => f instanceof import_obsidian9.TFile);
       if (!file && create && this.byDay.get(day)?.size) file = await this.host.ensureJournalFile(day);
       if (file) await this.sync(day, file);
     }
@@ -18944,7 +19527,7 @@ var JournalLinks = class extends import_obsidian8.Component {
 };
 
 // src/task-planner.ts
-var import_obsidian9 = require("obsidian");
+var import_obsidian10 = require("obsidian");
 
 // src/tasks-integration.ts
 function tasksToggleApi(app) {
@@ -18994,7 +19577,7 @@ function replaceTaskSpan(text3, line, expected, replacement) {
 }
 
 // src/task-planner.ts
-var TaskPlanner = class extends import_obsidian9.Component {
+var TaskPlanner = class extends import_obsidian10.Component {
   constructor(app, root) {
     super();
     this.app = app;
@@ -19035,7 +19618,7 @@ var TaskPlanner = class extends import_obsidian9.Component {
   onload() {
     this.stopped = false;
     const changed = (f) => {
-      if (f instanceof import_obsidian9.TFile && f.extension === "md") {
+      if (f instanceof import_obsidian10.TFile && f.extension === "md") {
         this.invalidate(f);
         this.pending.add(f);
         this.schedule();
@@ -19048,7 +19631,7 @@ var TaskPlanner = class extends import_obsidian9.Component {
       this.emit();
     }));
     this.registerEvent(this.app.vault.on("rename", (f) => {
-      if (f instanceof import_obsidian9.TFile) changed(f);
+      if (f instanceof import_obsidian10.TFile) changed(f);
       else for (const file of this.app.vault.getMarkdownFiles()) if (file.path.startsWith(f.path + "/")) changed(file);
     }));
   }
@@ -19136,7 +19719,7 @@ var TaskPlanner = class extends import_obsidian9.Component {
     }
     for (const path of this.failures) {
       const f = this.app.vault.getAbstractFileByPath(path);
-      if (f instanceof import_obsidian9.TFile) this.pending.add(f);
+      if (f instanceof import_obsidian10.TFile) this.pending.add(f);
       else {
         this.failures.delete(path);
         this.notificationPending = true;
@@ -19220,7 +19803,7 @@ var TaskPlanner = class extends import_obsidian9.Component {
     return this.mutate(async () => {
       const task = intent.task;
       const file = this.app.vault.getAbstractFileByPath(task.path);
-      if (!(file instanceof import_obsidian9.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+      if (!(file instanceof import_obsidian10.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
       const update = { ...change }, repeatingToggle = task.recurring && update.checked !== void 0 && update.checked !== task.checked;
       const api = repeatingToggle ? tasksToggleApi(this.app) : void 0;
       if (repeatingToggle && !api) throw Error(TASKS_REQUIRED);
@@ -19332,7 +19915,7 @@ var MAX_TIMER_SEGMENTS = 500;
 var MAX_TIMER_DURATION_MS = 7 * 24 * 60 * 6e4;
 var MINUTE = 6e4;
 var MAX_COUNTDOWN = 1440 * MINUTE;
-var MAX_RECORDS = 200;
+var MAX_RECORDS2 = 200;
 var MAX_CLOCK = Number.MAX_SAFE_INTEGER - MAX_TIMER_DURATION_MS;
 var nextId = 0;
 var defaultPomodoroConfig = Object.freeze({ focusMinutes: 25, shortBreakMinutes: 5, longBreakMinutes: 15, longBreakEvery: 4 });
@@ -19348,7 +19931,7 @@ function bounded(value, fallback, min, max) {
 function clock2(now) {
   return finite(now) ? Math.min(MAX_CLOCK, Math.max(0, Math.trunc(now))) : 0;
 }
-function timestamp(value) {
+function timestamp2(value) {
   return finite(value) && value >= 0 && value <= MAX_CLOCK ? Math.trunc(value) : void 0;
 }
 function text2(value, max) {
@@ -19370,7 +19953,7 @@ function target(value) {
     if (value2) normalized[key] = value2;
   }
   if (finite(raw.line) && Number.isInteger(raw.line) && raw.line >= 0 && raw.line <= 1e7) normalized.line = raw.line;
-  const start = timestamp(raw.plannedStart), end = timestamp(raw.plannedEnd);
+  const start = timestamp2(raw.plannedStart), end = timestamp2(raw.plannedEnd);
   if (start !== void 0) normalized.plannedStart = start;
   if (end !== void 0 && (start === void 0 || end > start)) normalized.plannedEnd = end;
   if (finite(raw.plannedDurationMs) && raw.plannedDurationMs > 0) normalized.plannedDurationMs = Math.max(1, Math.min(MAX_TIMER_DURATION_MS, Math.round(raw.plannedDurationMs)));
@@ -19422,7 +20005,7 @@ function normalizedSegments(value, min = 0, max = MAX_CLOCK, limit = MAX_TIMER_D
   if (!Array.isArray(value) || limit <= 0) return [];
   const intervals = [];
   for (const candidate of value.slice(-MAX_TIMER_SEGMENTS)) {
-    const raw = object(candidate), start = timestamp(raw?.start), end = timestamp(raw?.end);
+    const raw = object(candidate), start = timestamp2(raw?.start), end = timestamp2(raw?.end);
     if (start === void 0 || end === void 0 || end <= start) continue;
     const clipped = { start: Math.max(min, start), end: Math.min(max, end) };
     if (clipped.end > clipped.start) intervals.push(clipped);
@@ -19449,10 +20032,10 @@ function normalizedSegments(value, min = 0, max = MAX_CLOCK, limit = MAX_TIMER_D
 function normalizedRecords(value) {
   if (!Array.isArray(value)) return [];
   const seen = /* @__PURE__ */ new Set(), records = [];
-  for (const candidate of value.slice(-MAX_RECORDS * 2).reverse()) {
+  for (const candidate of value.slice(-MAX_RECORDS2 * 2).reverse()) {
     const raw = object(candidate);
     if (!raw) continue;
-    const recordId = text2(raw.id, 160), startedAt = timestamp(raw.startedAt), completedAt = timestamp(raw.completedAt);
+    const recordId = text2(raw.id, 160), startedAt = timestamp2(raw.startedAt), completedAt = timestamp2(raw.completedAt);
     const recordMode = validMode(raw.mode) ? raw.mode : void 0;
     const phase = raw.phase === "focus" || raw.phase === "short-break" || raw.phase === "long-break" ? raw.phase : void 0;
     const recordLimit = recordMode === "stopwatch" ? MAX_TIMER_DURATION_MS : recordMode === "countdown" ? MAX_COUNTDOWN : (phase === "short-break" || phase === "long-break" ? 60 : 180) * MINUTE;
@@ -19474,7 +20057,7 @@ function normalizedRecords(value) {
       ...segments ? { segments } : {},
       ...raw.segmentsEstimated === true ? { segmentsEstimated: true } : {}
     });
-    if (records.length === MAX_RECORDS) break;
+    if (records.length === MAX_RECORDS2) break;
   }
   return records.reverse();
 }
@@ -19491,7 +20074,7 @@ function normalizePomodoroState(rawValue, config, now) {
     status === "finished" ? 0 : MINUTE,
     timerMode === "countdown" ? MAX_COUNTDOWN : (phase === "focus" ? 180 : 60) * MINUTE
   );
-  const assigned = target(candidate.target), startedAt = timestamp(candidate.startedAt);
+  const assigned = target(candidate.target), startedAt = timestamp2(candidate.startedAt);
   const session = {
     id: text2(candidate.id, 160) ?? id(safeNow),
     mode: timerMode,
@@ -19528,18 +20111,18 @@ function normalizePomodoroState(rawValue, config, now) {
   }
   if (session.status === "running") {
     if (timerMode === "stopwatch") {
-      const activeStart = timestamp(candidate.activeStartedAt) ?? startedAt;
+      const activeStart = timestamp2(candidate.activeStartedAt) ?? startedAt;
       if (activeStart === void 0 || activeStart > safeNow || activeStart < (session.segments?.at(-1)?.end ?? 0)) session.status = "paused";
       else session.activeStartedAt = activeStart;
     } else {
-      const deadline = timestamp(candidate.deadline);
+      const deadline = timestamp2(candidate.deadline);
       if (deadline === void 0 || startedAt === void 0 || deadline - startedAt < session.remainingMs) {
         session.status = "paused";
         if (session.remainingMs === 0) session.remainingMs = durationMs;
       } else {
         session.deadline = Math.min(deadline, safeNow + session.remainingMs);
         const inferredStart = Math.max(0, session.deadline - session.remainingMs);
-        const rawActive = timestamp(candidate.activeStartedAt);
+        const rawActive = timestamp2(candidate.activeStartedAt);
         if (rawActive !== void 0 && (rawActive > safeNow || rawActive < (session.segments?.at(-1)?.end ?? 0))) {
           session.status = "paused";
           delete session.deadline;
@@ -19603,7 +20186,7 @@ function finish(state, now, outcome) {
     ...previous.segmentsEstimated ? { segmentsEstimated: true } : {}
   };
   const credit = outcome === "completed" && previous.mode === "pomodoro" && previous.phase === "focus";
-  return { session, cycle: credit ? Math.min(1e6, state.cycle + 1) : state.cycle, records: [...state.records, record].slice(-MAX_RECORDS) };
+  return { session, cycle: credit ? Math.min(1e6, state.cycle + 1) : state.cycle, records: [...state.records, record].slice(-MAX_RECORDS2) };
 }
 function advancePomodoro(state, now) {
   if (state.session.status !== "running" || state.session.mode === "stopwatch" || pomodoroRemaining(state, now) > 0) return state;
@@ -19865,10 +20448,10 @@ var NativeCalendarTransport = class {
 };
 
 // src/large-calendar-view.ts
-var import_obsidian12 = require("obsidian");
+var import_obsidian13 = require("obsidian");
 
 // src/calendar-modals.ts
-var import_obsidian10 = require("obsidian");
+var import_obsidian11 = require("obsidian");
 function label(parent, title) {
   const el = parent.createEl("label", { cls: "tsc-event-field" });
   el.createSpan({ text: title });
@@ -19876,11 +20459,11 @@ function label(parent, title) {
 }
 function iconButton(parent, icon, title, callback) {
   const button = parent.createEl("button", { cls: "tsc-icon-button", attr: { "aria-label": title, "title": title, "type": "button" } });
-  (0, import_obsidian10.setIcon)(button, icon);
+  (0, import_obsidian11.setIcon)(button, icon);
   button.onclick = callback;
   return button;
 }
-var AppleCalendarConnectionModal = class extends import_obsidian10.Modal {
+var AppleCalendarConnectionModal = class extends import_obsidian11.Modal {
   constructor(host) {
     super(host.app);
     this.host = host;
@@ -19996,7 +20579,7 @@ var AppleCalendarConnectionModal = class extends import_obsidian10.Modal {
     this.contentEl.createEl("button", { text: "\u91CD\u8BD5" }).onclick = () => void this.load();
   }
 };
-var CalendarEventModal = class extends import_obsidian10.Modal {
+var CalendarEventModal = class extends import_obsidian11.Modal {
   constructor(host, date, event, endDate) {
     super(host.app);
     this.host = host;
@@ -20109,10 +20692,10 @@ var CalendarEventModal = class extends import_obsidian10.Modal {
             await this.host.eventMoved(original, saved);
           } catch (linkError) {
             linkFailed = true;
-            new import_obsidian10.Notice(`\u82F9\u679C\u65E5\u7A0B\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u7B14\u8BB0\u5173\u8054\u66F4\u65B0\u5931\u8D25\uFF1A${linkError instanceof Error ? linkError.message : "\u8BF7\u91CD\u65B0\u5173\u8054\u7B14\u8BB0"}`, 1e4);
+            new import_obsidian11.Notice(`\u82F9\u679C\u65E5\u7A0B\u5DF2\u4FDD\u5B58\uFF0C\u4F46\u7B14\u8BB0\u5173\u8054\u66F4\u65B0\u5931\u8D25\uFF1A${linkError instanceof Error ? linkError.message : "\u8BF7\u91CD\u65B0\u5173\u8054\u7B14\u8BB0"}`, 1e4);
           }
           this.host.changed();
-          if (!linkFailed) new import_obsidian10.Notice(original ? "\u82F9\u679C\u65E5\u7A0B\u5DF2\u66F4\u65B0" : "\u5DF2\u521B\u5EFA\u82F9\u679C\u65E5\u7A0B");
+          if (!linkFailed) new import_obsidian11.Notice(original ? "\u82F9\u679C\u65E5\u7A0B\u5DF2\u66F4\u65B0" : "\u5DF2\u521B\u5EFA\u82F9\u679C\u65E5\u7A0B");
           this.close();
         } catch (err) {
           if (!this.closed) error.textContent = err instanceof Error ? err.message : "\u4FDD\u5B58\u5931\u8D25";
@@ -20139,8 +20722,8 @@ var CalendarEventModal = class extends import_obsidian10.Modal {
 };
 
 // src/calendar-task-modal.ts
-var import_obsidian11 = require("obsidian");
-var CalendarTaskScheduleModal = class extends import_obsidian11.Modal {
+var import_obsidian12 = require("obsidian");
+var CalendarTaskScheduleModal = class extends import_obsidian12.Modal {
   constructor(host, task, date) {
     super(host.app);
     this.host = host;
@@ -20221,63 +20804,6 @@ function calendarTimeRange(anchor, current) {
   return { start, end };
 }
 
-// src/timer-calendar-model.ts
-var MAX_RECORDS2 = 200;
-var MAX_SEGMENTS = 500;
-var MAX_TIMESTAMP = 864e13;
-var timestamp2 = (value) => typeof value === "number" && Number.isFinite(value) && value >= 0 && value < MAX_TIMESTAMP;
-var positive = (value) => typeof value === "number" && Number.isFinite(value) && value > 0;
-function activeSegments(record) {
-  if (!positive(record.durationMs) || !timestamp2(record.startedAt) || !timestamp2(record.completedAt) || record.completedAt <= record.startedAt) return { segments: [], estimated: false };
-  const hasSegments = Array.isArray(record.segments), estimated = !hasSegments || record.segmentsEstimated === true;
-  const raw = hasSegments ? record.segments.slice(-MAX_SEGMENTS) : [{ start: record.startedAt, end: Math.min(record.completedAt, record.startedAt + record.durationMs) }];
-  const sorted = raw.filter((segment) => segment && timestamp2(segment.start) && timestamp2(segment.end) && segment.end > segment.start).map((segment) => ({ start: Math.max(record.startedAt, segment.start), end: Math.min(record.completedAt, segment.end) })).filter((segment) => segment.end > segment.start).sort((a, b) => a.start - b.start || a.end - b.end);
-  const merged = [];
-  for (const segment of sorted) {
-    const previous = merged.at(-1);
-    if (previous && segment.start <= previous.end) previous.end = Math.max(previous.end, segment.end);
-    else merged.push({ ...segment });
-  }
-  let remaining = record.durationMs;
-  const segments = [];
-  for (const segment of merged) {
-    if (remaining <= 0) break;
-    const duration2 = Math.min(remaining, segment.end - segment.start);
-    segments.push({ start: segment.start, end: segment.start + duration2 });
-    remaining -= duration2;
-  }
-  return { segments, estimated };
-}
-function timerRecordsOnDay(records, date) {
-  if (!Number.isFinite(+date)) return [];
-  const start = +new Date(date.getFullYear(), date.getMonth(), date.getDate()), end = +new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
-  const result = [], seen = /* @__PURE__ */ new Set();
-  for (const record of records.slice(-MAX_RECORDS2).reverse()) {
-    if (!record || typeof record.id !== "string" || seen.has(record.id)) continue;
-    seen.add(record.id);
-    const mode2 = record.mode === "stopwatch" || record.mode === "countdown" ? record.mode : "pomodoro";
-    if (mode2 === "pomodoro" && (record.phase === "short-break" || record.phase === "long-break")) continue;
-    const normalized = activeSegments(record), segments = normalized.segments.filter((segment) => segment.start < end && segment.end > start).map((segment) => ({ start: Math.max(start, segment.start), end: Math.min(end, segment.end) }));
-    if (!segments.length) continue;
-    const durationMs = segments.reduce((sum, segment) => sum + segment.end - segment.start, 0), totalDurationMs = normalized.segments.reduce((sum, segment) => sum + segment.end - segment.start, 0);
-    const target2 = record.target, planned = target2?.plannedDurationMs;
-    const plannedDurationMs = positive(planned) ? planned : timestamp2(target2?.plannedStart) && timestamp2(target2?.plannedEnd) && target2.plannedEnd > target2.plannedStart ? target2.plannedEnd - target2.plannedStart : void 0;
-    result.push({ id: record.id, title: target2?.title || "\u81EA\u7531\u8BA1\u65F6", mode: mode2, ...target2 ? { target: target2 } : {}, segments, durationMs, totalDurationMs, ...plannedDurationMs ? { plannedDurationMs } : {}, estimated: normalized.estimated, record });
-  }
-  return result.sort((a, b) => a.segments[0].start - b.segments[0].start || a.id.localeCompare(b.id));
-}
-function timerActualMsOnDay(records, date) {
-  return timerRecordsOnDay(records, date).reduce((sum, item) => sum + item.durationMs, 0);
-}
-function timerMinuteLabel(durationMs) {
-  if (!positive(durationMs)) return "0";
-  if (durationMs < 6e4) return "<1";
-  return String(Math.round(durationMs / 6e3) / 10);
-}
-function timerModeLabel(mode2) {
-  return mode2 === "stopwatch" ? "\u6B63\u8BA1\u65F6" : mode2 === "countdown" ? "\u5012\u8BA1\u65F6" : "\u756A\u8304\u4E13\u6CE8";
-}
-
 // src/large-calendar-view.ts
 var weekday = ["\u4E00", "\u4E8C", "\u4E09", "\u56DB", "\u4E94", "\u516D", "\u65E5"];
 var time = (date) => new Date(date).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
@@ -20287,7 +20813,7 @@ var datedTime = (iso, day) => {
 };
 var resumeState = Symbol.for("thoughtspace-calendar.large-calendar-resume");
 var dragType = "application/x-thoughtspace-calendar-item";
-var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemView {
+var LargeCalendarView = class _LargeCalendarView extends import_obsidian13.ItemView {
   constructor(leaf, host) {
     super(leaf);
     this.host = host;
@@ -20390,14 +20916,14 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemV
     const actions = header.createDiv({ cls: "tsc-large-actions" });
     if (this.host.timerSnapshot && this.host.openTimer) {
       this.timerPill = actions.createEl("button", { cls: "tsc-active-timer-pill", attr: { "aria-label": "\u6253\u5F00\u8BA1\u65F6\u5668", title: "\u6253\u5F00\u8BA1\u65F6\u5668" } });
-      (0, import_obsidian12.setIcon)(this.timerPill.createSpan(), "timer");
+      (0, import_obsidian13.setIcon)(this.timerPill.createSpan(), "timer");
       this.timerPillLabel = this.timerPill.createSpan();
       this.timerPill.onclick = () => this.run(() => this.host.openTimer());
     }
     this.iconButton(actions, "refresh-cw", "\u5237\u65B0\u65E5\u7A0B\u548C\u4EFB\u52A1", () => void this.refresh(true));
     this.iconButton(actions, "calendar-cog", "\u82F9\u679C\u65E5\u5386\u8FDE\u63A5\u4E0E\u9009\u62E9", () => new AppleCalendarConnectionModal(this.host).open());
     const create = actions.createEl("button", { cls: "mod-cta tsc-add-event" });
-    (0, import_obsidian12.setIcon)(create.createSpan(), "plus");
+    (0, import_obsidian13.setIcon)(create.createSpan(), "plus");
     create.createSpan({ text: "\u65B0\u65E5\u7A0B" });
     create.onclick = () => this.openEvent();
     const body = this.contentEl.createDiv({ cls: "tsc-large-body" });
@@ -20823,7 +21349,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemV
       const actions = card.createDiv({ cls: "tsc-entry-actions" }), notes = this.host.eventNotes?.(event) ?? [];
       if (this.host.openEventNote) {
         const open = actions.createEl("button", { cls: "tsc-note-link", attr: { title: notes.map((n) => n.path).join("\n") } });
-        (0, import_obsidian12.setIcon)(open.createSpan(), notes.length ? "file-text" : "file-plus-2");
+        (0, import_obsidian13.setIcon)(open.createSpan(), notes.length ? "file-text" : "file-plus-2");
         open.createSpan({ text: notes.length ? notes[0].name : "\u65B0\u5EFA\u5173\u8054\u7B14\u8BB0" });
         open.onclick = () => this.run(() => this.host.openEventNote(event));
         if (this.host.linkEventNote) this.iconButton(actions, "link", "\u5173\u8054\u5DF2\u6709\u7B14\u8BB0", () => this.host.linkEventNote(event));
@@ -20902,7 +21428,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemV
     void Promise.resolve().then(action).catch((e) => {
       const message = e instanceof Error ? e.message : String(e);
       if (!this.closed) this.status.textContent = message;
-      new import_obsidian12.Notice(message);
+      new import_obsidian13.Notice(message);
     });
   }
   async perform(action) {
@@ -20925,7 +21451,7 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemV
           if (error) {
             const message = error instanceof Error ? error.message : String(error);
             this.status.textContent = message;
-            new import_obsidian12.Notice(message);
+            new import_obsidian13.Notice(message);
           }
         }
       } finally {
@@ -21222,14 +21748,14 @@ var LargeCalendarView = class _LargeCalendarView extends import_obsidian12.ItemV
   }
   iconButton(parent, icon, title, callback) {
     const button = parent.createEl("button", { cls: "tsc-icon-button", attr: { "aria-label": title, title } });
-    (0, import_obsidian12.setIcon)(button, icon);
+    (0, import_obsidian13.setIcon)(button, icon);
     button.onclick = callback;
     return button;
   }
 };
 
 // src/register-large-calendar.ts
-var import_obsidian13 = require("obsidian");
+var import_obsidian14 = require("obsidian");
 function registerLargeCalendar(plugin, host) {
   plugin.registerView(LargeCalendarView.type, (leaf) => new LargeCalendarView(leaf, host));
   let opening;
@@ -21249,7 +21775,7 @@ function registerLargeCalendar(plugin, host) {
     })().finally(() => opening = void 0);
     return opening;
   };
-  const reveal = () => void open().catch((error) => new import_obsidian13.Notice(String(error)));
+  const reveal = () => void open().catch((error) => new import_obsidian14.Notice(String(error)));
   plugin.addCommand({ id: "open-large-calendar", name: "\u6253\u5F00\u5927\u65E5\u5386", callback: reveal });
   plugin.addCommand({ id: "connect-apple-calendar", name: "\u82F9\u679C\u65E5\u5386\u8FDE\u63A5\u4E0E\u9009\u62E9", callback: () => new AppleCalendarConnectionModal(host).open() });
   plugin.addRibbonIcon("calendar-range", "\u6253\u5F00\u5927\u65E5\u5386", reveal);
@@ -21260,8 +21786,8 @@ function registerLargeCalendar(plugin, host) {
   return open;
 }
 function renderAppleCalendarSetting(container, host, open) {
-  new import_obsidian13.Setting(container).setName("\u5927\u65E5\u5386").setDesc("\u5728\u4E3B\u5DE5\u4F5C\u533A\u6253\u5F00\u6708\u89C6\u56FE\u548C\u5468\u65F6\u95F4\u683C\uFF0C\u67E5\u770B\u65E5\u7A0B\u3001\u5F85\u529E\u548C\u65E5\u8BB0\u3002").addButton((button) => button.setButtonText("\u6253\u5F00").onClick(() => void open()));
-  new import_obsidian13.Setting(container).setName("\u82F9\u679C\u65E5\u5386\u53CC\u5411\u8054\u52A8").setDesc("macOS 14 \u53CA\u4EE5\u4E0A\u3002\u5728\u9009\u62E9\u7684\u65E5\u5386\u4E2D\u67E5\u770B\u3001\u65B0\u5EFA\u548C\u4FEE\u6539\u65E5\u7A0B\u3002").addButton((button) => button.setButtonText(host.appleSettings().enabled ? "\u7BA1\u7406\u8FDE\u63A5" : "\u8FDE\u63A5\u82F9\u679C\u65E5\u5386").onClick(() => new AppleCalendarConnectionModal(host).open()));
+  new import_obsidian14.Setting(container).setName("\u5927\u65E5\u5386").setDesc("\u5728\u4E3B\u5DE5\u4F5C\u533A\u6253\u5F00\u6708\u89C6\u56FE\u548C\u5468\u65F6\u95F4\u683C\uFF0C\u67E5\u770B\u65E5\u7A0B\u3001\u5F85\u529E\u548C\u65E5\u8BB0\u3002").addButton((button) => button.setButtonText("\u6253\u5F00").onClick(() => void open()));
+  new import_obsidian14.Setting(container).setName("\u82F9\u679C\u65E5\u5386\u53CC\u5411\u8054\u52A8").setDesc("macOS 14 \u53CA\u4EE5\u4E0A\u3002\u5728\u9009\u62E9\u7684\u65E5\u5386\u4E2D\u67E5\u770B\u3001\u65B0\u5EFA\u548C\u4FEE\u6539\u65E5\u7A0B\u3002").addButton((button) => button.setButtonText(host.appleSettings().enabled ? "\u7BA1\u7406\u8FDE\u63A5" : "\u8FDE\u63A5\u82F9\u679C\u65E5\u5386").onClick(() => new AppleCalendarConnectionModal(host).open()));
 }
 
 // src/calendar-note-links.ts
@@ -21432,8 +21958,8 @@ function isMarkdown(file) {
 }
 
 // src/calendar-note-picker.ts
-var import_obsidian14 = require("obsidian");
-var CalendarNotePicker = class extends import_obsidian14.FuzzySuggestModal {
+var import_obsidian15 = require("obsidian");
+var CalendarNotePicker = class extends import_obsidian15.FuzzySuggestModal {
   constructor(app, onPick, eventTitle) {
     super(app);
     this.onPick = onPick;
@@ -21446,7 +21972,7 @@ var CalendarNotePicker = class extends import_obsidian14.FuzzySuggestModal {
     return file.path.replace(/\.md$/i, "");
   }
   onChooseItem(file) {
-    void this.onPick(file).catch((error) => new import_obsidian14.Notice(error instanceof Error ? error.message : "\u5173\u8054\u7B14\u8BB0\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5"));
+    void this.onPick(file).catch((error) => new import_obsidian15.Notice(error instanceof Error ? error.message : "\u5173\u8054\u7B14\u8BB0\u5931\u8D25\uFF0C\u8BF7\u91CD\u8BD5"));
   }
 };
 
@@ -21596,517 +22122,47 @@ var PomodoroController = class {
   }
 };
 
-// src/pomodoro-view.ts
-var import_obsidian15 = require("obsidian");
-var POMODORO_VIEW = "thoughtspace-pomodoro";
-var MODES = {
-  stopwatch: { label: "\u6B63\u8BA1\u65F6", icon: "timer" },
-  countdown: { label: "\u5012\u8BA1\u65F6", icon: "hourglass" },
-  pomodoro: { label: "\u756A\u8304\u949F", icon: "circle-dot" }
-};
-var PHASES = {
-  focus: { label: "\u4E13\u6CE8", icon: "timer" },
-  "short-break": { label: "\u77ED\u4F11\u606F", icon: "coffee" },
-  "long-break": { label: "\u957F\u4F11\u606F", icon: "armchair" }
-};
-function clockText2(ms, roundUp = false) {
-  const seconds = Math.max(0, roundUp ? Math.ceil(ms / 1e3) : Math.floor(ms / 1e3));
-  const minutes2 = Math.floor(seconds / 60);
-  const tail = String(seconds % 60).padStart(2, "0");
-  return seconds >= 3600 ? `${String(Math.floor(seconds / 3600)).padStart(2, "0")}:${String(minutes2 % 60).padStart(2, "0")}:${tail}` : `${String(minutes2).padStart(2, "0")}:${tail}`;
-}
-function localDate(value) {
-  const date = value instanceof Date ? value : new Date(value);
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-}
-function timeText(value) {
-  return new Date(value).toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit", hour12: false });
-}
-function durationText(ms) {
-  const seconds = Math.max(0, Math.round(ms / 1e3));
-  if (seconds < 60) return `${seconds} \u79D2`;
-  const minutes2 = Math.floor(seconds / 60), tail = seconds % 60;
-  return `${minutes2} \u5206${tail ? ` ${tail} \u79D2` : "\u949F"}`;
-}
-function planText(target2) {
-  if (!target2) return "";
-  const range = target2.plannedStart !== void 0 && target2.plannedEnd !== void 0 ? `${timeText(target2.plannedStart)}\u2013${timeText(target2.plannedEnd)}` : "";
-  const duration2 = target2.plannedDurationMs !== void 0 ? durationText(target2.plannedDurationMs) : "";
-  return range || duration2 ? `\u8BA1\u5212 ${[range, duration2].filter(Boolean).join(" \xB7 ")}` : "";
-}
-function setText(el, text3) {
-  if (el.textContent !== text3) el.setText(text3);
-}
-var PomodoroPanel = class extends import_obsidian15.Component {
-  constructor(el, controller, onOpenTarget, onShowCalendar) {
-    super();
-    this.el = el;
-    this.controller = controller;
-    this.onOpenTarget = onOpenTarget;
-    this.onShowCalendar = onShowCalendar;
-  }
-  active = false;
-  pendingAction = false;
-  openingTarget = false;
-  openingCalendar = false;
-  actionError = "";
-  titleDirty = false;
-  durationDirty = false;
-  inputSession;
-  inputTargetKey;
-  latest;
-  announcementKey;
-  sessionKey;
-  targetKey;
-  recordsReference;
-  recordsDay;
-  modeButtons = /* @__PURE__ */ new Map();
-  phaseChips = /* @__PURE__ */ new Map();
-  phaseMinutes = /* @__PURE__ */ new Map();
-  cadence;
-  modeHint;
-  stages;
-  durationControls;
-  durationInput;
-  presetButtons = /* @__PURE__ */ new Map();
-  adjustment;
-  adjustmentButtons = [];
-  phaseLabel;
-  phaseIcon;
-  clock;
-  timerStatus;
-  progress;
-  progressCircle;
-  progressLabel;
-  targetTitle;
-  titleInput;
-  targetSource;
-  targetPlan;
-  targetActual;
-  targetOpen;
-  calendarOpen;
-  primary;
-  primaryIcon;
-  primaryText;
-  stopButton;
-  resetButton;
-  nextButton;
-  error;
-  announcement;
-  todayCount;
-  todayMinutes;
-  recentEmpty;
-  recentRecords = [];
-  recentRows = [];
-  onload() {
-    this.active = true;
-    this.el.addClass("ts-calendar-plugin", "ts-calendar-pomodoro");
-    this.el.setAttribute("aria-label", "\u8BA1\u65F6\u5668");
-    this.build();
-    this.register(this.controller.subscribe((snapshot) => this.update(snapshot)));
-  }
-  build() {
-    const head = this.el.createDiv("ts-calendar-pomodoro-head");
-    const heading = head.createDiv("ts-calendar-pomodoro-heading");
-    (0, import_obsidian15.setIcon)(heading.createSpan({ cls: "ts-calendar-pomodoro-heading-icon", attr: { "aria-hidden": "true" } }), "clock-3");
-    heading.createEl("h3", { text: "\u8BA1\u65F6\u5668" });
-    this.cadence = head.createSpan("ts-calendar-pomodoro-cadence");
-    const modes2 = this.el.createDiv({ cls: "ts-calendar-pomodoro-modes", attr: { role: "group", "aria-label": "\u8BA1\u65F6\u6A21\u5F0F" } });
-    for (const mode2 of ["stopwatch", "countdown", "pomodoro"]) {
-      const button = modes2.createEl("button", { attr: { type: "button", "aria-label": MODES[mode2].label, title: MODES[mode2].label } });
-      (0, import_obsidian15.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), MODES[mode2].icon);
-      button.createSpan({ text: MODES[mode2].label });
-      button.onclick = () => void this.run(() => this.controller.selectMode(mode2));
-      this.modeButtons.set(mode2, button);
-    }
-    this.modeHint = this.el.createDiv({ cls: "ts-calendar-pomodoro-mode-hint", text: "\u7ED3\u675F\u5F53\u524D\u8BA1\u65F6\u540E\u53EF\u5207\u6362\u6A21\u5F0F" });
-    this.stages = this.el.createDiv({ cls: "ts-calendar-pomodoro-stages", attr: { role: "list", "aria-label": "\u756A\u8304\u949F\u9636\u6BB5" } });
-    for (const phase2 of ["focus", "short-break", "long-break"]) {
-      const chip = this.stages.createDiv({ cls: "ts-calendar-pomodoro-stage", attr: { role: "listitem" } });
-      chip.createSpan({ text: PHASES[phase2].label });
-      this.phaseMinutes.set(phase2, chip.createSpan("ts-calendar-pomodoro-stage-minutes"));
-      this.phaseChips.set(phase2, chip);
-    }
-    this.durationControls = this.el.createDiv("ts-calendar-pomodoro-duration-controls");
-    const presets = this.durationControls.createDiv({ cls: "ts-calendar-pomodoro-presets", attr: { role: "group", "aria-label": "\u5012\u8BA1\u65F6\u65F6\u957F\u9884\u8BBE" } });
-    for (const minutes3 of [15, 25, 45, 60]) {
-      const button = presets.createEl("button", { text: `${minutes3}`, attr: { type: "button", "aria-label": `\u5012\u8BA1\u65F6 ${minutes3} \u5206\u949F` } });
-      button.onclick = () => {
-        this.durationInput.value = String(minutes3);
-        this.durationDirty = true;
-        if (this.latest?.state.session.status === "idle") void this.run(() => this.controller.setDuration(minutes3));
-        else this.updatePresets();
-      };
-      this.presetButtons.set(minutes3, button);
-    }
-    const durationField = this.durationControls.createEl("label", { cls: "ts-calendar-pomodoro-duration-field" });
-    durationField.createSpan({ text: "\u81EA\u5B9A" });
-    this.durationInput = durationField.createEl("input", { type: "number", attr: { min: "1", max: "1440", step: "1", "aria-label": "\u5012\u8BA1\u65F6\u5206\u949F\u6570", inputmode: "numeric" } });
-    durationField.createSpan({ text: "\u5206" });
-    this.durationInput.oninput = () => {
-      this.durationDirty = true;
-      this.updatePresets();
-    };
-    this.durationInput.onkeydown = (event) => {
-      if (event.key === "Enter" && !event.isComposing) {
-        event.preventDefault();
-        void this.primaryAction();
-      }
-    };
-    const timer = this.el.createDiv("ts-calendar-pomodoro-timer");
-    const face = timer.createDiv("ts-calendar-pomodoro-face");
-    this.progress = timer.createDiv({ cls: "ts-calendar-pomodoro-dial", attr: { "aria-live": "off" } });
-    const doc = this.el.ownerDocument, svg = doc.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", "0 0 220 220");
-    svg.setAttribute("class", "ts-calendar-pomodoro-ring");
-    svg.setAttribute("aria-hidden", "true");
-    for (const kind of ["track", "remaining"]) {
-      const circle = doc.createElementNS("http://www.w3.org/2000/svg", "circle");
-      for (const [name, value] of Object.entries({ cx: "110", cy: "110", r: "101", fill: "none", class: `ts-calendar-pomodoro-ring-${kind}`, pathLength: "100" })) circle.setAttribute(name, value);
-      svg.appendChild(circle);
-      if (kind === "remaining") this.progressCircle = circle;
-    }
-    this.progress.appendChild(svg);
-    this.progressLabel = this.progress.createSpan({ cls: "ts-calendar-pomodoro-progress-label", attr: { "aria-hidden": "true" } });
-    const phase = face.createDiv("ts-calendar-pomodoro-phase");
-    this.phaseIcon = phase.createSpan({ attr: { "aria-hidden": "true" } });
-    this.phaseLabel = phase.createSpan();
-    this.clock = face.createDiv({ cls: "ts-calendar-pomodoro-clock", attr: { role: "timer", "aria-live": "off", "aria-atomic": "true" } });
-    this.timerStatus = face.createDiv("ts-calendar-pomodoro-status");
-    this.adjustment = this.el.createDiv({ cls: "ts-calendar-pomodoro-adjustment", attr: { role: "group", "aria-label": "\u8C03\u6574\u5269\u4F59\u65F6\u95F4" } });
-    for (const minutes3 of [-5, 5]) this.adjustmentButtons.push(this.actionButton(this.adjustment, `${minutes3 < 0 ? "\u2212" : "+"}5 \u5206\u949F`, minutes3 < 0 ? "minus" : "plus", () => this.controller.adjust(minutes3)));
-    const target2 = this.el.createDiv("ts-calendar-pomodoro-target"), targetHead = target2.createDiv("ts-calendar-pomodoro-target-head");
-    targetHead.createSpan({ cls: "ts-calendar-pomodoro-caption", text: "\u5F53\u524D\u4E8B\u9879" });
-    const links = targetHead.createDiv("ts-calendar-pomodoro-target-links");
-    this.calendarOpen = this.iconButton(links, "\u5728\u65E5\u5386\u67E5\u770B\u5F53\u524D\u4E8B\u9879", "calendar-days", () => this.showCalendar(this.currentCalendarDay()));
-    this.targetOpen = this.iconButton(links, "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90", "arrow-up-right", () => this.openTarget());
-    this.targetTitle = target2.createDiv("ts-calendar-pomodoro-target-title");
-    this.titleInput = target2.createEl("input", { cls: "ts-calendar-pomodoro-title-input", type: "text", attr: { placeholder: "\u8FD9\u6B21\u51C6\u5907\u505A\u4EC0\u4E48\uFF1F", "aria-label": "\u672C\u6B21\u8BA1\u65F6\u4E8B\u9879", maxlength: "500" } });
-    this.titleInput.oninput = () => {
-      this.titleDirty = true;
-    };
-    this.titleInput.onkeydown = (event) => {
-      if (event.key === "Enter" && !event.isComposing) {
-        event.preventDefault();
-        void this.primaryAction();
-      }
-    };
-    this.targetSource = target2.createDiv("ts-calendar-pomodoro-target-source");
-    this.targetPlan = target2.createDiv("ts-calendar-pomodoro-target-plan");
-    this.targetActual = target2.createDiv("ts-calendar-pomodoro-target-actual");
-    const actions = this.el.createDiv("ts-calendar-pomodoro-actions");
-    this.primary = actions.createEl("button", { cls: "ts-calendar-pomodoro-primary", attr: { type: "button" } });
-    this.primaryIcon = this.primary.createSpan({ attr: { "aria-hidden": "true" } });
-    this.primaryText = this.primary.createSpan();
-    this.primary.onclick = () => void this.primaryAction();
-    this.stopButton = this.actionButton(actions, "\u7ED3\u675F\u5E76\u8BB0\u5F55", "square", () => this.controller.stop());
-    this.stopButton.addClass("ts-calendar-pomodoro-stop");
-    this.stopButton.title = "\u7ED3\u675F\u672C\u6B21\u8BA1\u65F6\uFF0C\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6";
-    const secondary = actions.createDiv("ts-calendar-pomodoro-secondary");
-    this.resetButton = this.actionButton(secondary, "\u91CD\u7F6E", "rotate-ccw", () => this.controller.reset());
-    this.resetButton.setAttribute("aria-label", "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6");
-    this.resetButton.title = "\u91CD\u7F6E\u5F53\u524D\u9636\u6BB5\u7684\u8BA1\u65F6";
-    this.nextButton = this.actionButton(secondary, "\u8DF3\u8FC7", "skip-forward", () => this.controller.next());
-    this.nextButton.setAttribute("aria-label", "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5");
-    this.nextButton.title = "\u8DF3\u8FC7\u5F53\u524D\u9636\u6BB5\uFF0C\u51C6\u5907\u4E0B\u4E00\u9636\u6BB5";
-    this.error = this.el.createDiv({ cls: "ts-calendar-pomodoro-error", attr: { role: "alert" } });
-    this.error.hidden = true;
-    const summary = this.el.createDiv("ts-calendar-pomodoro-summary"), summaryHead = summary.createDiv("ts-calendar-pomodoro-summary-head");
-    summaryHead.createSpan({ cls: "ts-calendar-pomodoro-caption", text: "\u4ECA\u5929" });
-    summaryHead.createSpan({ cls: "ts-calendar-pomodoro-summary-hint", text: "\u5B9E\u9645\u8BB0\u5F55\u7684\u7528\u65F6" });
-    const stats = summary.createDiv("ts-calendar-pomodoro-stats"), count = stats.createDiv("ts-calendar-pomodoro-stat");
-    this.todayCount = count.createEl("strong");
-    count.createSpan({ text: "\u6B21\u8BB0\u5F55" });
-    const minutes2 = stats.createDiv("ts-calendar-pomodoro-stat");
-    this.todayMinutes = minutes2.createEl("strong");
-    minutes2.createSpan({ text: "\u5206\u949F" });
-    summary.createDiv({ cls: "ts-calendar-pomodoro-recent-head", text: "\u6700\u8FD1\u8BB0\u5F55" });
-    const list = summary.createEl("ul", { cls: "ts-calendar-pomodoro-recent", attr: { "aria-label": "\u6700\u8FD1\u8BA1\u65F6\u8BB0\u5F55" } });
-    for (let index = 0; index < 3; index++) {
-      const row = list.createEl("li", { cls: "ts-calendar-pomodoro-record" }), mark = row.createSpan({ cls: "ts-calendar-pomodoro-record-mark", attr: { "aria-hidden": "true" } });
-      (0, import_obsidian15.setIcon)(mark, "check");
-      const content = row.createDiv("ts-calendar-pomodoro-record-content");
-      const title = content.createDiv("ts-calendar-pomodoro-record-title"), meta = content.createDiv("ts-calendar-pomodoro-record-meta"), plan = content.createDiv("ts-calendar-pomodoro-record-plan");
-      const calendar = this.iconButton(row, "\u5728\u65E5\u5386\u67E5\u770B\u8FD9\u6B21\u8BA1\u65F6", "calendar-days", () => {
-        const record = this.recentRecords[index];
-        return record ? this.showCalendar(localDate(record.startedAt)) : Promise.resolve();
-      });
-      calendar.addClass("ts-calendar-pomodoro-record-calendar");
-      this.recentRows.push({ row, title, meta, plan, calendar });
-    }
-    this.recentEmpty = summary.createDiv({ cls: "ts-calendar-pomodoro-empty", text: "\u7ED3\u675F\u8BA1\u65F6\u540E\uFF0C\u5B9E\u9645\u7528\u65F6\u4F1A\u8BB0\u5F55\u5728\u8FD9\u91CC\u3002" });
-    this.announcement = this.el.createDiv({ cls: "ts-calendar-pomodoro-announcement", attr: { role: "status", "aria-live": "polite", "aria-atomic": "true" } });
-  }
-  iconButton(parent, label2, icon, action) {
-    const button = parent.createEl("button", { cls: "ts-calendar-pomodoro-target-open", attr: { type: "button", "aria-label": label2, title: label2 } });
-    (0, import_obsidian15.setIcon)(button, icon);
-    button.onclick = () => void action();
-    return button;
-  }
-  actionButton(parent, label2, icon, action) {
-    const button = parent.createEl("button", { attr: { type: "button", "aria-label": label2 } });
-    (0, import_obsidian15.setIcon)(button.createSpan({ attr: { "aria-hidden": "true" } }), icon);
-    button.createSpan({ text: label2 });
-    button.onclick = () => void this.run(action);
-    return button;
-  }
-  statusText(status, mode2, phase) {
-    if (status === "running") return mode2 === "pomodoro" ? phase === "focus" ? "\u4E13\u6CE8\u8FDB\u884C\u4E2D" : "\u4F11\u606F\u8FDB\u884C\u4E2D" : "\u6B63\u5728\u8BA1\u65F6";
-    if (status === "paused") return "\u5DF2\u6682\u505C";
-    if (status === "finished") return mode2 === "pomodoro" ? "\u672C\u9636\u6BB5\u5DF2\u7ED3\u675F" : "\u672C\u6B21\u8BA1\u65F6\u5DF2\u7ED3\u675F";
-    return mode2 === "stopwatch" ? "\u4ECE 00:00 \u5F00\u59CB" : "\u51C6\u5907\u5F00\u59CB";
-  }
-  update(snapshot) {
-    if (!this.active) return;
-    this.latest = snapshot;
-    const { session } = snapshot.state, { phase, status, mode: mode2 } = session, config = this.controller.config;
-    const active2 = status === "running" || status === "paused";
-    const key = `${session.id}:${mode2}:${phase}:${status}:${session.durationMs}:${config.focusMinutes}:${config.shortBreakMinutes}:${config.longBreakMinutes}:${config.longBreakEvery}`;
-    if (this.sessionKey !== key) {
-      this.sessionKey = key;
-      this.el.dataset.phase = phase;
-      this.el.dataset.status = status;
-      this.el.dataset.mode = mode2;
-      setText(this.cadence, mode2 === "pomodoro" ? `\u6BCF ${config.longBreakEvery} \u8F6E\u957F\u4F11\u606F` : mode2 === "stopwatch" ? "\u8BB0\u5F55\u5B9E\u9645\u7528\u65F6" : "\u6309\u76EE\u6807\u65F6\u957F\u8BA1\u65F6");
-      for (const [value, button] of this.modeButtons) button.setAttribute("aria-pressed", String(value === mode2));
-      this.modeHint.hidden = !active2;
-      this.stages.hidden = mode2 !== "pomodoro";
-      this.durationControls.hidden = mode2 !== "countdown" || active2;
-      this.adjustment.hidden = mode2 !== "countdown" || !active2;
-      const durations = { focus: config.focusMinutes, "short-break": config.shortBreakMinutes, "long-break": config.longBreakMinutes };
-      for (const [value, chip] of this.phaseChips) {
-        chip.toggleClass("ts-calendar-pomodoro-stage-active", value === phase);
-        if (value === phase) chip.setAttribute("aria-current", "step");
-        else chip.removeAttribute("aria-current");
-        setText(this.phaseMinutes.get(value), `${value === phase && mode2 === "pomodoro" ? session.durationMs / 6e4 : durations[value]} \u5206`);
-      }
-      const label2 = mode2 === "pomodoro" ? PHASES[phase] : MODES[mode2];
-      setText(this.phaseLabel, label2.label);
-      (0, import_obsidian15.setIcon)(this.phaseIcon, label2.icon);
-      setText(this.timerStatus, this.statusText(status, mode2, phase));
-      const announcementKey = `${mode2}:${phase}:${status}`;
-      if (this.announcementKey !== announcementKey) {
-        if (this.announcementKey !== void 0) setText(this.announcement, `${label2.label}\uFF0C${this.statusText(status, mode2, phase)}`);
-        this.announcementKey = announcementKey;
-      }
-      const primaryLabel = status === "running" ? "\u6682\u505C" : status === "paused" ? "\u7EE7\u7EED" : mode2 === "pomodoro" ? status === "finished" ? phase === "focus" ? "\u5F00\u59CB\u4F11\u606F" : "\u5F00\u59CB\u4E13\u6CE8" : phase === "focus" ? "\u5F00\u59CB\u4E13\u6CE8" : "\u5F00\u59CB\u4F11\u606F" : status === "finished" ? "\u518D\u5F00\u59CB\u4E00\u6B21" : "\u5F00\u59CB\u8BA1\u65F6";
-      setText(this.primaryText, primaryLabel);
-      (0, import_obsidian15.setIcon)(this.primaryIcon, status === "running" ? "pause" : "play");
-      this.primary.setAttribute("aria-label", primaryLabel);
-      this.primary.title = primaryLabel;
-      this.stopButton.hidden = !active2;
-      this.resetButton.hidden = active2;
-      this.nextButton.hidden = mode2 !== "pomodoro" || active2;
-      this.titleInput.hidden = active2;
-      this.targetTitle.hidden = !active2;
-      if (mode2 === "stopwatch") {
-        this.progress.setAttribute("role", "group");
-        this.progress.setAttribute("aria-label", "\u5DF2\u8BB0\u5F55\u7684\u5B9E\u9645\u7528\u65F6");
-        for (const name of ["aria-valuemin", "aria-valuemax", "aria-valuenow", "aria-valuetext"]) this.progress.removeAttribute(name);
-      } else {
-        this.progress.setAttribute("role", "progressbar");
-        this.progress.setAttribute("aria-label", "\u5F53\u524D\u9636\u6BB5\u5269\u4F59\u65F6\u95F4");
-        this.progress.setAttribute("aria-valuemin", "0");
-        this.progress.setAttribute("aria-valuemax", "100");
-      }
-    }
-    if (this.inputSession !== session.id) {
-      this.inputSession = session.id;
-      this.durationDirty = false;
-    }
-    const inputTargetKey = JSON.stringify(session.target || null);
-    if (this.inputTargetKey !== inputTargetKey) {
-      this.inputTargetKey = inputTargetKey;
-      this.titleDirty = false;
-    }
-    if (!this.titleDirty && this.titleInput.value !== (session.target?.title || "")) this.titleInput.value = session.target?.title || "";
-    const durationValue = String(Math.max(1, Math.round(session.durationMs / 6e4)));
-    if (!this.durationDirty && this.durationInput.value !== durationValue) this.durationInput.value = durationValue;
-    const displayedMs = mode2 === "stopwatch" ? snapshot.elapsedMs : snapshot.remainingMs;
-    const displayClock = clockText2(displayedMs, mode2 !== "stopwatch");
-    setText(this.clock, displayClock);
-    this.clock.dataset.hours = String(displayedMs >= 36e5);
-    const fraction = mode2 === "stopwatch" ? 1 : Math.max(0, Math.min(1, session.durationMs > 0 ? snapshot.remainingMs / session.durationMs : 0));
-    this.progressCircle.setAttribute("stroke-dashoffset", String(100 * (1 - fraction)));
-    setText(this.progressLabel, mode2 === "stopwatch" ? "\u2191" : `${Math.round(fraction * 100)}%`);
-    if (mode2 !== "stopwatch") {
-      this.progress.setAttribute("aria-valuenow", String(Math.round(fraction * 100)));
-      this.progress.setAttribute("aria-valuetext", `\u5269\u4F59 ${durationText(snapshot.remainingMs)}`);
-    }
-    this.updateTarget(session.target, phase, mode2);
-    setText(this.targetActual, `\u5B9E\u9645\u5DF2\u7528 ${durationText(snapshot.elapsedMs)}`);
-    this.targetActual.hidden = !active2 && status !== "finished";
-    this.updatePresets();
-    this.updateRecords(snapshot.state.records);
-    this.updatePending();
-    this.updateError();
-  }
-  updatePresets() {
-    const minutes2 = Number(this.durationInput.value);
-    for (const [value, button] of this.presetButtons) button.setAttribute("aria-pressed", String(value === minutes2));
-  }
-  updateTarget(target2, phase, mode2) {
-    const key = JSON.stringify([target2, phase, mode2]);
-    if (key === this.targetKey) return;
-    this.targetKey = key;
-    const title = target2?.title || (mode2 === "pomodoro" && phase !== "focus" ? "\u4F11\u606F\u7247\u523B" : "\u81EA\u7531\u8BA1\u65F6");
-    setText(this.targetTitle, title);
-    this.targetTitle.title = title;
-    const source = target2?.path?.split("/").pop()?.replace(/\.md$/i, "");
-    setText(this.targetSource, source || (target2?.eventId ? "\u5DF2\u5173\u8054\u65E5\u5386\u65E5\u7A0B" : "\u53EF\u586B\u5199\u4E8B\u9879\uFF0C\u4E5F\u53EF\u76F4\u63A5\u5F00\u59CB"));
-    this.targetSource.title = target2?.path || "";
-    setText(this.targetPlan, planText(target2));
-    this.targetPlan.hidden = !planText(target2);
-    this.targetOpen.hidden = !target2?.path || !this.onOpenTarget;
-    this.targetOpen.setAttribute("aria-label", target2 ? `\u6253\u5F00\u6765\u6E90\uFF1A${target2.title}` : "\u6253\u5F00\u5F53\u524D\u4E8B\u9879\u7684\u6765\u6E90");
-    this.calendarOpen.hidden = !this.onShowCalendar || !target2;
-  }
-  updateRecords(records) {
-    const today = localDate(/* @__PURE__ */ new Date());
-    if (records === this.recordsReference && today === this.recordsDay) return;
-    this.recordsReference = records;
-    this.recordsDay = today;
-    const todayRecords = timerRecordsOnDay(records, /* @__PURE__ */ new Date());
-    setText(this.todayCount, String(todayRecords.length));
-    setText(this.todayMinutes, timerMinuteLabel(todayRecords.reduce((sum, record) => sum + record.durationMs, 0)));
-    this.recentRecords = records.filter((record) => record.durationMs > 0 && !((record.mode || "pomodoro") === "pomodoro" && record.phase && record.phase !== "focus")).sort((a, b) => b.completedAt - a.completedAt).slice(0, 3);
-    for (const [index, item] of this.recentRows.entries()) {
-      const record = this.recentRecords[index];
-      item.row.hidden = !record;
-      if (!record) continue;
-      const title = record.target?.title || "\u81EA\u7531\u8BA1\u65F6", mode2 = record.mode || "pomodoro";
-      setText(item.title, title);
-      item.title.title = title;
-      const date = new Date(record.completedAt), dateLabel = localDate(date) === today ? "\u4ECA\u5929" : `${date.getMonth() + 1}/${date.getDate()}`;
-      const modeLabel = mode2 === "pomodoro" && record.phase && record.phase !== "focus" ? PHASES[record.phase].label : MODES[mode2].label;
-      setText(item.meta, `${dateLabel} ${timeText(record.completedAt)} \xB7 ${modeLabel} \xB7 ${durationText(record.durationMs)}`);
-      const planned = record.target?.plannedDurationMs;
-      setText(item.plan, planned !== void 0 ? `\u8BA1\u5212 ${durationText(planned)} / \u5B9E\u9645 ${durationText(record.durationMs)}` : record.outcome === "stopped" ? "\u4E3B\u52A8\u7ED3\u675F\uFF0C\u5DF2\u8BB0\u5F55" : "\u5DF2\u5B8C\u6210");
-      item.calendar.hidden = !this.onShowCalendar;
-      item.calendar.setAttribute("aria-label", `\u5728\u65E5\u5386\u67E5\u770B\u8BB0\u5F55\uFF1A${title}`);
-    }
-    this.recentEmpty.hidden = this.recentRecords.length > 0;
-  }
-  updatePending() {
-    const busy = this.pendingAction || !!this.latest?.busy, status = this.latest?.state.session.status, active2 = status === "running" || status === "paused";
-    for (const button of [this.primary, this.stopButton, this.resetButton, this.nextButton, ...this.adjustmentButtons, ...this.presetButtons.values()]) if (button.disabled !== busy) button.disabled = busy;
-    for (const button of this.modeButtons.values()) button.disabled = busy || active2;
-    this.durationInput.disabled = busy;
-    this.titleInput.disabled = busy;
-    this.targetOpen.disabled = this.openingTarget;
-    this.calendarOpen.disabled = this.openingCalendar;
-    for (const item of this.recentRows) item.calendar.disabled = this.openingCalendar;
-    if (this.el.getAttribute("aria-busy") !== String(busy)) this.el.setAttribute("aria-busy", String(busy));
-  }
-  updateError() {
-    const message = this.actionError || this.latest?.error || "";
-    setText(this.error, message);
-    this.error.hidden = !message;
-  }
-  async run(action) {
-    if (!this.active || this.pendingAction || this.latest?.busy) return;
-    this.pendingAction = true;
-    this.actionError = "";
-    this.updatePending();
-    this.updateError();
-    try {
-      await action();
-    } catch (error) {
-      this.actionError = this.controller.snapshot().error ? "" : error instanceof Error ? error.message : String(error);
-    } finally {
-      this.pendingAction = false;
-      if (this.active) this.update(this.controller.snapshot());
-    }
-  }
-  async primaryAction() {
-    const session = this.latest?.state.session;
-    if (!session) return;
-    if (session.status === "running") return this.run(() => this.controller.pause());
-    if (session.status === "paused") return this.run(() => this.controller.resume());
-    const title = this.titleInput.value.trim(), assigned = title ? { ...session.target, title } : session.target;
-    const minutes2 = Number(this.durationInput.value);
-    if (session.mode === "countdown" && (!Number.isInteger(minutes2) || minutes2 < 1 || minutes2 > 1440)) {
-      this.actionError = "\u8BF7\u8F93\u5165 1\u20131440 \u4E4B\u95F4\u7684\u6574\u6570\u5206\u949F\u6570\u3002";
-      this.updateError();
-      this.durationInput.focus();
-      return;
-    }
-    await this.run(() => session.mode === "pomodoro" ? this.controller.start(assigned) : this.controller.startTimer(assigned, session.mode, session.mode === "countdown" ? minutes2 : void 0));
-  }
-  currentCalendarDay() {
-    const session = this.latest?.state.session;
-    return localDate(session?.target?.plannedStart ?? session?.startedAt ?? Date.now());
-  }
-  async showCalendar(day) {
-    if (!this.active || !this.onShowCalendar || this.openingCalendar) return;
-    this.openingCalendar = true;
-    this.actionError = "";
-    this.updatePending();
-    this.updateError();
-    try {
-      await this.onShowCalendar(day);
-    } catch (error) {
-      this.actionError = error instanceof Error ? error.message : String(error);
-    } finally {
-      this.openingCalendar = false;
-      if (this.active) {
-        this.updatePending();
-        this.updateError();
-      }
-    }
-  }
-  async openTarget() {
-    const target2 = this.latest?.state.session.target;
-    if (!this.active || !target2 || !this.onOpenTarget || this.openingTarget) return;
-    this.openingTarget = true;
-    this.actionError = "";
-    this.updatePending();
-    this.updateError();
-    try {
-      await this.onOpenTarget(target2);
-    } catch (error) {
-      this.actionError = error instanceof Error ? error.message : String(error);
-    } finally {
-      this.openingTarget = false;
-      if (this.active) {
-        this.updatePending();
-        this.updateError();
-      }
-    }
-  }
-  onunload() {
-    this.active = false;
-    this.el.empty();
-  }
-};
-var PomodoroView = class extends import_obsidian15.ItemView {
-  constructor(leaf, controller, onOpenTarget, onShowCalendar) {
+// src/legacy-timer-view.ts
+var import_obsidian16 = require("obsidian");
+var LegacyTimerView = class extends import_obsidian16.ItemView {
+  constructor(leaf, migrate) {
     super(leaf);
-    this.controller = controller;
-    this.onOpenTarget = onOpenTarget;
-    this.onShowCalendar = onShowCalendar;
+    this.migrate = migrate;
   }
-  panel;
+  closed = false;
+  migrationTimer;
   getViewType() {
     return POMODORO_VIEW;
   }
   getDisplayText() {
-    return "\u8BA1\u65F6\u5668";
+    return "\u65E5\u5386\u4E0E\u8BA1\u65F6";
   }
   getIcon() {
-    return "clock-3";
+    return "calendar-days";
   }
   async onOpen() {
-    if (this.panel) this.removeChild(this.panel);
+    this.closed = false;
     this.contentEl.empty();
-    this.contentEl.addClass("ts-calendar-pomodoro-view");
-    themeSurface(this.contentEl);
-    this.panel = new PomodoroPanel(this.contentEl.createDiv("ts-calendar-pomodoro-host"), this.controller, this.onOpenTarget, this.onShowCalendar);
-    this.addChild(this.panel);
+    this.contentEl.createDiv({ text: "\u8BA1\u65F6\u529F\u80FD\u5DF2\u79FB\u5165\u65E5\u5386\u3002" });
+    const retry = this.contentEl.createEl("button", { text: "\u5728\u65E5\u5386\u4E2D\u6253\u5F00" });
+    const open = () => {
+      if (this.closed) return;
+      retry.disabled = true;
+      void this.migrate().catch((error) => {
+        if (!this.closed) new import_obsidian16.Notice(String(error));
+      }).finally(() => {
+        if (!this.closed) retry.disabled = false;
+      });
+    };
+    retry.onclick = open;
+    this.app.workspace.onLayoutReady(() => {
+      if (this.closed) return;
+      this.migrationTimer = window.setTimeout(open, 0);
+    });
   }
   async onClose() {
-    if (this.panel) this.removeChild(this.panel);
-    this.panel = void 0;
+    this.closed = true;
+    window.clearTimeout(this.migrationTimer);
     this.contentEl.empty();
   }
 };
@@ -22205,12 +22261,12 @@ var import_promises = require("node:fs/promises");
 var import_node_path = require("node:path");
 var run = (fn) => {
   try {
-    void Promise.resolve(fn()).catch((e) => new import_obsidian16.Notice(String(e)));
+    void Promise.resolve(fn()).catch((e) => new import_obsidian17.Notice(String(e)));
   } catch (e) {
-    new import_obsidian16.Notice(String(e));
+    new import_obsidian17.Notice(String(e));
   }
 };
-var ThoughtSpaceCalendar = class extends import_obsidian16.Plugin {
+var ThoughtSpaceCalendar = class extends import_obsidian17.Plugin {
   calendarApiVersion = 1;
   ready = false;
   taskPlanner;
@@ -22223,6 +22279,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian16.Plugin {
   openLargePane;
   initialTaskRead;
   largeRefreshTimer;
+  timerMigrationTimer;
   chinese = new ChineseCalendar();
   eventNoteLinks;
   settingsWrites = Promise.resolve();
@@ -22241,13 +22298,13 @@ var ThoughtSpaceCalendar = class extends import_obsidian16.Plugin {
   async onload() {
     const board = this.boardPlugin();
     if (board && Number(board.manifest.version.split(".")[0]) === 0 && Number(board.manifest.version.split(".")[1]) < 94) {
-      new import_obsidian16.Notice("\u8BF7\u5148\u91CD\u65B0\u52A0\u8F7D 0.94.0 \u6216\u66F4\u65B0\u7684\u601D\u7EF4\u767D\u677F\uFF0C\u518D\u542F\u7528\u72EC\u7ACB\u65E5\u5386\u3002");
+      new import_obsidian17.Notice("\u8BF7\u5148\u91CD\u65B0\u52A0\u8F7D 0.94.0 \u6216\u66F4\u65B0\u7684\u601D\u7EF4\u767D\u677F\uFF0C\u518D\u542F\u7528\u72EC\u7ACB\u65E5\u5386\u3002");
       throw Error("\u65E7\u7248\u601D\u7EF4\u767D\u677F\u4ECD\u5360\u7528\u65E5\u5386\u89C6\u56FE\uFF0C\u8BF7\u91CD\u542F Obsidian");
     }
     const saved = await this.loadData();
     let legacy;
     if (saved == null) {
-      const path = (0, import_obsidian16.normalizePath)(`${this.app.vault.configDir}/plugins/thoughtspace/data.json`);
+      const path = (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}/plugins/thoughtspace/data.json`);
       if (await this.app.vault.adapter.exists(path)) legacy = JSON.parse(await this.app.vault.adapter.read(path));
     }
     this.settings = calendarSettings(saved, legacy);
@@ -22255,14 +22312,14 @@ var ThoughtSpaceCalendar = class extends import_obsidian16.Plugin {
     const tokens = designTokens(document);
     this.register(() => tokens.remove());
     this.taskPlanner = this.addChild(new TaskPlanner(this.app, () => this.settings.journalFolder));
-    const adapter = this.app.vault.adapter, base = adapter.getBasePath?.(), focusPath = (0, import_obsidian16.normalizePath)(`${this.app.vault.configDir}/plugins/${this.manifest.id}/pomodoro-state.json`);
+    const adapter = this.app.vault.adapter, base = adapter.getBasePath?.(), focusPath = (0, import_obsidian17.normalizePath)(`${this.app.vault.configDir}/plugins/${this.manifest.id}/pomodoro-state.json`);
     const focusStore = createPomodoroStore(adapter, focusPath, base ? (from, to) => (0, import_promises.rename)((0, import_node_path.join)(base, from), (0, import_node_path.join)(base, to)) : void 0);
-    this.pomodoro = new PomodoroController(focusStore, () => this.settings.pomodoro, { onFinished: (state) => new import_obsidian16.Notice(state.session.mode === "countdown" ? "\u5012\u8BA1\u65F6\u7ED3\u675F\uFF0C\u5B9E\u9645\u7528\u65F6\u5DF2\u8BB0\u5F55\u3002" : state.session.mode === "stopwatch" ? "\u8BA1\u65F6\u5DF2\u7ED3\u675F\uFF0C\u5B9E\u9645\u7528\u65F6\u5DF2\u8BB0\u5F55\u3002" : state.session.phase === "focus" ? "\u672C\u8F6E\u4E13\u6CE8\u5B8C\u6210\uFF0C\u4F11\u606F\u4E00\u4E0B\u3002" : "\u4F11\u606F\u7ED3\u675F\uFF0C\u53EF\u4EE5\u5F00\u59CB\u4E0B\u4E00\u8F6E\u4E13\u6CE8\u3002", 7e3) });
+    this.pomodoro = new PomodoroController(focusStore, () => this.settings.pomodoro, { onFinished: (state) => new import_obsidian17.Notice(state.session.mode === "countdown" ? "\u5012\u8BA1\u65F6\u7ED3\u675F\uFF0C\u5B9E\u9645\u7528\u65F6\u5DF2\u8BB0\u5F55\u3002" : state.session.mode === "stopwatch" ? "\u8BA1\u65F6\u5DF2\u7ED3\u675F\uFF0C\u5B9E\u9645\u7528\u65F6\u5DF2\u8BB0\u5F55\u3002" : state.session.phase === "focus" ? "\u672C\u8F6E\u4E13\u6CE8\u5B8C\u6210\uFF0C\u4F11\u606F\u4E00\u4E0B\u3002" : "\u4F11\u606F\u7ED3\u675F\uFF0C\u53EF\u4EE5\u5F00\u59CB\u4E0B\u4E00\u8F6E\u4E13\u6CE8\u3002", 7e3) });
     this.register(() => {
       focusStore.dispose();
       this.pomodoro.dispose();
     });
-    await this.pomodoro.initialize().catch((error) => new import_obsidian16.Notice("\u8BA1\u65F6\u5668\u52A0\u8F7D\u5931\u8D25\uFF1A" + String(error)));
+    await this.pomodoro.initialize().catch((error) => new import_obsidian17.Notice("\u8BA1\u65F6\u5668\u52A0\u8F7D\u5931\u8D25\uFF1A" + String(error)));
     this.pomodoroActions = { open: () => this.openPomodoro(), startTask: async (task) => {
       if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
       await this.calendarTaskIndex();
@@ -22270,7 +22327,7 @@ var ThoughtSpaceCalendar = class extends import_obsidian16.Plugin {
       const current = resolveTimerTask(this.taskPlanner.all(), task), target2 = taskTimerTarget(current);
       await this.startLinkedTimer(target2, target2.plannedDurationMs ? "countdown" : "stopwatch", target2.plannedDurationMs ? target2.plannedDurationMs / 6e4 : void 0);
     } };
-    this.registerView(POMODORO_VIEW, (leaf) => new PomodoroView(leaf, this.pomodoro, (target2) => this.openPomodoroTarget(target2), (day) => this.openLargeCalendar(day)));
+    this.registerView(POMODORO_VIEW, (leaf) => new LegacyTimerView(leaf, () => this.migrateTimerViews()));
     const status = this.addStatusBarItem();
     status.addClass("ts-calendar-plugin", "ts-calendar-focus-status");
     status.setAttribute("role", "button");
@@ -22386,6 +22443,7 @@ calendar-end: ${JSON.stringify(event.end)}
     }));
     this.register(() => {
       window.clearTimeout(this.largeRefreshTimer);
+      window.clearTimeout(this.timerMigrationTimer);
       this.chinese.clear();
     });
     this.registerView(CALENDAR, (leaf) => new JournalView(leaf, this, "calendar"));
@@ -22400,8 +22458,7 @@ calendar-end: ${JSON.stringify(event.end)}
     });
     this.addRibbonIcon("calendar-range", "ThoughtSpace \u65E5\u5386", () => run(() => this.ensureCalendar(true)));
     this.addRibbonIcon("notebook-pen", "ThoughtSpace \u4ECA\u65E5\u65E5\u8BB0", () => run(() => this.journal()));
-    this.addRibbonIcon("timer", "ThoughtSpace \u8BA1\u65F6\u5668", () => run(() => this.openPomodoro()));
-    this.addCommand({ id: "show-pomodoro", name: "\u6253\u5F00\u8BA1\u65F6\u5668", callback: () => run(() => this.openPomodoro()) });
+    this.addCommand({ id: "show-pomodoro", name: "\u5728\u65E5\u5386\u4E2D\u6253\u5F00\u8BA1\u65F6\u5668", callback: () => run(() => this.openPomodoro()) });
     this.addCommand({ id: "start-pomodoro", name: "\u5F00\u59CB\u6216\u7EE7\u7EED\u756A\u8304\u4E13\u6CE8", callback: () => run(async () => {
       await this.pomodoro.startFocus();
       await this.openPomodoro();
@@ -22417,7 +22474,10 @@ calendar-end: ${JSON.stringify(event.end)}
     this.addSettingTab(new CalendarSettingsTab(this.app, this));
     this.ready = true;
     this.app.workspace.onLayoutReady(() => {
-      if (this.ready) this.configureLinks();
+      if (this.ready) {
+        this.configureLinks();
+        this.scheduleTimerMigration();
+      }
     });
   }
   configureLinks() {
@@ -22488,7 +22548,7 @@ calendar-end: ${JSON.stringify(event.end)}
   async openCalendarTask(task) {
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
     const file = this.app.vault.getAbstractFileByPath(task.source);
-    if (!(file instanceof import_obsidian16.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
+    if (!(file instanceof import_obsidian17.TFile)) throw Error("\u6765\u6E90\u7B14\u8BB0\u5DF2\u79FB\u52A8\u6216\u5220\u9664\uFF0C\u8BF7\u5237\u65B0");
     const old = this.app.workspace.getLeavesOfType("markdown").find((l) => l.view.file === file), leaf = old || this.app.workspace.getLeaf("tab");
     await leaf.openFile(file, { eState: { line: task.line ?? 0 } });
     await this.app.workspace.revealLeaf(leaf);
@@ -22498,16 +22558,16 @@ calendar-end: ${JSON.stringify(event.end)}
   }
   async folder(path) {
     let cursor = "";
-    for (const part of (0, import_obsidian16.normalizePath)(path).split("/")) {
+    for (const part of (0, import_obsidian17.normalizePath)(path).split("/")) {
       if (!part) continue;
       cursor = cursor ? `${cursor}/${part}` : part;
       const old = this.app.vault.getAbstractFileByPath(cursor);
-      if (old && !(old instanceof import_obsidian16.TFolder)) throw Error("\u76EE\u5F55\u4F4D\u7F6E\u5B58\u5728\u540C\u540D\u6587\u4EF6\uFF1A" + cursor);
+      if (old && !(old instanceof import_obsidian17.TFolder)) throw Error("\u76EE\u5F55\u4F4D\u7F6E\u5B58\u5728\u540C\u540D\u6587\u4EF6\uFF1A" + cursor);
       if (!old) {
         try {
           await this.app.vault.createFolder(cursor);
         } catch (e) {
-          if (!(this.app.vault.getAbstractFileByPath(cursor) instanceof import_obsidian16.TFolder)) throw e;
+          if (!(this.app.vault.getAbstractFileByPath(cursor) instanceof import_obsidian17.TFolder)) throw e;
         }
       }
     }
@@ -22515,7 +22575,7 @@ calendar-end: ${JSON.stringify(event.end)}
   async createUnique(folder, title, ext, text3) {
     await this.folder(folder);
     for (let i = 0; i < 1e4; i++) {
-      const path = (0, import_obsidian16.normalizePath)(`${folder}/${safeName(title)}${i ? " " + (i + 1) : ""}.${ext}`);
+      const path = (0, import_obsidian17.normalizePath)(`${folder}/${safeName(title)}${i ? " " + (i + 1) : ""}.${ext}`);
       if (this.app.vault.getAbstractFileByPath(path)) continue;
       try {
         return await this.app.vault.create(path, text3);
@@ -22535,9 +22595,9 @@ calendar-end: ${JSON.stringify(event.end)}
     const root = this.settings.journalFolder, folder = journalFolder(day, root);
     return this.serialize(async () => {
       const path = `${folder}/${day}.md`, current = this.app.vault.getAbstractFileByPath(path), legacy = this.app.vault.getAbstractFileByPath(`${root}/${day}.md`);
-      if (current && legacy) new import_obsidian16.Notice("\u65B0\u65E7\u76EE\u5F55\u5404\u6709\u65E5\u8BB0\uFF0C\u5DF2\u6253\u5F00\u5E74\u6708\u76EE\u5F55\u7248\u672C\uFF1B\u65E7\u65E5\u8BB0\u4FDD\u7559\u3002");
+      if (current && legacy) new import_obsidian17.Notice("\u65B0\u65E7\u76EE\u5F55\u5404\u6709\u65E5\u8BB0\uFF0C\u5DF2\u6253\u5F00\u5E74\u6708\u76EE\u5F55\u7248\u672C\uFF1B\u65E7\u65E5\u8BB0\u4FDD\u7559\u3002");
       let file = current || legacy;
-      if (file && !(file instanceof import_obsidian16.TFile)) throw Error("\u65E5\u8BB0\u8DEF\u5F84\u88AB\u6587\u4EF6\u5939\u5360\u7528");
+      if (file && !(file instanceof import_obsidian17.TFile)) throw Error("\u65E5\u8BB0\u8DEF\u5F84\u88AB\u6587\u4EF6\u5939\u5360\u7528");
       if (!file) {
         await this.folder(folder);
         try {
@@ -22552,10 +22612,10 @@ calendar-end: ${JSON.stringify(event.end)}
 `);
         } catch (error) {
           file = this.app.vault.getAbstractFileByPath(path);
-          if (!(file instanceof import_obsidian16.TFile)) throw error;
+          if (!(file instanceof import_obsidian17.TFile)) throw error;
         }
       }
-      if (!(file instanceof import_obsidian16.TFile)) throw Error("\u65E5\u8BB0\u65E0\u6CD5\u521B\u5EFA");
+      if (!(file instanceof import_obsidian17.TFile)) throw Error("\u65E5\u8BB0\u65E0\u6CD5\u521B\u5EFA");
       const text3 = await this.app.vault.cachedRead(file);
       if (journalTaskBlock(text3, day) !== text3) await this.app.vault.process(file, (text4) => journalTaskBlock(text4, day));
       return file;
@@ -22589,7 +22649,7 @@ calendar-end: ${JSON.stringify(event.end)}
           failed.push(file.path + "\uFF1A" + String(error));
         }
       }
-      new import_obsidian16.Notice(`\u5DF2\u6574\u7406 ${moved} \u7BC7\uFF0C\u540C\u540D\u4FDD\u7559 ${skipped.length} \u7BC7\uFF0C\u5931\u8D25 ${failed.length} \u7BC7`, 8e3);
+      new import_obsidian17.Notice(`\u5DF2\u6574\u7406 ${moved} \u7BC7\uFF0C\u540C\u540D\u4FDD\u7559 ${skipped.length} \u7BC7\uFF0C\u5931\u8D25 ${failed.length} \u7BC7`, 8e3);
       return { moved, skipped, failed };
     });
   }
@@ -22600,7 +22660,41 @@ calendar-end: ${JSON.stringify(event.end)}
     return this.ensurePane(JOURNAL, show);
   }
   async openPomodoro() {
-    await this.ensurePane(POMODORO_VIEW, true);
+    const leaf = await this.ensureCalendar(true);
+    if (leaf.view instanceof JournalView) leaf.view.selectCalendarSurface("timer");
+  }
+  scheduleTimerMigration() {
+    window.clearTimeout(this.timerMigrationTimer);
+    this.timerMigrationTimer = window.setTimeout(() => {
+      this.timerMigrationTimer = void 0;
+      if (this.ready) run(() => this.migrateTimerViews());
+    }, 0);
+  }
+  paneLeaves(type) {
+    const leaves = [...this.app.workspace.getLeavesOfType(type)];
+    this.app.workspace.iterateAllLeaves?.((leaf) => {
+      if (leaf.getViewState().type === type && !leaves.includes(leaf)) leaves.push(leaf);
+    });
+    return leaves;
+  }
+  /** Keep all timer entry points on the calendar without changing the shared session. */
+  async migrateTimerViews() {
+    if (!this.ready) return;
+    const previous = this.paneLeaves(POMODORO_VIEW);
+    if (!previous.length) return;
+    const leaf = await this.ensureCalendar(false);
+    if (!this.ready) return;
+    const activeWasTimer = previous.includes(this.app.workspace.activeLeaf);
+    if (leaf.view instanceof JournalView) leaf.view.selectCalendarSurface("timer");
+    for (const old of this.paneLeaves(POMODORO_VIEW)) if (old !== leaf) old.detach();
+    this.app.workspace.requestSaveLayout();
+    if (activeWasTimer) {
+      this.app.workspace.rightSplit.expand();
+      await this.app.workspace.revealLeaf(leaf);
+    }
+  }
+  openTimerTarget(target2) {
+    return this.openPomodoroTarget(target2);
   }
   async startLinkedTimer(target2, mode2 = "stopwatch", durationMinutes) {
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
@@ -22611,7 +22705,7 @@ calendar-end: ${JSON.stringify(event.end)}
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
     if (!target2.path) return;
     const file = this.app.vault.getAbstractFileByPath(target2.path);
-    if (!(file instanceof import_obsidian16.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u5DF2\u79FB\u52A8\u6216\u5220\u9664");
+    if (!(file instanceof import_obsidian17.TFile)) throw Error("\u4EFB\u52A1\u6765\u6E90\u5DF2\u79FB\u52A8\u6216\u5220\u9664");
     const leaf = this.app.workspace.getLeaf("tab");
     await leaf.openFile(file, { eState: { line: target2.line || 0 } });
     await this.app.workspace.revealLeaf(leaf);
@@ -22619,11 +22713,12 @@ calendar-end: ${JSON.stringify(event.end)}
   async ensurePane(type, show) {
     if (!this.ready) throw Error("\u65E5\u5386\u63D2\u4EF6\u5DF2\u5173\u95ED");
     const leaf = await this.openings.run(type, async () => {
-      let leaf2 = this.app.workspace.getLeavesOfType(type)[0];
+      let leaf2 = this.paneLeaves(type)[0];
       if (!leaf2) {
-        leaf2 = this.app.workspace.getRightLeaf(false);
+        const legacy = type === CALENDAR ? this.paneLeaves(POMODORO_VIEW)[0] : void 0;
+        leaf2 = legacy || this.app.workspace.getRightLeaf(false);
         if (!leaf2) throw Error("\u65E0\u6CD5\u521B\u5EFA\u65E5\u5386\u4FA7\u680F");
-        await leaf2.setViewState({ type, active: false });
+        await leaf2.setViewState({ type, active: false, ...legacy ? { state: { topPane: "timer" } } : {} });
       }
       await leaf2.loadIfDeferred();
       return leaf2;
@@ -22671,7 +22766,7 @@ calendar-end: ${JSON.stringify(event.end)}
     this.selection++;
   }
 };
-var CalendarSettingsTab = class extends import_obsidian16.PluginSettingTab {
+var CalendarSettingsTab = class extends import_obsidian17.PluginSettingTab {
   constructor(app, calendar) {
     super(app, calendar);
     this.calendar = calendar;
@@ -22683,18 +22778,18 @@ var CalendarSettingsTab = class extends import_obsidian16.PluginSettingTab {
     el.createEl("h2", { text: "ThoughtSpace \u65E5\u5386\u4E0E\u65E5\u8BB0" });
     el.createEl("p", { text: "\u72EC\u7ACB\u8FD0\u884C\u65E5\u5386\u3001\u4EFB\u52A1\u548C\u5468\u671F\u7B14\u8BB0\uFF1B\u5DF2\u6709 Markdown \u6587\u4EF6\u7EE7\u7EED\u4F7F\u7528\u3002" });
     let draft2 = { ...this.calendar.settings, pomodoro: { ...this.calendar.settings.pomodoro } };
-    new import_obsidian16.Setting(el).setName("\u65E5\u8BB0\u76EE\u5F55").setDesc("\u65B0\u65E5\u8BB0\u4FDD\u5B58\u4E3A \u5E74/\u6708/YYYY-MM-DD.md\uFF1B\u4FEE\u6539\u8BBE\u7F6E\u4E0D\u4F1A\u642C\u52A8\u65E7\u6587\u4EF6\u3002").addText((t) => t.setValue(draft2.journalFolder).onChange((v) => draft2.journalFolder = v));
-    new import_obsidian16.Setting(el).setName("\u6536\u96C6\u7B14\u8BB0\u76EE\u5F55").addText((t) => t.setValue(draft2.cardFolder).onChange((v) => draft2.cardFolder = v));
-    new import_obsidian16.Setting(el).setName("\u5173\u8054\u5F53\u5929\u65B0\u5EFA\u7B14\u8BB0").setDesc("\u5C06\u5F53\u5929\u65B0\u5EFA\u7684\u7B14\u8BB0\u94FE\u63A5\u5230\u65E5\u8BB0\uFF1B\u4E0D\u590D\u5236\u7B14\u8BB0\u6B63\u6587\u3002").addToggle((t) => t.setValue(draft2.linkCreatedNotes).onChange((v) => draft2.linkCreatedNotes = v));
+    new import_obsidian17.Setting(el).setName("\u65E5\u8BB0\u76EE\u5F55").setDesc("\u65B0\u65E5\u8BB0\u4FDD\u5B58\u4E3A \u5E74/\u6708/YYYY-MM-DD.md\uFF1B\u4FEE\u6539\u8BBE\u7F6E\u4E0D\u4F1A\u642C\u52A8\u65E7\u6587\u4EF6\u3002").addText((t) => t.setValue(draft2.journalFolder).onChange((v) => draft2.journalFolder = v));
+    new import_obsidian17.Setting(el).setName("\u6536\u96C6\u7B14\u8BB0\u76EE\u5F55").addText((t) => t.setValue(draft2.cardFolder).onChange((v) => draft2.cardFolder = v));
+    new import_obsidian17.Setting(el).setName("\u5173\u8054\u5F53\u5929\u65B0\u5EFA\u7B14\u8BB0").setDesc("\u5C06\u5F53\u5929\u65B0\u5EFA\u7684\u7B14\u8BB0\u94FE\u63A5\u5230\u65E5\u8BB0\uFF1B\u4E0D\u590D\u5236\u7B14\u8BB0\u6B63\u6587\u3002").addToggle((t) => t.setValue(draft2.linkCreatedNotes).onChange((v) => draft2.linkCreatedNotes = v));
     el.createEl("h3", { text: "\u4E2D\u56FD\u519C\u5386" });
-    for (const [key, title, desc] of [["showLunar", "\u663E\u793A\u519C\u5386", "\u65E5\u671F\u4E0B\u65B9\u663E\u793A\u519C\u5386\uFF0C\u6708\u521D\u663E\u793A\u6708\u4EFD\u3002"], ["showFestivals", "\u663E\u793A\u8282\u65E5", "\u8282\u65E5\u4F18\u5148\u663E\u793A\uFF1B\u5B8C\u6574\u540D\u79F0\u53EF\u60AC\u505C\u67E5\u770B\u3002"], ["showSolarTerms", "\u663E\u793A\u8282\u6C14", "\u663E\u793A\u4E8C\u5341\u56DB\u8282\u6C14\u3002"], ["showHolidays", "\u663E\u793A\u4F11\u73ED\u6807\u8BB0", "\u4F7F\u7528\u5185\u7F6E\u4E2D\u56FD\u5927\u9646\u8282\u5047\u65E5\u6570\u636E\uFF1B\u672A\u6536\u5F55\u5E74\u4EFD\u4E0D\u63A8\u6D4B\u8C03\u4F11\u3002"]]) new import_obsidian16.Setting(el).setName(title).setDesc(desc).addToggle((t) => t.setValue(draft2[key] !== false).onChange((v) => draft2[key] = v));
-    new import_obsidian16.Setting(el).setName("\u65E5\u5386\u5BC6\u5EA6").addDropdown((d) => d.addOptions({ comfortable: "\u8212\u9002", compact: "\u7D27\u51D1" }).setValue(draft2.calendarDensity || "comfortable").onChange((v) => draft2.calendarDensity = v));
-    new import_obsidian16.Setting(el).setName("\u754C\u9762\u98CE\u683C").addDropdown((d) => d.addOptions({ soft: "\u67D4\u548C", paper: "\u7EB8\u5F20" }).setValue(draft2.surfaceStyle).onChange((v) => draft2.surfaceStyle = v));
-    new import_obsidian16.Setting(el).setName("\u4E3B\u9898\u8272").addDropdown((d) => d.addOptions({ forest: "\u68EE\u6797\u7EFF", blue: "\u84DD\u8272", amber: "\u7425\u73C0", rose: "\u73AB\u7470" }).setValue(draft2.accent).onChange((v) => draft2.accent = v));
-    new import_obsidian16.Setting(el).setName("\u73BB\u7483\u6548\u679C").addToggle((t) => t.setValue(draft2.glassEffects).onChange((v) => draft2.glassEffects = v));
+    for (const [key, title, desc] of [["showLunar", "\u663E\u793A\u519C\u5386", "\u65E5\u671F\u4E0B\u65B9\u663E\u793A\u519C\u5386\uFF0C\u6708\u521D\u663E\u793A\u6708\u4EFD\u3002"], ["showFestivals", "\u663E\u793A\u8282\u65E5", "\u8282\u65E5\u4F18\u5148\u663E\u793A\uFF1B\u5B8C\u6574\u540D\u79F0\u53EF\u60AC\u505C\u67E5\u770B\u3002"], ["showSolarTerms", "\u663E\u793A\u8282\u6C14", "\u663E\u793A\u4E8C\u5341\u56DB\u8282\u6C14\u3002"], ["showHolidays", "\u663E\u793A\u4F11\u73ED\u6807\u8BB0", "\u4F7F\u7528\u5185\u7F6E\u4E2D\u56FD\u5927\u9646\u8282\u5047\u65E5\u6570\u636E\uFF1B\u672A\u6536\u5F55\u5E74\u4EFD\u4E0D\u63A8\u6D4B\u8C03\u4F11\u3002"]]) new import_obsidian17.Setting(el).setName(title).setDesc(desc).addToggle((t) => t.setValue(draft2[key] !== false).onChange((v) => draft2[key] = v));
+    new import_obsidian17.Setting(el).setName("\u65E5\u5386\u5BC6\u5EA6").addDropdown((d) => d.addOptions({ comfortable: "\u8212\u9002", compact: "\u7D27\u51D1" }).setValue(draft2.calendarDensity || "comfortable").onChange((v) => draft2.calendarDensity = v));
+    new import_obsidian17.Setting(el).setName("\u754C\u9762\u98CE\u683C").addDropdown((d) => d.addOptions({ soft: "\u67D4\u548C", paper: "\u7EB8\u5F20" }).setValue(draft2.surfaceStyle).onChange((v) => draft2.surfaceStyle = v));
+    new import_obsidian17.Setting(el).setName("\u4E3B\u9898\u8272").addDropdown((d) => d.addOptions({ forest: "\u68EE\u6797\u7EFF", blue: "\u84DD\u8272", amber: "\u7425\u73C0", rose: "\u73AB\u7470" }).setValue(draft2.accent).onChange((v) => draft2.accent = v));
+    new import_obsidian17.Setting(el).setName("\u73BB\u7483\u6548\u679C").addToggle((t) => t.setValue(draft2.glassEffects).onChange((v) => draft2.glassEffects = v));
     el.createEl("h3", { text: "\u756A\u8304\u949F" });
     const durationInputs = [];
-    for (const [key, label2, min, max] of [["focusMinutes", "\u4E13\u6CE8\u65F6\u957F\uFF08\u5206\u949F\uFF09", 1, 180], ["shortBreakMinutes", "\u77ED\u4F11\u606F\uFF08\u5206\u949F\uFF09", 1, 60], ["longBreakMinutes", "\u957F\u4F11\u606F\uFF08\u5206\u949F\uFF09", 1, 60], ["longBreakEvery", "\u957F\u4F11\u606F\u95F4\u9694\uFF08\u8F6E\uFF09", 2, 12]]) new import_obsidian16.Setting(el).setName(label2).setDesc(`${min}\u2013${max}\uFF1B\u8FDB\u884C\u4E2D\u7684\u8BA1\u65F6\u4F7F\u7528\u672C\u8F6E\u539F\u65F6\u957F\uFF0C\u4E0B\u4E00\u8F6E\u5E94\u7528\u65B0\u8BBE\u7F6E\u3002`).addText((t) => {
+    for (const [key, label2, min, max] of [["focusMinutes", "\u4E13\u6CE8\u65F6\u957F\uFF08\u5206\u949F\uFF09", 1, 180], ["shortBreakMinutes", "\u77ED\u4F11\u606F\uFF08\u5206\u949F\uFF09", 1, 60], ["longBreakMinutes", "\u957F\u4F11\u606F\uFF08\u5206\u949F\uFF09", 1, 60], ["longBreakEvery", "\u957F\u4F11\u606F\u95F4\u9694\uFF08\u8F6E\uFF09", 2, 12]]) new import_obsidian17.Setting(el).setName(label2).setDesc(`${min}\u2013${max}\uFF1B\u8FDB\u884C\u4E2D\u7684\u8BA1\u65F6\u4F7F\u7528\u672C\u8F6E\u539F\u65F6\u957F\uFF0C\u4E0B\u4E00\u8F6E\u5E94\u7528\u65B0\u8BBE\u7F6E\u3002`).addText((t) => {
       durationInputs.push(t.inputEl);
       t.inputEl.type = "number";
       t.inputEl.required = true;
@@ -22708,11 +22803,11 @@ var CalendarSettingsTab = class extends import_obsidian16.PluginSettingTab {
     });
     el.createEl("h3", { text: "\u5927\u65E5\u5386\u4E0E\u82F9\u679C\u65E5\u5386" });
     this.calendar.renderCalendarIntegrationSettings(el);
-    new import_obsidian16.Setting(el).setName("\u4FDD\u5B58\u8BBE\u7F6E").addButton((b) => b.setButtonText("\u4FDD\u5B58").setCta().onClick(() => run(async () => {
+    new import_obsidian17.Setting(el).setName("\u4FDD\u5B58\u8BBE\u7F6E").addButton((b) => b.setButtonText("\u4FDD\u5B58").setCta().onClick(() => run(async () => {
       if (durationInputs.some((input) => !input.checkValidity())) throw Error("\u8BF7\u586B\u5199\u8303\u56F4\u5185\u7684\u6574\u5206\u949F\u65F6\u957F\u548C\u8F6E\u6570");
       await this.calendar.updateSettings(draft2, true);
-      new import_obsidian16.Notice("\u65E5\u5386\u8BBE\u7F6E\u5DF2\u4FDD\u5B58");
+      new import_obsidian17.Notice("\u65E5\u5386\u8BBE\u7F6E\u5DF2\u4FDD\u5B58");
     })));
-    new import_obsidian16.Setting(el).setName("\u6574\u7406\u65E7\u65E5\u8BB0").setDesc("\u4EC5\u79FB\u52A8\u6839\u76EE\u5F55\u7684\u65E5\u671F\u7B14\u8BB0\uFF0C\u5148\u5907\u4EFD\uFF1B\u76EE\u6807\u540C\u540D\u65F6\u8DF3\u8FC7\u3002").addButton((b) => b.setButtonText("\u6574\u7406\u4E3A\u5E74\u6708\u76EE\u5F55").onClick(() => run(() => this.calendar.fileOldJournals())));
+    new import_obsidian17.Setting(el).setName("\u6574\u7406\u65E7\u65E5\u8BB0").setDesc("\u4EC5\u79FB\u52A8\u6839\u76EE\u5F55\u7684\u65E5\u671F\u7B14\u8BB0\uFF0C\u5148\u5907\u4EFD\uFF1B\u76EE\u6807\u540C\u540D\u65F6\u8DF3\u8FC7\u3002").addButton((b) => b.setButtonText("\u6574\u7406\u4E3A\u5E74\u6708\u76EE\u5F55").onClick(() => run(() => this.calendar.fileOldJournals())));
   }
 };

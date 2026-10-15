@@ -21,7 +21,8 @@ import {CalendarNoteLinks} from './calendar-note-links';
 import {CalendarNotePicker} from './calendar-note-picker';
 import {ChineseCalendar,chineseDayPresentation} from './chinese-calendar';
 import {PomodoroController,type PomodoroActions} from './pomodoro';
-import {POMODORO_VIEW,PomodoroView} from './pomodoro-view';
+import {POMODORO_VIEW} from './pomodoro-view';
+import {LegacyTimerView} from './legacy-timer-view';
 import {type PomodoroTarget,type TimerMode} from './pomodoro-model';
 import {resolveTimerTask,taskTimerTarget} from './task-timer-target';
 import {createPomodoroStore} from './pomodoro-store';
@@ -33,7 +34,7 @@ export default class ThoughtSpaceCalendar extends Plugin{
  readonly calendarApiVersion=1;ready=false;declare settings:CalendarSettings;taskPlanner!:TaskPlanner;journalLinks?:JournalLinks;
  private openings=new SharedOpen<string,WorkspaceLeaf>();private filing:Promise<unknown>=Promise.resolve();private selection=0;
  appleCalendar!:AppleCalendarClient;private largeCalendarHost!:LargeCalendarHost;private openLargePane!:()=>Promise<void>;
- private initialTaskRead?:Promise<void>;private largeRefreshTimer?:number;private chinese=new ChineseCalendar();
+ private initialTaskRead?:Promise<void>;private largeRefreshTimer?:number;private timerMigrationTimer?:number;private chinese=new ChineseCalendar();
  private eventNoteLinks!:CalendarNoteLinks;
  private settingsWrites:Promise<unknown>=Promise.resolve();
  pomodoro!:PomodoroController;pomodoroActions!:PomodoroActions;
@@ -55,7 +56,8 @@ export default class ThoughtSpaceCalendar extends Plugin{
   this.register(()=>{focusStore.dispose();this.pomodoro.dispose();});
   await this.pomodoro.initialize().catch(error=>new Notice('计时器加载失败：'+String(error)));
   this.pomodoroActions={open:()=>this.openPomodoro(),startTask:async task=>{if(!this.ready)throw Error('日历插件已关闭');await this.calendarTaskIndex();await this.taskPlanner.flush();const current=resolveTimerTask(this.taskPlanner.all(),task),target=taskTimerTarget(current);await this.startLinkedTimer(target,target.plannedDurationMs?'countdown':'stopwatch',target.plannedDurationMs?target.plannedDurationMs/60_000:undefined);}};
-  this.registerView(POMODORO_VIEW,leaf=>new PomodoroView(leaf,this.pomodoro,target=>this.openPomodoroTarget(target),day=>this.openLargeCalendar(day)));
+  // Restore old workspace tabs only long enough to move them into the calendar.
+  this.registerView(POMODORO_VIEW,leaf=>new LegacyTimerView(leaf,()=>this.migrateTimerViews()));
   const status=this.addStatusBarItem();status.addClass('ts-calendar-plugin','ts-calendar-focus-status');status.setAttribute('role','button');status.tabIndex=0;
   this.registerDomEvent(status,'click',()=>run(()=>this.openPomodoro()));this.registerDomEvent(status,'keydown',event=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();run(()=>this.openPomodoro());}});
   this.register(this.pomodoro.subscribe(({state,remainingMs,elapsedMs,error})=>{const session=state.session,seconds=Math.floor((session.mode==='stopwatch'?elapsedMs:Math.ceil(remainingMs/1000)*1000)/1000),time=(seconds>=3600?String(Math.floor(seconds/3600)).padStart(2,'0')+':':'')+String(Math.floor(seconds/60)%60).padStart(2,'0')+':'+String(seconds%60).padStart(2,'0'),label=session.mode==='stopwatch'?'计时':session.mode==='countdown'?'倒计时':session.phase==='focus'?'专注':'休息';status.setText(session.status==='idle'?'◷ 计时器':`${label} ${time}${session.status==='paused'?' · 已暂停':session.status==='finished'?' · 完成':''}`);status.title=error||`${session.target?.title||'计时器'} · 点击打开`;status.setAttribute('aria-label',status.title);status.dataset.status=session.status;}));
@@ -85,13 +87,12 @@ export default class ThoughtSpaceCalendar extends Plugin{
   // Clock text changes in place; only durable state changes redraw local actual-time blocks.
   let timerDigest='';this.register(this.pomodoro.subscribe(snapshot=>{const {session,records}=snapshot.state,digest=JSON.stringify([session.id,session.status,session.durationMs,session.target,records.map(record=>[record.id,record.completedAt,record.durationMs])]);for(const leaf of this.app.workspace.getLeavesOfType(LargeCalendarView.type))if(leaf.view instanceof LargeCalendarView){if(digest!==timerDigest)leaf.view.refreshTimer();leaf.view.refreshTimerClock(snapshot);}timerDigest=digest;}));
   this.register(this.taskPlanner.subscribe(()=>{window.clearTimeout(this.largeRefreshTimer);this.largeRefreshTimer=window.setTimeout(()=>this.refreshLargeCalendars(),100);}));
-  this.register(()=>{window.clearTimeout(this.largeRefreshTimer);this.chinese.clear();});
+  this.register(()=>{window.clearTimeout(this.largeRefreshTimer);window.clearTimeout(this.timerMigrationTimer);this.chinese.clear();});
   this.registerView(CALENDAR,leaf=>new JournalView(leaf,this,'calendar'));this.registerView(JOURNAL,leaf=>new JournalView(leaf,this,'entries'));
   this.registerMarkdownCodeBlockProcessor('thoughtspace-tasks',(source,el,ctx)=>{try{themeSurface(el,this.settings);ctx.addChild(new TaskPanel(this.app,el,this.taskPlanner,source.trim(),{},false,undefined,undefined,this.pomodoroActions));}catch(e){el.setText('任务日期无效：'+String(e));}});
   this.addRibbonIcon('calendar-range','ThoughtSpace 日历',()=>run(()=>this.ensureCalendar(true)));
   this.addRibbonIcon('notebook-pen','ThoughtSpace 今日日记',()=>run(()=>this.journal()));
-  this.addRibbonIcon('timer','ThoughtSpace 计时器',()=>run(()=>this.openPomodoro()));
-  this.addCommand({id:'show-pomodoro',name:'打开计时器',callback:()=>run(()=>this.openPomodoro())});
+  this.addCommand({id:'show-pomodoro',name:'在日历中打开计时器',callback:()=>run(()=>this.openPomodoro())});
   this.addCommand({id:'start-pomodoro',name:'开始或继续番茄专注',callback:()=>run(async()=>{await this.pomodoro.startFocus();await this.openPomodoro();})});
   this.addCommand({id:'pause-pomodoro',name:'暂停计时器',callback:()=>run(()=>this.pomodoro.pause())});
   this.addCommand({id:'start-stopwatch',name:'开始正计时',callback:()=>run(()=>this.startLinkedTimer(undefined,'stopwatch'))});
@@ -102,7 +103,7 @@ export default class ThoughtSpaceCalendar extends Plugin{
   this.addCommand({id:'capture-note',name:'收集笔记',callback:()=>this.quickCapture()});
   this.addCommand({id:'file-journals-by-month',name:'整理旧日记到年月目录',callback:()=>run(()=>this.fileOldJournals())});
   this.addSettingTab(new CalendarSettingsTab(this.app,this));this.ready=true;
-  this.app.workspace.onLayoutReady(()=>{if(this.ready)this.configureLinks();});
+  this.app.workspace.onLayoutReady(()=>{if(this.ready){this.configureLinks();this.scheduleTimerMigration();}});
  }
  private configureLinks(){if(this.journalLinks){this.removeChild(this.journalLinks);this.journalLinks=undefined;}if(this.settings.linkCreatedNotes)this.journalLinks=this.addChild(new JournalLinks(this.app,this));}
  private async calendarTaskIndex(){if(!this.ready)return [];if(!this.initialTaskRead)this.initialTaskRead=this.taskPlanner.ready().catch(error=>{this.initialTaskRead=undefined;throw error;});await this.initialTaskRead;return this.ready?this.taskPlanner.all():[];}
@@ -132,12 +133,34 @@ export default class ThoughtSpaceCalendar extends Plugin{
  async fileOldJournals(){const root=this.settings.journalFolder;return this.serialize(async()=>{let moved=0;const skipped:string[]=[],failed:string[]=[];for(const file of this.app.vault.getMarkdownFiles().filter(f=>f.parent?.path===root&&/^\d{4}-\d{2}-\d{2}$/.test(f.basename))){try{const folder=journalFolder(file.basename,root),target=`${folder}/${file.name}`;if(this.app.vault.getAbstractFileByPath(target)){skipped.push(file.path);continue;}const backup=`${this.app.vault.configDir}/plugins/${this.manifest.id}/filing-backups/${Date.now()}-${safeName(file.basename)}.md`;const backupFolder=backup.slice(0,backup.lastIndexOf('/'));if(!await this.app.vault.adapter.exists(backupFolder))await this.app.vault.adapter.mkdir(backupFolder);await this.app.vault.adapter.write(backup,await this.app.vault.read(file));await this.folder(folder);await this.app.fileManager.renameFile(file,target);moved++;}catch(error){failed.push(file.path+'：'+String(error));}}new Notice(`已整理 ${moved} 篇，同名保留 ${skipped.length} 篇，失败 ${failed.length} 篇`,8000);return{moved,skipped,failed};});}
  ensureCalendar(show=false){return this.ensurePane(CALENDAR,show);}
  ensureJournal(show=false){return this.ensurePane(JOURNAL,show);}
- async openPomodoro(){await this.ensurePane(POMODORO_VIEW,true);}
+ async openPomodoro(){const leaf=await this.ensureCalendar(true);if(leaf.view instanceof JournalView)leaf.view.selectCalendarSurface('timer');}
+ private scheduleTimerMigration(){window.clearTimeout(this.timerMigrationTimer);this.timerMigrationTimer=window.setTimeout(()=>{this.timerMigrationTimer=undefined;if(this.ready)run(()=>this.migrateTimerViews());},0);}
+ private paneLeaves(type:string){
+  const leaves=[...this.app.workspace.getLeavesOfType(type)];
+  // Deferred/restoring leaves retain their saved type before getLeavesOfType sees a live view.
+  this.app.workspace.iterateAllLeaves?.(leaf=>{if(leaf.getViewState().type===type&&!leaves.includes(leaf))leaves.push(leaf);});
+  return leaves;
+ }
+ /** Keep all timer entry points on the calendar without changing the shared session. */
+ async migrateTimerViews(){
+  if(!this.ready)return;
+  const previous=this.paneLeaves(POMODORO_VIEW);
+  if(!previous.length)return;
+  const leaf=await this.ensureCalendar(false);
+  if(!this.ready)return;
+  // Loading a deferred calendar can outlive the user's switch back to a note.
+  const activeWasTimer=previous.includes(this.app.workspace.activeLeaf!);
+  if(leaf.view instanceof JournalView)leaf.view.selectCalendarSurface('timer');
+  for(const old of this.paneLeaves(POMODORO_VIEW))if(old!==leaf)old.detach();
+  this.app.workspace.requestSaveLayout();
+  if(activeWasTimer){this.app.workspace.rightSplit.expand();await this.app.workspace.revealLeaf(leaf);}
+ }
+ openTimerTarget(target:PomodoroTarget){return this.openPomodoroTarget(target);}
  private async startLinkedTimer(target?:PomodoroTarget,mode:TimerMode='stopwatch',durationMinutes?:number){if(!this.ready)throw Error('日历插件已关闭');await this.pomodoro.startTimer(target,mode,durationMinutes);await this.openPomodoro();}
  private async openPomodoroTarget(target:PomodoroTarget){if(!this.ready)throw Error('日历插件已关闭');if(!target.path)return;const file=this.app.vault.getAbstractFileByPath(target.path);if(!(file instanceof TFile))throw Error('任务来源已移动或删除');const leaf=this.app.workspace.getLeaf('tab');await leaf.openFile(file,{eState:{line:target.line||0}});await this.app.workspace.revealLeaf(leaf);}
  private async ensurePane(type:string,show:boolean):Promise<WorkspaceLeaf>{
   if(!this.ready)throw Error('日历插件已关闭');
-  const leaf=await this.openings.run(type,async()=>{let leaf=this.app.workspace.getLeavesOfType(type)[0];if(!leaf){leaf=this.app.workspace.getRightLeaf(false)!;if(!leaf)throw Error('无法创建日历侧栏');await leaf.setViewState({type,active:false});}await leaf.loadIfDeferred();return leaf;});
+  const leaf=await this.openings.run(type,async()=>{let leaf=this.paneLeaves(type)[0];if(!leaf){const legacy=type===CALENDAR?this.paneLeaves(POMODORO_VIEW)[0]:undefined;leaf=legacy||this.app.workspace.getRightLeaf(false)!;if(!leaf)throw Error('无法创建日历侧栏');await leaf.setViewState({type,active:false,...(legacy?{state:{topPane:'timer'}}:{})});}await leaf.loadIfDeferred();return leaf;});
   if(!this.ready)throw Error('日历插件已关闭');if(show){this.app.workspace.rightSplit.expand();await this.app.workspace.revealLeaf(leaf);}return leaf;
  }
  async selectJournalDay(day:string){const selection=++this.selection;const calendar=await this.ensureCalendar(),journal=await this.ensureJournal(true);if(selection!==this.selection)return;if(calendar.view instanceof JournalView)await calendar.view.showDay(day,false);if(selection!==this.selection)return;if(journal.view instanceof JournalView)await journal.view.showDay(day,false);}

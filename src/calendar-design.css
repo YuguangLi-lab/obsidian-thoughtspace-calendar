@@ -18,7 +18,7 @@
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-top-switch button:hover {background:color-mix(in srgb,var(--ts-accent,var(--interactive-accent)) 7%,var(--background-primary));}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-top-switch button:focus-visible {outline:2px solid var(--ts-accent,var(--interactive-accent));outline-offset:1px;}
 /* Hidden top panels leave no reserved space; entry-view focus strips stay independent. */
-.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=calendar] .ts-journal-calendar-pane>[role=tabpanel][hidden] {display:none!important;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part] .ts-journal-calendar-pane>[role=tabpanel][hidden] {display:none!important;}
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet][data-journal-part=calendar] .ts-journal-calendar-pane .ts-journal-focus {min-width:0;margin:0;padding:0;}
 
 .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar {
@@ -121,3 +121,24 @@
  .ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar-mini-header {font-size:10px;}
 }
 @media(prefers-reduced-motion:reduce) {.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-calendar button {transition:none;}}
+
+/* The complete timer lives in the calendar's top surface; no second leaf or expansion is needed. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-panel {min-width:0;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host {
+ padding:12px!important;border:1px solid color-mix(in srgb,var(--text-muted) 14%,transparent);
+ border-radius:10px;background:var(--background-primary);min-width:0;
+}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-head {display:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-clock {font-size:clamp(38px,20cqi,58px);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-clock[data-hours=true] {font-size:clamp(26px,12.5cqi,38px);}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-timer {min-height:128px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-primary {height:36px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-summary {margin-top:12px;padding-top:10px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-recent-head {margin-top:11px;}
+/* Center the full timer hero so a narrow dock still has room for HH:MM:SS. */
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-timer {position:relative;grid-template-columns:minmax(0,1fr);min-height:172px;padding:18px 10px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-face {position:relative;z-index:1;align-items:center;gap:9px;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-dial {position:absolute;inset:0;margin:auto;width:min(150px,calc(100% - 16px));height:auto;aspect-ratio:1;pointer-events:none;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-ring-track {stroke-width:3;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-ring-remaining {stroke-width:3;}
+.ts-calendar-plugin.ts-journal[data-calendar-ui=quiet] .ts-journal-timer-host .ts-calendar-pomodoro-progress-label {display:none;}

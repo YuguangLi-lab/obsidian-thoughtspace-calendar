@@ -11,6 +11,8 @@ import { TextModal } from './content-tools';
 import {journalPresentation} from './journal-presentation';
 import type {PomodoroActions,PomodoroController} from './pomodoro';
 import {PomodoroStrip} from './pomodoro-strip';
+import {PomodoroPanel} from './pomodoro-view';
+import type {PomodoroTarget} from './pomodoro-model';
 export const JOURNAL='thoughtspace-journal';
 export const CALENDAR='thoughtspace-calendar';
 export interface JournalHost {
@@ -20,10 +22,12 @@ export interface JournalHost {
   currentBoard?:{file:TFile|null};journalLinks?:{sync(day:string,file:TFile):Promise<void>};
   selectJournalDay?(day:string):Promise<void>;selectJournalMonth?(day:string,month:string,todo:boolean):Promise<void>;
   openLargeCalendar?(day?:string):Promise<void>;
+  openTimerTarget?(target:PomodoroTarget):Promise<void>;
 }
 type Entry={day:string;file:TFile;text:string;tasks:Task[]};
 export class JournalView extends ItemView {
   private renderScope?:Component;private generation=0;private closed=false;private day=localDay();private month=this.day.slice(0,7);private today=localDay();
+  private timerPanel?:PomodoroPanel;private timerPanelElement?:HTMLElement;
   private topPane:'calendar'|'timer'='calendar';private topPanels?:{calendar:HTMLElement;timer:HTMLElement};private topButtons?:Map<'calendar'|'timer',HTMLButtonElement>;
   private mode:'day'|'week'|'agenda'='day';private query='';private onlyTodo=false;private refreshTimer?:number;
   private timelineState:DayTimelineState={};private taskPanelState:TaskPanelState={};private calendarCollapsed=false;private linkedNotesOpen=new Set<string>();
@@ -84,7 +88,11 @@ export class JournalView extends ItemView {
   async refresh(){
     if(this.contentEl.querySelector(".is-task-dragging")){this.schedule();return;}
     if(this.closed)return;const run=++this.generation,day=this.day,month=this.month;const focus=this.contentEl.querySelector<HTMLInputElement>('.ts-calendar-search');const restoreFocus=focus===this.contentEl.ownerDocument.activeElement,pos=focus?.selectionStart||0;const active=this.contentEl.ownerDocument.activeElement as HTMLElement|null;const calendarFocus=active&&this.contentEl.contains(active)&&active.classList.contains('ts-calendar-day')?active.dataset.day:undefined;const restoreTaskFocus=preserveTaskFilterFocus(this.contentEl);const oldScroll=this.contentEl.scrollTop;const quickFocused=this.contentEl.querySelector<HTMLInputElement>('.ts-journal-quick input');const restoreQuick=quickFocused===this.contentEl.ownerDocument.activeElement,quickPos=quickFocused?.selectionStart||0;
-    this.contentEl.dataset.calendarUi='quiet';this.contentEl.dataset.calendarDensity=this.host.settings.calendarDensity||'comfortable';this.contentEl.dataset.journalPart=this.part;this.contentEl.dataset.glass=String(this.host.settings.glassEffects!==false);this.contentEl.dataset.surface=this.host.settings.surfaceStyle||'soft';this.contentEl.dataset.accent=this.host.settings.accent||'forest';this.renderScope?.unload();const scope=this.renderScope=new Component();scope.load();this.contentEl.empty();
+    this.contentEl.dataset.calendarUi='quiet';this.contentEl.dataset.calendarDensity=this.host.settings.calendarDensity||'comfortable';this.contentEl.dataset.journalPart=this.part;this.contentEl.dataset.glass=String(this.host.settings.glassEffects!==false);this.contentEl.dataset.surface=this.host.settings.surfaceStyle||'soft';this.contentEl.dataset.accent=this.host.settings.accent||'forest';this.renderScope?.unload();const scope=this.renderScope=new Component();scope.load();
+    // The timer belongs to the view, not this disposable journal render. Move its original DOM so file/task refreshes keep unfinished input and the single subscription.
+    const timerFocus=this.timerPanelElement?.contains(active)?active as HTMLInputElement:undefined;
+    const timerSelection=timerFocus?.tagName==='INPUT'&&timerFocus.type!=='number'?[timerFocus.selectionStart,timerFocus.selectionEnd] as const:undefined;
+    this.timerPanelElement?.remove();this.contentEl.empty();this.topPanels=undefined;this.topButtons=undefined;
     this.visibleEntries.clear();
     const layout=this.contentEl.createDiv('ts-journal-layout'),calendarPane=layout.createDiv('ts-journal-calendar-pane'),detailPane=layout.createDiv('ts-journal-detail-pane');
     if(this.part==='entries')calendarPane.remove();if(this.part==='calendar')detailPane.remove();
@@ -117,7 +125,8 @@ export class JournalView extends ItemView {
       const b=this.control(grid,date,'',()=>this.openDay(date));b.className='ts-calendar-day';b.empty();b.createSpan({cls:'ts-calendar-solar-number',text:String(Number(date.slice(8)))});const cn=chineseDayPresentation(this.chinese.get(date),this.host.settings);if(cn.label)b.createSpan({cls:'ts-calendar-lunar-label',text:cn.label});b.dataset.chineseKind=cn.kind;b.dataset.dateTitle=[date,cn.description].filter(Boolean).join(' · ');b.title=b.dataset.dateTitle;b.setAttribute('aria-label',b.title);if(cn.badge){b.createSpan({cls:'ts-calendar-holiday-badge',text:cn.badge,attr:{title:cn.holidayTitle,'aria-hidden':'true'}});b.dataset.holiday=cn.badge==='班'?'work':'rest';}b.dataset.day=date;b.tabIndex=date===(this.focusedDay.slice(0,7)===month?this.focusedDay:month+'-01')?0:-1;b.onfocus=()=>{this.focusedDay=date;};b.toggleClass('is-weekend',index%7>=5);b.toggleClass('is-first-week',index<7);b.toggleClass('is-last-week',index>=displayDates.length-7);b.toggleClass('is-outside',date.slice(0,7)!==month);b.toggleClass('is-today',date===localDay());b.toggleClass('is-selected',date===day);b.setAttribute('aria-pressed',String(date===day));if(date===localDay())b.setAttribute('aria-current','date');b.oncontextmenu=e=>this.menu(e,date);b.onkeydown=e=>{void this.calendarKey(e,date).catch(e=>new Notice(String(e)));};cells.set(date,b);
     }
     grid.hidden=this.calendarView==='year';if(this.host.settings.showHolidays!==false&&selected&&!this.chinese.get(`${month}-01`)?.holidaysKnown)calendar.createDiv({cls:'ts-calendar-data-note',text:`${month.slice(0,4)} 年调休数据未收录`});
-    if(this.part!=='entries')this.renderFocusStrip(timerHost,scope,this.topPanels?'panel':'compact');
+    if(this.part!=='entries'){if(this.topPanels)this.renderTimerPanel(timerHost);else this.renderFocusStrip(timerHost,scope);}
+    if(timerFocus&&this.topPane==='timer'){timerFocus.focus({preventScroll:true});if(timerSelection&&timerSelection[0]!==null&&timerSelection[1]!==null)timerFocus.setSelectionRange(...timerSelection);}
     const tabs=detailPane.createDiv({cls:'ts-journal-tabs',attr:{role:'group','aria-label':'日记显示方式'}});for(const [id,label] of [['day','日记'],['week','本周清单'],['agenda','本月清单']] as const){const b=this.control(tabs,label,id==='day'?'notebook-pen':id==='week'?'calendar-range':'list-todo',()=>{this.mode=id;this.app.workspace.requestSaveLayout();return this.refresh();},true);b.toggleClass('is-active',this.mode===id);b.setAttribute('aria-pressed',String(this.mode===id));}
     if(this.part==='entries')this.renderFocusStrip(detailPane,scope);
     const content=detailPane.createDiv('ts-journal-content');let agenda:HTMLElement|undefined;
@@ -155,11 +164,22 @@ export class JournalView extends ItemView {
     }
     this.selectTopPane(this.topPane);return panels;
   }
+  selectCalendarSurface(mode:'calendar'|'timer'){this.selectTopPane(mode);this.app.workspace.requestSaveLayout();}
   private selectTopPane(mode:'calendar'|'timer',focus=false){
     this.topPane=mode;if(focus)this.topButtons?.get(mode)?.focus({preventScroll:true});
     if(this.topPanels){this.topPanels.calendar.hidden=mode!=='calendar';this.topPanels.timer.hidden=mode!=='timer';}
     for(const [key,button] of this.topButtons||[]){button.setAttribute('aria-selected',String(key===mode));button.tabIndex=key===mode?0:-1;button.toggleClass('is-active',key===mode);}
     if(focus)this.app.workspace.requestSaveLayout();
+  }
+  private renderTimerPanel(parent:HTMLElement){
+    if(!this.host.pomodoro)return;
+    if(!this.timerPanelElement){
+      this.timerPanelElement=parent.createDiv('ts-journal-focus ts-journal-timer-host');
+      this.timerPanel=this.addChild(new PomodoroPanel(this.timerPanelElement,this.host.pomodoro,
+        this.host.openTimerTarget?target=>this.host.openTimerTarget!(target):undefined,
+        async day=>{if(this.host.openLargeCalendar){await this.host.openLargeCalendar(day);return;}this.selectCalendarSurface('calendar');await this.showDay(day,false);},
+      ));
+    }else parent.append(this.timerPanelElement);
   }
   private renderFocusStrip(parent:HTMLElement,scope:Component,presentation:'compact'|'panel'='compact'){
     if(this.host.pomodoro&&this.host.pomodoroActions)scope.addChild(new PomodoroStrip(parent.createDiv('ts-journal-focus'),this.host.pomodoro,()=>this.host.pomodoroActions!.open(),presentation));
@@ -218,5 +238,5 @@ export class JournalView extends ItemView {
     agenda.empty();const results=[...entries.values()].filter(e=>(weekly?week.includes(e.day):e.day.startsWith(month))&&e.text.toLocaleLowerCase().includes(this.query.trim().toLocaleLowerCase())&&(!this.onlyTodo||e.tasks.some(t=>!t.checked&&t.text.trim()))).sort((a,b)=>this.sort==='newest'?b.day.localeCompare(a.day):a.day.localeCompare(b.day));agenda.createDiv({cls:'ts-journal-count',text:`${results.length} 篇日记`});for(const e of results){const row=agenda.createDiv('ts-calendar-agenda-row');const stamp=row.createDiv({cls:'ts-agenda-date-stamp',attr:{'aria-hidden':'true'}});stamp.createEl('strong',{text:e.day.slice(8)});stamp.createSpan({text:dateOf(e.day).toLocaleDateString('zh-CN',{weekday:'short'})});const rowBody=row.createDiv('ts-agenda-entry');const rowHead=rowBody.createDiv('ts-calendar-agenda-head');this.control(rowHead,e.day,'',()=>this.showDay(e.day));this.control(rowHead,'打开日记原文','arrow-up-right',()=>this.openNote(e.file));const total=e.tasks.filter(t=>t.text.trim()).length;if(total)rowHead.createSpan({cls:'ts-calendar-agenda-tasks',text:`${e.tasks.filter(t=>t.checked&&t.text.trim()).length}/${total} 完成`});if(this.onlyTodo)this.renderTasks(rowBody,e,true);else rowBody.createDiv({cls:'ts-journal-excerpt',text:journalExcerpt(journalPresentation(e.text).body)||'这一天还没有正文。'});}if(!results.length)agenda.createDiv({cls:'ts-journal-empty',text:'没有匹配的日记。可以切换月份或调整筛选。'});
   }
   private renderTasks(parent:HTMLElement,entry:Entry,onlyTodo=false){const tasks=entry.tasks.filter(t=>t.text.trim()&&(!onlyTodo||!t.checked));if(!tasks.length)return;const box=parent.createDiv('ts-journal-tasks'),done=entry.tasks.filter(t=>t.text.trim()&&t.checked).length,total=entry.tasks.filter(t=>t.text.trim()).length;const header=box.createDiv('ts-journal-task-heading');header.createDiv({cls:'ts-journal-count',text:`任务 ${done} / ${total}`});header.createEl('progress',{attr:{max:String(total),value:String(done),'aria-label':'日记任务完成度'}});for(const task of tasks.slice(0,100)){const label=box.createEl('label');const check=label.createEl('input',{type:'checkbox'});check.checked=task.checked;label.createSpan({text:task.text});check.onchange=()=>{check.disabled=true;void this.app.vault.process(entry.file,text=>toggleTask(text,task)).then(()=>this.refresh()).catch(e=>{new Notice(String(e));void this.refresh();});};}if(tasks.length>100)box.createDiv({text:'显示前 100 项，更多任务请打开原文。',cls:'ts-muted'});}
-  async onClose(){this.closed=true;this.generation++;this.renderScope?.unload();window.clearTimeout(this.refreshTimer);this.cache.clear();this.chinese.clear();this.drafts.clear();this.visibleEntries.clear();}
+  async onClose(){this.closed=true;if(this.timerPanel)this.removeChild(this.timerPanel);this.timerPanel=undefined;this.timerPanelElement=undefined;this.generation++;this.renderScope?.unload();window.clearTimeout(this.refreshTimer);this.cache.clear();this.chinese.clear();this.drafts.clear();this.visibleEntries.clear();}
 }

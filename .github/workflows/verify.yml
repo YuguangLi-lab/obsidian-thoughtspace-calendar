@@ -23,6 +23,7 @@ jobs:
       - run: npm run test:browser
       - run: node qa/pomodoro-browser.mjs
       - run: node qa/pomodoro-strip-browser.mjs
+      - run: node qa/calendar-timer-browser.mjs
       - run: npm run package
       - uses: actions/upload-artifact@v4
         if: always()
@@ -35,5 +36,7 @@ jobs:
             qa/pomodoro-output/*.png
             qa/pomodoro-strip-output/result.json
             qa/pomodoro-strip-output/*.png
+            qa/calendar-timer-output/VERIFY.json
+            qa/calendar-timer-output/*.png
             release/*
           if-no-files-found: ignore
